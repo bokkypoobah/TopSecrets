@@ -30,9 +30,13 @@ For this exercise, I'm using an [Raspberry Pi 400](https://www.raspberrypi.com/p
 
 <br />
 
-For storage, I'm using a 8GB Micro SD card.
+For storage, I'm using a 8GB Micro SD card. You may be able to fit the Raspberry Pi OS image on a 2GB Micro SD card.
 
-<kbd><img src="https://upload.wikimedia.org/wikipedia/commons/d/da/MicroSD_cards_2GB_4GB_8GB.jpg" /></kbd>
+<kbd><img src="https://upload.wikimedia.org/wikipedia/commons/d/da/MicroSD_cards_2GB_4GB_8GB.jpg" width="300" /></kbd>
+
+Currently, the Raspberry Pi [Operating system images](https://www.raspberrypi.com/software/operating-systems/):
+* Raspberry Pi OS with desktop 1,158MB
+* Raspberry Pi OS with desktop and recommended software 2,678MB
 
 ## Sofware
 
