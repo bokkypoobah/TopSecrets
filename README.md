@@ -9,6 +9,10 @@ Recipe to create an offline device to split and combine BIP39 Mnemonics using Sh
 * Monitor and HDMI cable
 * Mouse and Keyboard
 
+## Sofware
+
+* Raspberry Pi Operating System - https://www.raspberrypi.com/software/operating-systems/
+
 ## References 
 
 * [Shamir39 Tool](https://iancoleman.io/shamir39/) - Note warnings about usage of this software
