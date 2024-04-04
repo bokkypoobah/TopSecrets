@@ -3,6 +3,8 @@ Recipe to create an offline device to split and combine BIP39 Mnemonics using Sh
 
 **WORK IN PROGRESS**
 
+<br />
+
 ## Aims
 
 * Create a device that does not store any information in permanent storage
@@ -11,9 +13,13 @@ Recipe to create an offline device to split and combine BIP39 Mnemonics using Sh
 * Create a device out of easily obtainable hardware and software
 * Document this process, and make it easily reproducible
 
+<br />
+
 ## Risks
 
-* Could have weaknesses in the algorithms, or in the implementation of the algorithms, in the Shamir39 tool
+* Shamir39 tool could have some weaknesses in the algorithms, or in the implementation of the algorithms
+
+<br />
 
 ## Hardware
 
@@ -34,13 +40,15 @@ For storage, I'm using a 8GB Micro SD card. You may be able to fit the Raspberry
 
 <kbd><img src="https://upload.wikimedia.org/wikipedia/commons/d/da/MicroSD_cards_2GB_4GB_8GB.jpg" width="300" /></kbd>
 
-Currently, the Raspberry Pi [Operating system images](https://www.raspberrypi.com/software/operating-systems/):
-* Raspberry Pi OS with desktop 1,158MB
-* Raspberry Pi OS with desktop and recommended software 2,678MB
+<br />
 
 ## Sofware
 
 * Raspberry Pi Operating System - https://www.raspberrypi.com/software/operating-systems/
+  * Raspberry Pi OS with desktop 1,158MB
+  * Raspberry Pi OS with desktop and recommended software 2,678MB
+
+<br />
 
 ## Steps
 
@@ -50,9 +58,14 @@ Currently, the Raspberry Pi [Operating system images](https://www.raspberrypi.co
 * Connect to network and download https://github.com/iancoleman/shamir39/raw/b12d58d6d71a4db71ac9796e7d82c0a7691dd973/standalone.html (right click save link as)
 * Configure the OS for read-only mode and restart
 
+<br />
+
 ## Notes
 
 * Disable Bluetooth, WiFi. Tape over network port after setup completed.
+* No standard for using Shamirs Secret Sharing with BIP-39 mnemonics. Make sure the same Shamir39 tool is available when required
+
+<br />
 
 ## References 
 
