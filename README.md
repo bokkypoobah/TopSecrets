@@ -17,11 +17,15 @@ Recipe to create an offline device to split and combine BIP39 Mnemonics using Sh
 
 ## Hardware
 
-* Raspberry Pi
+* Raspberry Pi model 2 or above should work. See [Raspberry Pi - Series And Generations](https://en.wikipedia.org/wiki/Raspberry_Pi#Raspberry_Pi)
 * MicroSD Card flashed with most recent Raspberry Pi OS
 * Power Supply 
 * Monitor and HDMI cable
 * Mouse and Keyboard
+
+For this exercise, I'm using an [Raspberry Pi 400](https://www.raspberrypi.com/products/raspberry-pi-400/)
+
+<kbd><img src="https://assets.raspberrypi.com/static/keyboard-lg-0e68b53708ad11b6dc0fff016f211a11.png" /></kbd>
 
 ## Sofware
 
