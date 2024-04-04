@@ -32,6 +32,8 @@ For this exercise, I'm using an [Raspberry Pi 400](https://www.raspberrypi.com/p
 
 For storage, I'm using a 8GB Micro SD card.
 
+<kbd><img src="https://upload.wikimedia.org/wikipedia/commons/d/da/MicroSD_cards_2GB_4GB_8GB.jpg" /></kbd>
+
 ## Sofware
 
 * Raspberry Pi Operating System - https://www.raspberrypi.com/software/operating-systems/
