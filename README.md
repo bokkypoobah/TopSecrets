@@ -13,7 +13,7 @@ Recipe to create an offline device to split and combine BIP39 Mnemonics using Sh
 
 ## Risks
 
-* Could have weaknesses in the algorithms, or in the implementation of the algorithms
+* Could have weaknesses in the algorithms, or in the implementation of the algorithms, in the Shamir39 tool
 
 ## Hardware
 
