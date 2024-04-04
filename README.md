@@ -1,6 +1,8 @@
 # Offline Shamir39 Device Recipe
 Recipe to create an offline device to split and combine BIP39 Mnemonics using Shamir39
 
+**WORK IN PROGRESS**
+
 ## Hardware
 
 * Raspberry Pi
