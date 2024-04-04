@@ -7,6 +7,11 @@ Recipe to create an offline device to split and combine BIP39 Mnemonics using Sh
 
 * Create a device cheap enough that it can be dedicated for a single use and kept permanently offline
 * Create a device out of easily obtainable hardware and software
+* Document this process, and make it easily reproducible
+
+## Risks
+
+* Could have weaknesses in the algorithms, or implementations of the algorithms
 
 ## Hardware
 
