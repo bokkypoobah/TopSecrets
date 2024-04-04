@@ -5,9 +5,10 @@ Recipe to create an offline device to split and combine BIP39 Mnemonics using Sh
 
 ## Aims
 
+* Create a device that does not store any information in permanent storage
+  * This setup runs the Raspberry OS with the MicroSD storage device in read-only mode
 * Create a device cheap enough that it can be dedicated for a single use and kept permanently offline
 * Create a device out of easily obtainable hardware and software
-* Create a device that does not store any information at all
 * Document this process, and make it easily reproducible
 
 ## Risks
@@ -25,6 +26,10 @@ Recipe to create an offline device to split and combine BIP39 Mnemonics using Sh
 ## Sofware
 
 * Raspberry Pi Operating System - https://www.raspberrypi.com/software/operating-systems/
+
+## Notes
+
+* Disable Bluetooth, WiFi. Tape over network port after setup completed.
 
 ## References 
 
