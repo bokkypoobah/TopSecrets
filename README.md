@@ -32,7 +32,7 @@ Recipe to create an offline device to split and combine BIP39 Mnemonics using Sh
 * Assemble hardware
 * Download and install the OS on the MicroSD card
 * Insert MicroSD card into the RPi and boot
-* Connect to network and download https://github.com/iancoleman/shamir39/raw/b12d58d6d71a4db71ac9796e7d82c0a7691dd973/standalone.html (right click save)
+* Connect to network and download https://github.com/iancoleman/shamir39/raw/b12d58d6d71a4db71ac9796e7d82c0a7691dd973/standalone.html (right click save link as)
 * Configure the OS for read-only mode and restart
 
 ## Notes
