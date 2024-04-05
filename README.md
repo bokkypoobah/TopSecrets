@@ -66,7 +66,7 @@ For storage, I'm using a 8GB Micro SD card. You may be able to fit the Raspberry
 
 * Disable Bluetooth, WiFi. Tape over network port after setup completed.
 * No standard for using Shamirs Secret Sharing with BIP-39 mnemonics. Make sure the same Shamir39 tool is available when required
-* Trezor have an alternative Shamir 
+* Trezor have their own Shamir backup system requiring different tools - see [What is Shamir backup?](https://trezor.io/learn/a/what-is-shamir-backup)
 
 <br />
 
