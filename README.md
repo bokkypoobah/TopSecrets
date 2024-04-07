@@ -8,11 +8,11 @@ Some hardware and software wallets use [BIP-39 mnemonic seed phrases](https://bi
 
 One way to store a BIP-39 mnemonic seed phrase is to split the phrase into **shares** held by multiple parties using the Shamir39 tool at https://iancoleman.io/shamir39/, for example:
 
-<img width="600" alt="image" src="https://github.com/bokkypoobah/OfflineShamir39DeviceRecipe/assets/17121975/2114469e-7e6f-4b74-9ac5-267749ae4c20">
+<img width="600" alt="image" src="images/Shamir39Split.png">
 
 In this example, a minimum of 3 of the 5 shares are required to recover the original BIP-39 mnemonic seed phrase:
 
-<img width="600" alt="image" src="https://github.com/bokkypoobah/OfflineShamir39DeviceRecipe/assets/17121975/be59cb5d-05e6-47fe-809b-ca93190633d3">
+<img width="600" alt="image" src="images/Shamir39Combine.png">
 
 The Shamir39 tool linked above should only be used with a computer permanently disconnected from any networks to prevent the leakage of any secrets.
 
@@ -29,7 +29,7 @@ This is a simple recipe to create a small dedicated **offline** **read-only** **
 
 ## Connect Hardware
 
-Obtain and connect your: 
+Obtain and connect your:
 * [**Raspberry Pi 400**](https://www.raspberrypi.com/products/raspberry-pi-400-unit/), or see Alternatives below<br />
 <kbd><img src="https://assets.raspberrypi.com/static/keyboard-lg-0e68b53708ad11b6dc0fff016f211a11.png" width="600"/></kbd>
 * with a [**Raspberry Pi 15W USB-C Power Supply**](https://www.raspberrypi.com/products/type-c-power-supply/), or equivalent (e.g., USB-C laptop power adaptor)
@@ -106,7 +106,7 @@ Be careful when connecting your keyboard to your device as keystroke loggers are
 
 * Raspberry Pi model 2 or above should work. See [Raspberry Pi - Series And Generations](https://en.wikipedia.org/wiki/Raspberry_Pi#Raspberry_Pi)
 * Micro SD card, 4GB or larger
-* Power Supply 
+* Power Supply
 * Monitor and HDMI cable
 * Mouse and Keyboard
 
@@ -149,7 +149,7 @@ For storage, I'm using a 8GB Micro SD card. You may be able to fit the Raspberry
 
 <br />
 
-## References 
+## References
 
 * [Shamir39 Tool](https://iancoleman.io/shamir39/) - Note warnings about usage of this software
 * [Read-Only Raspberry Pi - Never Corrupt your Micro-SD Card](https://core-electronics.com.au/guides/read-only-raspberry-pi/)
