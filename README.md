@@ -6,20 +6,20 @@
 
 Some hardware and software wallets use [BIP-39 mnemonic seed phrases](https://bitcoinwiki.org/wiki/mnemonic-phrase) for the backup and recovery of your cryptocurrency keys.
 
-One way to store a BIP-39 mnemonic seed phrase is to split the phrase into **shares** held by multiple parties using the Shamir39 tool at https://iancoleman.io/shamir39/, for example:
+One way to store a BIP-39 mnemonic seed phrase is to split the phrase into **shares** held by multiple parties using the **Shamir39** tool at https://iancoleman.io/shamir39/, for example:
 
-<img width="600" alt="image" src="images/Shamir39Split.png">
+<img width="600" src="images/Shamir39Split.png">
 
 In this example, a minimum of 3 of the 5 shares are required to recover the original BIP-39 mnemonic seed phrase:
 
-<img width="600" alt="image" src="images/Shamir39Combine.png">
+<img width="600" src="images/Shamir39Combine.png">
 
 The Shamir39 tool linked above should only be used with a computer permanently disconnected from any networks to prevent the leakage of any secrets.
 
-This is a simple recipe to create a small dedicated **offline** **read-only** **Raspberry Pi 400** computer to run the Shamir39 tool in **standalone** mode:
+This is a simple recipe to create a small **dedicated** **offline** **read-only** **Raspberry Pi 400** computer to run the Shamir39 tool in **standalone** mode:
 
-* Connect Hardware
-* Install Software
+* What You Need
+* MicroSD Card Preparation
 * Usage
 * Risks
 * Alternatives
@@ -27,22 +27,52 @@ This is a simple recipe to create a small dedicated **offline** **read-only** **
 
 <br />
 
-## Connect Hardware
+## What You Need
 
-Obtain and connect your:
-* [**Raspberry Pi 400**](https://www.raspberrypi.com/products/raspberry-pi-400-unit/), or see Alternatives below<br />
-<kbd><img src="https://assets.raspberrypi.com/static/keyboard-lg-0e68b53708ad11b6dc0fff016f211a11.png" width="600"/></kbd>
-* with a [**Raspberry Pi 15W USB-C Power Supply**](https://www.raspberrypi.com/products/type-c-power-supply/), or equivalent (e.g., USB-C laptop power adaptor)
-* and a [Raspberry Pi Mouse](https://www.raspberrypi.com/products/raspberry-pi-mouse/), or **USB-A** or **USB-C** equivalent
-* with your **monitor** via a **HDMI cable** that plugs into the Raspberry Pi 400's **Micro HDMI** port
+<img width="600" src="https://duet-cdn.vox-cdn.com/thumbor/0x535:3891x2779/1200x800/filters:focal(1137x1461:1138x1462):format(webp)/cdn.vox-cdn.com/uploads/chorus_asset/file/22002628/DESKTOP_SIDE_.jpg">
 
 <br />
 
-## Install Software
+<br />
 
-On your Linux, Mac or Windows computer, follow the instructions at https://www.raspberrypi.com/software/ to install the latest Raspberry Pi OS on your **8GB** (or more) **MicroSD card**.
+You will need the following items:
 
-* Testing
+##### Raspberry Pi 400
+[Raspberry Pi 400](https://www.raspberrypi.com/products/raspberry-pi-400-unit/), a compact self-contained computer built into a keyboard.
+
+<img width="600" src="https://assets.raspberrypi.com/static/keyboard-lg-0e68b53708ad11b6dc0fff016f211a11.png">
+
+<br />
+
+##### Power Supply
+
+[Raspberry Pi 15W USB-C Power Supply](https://www.raspberrypi.com/products/type-c-power-supply/), or other USB-C laptop power supplies.
+
+<br />
+
+##### Mouse And Monitor
+
+[Raspberry Pi Mouse](https://www.raspberrypi.com/products/raspberry-pi-mouse/), or **USB-A** or **USB-C** equivalent.
+
+Monitor connected via a HTMI cable that plugs into the Raspberry Pi 400's **Micro HDMI** port
+
+<br />
+
+##### MicroSD Card
+
+<img width="150" src="https://cdn.sparkfun.com/assets/parts/1/1/6/3/5/13945-01.jpg">
+
+16GB or larger MicroSD card
+
+<br />
+
+You will also need a separate internet connected computer to install the Raspberry Pi OS software onto the MicroSD card.
+
+<br />
+
+## MicroSD Card Preparation
+
+On your Linux, Mac or Windows computer, follow the instructions at https://www.raspberrypi.com/software/ to install the latest Raspberry Pi OS on your **16GB** (or more) **MicroSD card**.
 
 <br />
 
