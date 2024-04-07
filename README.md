@@ -19,9 +19,11 @@ The steps required are:
 * Obtain and assemble a Raspberry Pi device with a power supply, keyboard and screen
 * On a separate Linux, Mac or Windows computer, install the required Raspberry Pi operating system on a MicroSD card
 * Insert the MicroSD card into your Raspberry Pi device and boot the device
-* Connect to the network and download the standalone version of the Shamir39 tool onto your device
-* Switch the MicroSD card filesystem into readonly mode, reboot the system and you now have your offline device
-* Use the Shamir39 tool offline. Switch off the power and all your secrets are forgotten
+* Connect to the network
+* Download a standalone version of the Shamir39 tool onto your device
+* Permanently switch off your network and your wireless signals
+* Switch the MicroSD card filesystem into readonly mode and reboot
+* Use the standalone Shamir39 tool. Any secrets stored in temporary memory will be lost when the device is powered down
 
 <br />
 
@@ -108,3 +110,4 @@ For storage, I'm using a 8GB Micro SD card. You may be able to fit the Raspberry
 
 * [Shamir39 Tool](https://iancoleman.io/shamir39/) - Note warnings about usage of this software
 * [Read-Only Raspberry Pi - Never Corrupt your Micro-SD Card](https://core-electronics.com.au/guides/read-only-raspberry-pi/)
+* [Read-Only Raspberry Pi](https://learn.adafruit.com/read-only-raspberry-pi/overview)
