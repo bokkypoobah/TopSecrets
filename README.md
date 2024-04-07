@@ -27,19 +27,17 @@ The steps required are:
 
 ## Obtain And Assemble The Device
 
-The [Raspberry Pi 400](https://www.raspberrypi.com/products/raspberry-pi-400-unit/) is currently the "easiest" device for this purpose as the Raspberry Pi model 4 is into a small keyboard. 
+The [Raspberry Pi 400](https://www.raspberrypi.com/products/raspberry-pi-400-unit/) is currently the most convenient device for this purpose as the computer is already built into a small keyboard.
 
 <kbd><img src="https://assets.raspberrypi.com/static/keyboard-lg-0e68b53708ad11b6dc0fff016f211a11.png" /></kbd>
 
-Other [Raspberry Pi models](https://en.wikipedia.org/wiki/Raspberry_Pi#Raspberry_Pi) 2 and above should also work. You will need to purchase an [case](https://www.raspberrypi.com/products/case/) and install your Raspberry Pi board into the case.
+You will need a monitor with a HDMI cable that plugs into the Raspberry Pi 400's Micro HDMI port.
 
-If you are not using a Raspberry Pi 400, you will need an external keyboard.
+Alternatively, [Raspberry Pi models 2 and above](https://en.wikipedia.org/wiki/Raspberry_Pi#Raspberry_Pi) should also work, and is more portable. You may want a [case](https://www.raspberrypi.com/products/case/) to install your board into. You will also need an external keyboard.
 
-You will need a monitor with a HDMI cable to connect to the Raspberry Pi. The Raspberry Pi 400 uses a Micro HDMI connector. I use a Micro HDMI to HDMI adaptor so I can attach this device to standard HDMI connections.
+Be careful when connecting your keyboard and monitor devices to your Raspberry Pi as hardware keystroke loggers are [easily obtainable](https://www.amazon.com.au/AirDrive-Keylogger-Hardware-Wi-Fi-memory/dp/B073XRXP3S).
 
-Be careful with your keyboard and monitor devices and connections, as hardware keystroke loggers can easily be [purchased on the net](https://www.amazon.com.au/AirDrive-Keylogger-Hardware-Wi-Fi-memory/dp/B073XRXP3S).
-
-And you will need a power supply for your device. For the Raspberry Pi 400, this is 5.1V 3A USB-C power supply. Many current USB-C laptop power adaptors should work with this model.
+You will need a power supply for your device. For the Raspberry Pi 400, laptop USB-C laptop power adaptors should work
 
 <br />
 
