@@ -44,7 +44,7 @@ The [Raspberry Pi 400](https://www.raspberrypi.com/products/raspberry-pi-400-uni
 
 ##### Power Supply
 
-[Raspberry Pi 15W USB-C Power Supply](https://www.raspberrypi.com/products/type-c-power-supply/). Other USB-C laptop power supplies may work
+[Raspberry Pi 15W USB-C Power Supply](https://www.raspberrypi.com/products/type-c-power-supply/). Other USB-C laptop power supplies may work.
 
 <img width="250" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHa3zoj7yhnrjO2MW7Mjv8aOHU63KEFBpTkXRs0N6jGg&s">
 
@@ -80,7 +80,19 @@ You will also need a separate internet connected computer to install the Raspber
 
 ## MicroSD Card Preparation
 
-On your Linux, Mac or Windows computer, follow the instructions at https://www.raspberrypi.com/software/ to install the latest Raspberry Pi OS on your **16GB** (or more) **MicroSD card**.
+Installation using the easier **Raspberry Pi Imager** method is described below:
+
+##### Download Raspberry Pi Imager
+
+On your internet connected Linux, Mac or Windows computer, follow the instructions at https://www.raspberrypi.com/software/ to download and execute the Raspberry Pi Imager installer.
+
+<img width="600" src="images/RaspberryPiImagerDownload.jpg">
+
+Note that you will have to provide this program some administrative access to your computer, so don't do this on your computers with sensitive information.
+
+<img width="300" src="images/WindowsUACRaspberryPiImagerInstall.jpg">
+
+
 
 <br />
 
