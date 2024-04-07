@@ -12,7 +12,7 @@ You can then combine the minimum number of these shares to recreate your origina
 
 <img width="600" alt="image" src="https://github.com/bokkypoobah/OfflineShamir39DeviceRecipe/assets/17121975/be59cb5d-05e6-47fe-809b-ca93190633d3">
 
-The Shamir39 tool linked above should be used offline to prevent leakage of your secrets. This recipe describes the steps to create a dedicated Raspberry Pi computer to run the Shamir39 tool without connections to any networks.
+The Shamir39 tool linked above should be used offline to prevent leakage of your secrets. This recipe describes the steps to create a dedicated small Raspberry Pi computer to run the Shamir39 tool without connections to any networks.
 
 The steps required are:
 
@@ -22,6 +22,18 @@ The steps required are:
 * Connect to the network and download the standalone version of the Shamir39 tool onto your device
 * Switch the MicroSD card filesystem into readonly mode, reboot the system and you now have your offline device
 * Use the Shamir39 tool offline. Switch off the power and all your secrets are forgotten
+
+<br />
+
+## Obtain And Assemble The Device
+
+The Raspberry Pi 400 is currently the "easiest" device for this purpose, as it based on the Raspberry Pi 4, to fit into a small keyboard.
+
+<kbd><img src="https://assets.raspberrypi.com/static/keyboard-lg-0e68b53708ad11b6dc0fff016f211a11.png" /></kbd>
+
+Other [Raspberry Pi models](https://en.wikipedia.org/wiki/Raspberry_Pi#Raspberry_Pi) would also be suitable. The big advantage of the Raspberry Pi 400 model is not having to worry about attaching external keyboards that could potentially record keystrokes.
+
+You will need a monitor with a HDMI cable to connect to the Raspberry Pi. The Raspberry Pi 400 uses a Micro HDMI connector. I use a Micro HDMI to HDMI adaptor so I can attach this device to standard HDMI connections.
 
 <br />
 
