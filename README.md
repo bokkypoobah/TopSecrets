@@ -16,8 +16,8 @@ The Shamir39 tool linked above should be used offline to prevent leakage of your
 
 The steps required are:
 
-* Obtain and assemble a Raspberry Pi device with a power supply, keyboard and screen
-* On a separate Linux, Mac or Windows computer, install the required Raspberry Pi operating system on a MicroSD card
+* Assemble Device
+* Install Raspberry Pi Operating System on a MicroSD card
 * Insert the MicroSD card into your Raspberry Pi device and boot the device
 * Connect to the network
 * Download a standalone version of the Shamir39 tool onto your device
@@ -27,24 +27,27 @@ The steps required are:
 
 <br />
 
-## Obtain And Assemble The Device
+## Assemble Device
 
-The [Raspberry Pi 400](https://www.raspberrypi.com/products/raspberry-pi-400-unit/) is currently the most convenient device for this purpose as the computer is already built into a small keyboard.
+The [**Raspberry Pi 400**](https://www.raspberrypi.com/products/raspberry-pi-400-unit/) is currently the most convenient device for this purpose as the computer is built into a small keyboard.
 
-<kbd><img src="https://assets.raspberrypi.com/static/keyboard-lg-0e68b53708ad11b6dc0fff016f211a11.png" /></kbd>
+<kbd><img src="https://assets.raspberrypi.com/static/keyboard-lg-0e68b53708ad11b6dc0fff016f211a11.png" width="600"/></kbd>
 
-Alternatively, [Raspberry Pi models 3 and 4](https://www.raspberrypi.com/products/) are more portable. You will need an external keyboard, and you may want a [case](https://www.raspberrypi.com/products/case/).
+Alternatively, [**Raspberry Pi models 3 and 4**](https://www.raspberrypi.com/products/) are more portable. You will need an **external keyboard**, and you may want a [**case**](https://www.raspberrypi.com/products/case/).
 
-You will need a monitor with a HDMI cable that plugs into the device. The Raspberry Pi 400 has a Micro HDMI port.
+<kbd><img src="https://assets.raspberrypi.com/static/a6331df010eb56a7fafb04466af3f1aa/f2559/3a15d4da-46e3-4940-8be6-9fc7d201affe_RPi_4B_FEATURED.webp" width="600" /></kbd>
 
-Be careful when connecting your keyboard and monitor devices to your device as hardware keystroke loggers are [easily obtainable](https://www.amazon.com.au/AirDrive-Keylogger-Hardware-Wi-Fi-memory/dp/B073XRXP3S).
+You will need a **monitor** with a **HDMI cable** that plugs into the device. The Raspberry Pi 400 has a **Micro HDMI** port.
 
-You will need a power supply for your device. For the Raspberry Pi 400, laptop USB-C laptop power adaptors should work.
+Be careful when connecting your keyboard to your device as keystroke loggers are [do exist](https://www.amazon.com.au/AirDrive-Keylogger-Hardware-Wi-Fi-memory/dp/B073XRXP3S).
+
+You will need a **power supply** for your device. For the Raspberry Pi 400, laptop **USB-C** laptop power adaptors should work. You will also need a **mouse**, connected via a **USB cable** as we want the Bluetooth signals switched off.
 
 <br />
 
-## Install The Raspberry Pi Operating System On A MicroSD Card
+## Install Raspberry Pi Operating System on a MicroSD card
 
+On a separate Linux, Mac or Windows computer, install the required Raspberry Pi operating system on a MicroSD card
 
 
 <br />
