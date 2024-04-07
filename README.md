@@ -2,6 +2,8 @@
 
 ## Overview
 
+**[WORK IN PROGRESS]**
+
 Your BIP39 mnemonic seed phrase can be split into multiple "shares" using the Shamir39 tool at https://iancoleman.io/shamir39/:
 
 <img width="600" alt="image" src="https://github.com/bokkypoobah/OfflineShamir39DeviceRecipe/assets/17121975/2114469e-7e6f-4b74-9ac5-267749ae4c20">
@@ -10,9 +12,16 @@ You can then combine the minimum number of these shares to recreate your origina
 
 <img width="600" alt="image" src="https://github.com/bokkypoobah/OfflineShamir39DeviceRecipe/assets/17121975/be59cb5d-05e6-47fe-809b-ca93190633d3">
 
-The Shamir39 tool above should be used offline to prevent leakage of your secrets. This recipe describes the steps to create a dedicated Raspberry Pi computer to run the Shamir39 tool without connections to any networks.
+The Shamir39 tool linked above should be used offline to prevent leakage of your secrets. This recipe describes the steps to create a dedicated Raspberry Pi computer to run the Shamir39 tool without connections to any networks.
 
-**THIS IS WORK IN PROGRESS**
+The steps required are:
+
+* Obtain and assemble a Raspberry Pi device with a power supply, keyboard and screen
+* On a separate Linux, Mac or Windows computer, install the required Raspberry Pi operating system on a MicroSD card
+* Insert the MicroSD card into your Raspberry Pi device and boot the device
+* Connect to the network and download the standalone version of the Shamir39 tool onto your device
+* Switch the MicroSD card filesystem into readonly mode, reboot the system and you now have your offline device
+* Use the Shamir39 tool offline. Switch off the power and all your secrets are forgotten
 
 <br />
 
