@@ -1,10 +1,12 @@
 # Offline Shamir39 Device Recipe
-Recipe to create an offline device to split and combine BIP39 Mnemonics using Shamir39.
 
-The Shamir39 tool:
+This page contains a recipe to create an offline device to split and combine BIP39 Mnemonics using Shamir39.
+
+The Shamir39 tool allows you to split your BIP39 mnemonic seed phrase (also know as secret phrase, recovery words, wallet backup phrase) into "shares". The (insecure) online version can be tested at https://iancoleman.io/shamir39/:
+
 <img width="1165" alt="image" src="https://github.com/bokkypoobah/OfflineShamir39DeviceRecipe/assets/17121975/2114469e-7e6f-4b74-9ac5-267749ae4c20">
 
-And
+The same tool allows you to combine the minumum number of these shares to recreate your original BIP39 mnemonic seed phrase:
 
 <img width="1163" alt="image" src="https://github.com/bokkypoobah/OfflineShamir39DeviceRecipe/assets/17121975/be59cb5d-05e6-47fe-809b-ca93190633d3">
 
