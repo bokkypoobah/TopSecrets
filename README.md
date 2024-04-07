@@ -4,15 +4,19 @@
 
 **[WORK IN PROGRESS]**
 
-Your BIP39 mnemonic seed phrase can be split into multiple "shares" using the Shamir39 tool at https://iancoleman.io/shamir39/:
+Hardware wallets and some software wallets use [BIP-39 mnemonic seed phrases](https://bitcoinwiki.org/wiki/mnemonic-phrase) for recovery of your keys.
+
+Seed phrases can be split into multiple "shares" using the Shamir39 tool at https://iancoleman.io/shamir39/:
 
 <img width="600" alt="image" src="https://github.com/bokkypoobah/OfflineShamir39DeviceRecipe/assets/17121975/2114469e-7e6f-4b74-9ac5-267749ae4c20">
 
-You can then combine the minimum number of these shares to recreate your original mnemonic seed phrase:
+In this example, 3 of the 5 shares are required to recover your original BIP-39 mnemonic seed phrase:
 
 <img width="600" alt="image" src="https://github.com/bokkypoobah/OfflineShamir39DeviceRecipe/assets/17121975/be59cb5d-05e6-47fe-809b-ca93190633d3">
 
-The Shamir39 tool linked above should be used offline to prevent leakage of your secrets. This recipe describes the steps to create a dedicated small Raspberry Pi computer to run the Shamir39 tool without connections to any networks.
+The Shamir39 tool linked above should be used offline to prevent leakage of your secrets. 
+
+This recipe describes the steps to create a dedicated small Raspberry Pi computer to run the Shamir39 tool without connections to any networks.
 
 The steps required are:
 
@@ -24,30 +28,35 @@ The steps required are:
 * Permanently switch off your network and your wireless signals
 * Switch the MicroSD card filesystem into readonly mode and reboot
 * Use the standalone Shamir39 tool. Any secrets stored in temporary memory will be lost when the device is powered down
+* Alternative Hardware
 
 <br />
 
 ## Assemble Device
 
-The [**Raspberry Pi 400**](https://www.raspberrypi.com/products/raspberry-pi-400-unit/) is currently the most convenient device for this purpose as the computer is built into a small keyboard.
-
+Connect your: 
+* [**Raspberry Pi 400**](https://www.raspberrypi.com/products/raspberry-pi-400-unit/)<br />
 <kbd><img src="https://assets.raspberrypi.com/static/keyboard-lg-0e68b53708ad11b6dc0fff016f211a11.png" width="600"/></kbd>
-
-Alternatively, [**Raspberry Pi models 3 and 4**](https://www.raspberrypi.com/products/) are more portable. You will need an **external keyboard**, and you may want a [**case**](https://www.raspberrypi.com/products/case/).
-
-<kbd><img src="https://assets.raspberrypi.com/static/a6331df010eb56a7fafb04466af3f1aa/f2559/3a15d4da-46e3-4940-8be6-9fc7d201affe_RPi_4B_FEATURED.webp" width="600" /></kbd>
-
-You will need a **monitor** with a **HDMI cable** that plugs into the device. The Raspberry Pi 400 has a **Micro HDMI** port.
-
-Be careful when connecting your keyboard to your device as keystroke loggers are [do exist](https://www.amazon.com.au/AirDrive-Keylogger-Hardware-Wi-Fi-memory/dp/B073XRXP3S).
-
-You will need a **power supply** for your device. For the Raspberry Pi 400, laptop **USB-C** laptop power adaptors should work. You will also need a **mouse**, connected via a **USB cable** as we want the Bluetooth signals switched off.
+* with your **monitor** via a **HDMI cable** that plugs into the Raspberry Pi 400's **Micro HDMI** port
+* plus a **USB-A** or **USB-C** **mouse**
+* and a **USB-C power supply**
 
 <br />
 
 ## Install Raspberry Pi Operating System on a MicroSD card
 
 On a separate Linux, Mac or Windows computer, install the required Raspberry Pi operating system on a MicroSD card
+
+
+<br />
+
+## Alternative Hardware
+
+Alternatively, [**Raspberry Pi models 3 and 4**](https://www.raspberrypi.com/products/) are more portable. You will need an **external keyboard**, and you may want a [**case**](https://www.raspberrypi.com/products/case/).
+
+<kbd><img src="https://assets.raspberrypi.com/static/a6331df010eb56a7fafb04466af3f1aa/f2559/3a15d4da-46e3-4940-8be6-9fc7d201affe_RPi_4B_FEATURED.webp" width="600" /></kbd>
+
+Be careful when connecting your keyboard to your device as keystroke loggers are [do exist](https://www.amazon.com.au/AirDrive-Keylogger-Hardware-Wi-Fi-memory/dp/B073XRXP3S).
 
 
 <br />
