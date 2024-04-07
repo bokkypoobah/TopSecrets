@@ -4,7 +4,7 @@
 
 **[WORK IN PROGRESS]**
 
-Hardware wallets and some software wallets use [BIP-39 mnemonic seed phrases](https://bitcoinwiki.org/wiki/mnemonic-phrase) for the backup and recovery of your cryptocurrency keys.
+Some hardware and software wallets use [BIP-39 mnemonic seed phrases](https://bitcoinwiki.org/wiki/mnemonic-phrase) for the backup and recovery of your cryptocurrency keys.
 
 One way to store a BIP-39 mnemonic seed phrase is to split the phrase into **shares** held by multiple parties using the Shamir39 tool at https://iancoleman.io/shamir39/, for example:
 
