@@ -4,34 +4,22 @@
 
 **[WORK IN PROGRESS]**
 
-Hardware wallets and some software wallets use [BIP-39 mnemonic seed phrases](https://bitcoinwiki.org/wiki/mnemonic-phrase) for recovery of your keys.
+Hardware wallets and some software wallets use [BIP-39 mnemonic seed phrases](https://bitcoinwiki.org/wiki/mnemonic-phrase) for the backup and recovery of your cryptocurrency keys.
 
-Seed phrases can be split into multiple "shares" using the Shamir39 tool at https://iancoleman.io/shamir39/:
+One way to store a BIP-39 mnemonic seed phrase is to split the phrase into **shares** held by multiple parties using the Shamir39 tool at https://iancoleman.io/shamir39/, for example:
 
 <img width="600" alt="image" src="https://github.com/bokkypoobah/OfflineShamir39DeviceRecipe/assets/17121975/2114469e-7e6f-4b74-9ac5-267749ae4c20">
 
-In this example, 3 of the 5 shares are required to recover your original BIP-39 mnemonic seed phrase:
+In this example, a minimum of 3 of the 5 shares are required to recover the original BIP-39 mnemonic seed phrase:
 
 <img width="600" alt="image" src="https://github.com/bokkypoobah/OfflineShamir39DeviceRecipe/assets/17121975/be59cb5d-05e6-47fe-809b-ca93190633d3">
 
-The Shamir39 tool linked above should be used offline to prevent leakage of your secrets. 
+The Shamir39 tool linked above should only be used with a computer permanently disconnected from any networks to prevent the leakage of any secrets.
 
-This recipe describes the steps to create a dedicated small Raspberry Pi computer to run the Shamir39 tool without connections to any networks.
-
-The steps required are:
+This is a recipe to create a small dedicated **offline** **read-only** **Raspberry Pi 400** computer to run the Shamir39 tool in **standalone** mode:
 
 * Connect Hardware
 * Install Software
-
-TODO: 
-
-* Install Raspberry Pi OS on a MicroSD card
-* Insert the MicroSD card into your Raspberry Pi device and boot the device
-* Connect to the network
-* Download a standalone version of the Shamir39 tool onto your device
-* Permanently switch off your network and your wireless signals
-* Switch the MicroSD card filesystem into readonly mode and reboot
-* Use the standalone Shamir39 tool. Any secrets stored in temporary memory will be lost when the device is powered down
 * Alternative Hardware
 
 <br />
@@ -60,6 +48,18 @@ Alternatively, [**Raspberry Pi models 3 and 4**](https://www.raspberrypi.com/pro
 <kbd><img src="https://assets.raspberrypi.com/static/a6331df010eb56a7fafb04466af3f1aa/f2559/3a15d4da-46e3-4940-8be6-9fc7d201affe_RPi_4B_FEATURED.webp" width="600" /></kbd>
 
 Be careful when connecting your keyboard to your device as keystroke loggers are [do exist](https://www.amazon.com.au/AirDrive-Keylogger-Hardware-Wi-Fi-memory/dp/B073XRXP3S).
+
+<br />
+
+## TODO
+
+* Install Raspberry Pi OS on a MicroSD card
+* Insert the MicroSD card into your Raspberry Pi device and boot the device
+* Connect to the network
+* Download a standalone version of the Shamir39 tool onto your device
+* Permanently switch off your network and your wireless signals
+* Switch the MicroSD card filesystem into readonly mode and reboot
+* Use the standalone Shamir39 tool. Any secrets stored in temporary memory will be lost when the device is powered down
 
 
 <br />
