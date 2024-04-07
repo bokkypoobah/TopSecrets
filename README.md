@@ -8,9 +8,7 @@ You can then combine the minimum number of these shares to recreate your origina
 
 <img width="600" alt="image" src="https://github.com/bokkypoobah/OfflineShamir39DeviceRecipe/assets/17121975/be59cb5d-05e6-47fe-809b-ca93190633d3">
 
-To prevent leakage of your secrets, this Shamir39 tool should be used offline.
-
-This recipe is for creating an offline Shamir39 device with easily obtainable parts.
+To prevent leakage of your secrets, this Shamir39 tool should be used offline. This recipe describes the steps to create a dedicated Raspberry Pi computer to run the Shamir39 tool with connection to any networks.
 
 **WORK IN PROGRESS**
 
