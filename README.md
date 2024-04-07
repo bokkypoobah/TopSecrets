@@ -16,22 +16,25 @@ In this example, a minimum of 3 of the 5 shares are required to recover the orig
 
 The Shamir39 tool linked above should only be used with a computer permanently disconnected from any networks to prevent the leakage of any secrets.
 
-This is a recipe to create a small dedicated **offline** **read-only** **Raspberry Pi 400** computer to run the Shamir39 tool in **standalone** mode:
+This is a simple recipe to create a small dedicated **offline** **read-only** **Raspberry Pi 400** computer to run the Shamir39 tool in **standalone** mode:
 
 * Connect Hardware
 * Install Software
-* Alternative Hardware
+* Usage
+* Risks
+* Alternatives
+* FAQs
 
 <br />
 
 ## Connect Hardware
 
 Obtain and connect your: 
-* [**Raspberry Pi 400**](https://www.raspberrypi.com/products/raspberry-pi-400-unit/)<br />
+* [**Raspberry Pi 400**](https://www.raspberrypi.com/products/raspberry-pi-400-unit/), or see Alternatives below<br />
 <kbd><img src="https://assets.raspberrypi.com/static/keyboard-lg-0e68b53708ad11b6dc0fff016f211a11.png" width="600"/></kbd>
+* with a [**Raspberry Pi 15W USB-C Power Supply**](https://www.raspberrypi.com/products/type-c-power-supply/), or equivalent (e.g., USB-C laptop power adaptor)
+* and a [Raspberry Pi Mouse](https://www.raspberrypi.com/products/raspberry-pi-mouse/), or **USB-A** or **USB-C** equivalent
 * with your **monitor** via a **HDMI cable** that plugs into the Raspberry Pi 400's **Micro HDMI** port
-* plus a **USB-A** or **USB-C** **mouse**
-* and a **USB-C power supply**
 
 <br />
 
@@ -39,9 +42,22 @@ Obtain and connect your:
 
 On your Linux, Mac or Windows computer, follow the instructions at https://www.raspberrypi.com/software/ to install the latest Raspberry Pi OS on your **8GB** (or more) **MicroSD card**.
 
+* Testing
+
 <br />
 
-## Alternative Hardware
+## Usage
+
+* Boot
+* Access downloaded Shamir39 page
+
+<br />
+
+## Risks
+
+<br />
+
+## Alternatives
 
 Alternatively, [**Raspberry Pi models 3 and 4**](https://www.raspberrypi.com/products/) are more portable. You will need an **external keyboard**, and you may want a [**case**](https://www.raspberrypi.com/products/case/).
 
@@ -50,6 +66,12 @@ Alternatively, [**Raspberry Pi models 3 and 4**](https://www.raspberrypi.com/pro
 Be careful when connecting your keyboard to your device as keystroke loggers are [do exist](https://www.amazon.com.au/AirDrive-Keylogger-Hardware-Wi-Fi-memory/dp/B073XRXP3S).
 
 <br />
+
+## FAQs
+
+<br />
+
+---
 
 ## TODO
 
