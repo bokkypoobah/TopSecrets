@@ -20,8 +20,12 @@ This recipe describes the steps to create a dedicated small Raspberry Pi compute
 
 The steps required are:
 
-* Assemble Device
-* Install Raspberry Pi Operating System on a MicroSD card
+* Connect Hardware
+* Install Software
+
+TODO: 
+
+* Install Raspberry Pi OS on a MicroSD card
 * Insert the MicroSD card into your Raspberry Pi device and boot the device
 * Connect to the network
 * Download a standalone version of the Shamir39 tool onto your device
@@ -32,7 +36,7 @@ The steps required are:
 
 <br />
 
-## Assemble Device
+## Connect Hardware
 
 Connect your: 
 * [**Raspberry Pi 400**](https://www.raspberrypi.com/products/raspberry-pi-400-unit/)<br />
@@ -43,10 +47,9 @@ Connect your:
 
 <br />
 
-## Install Raspberry Pi Operating System on a MicroSD card
+## Install Software
 
-On a separate Linux, Mac or Windows computer, install the required Raspberry Pi operating system on a MicroSD card
-
+On your Linux, Mac or Windows computer, follow the instructions at https://www.raspberrypi.com/software/ to install the latest Raspberry Pi OS on your **8GB** (or more) **MicroSD card**.
 
 <br />
 
