@@ -31,7 +31,7 @@ The Raspberry Pi 400 is currently the "easiest" device for this purpose, as it b
 
 <kbd><img src="https://assets.raspberrypi.com/static/keyboard-lg-0e68b53708ad11b6dc0fff016f211a11.png" /></kbd>
 
-Other [Raspberry Pi models](https://en.wikipedia.org/wiki/Raspberry_Pi#Raspberry_Pi) 2 and above should also work. 
+Other [Raspberry Pi models](https://en.wikipedia.org/wiki/Raspberry_Pi#Raspberry_Pi) 2 and above should also work. You will need to purchase an enclosure and install your Raspberry Pi board into the enclosure.
 
 If you are not using a Raspberry Pi 400, you will need an external keyboard.
 
