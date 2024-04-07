@@ -33,12 +33,10 @@ This is a simple recipe to create a small **dedicated** **offline** **read-only*
 
 <br />
 
-<br />
-
 You will need the following items:
 
 ##### Raspberry Pi 400
-[Raspberry Pi 400](https://www.raspberrypi.com/products/raspberry-pi-400-unit/), a compact self-contained computer built into a keyboard.
+The [Raspberry Pi 400](https://www.raspberrypi.com/products/raspberry-pi-400-unit/) is a compact self-contained computer built into a keyboard.
 
 <img width="600" src="https://assets.raspberrypi.com/static/keyboard-lg-0e68b53708ad11b6dc0fff016f211a11.png">
 
@@ -46,15 +44,19 @@ You will need the following items:
 
 ##### Power Supply
 
-[Raspberry Pi 15W USB-C Power Supply](https://www.raspberrypi.com/products/type-c-power-supply/), or other USB-C laptop power supplies.
+A [Raspberry Pi 15W USB-C Power Supply](https://www.raspberrypi.com/products/type-c-power-supply/). Other USB-C laptop power supplies may work
 
 <br />
 
 ##### Mouse And Monitor
 
+<img width="250" src="https://assets.raspberrypi.com/static/b97b455f34c5c68a651d92b50c27ad82/9ff6b/1b7d602e46d47ed9f540f364bb3fbf1985b10164_red_white-mouse.webp">
+
 [Raspberry Pi Mouse](https://www.raspberrypi.com/products/raspberry-pi-mouse/), or **USB-A** or **USB-C** equivalent.
 
-Monitor connected via a HTMI cable that plugs into the Raspberry Pi 400's **Micro HDMI** port
+<img width="600" src="https://www.waveshare.com/w/A6Y79bcq/Kdy80nYY.php?f=Raspberry-Pi-400-details-15.jpg&width=700">
+
+Monitor connected via a HTMI cable that plugs into one of the two Raspberry Pi 400 **Micro HDMI** ports
 
 <br />
 
