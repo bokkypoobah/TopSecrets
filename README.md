@@ -26,7 +26,7 @@ This is a recipe to create a small dedicated **offline** **read-only** **Raspber
 
 ## Connect Hardware
 
-Connect your: 
+Obtain and connect your: 
 * [**Raspberry Pi 400**](https://www.raspberrypi.com/products/raspberry-pi-400-unit/)<br />
 <kbd><img src="https://assets.raspberrypi.com/static/keyboard-lg-0e68b53708ad11b6dc0fff016f211a11.png" width="600"/></kbd>
 * with your **monitor** via a **HDMI cable** that plugs into the Raspberry Pi 400's **Micro HDMI** port
