@@ -33,13 +33,19 @@ The [Raspberry Pi 400](https://www.raspberrypi.com/products/raspberry-pi-400-uni
 
 <kbd><img src="https://assets.raspberrypi.com/static/keyboard-lg-0e68b53708ad11b6dc0fff016f211a11.png" /></kbd>
 
-You will need a monitor with a HDMI cable that plugs into the Raspberry Pi 400's Micro HDMI port.
+Alternatively, [Raspberry Pi models 3 and 4](https://www.raspberrypi.com/products/) are more portable. You will need an external keyboard, and you may want a [case](https://www.raspberrypi.com/products/case/).
 
-Alternatively, [Raspberry Pi models 2 and above](https://en.wikipedia.org/wiki/Raspberry_Pi#Raspberry_Pi) should also work, and is more portable. You may want a [case](https://www.raspberrypi.com/products/case/) to install your board into. You will also need an external keyboard.
+You will need a monitor with a HDMI cable that plugs into the device. The Raspberry Pi 400 has a Micro HDMI port.
 
-Be careful when connecting your keyboard and monitor devices to your Raspberry Pi as hardware keystroke loggers are [easily obtainable](https://www.amazon.com.au/AirDrive-Keylogger-Hardware-Wi-Fi-memory/dp/B073XRXP3S).
+Be careful when connecting your keyboard and monitor devices to your device as hardware keystroke loggers are [easily obtainable](https://www.amazon.com.au/AirDrive-Keylogger-Hardware-Wi-Fi-memory/dp/B073XRXP3S).
 
-You will need a power supply for your device. For the Raspberry Pi 400, laptop USB-C laptop power adaptors should work
+You will need a power supply for your device. For the Raspberry Pi 400, laptop USB-C laptop power adaptors should work.
+
+<br />
+
+## Install The Raspberry Pi Operating System On A MicroSD Card
+
+
 
 <br />
 
