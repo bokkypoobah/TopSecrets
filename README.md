@@ -31,9 +31,13 @@ The Raspberry Pi 400 is currently the "easiest" device for this purpose, as it b
 
 <kbd><img src="https://assets.raspberrypi.com/static/keyboard-lg-0e68b53708ad11b6dc0fff016f211a11.png" /></kbd>
 
-Other [Raspberry Pi models](https://en.wikipedia.org/wiki/Raspberry_Pi#Raspberry_Pi) would also be suitable. The big advantage of the Raspberry Pi 400 model is not having to worry about attaching external keyboards that could potentially record keystrokes.
+Other [Raspberry Pi models](https://en.wikipedia.org/wiki/Raspberry_Pi#Raspberry_Pi) 2 and above should also work. 
+
+If you are not using a Raspberry Pi 400, you will need an external keyboard.
 
 You will need a monitor with a HDMI cable to connect to the Raspberry Pi. The Raspberry Pi 400 uses a Micro HDMI connector. I use a Micro HDMI to HDMI adaptor so I can attach this device to standard HDMI connections.
+
+Be careful with your keyboard and monitor devices and connections, as hardware keystroke loggers can easily be [purchased on the net](https://www.amazon.com.au/AirDrive-Keylogger-Hardware-Wi-Fi-memory/dp/B073XRXP3S).
 
 <br />
 
