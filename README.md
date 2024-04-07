@@ -44,31 +44,37 @@ The [Raspberry Pi 400](https://www.raspberrypi.com/products/raspberry-pi-400-uni
 
 ##### Power Supply
 
-A [Raspberry Pi 15W USB-C Power Supply](https://www.raspberrypi.com/products/type-c-power-supply/). Other USB-C laptop power supplies may work
+[Raspberry Pi 15W USB-C Power Supply](https://www.raspberrypi.com/products/type-c-power-supply/). Other USB-C laptop power supplies may work
+
+<img width="250" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHa3zoj7yhnrjO2MW7Mjv8aOHU63KEFBpTkXRs0N6jGg&s">
 
 <br />
 
-##### Mouse And Monitor
-
-<img width="250" src="https://assets.raspberrypi.com/static/b97b455f34c5c68a651d92b50c27ad82/9ff6b/1b7d602e46d47ed9f540f364bb3fbf1985b10164_red_white-mouse.webp">
+##### Mouse
 
 [Raspberry Pi Mouse](https://www.raspberrypi.com/products/raspberry-pi-mouse/), or **USB-A** or **USB-C** equivalent.
 
-<img width="600" src="https://www.waveshare.com/w/A6Y79bcq/Kdy80nYY.php?f=Raspberry-Pi-400-details-15.jpg&width=700">
+<img width="250" src="https://assets.raspberrypi.com/static/b97b455f34c5c68a651d92b50c27ad82/9ff6b/1b7d602e46d47ed9f540f364bb3fbf1985b10164_red_white-mouse.webp">
+
+<br />
+
+##### Monitor
 
 Monitor connected via a HTMI cable that plugs into one of the two Raspberry Pi 400 **Micro HDMI** ports
+
+<img width="600" src="https://www.waveshare.com/w/A6Y79bcq/Kdy80nYY.php?f=Raspberry-Pi-400-details-15.jpg&width=700">
 
 <br />
 
 ##### MicroSD Card
 
-<img width="150" src="https://cdn.sparkfun.com/assets/parts/1/1/6/3/5/13945-01.jpg">
+16GB or larger MicroSD card to store the operating system files.
 
-16GB or larger MicroSD card
+<img width="150" src="https://cdn.sparkfun.com/assets/parts/1/1/6/3/5/13945-01.jpg">
 
 <br />
 
-You will also need a separate internet connected computer to install the Raspberry Pi OS software onto the MicroSD card.
+You will also need a separate internet connected computer to install the Raspberry Pi OS software onto the MicroSD card, and an internet connection for the initial installation of this Shamir39 device.
 
 <br />
 
