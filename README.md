@@ -21,8 +21,8 @@ This is a simple recipe to create a small **dedicated** **offline** **read-only*
 * [What You Need](#what-you-need)
 * [Raspberry Pi OS MicroSD Card Preparation](#raspberry-pi-os-microsd-card-preparation)
 * [Preparing The Shamir39 Read-Only Raspberry Pi MicroSD Card](#preparing-the-shamir39-read-only-raspberry-pi-microsd-card)
-* Usage
-* Risks
+* [Usage](#usage)
+* [Risks](#risks)
 * Alternatives
 * FAQs
 
@@ -173,7 +173,7 @@ Blah
 
 <br />
 
-##### Install the Base Raspberry Pi OS
+##### Test Your Installation
 
 Blah
 
@@ -181,25 +181,36 @@ Blah
 
 <br />
 
-##### Install the Base Raspberry Pi OS
-
-Blah
-
-<img width="600" src="blah">
-
-
 <br />
+
+---
 
 ## Usage
 
-* Boot
-* Access downloaded Shamir39 page
+To use:
+
+##### Boot Machine
+
+Blah
+
+<img width="600" src="blah">
+
+##### Access downloaded Shamir39 page
+
+Blah
+
+<img width="600" src="blah">
+
 
 <br />
+
+---
 
 ## Risks
 
 <br />
+
+---
 
 ## Alternatives
 
