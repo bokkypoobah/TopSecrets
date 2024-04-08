@@ -158,9 +158,9 @@ Insert the card you prepared in the previous section into the Raspberry Pi, and 
 
 <img width="600" src="https://duet-cdn.vox-cdn.com/thumbor/0x535:3891x2779/1200x800/filters:focal(1137x1461:1138x1462):format(webp)/cdn.vox-cdn.com/uploads/chorus_asset/file/22002628/DESKTOP_SIDE_.jpg">
 
-You now have to :
-
 <br />
+
+You now have to :
 
 ##### Install the Base Raspberry Pi OS
 
