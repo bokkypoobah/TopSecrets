@@ -19,6 +19,11 @@ The Shamir39 tool linked above should only be used with a computer permanently d
 This is a simple recipe to create a small **dedicated** **offline** **read-only** **Raspberry Pi 400** computer to run the Shamir39 tool in **standalone** mode:
 
 * [What You Need](#what-you-need)
+  * [Raspberry Pi 400](#raspberry-pi-400)
+  * [Power Supply](#power-supply)
+  * [Mouse](#mouse)
+  * [Monitor](#monitor)
+  * [MicroSD Card](#microsd-card)
 * [Raspberry Pi OS MicroSD Card Preparation](#raspberry-pi-os-microsd-card-preparation)
 * [Preparing The Shamir39 Read-Only Raspberry Pi MicroSD Card](#preparing-the-shamir39-read-only-raspberry-pi-microsd-card)
 * [Usage](#usage)
@@ -81,6 +86,8 @@ If you have access to computer monitors with only HDMI plugs, you may want to co
 <img width="150" src="https://www.jaycar.com.au/medias/sys_master/images/images/10206502092830/XC5500-sandisk-32gb-high-extreme-microsdxc-class-10-reads-100mb-s-writes-60mb-sImageMain-515.jpg">
 
 <br />
+
+##### Another Computer And Internet
 
 You will also need a separate internet connected computer to install the Raspberry Pi OS software onto the MicroSD card, and an internet connection for the initial installation of this Shamir39 device.
 
