@@ -308,8 +308,33 @@ Boot your machine and load `standalone.html` from your Downloads folder to use S
 
 ## Risks
 
-* Shamir39 tool could have some weaknesses in the algorithms, or in the implementation of the algorithms
+#### Shamir39 Tool
 
+The Shamir39 tool could have some weaknesses in the algorithms, or in the implementation of the algorithms.
+
+##### Recoverability Of Original Keys
+
+To be fully confident that you can recover your original BIP-39 mnemonic seed phrase from your shares, manually test the different combinations in this same tool.
+
+##### Randomness
+
+Use your hardware wallet to generate your BIP-39 mnemonic seed phrase in preference to using the `Generate` button in this Shamir39 tool. This will reduce any risks in case of vulnerabilities in the random number generation process using this Shamir39 tool.
+
+##### Hope And Pray
+
+Hope and pray that there are no serious vulnerabilities in the Shamir39 and Shamirs Secret Sharing algorithms, and this implementation.
+
+<br />
+
+#### Hardware
+
+##### Computer Monitor HDMI Connection
+
+The signals from the Micro HDMI connection of this device to your computer monitor can leak your secrets. Only use computer monitors, cables and adaptors that your trust "enough".
+
+##### Keyboard
+
+The reason why the Raspberry Pi 400 is chosen for this recipe is because you do not have to connect an external keyboard to your offline device. If you are using one of the [Alternatives](#alternatives) requiring a keyboard, the signals from your keyboard can [leak your secrets](https://www.amazon.com.au/AirDrive-Keylogger-Hardware-Wi-Fi-memory/dp/B073XRXP3S). Only use keyboards and adaptors that you trust "enough".
 
 <br />
 
@@ -321,25 +346,15 @@ Alternatively, [**Raspberry Pi models 3 and 4**](https://www.raspberrypi.com/pro
 
 <kbd><img src="https://assets.raspberrypi.com/static/a6331df010eb56a7fafb04466af3f1aa/f2559/3a15d4da-46e3-4940-8be6-9fc7d201affe_RPi_4B_FEATURED.webp" width="600" /></kbd>
 
-Be careful when connecting your keyboard to your device as keystroke loggers are [do exist](https://www.amazon.com.au/AirDrive-Keylogger-Hardware-Wi-Fi-memory/dp/B073XRXP3S).
-
 <br />
+
+---
 
 ## FAQs
 
 <br />
 
 ---
-
-## TODO
-
-* Download a standalone version of the Shamir39 tool onto your device
-* Permanently switch off your network and your wireless signals
-* Switch the MicroSD card filesystem into readonly mode and reboot
-* Use the standalone Shamir39 tool. Any secrets stored in temporary memory will be lost when the device is powered down
-
-
-<br />
 
 ## Aims
 
