@@ -1,6 +1,33 @@
 # Offline Shamir39 Device Recipe
 
-**First Draft**
+A recipe to build a read-only offline Raspberry Pi 400 device to split and combine BIP39 Mnemonics using the Shamir39 tool.
+
+Status: **First Draft**
+
+---
+
+## Table Of Contents
+
+* [Overview](#overview)
+* [What You Need](#what-you-need)
+  * [Raspberry Pi 400](#raspberry-pi-400)
+  * [Power Supply](#power-supply)
+  * [Mouse](#mouse)
+  * [Monitor](#monitor)
+  * [MicroSD Card](#microsd-card)
+  * [Another Computer And Internet](#another-computer-and-internet)
+* [Raspberry Pi OS MicroSD Card Preparation](#raspberry-pi-os-microsd-card-preparation)
+* [Preparing The Shamir39 Read-Only Raspberry Pi MicroSD Card](#preparing-the-shamir39-read-only-raspberry-pi-microsd-card)
+* [Usage](#usage)
+* [Risks](#risks)
+* [Alternatives](#alternatives)
+* [FAQs](#faqs)
+* [Notes](#notes)
+* [References](#references)
+
+<br />
+
+---
 
 ## Overview
 
@@ -30,26 +57,6 @@ The Shamir39 tool linked above should only be used with a computer permanently d
 This is a simple recipe to create a small **dedicated** **offline** **read-only** **Raspberry Pi 400** computer to run the Shamir39 tool in **standalone** mode.
 
 Please see [Risks](#risks) before any serious use.
-
-<br />
-
----
-
-## Table Of Contents
-
-* [What You Need](#what-you-need)
-  * [Raspberry Pi 400](#raspberry-pi-400)
-  * [Power Supply](#power-supply)
-  * [Mouse](#mouse)
-  * [Monitor](#monitor)
-  * [MicroSD Card](#microsd-card)
-  * [Another Computer And Internet](#another-computer-and-internet)
-* [Raspberry Pi OS MicroSD Card Preparation](#raspberry-pi-os-microsd-card-preparation)
-* [Preparing The Shamir39 Read-Only Raspberry Pi MicroSD Card](#preparing-the-shamir39-read-only-raspberry-pi-microsd-card)
-* [Usage](#usage)
-* [Risks](#risks)
-* [Alternatives](#alternatives)
-* [FAQs](#faqs)
 
 <br />
 
