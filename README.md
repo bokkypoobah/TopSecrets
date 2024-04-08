@@ -229,23 +229,27 @@ Disconnect your Bluetooth and Wireless Lan connections by clicking on the icons 
 
 #### Configure Installation To Read-Only
 
-Select the system menu from the top left -> Preferences -> Raspberry Pi Configuration
+Select the system menu from the top left -> Preferences -> Raspberry Pi Configuration.
 
-In the System tab:
-* Switch on Auto login, if you wish to.
-* Select your preferred browser.
+<img width="600" src="images/NewDeviceSetupConfigureOverlayReadOnly1.png">
 
-In the Performance tab:
-* Select `Configure` for the Overlay File System. In the Overlay File System dialog:
-  * Switch on Overlay [this will enable the overlay file system]
-  * Switch on Boot Partition [this will set the boot partition to read-only]
-  * Click `OK`
+
+In the Performance tab, select `Configure` to open up the Overlay File System configuration.
+
+<img width="600" src="images/NewDeviceSetupConfigureOverlayReadOnly2.png">
+
+In the Overlay File System dialog:
+
+* Switch on Overlay [this will enable the overlay file system]
+* Switch on Boot Partition [this will set the boot partition to read-only]
+* Click `OK`
+
+<img width="600" src="images/NewDeviceSetupConfigureOverlayReadOnly3.png">
+
 * Click `OK`
 * Click `Yes` to reboot the device
 
-<img width="600" src="blah">
-
-
+<img width="600" src="images/NewDeviceSetupConfigureOverlayReadOnly4.png">
 
 <br />
 
