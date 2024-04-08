@@ -40,14 +40,14 @@ This is a simple recipe to create a small **dedicated** **offline** **read-only*
 
 You will need the following items:
 
-##### Raspberry Pi 400
+#### Raspberry Pi 400
 The [Raspberry Pi 400](https://www.raspberrypi.com/products/raspberry-pi-400-unit/) is a compact self-contained computer built into a keyboard.
 
 <img width="600" src="https://assets.raspberrypi.com/static/keyboard-lg-0e68b53708ad11b6dc0fff016f211a11.png">
 
 <br />
 
-##### Power Supply
+#### Power Supply
 
 [Raspberry Pi 15W USB-C Power Supply](https://www.raspberrypi.com/products/type-c-power-supply/). Many USB-C laptop power supplies should also work with the Raspberry Pi 400.
 
@@ -55,7 +55,7 @@ The [Raspberry Pi 400](https://www.raspberrypi.com/products/raspberry-pi-400-uni
 
 <br />
 
-##### Mouse
+#### Mouse
 
 [Raspberry Pi Mouse](https://www.raspberrypi.com/products/raspberry-pi-mouse/), or **USB-A** or **USB-C** equivalent.
 
@@ -63,7 +63,7 @@ The [Raspberry Pi 400](https://www.raspberrypi.com/products/raspberry-pi-400-uni
 
 <br />
 
-##### Monitor
+#### Monitor
 
 Computer monitor connected via a HDMI cable that plugs into one of the two Raspberry Pi 400 **Micro HDMI** ports:
 
@@ -75,7 +75,7 @@ If you have access to computer monitors with only HDMI plugs, you may want to co
 
 <br />
 
-##### MicroSD Card
+#### MicroSD Card
 
 16GB or larger MicroSD card to store the operating system files. I am using a SanDisk Extreme 32GB - see [here](https://www.tomshardware.com/best-picks/raspberry-pi-microsd-cards) and
 [here](https://www.xda-developers.com/best-sd-cards-raspberry-pi/) for some comparisons of these cards.
@@ -84,7 +84,7 @@ If you have access to computer monitors with only HDMI plugs, you may want to co
 
 <br />
 
-##### Another Computer And Internet
+#### Another Computer And Internet
 
 You will also need a separate internet connected computer to install the Raspberry Pi OS software onto the MicroSD card, and an internet connection for the initial installation of this Shamir39 device.
 
@@ -96,7 +96,7 @@ You will also need a separate internet connected computer to install the Raspber
 
 The steps to install of a fresh unconfigured version of the Raspberry Pi OS operating system on your MicroSD card using the **Raspberry Pi Imager** method follows:
 
-##### Download Raspberry Pi Imager
+#### Download Raspberry Pi Imager
 
 On your internet connected Linux, Mac or Windows computer, follow the instructions at https://www.raspberrypi.com/software/ to download and execute the Raspberry Pi Imager installer.
 
@@ -104,7 +104,7 @@ On your internet connected Linux, Mac or Windows computer, follow the instructio
 
 <br />
 
-##### Execute Raspberry Pi Imager
+#### Execute Raspberry Pi Imager
 
 Note that you will have to provide this program some administrative access to your computer, so don't do this on your computers with sensitive information. On Windows, you will see the following prompt, and you will have to click `Yes` to proceed:
 
@@ -170,7 +170,7 @@ Insert the card you prepared in the previous section into the Raspberry Pi, and 
 
 You now have to:
 
-##### Complete The Raspberry Pi OS Operating System Installation
+#### Complete The Raspberry Pi OS Operating System Installation
 
 Switch on your power supply. Your device should boot and you will be prompted to enter some installation configuration parameters including:
 
@@ -186,7 +186,7 @@ Installation phase 1 is complete - restart your device.
 
 <br />
 
-##### Download The Standalone Shamirs39 Tool
+#### Download The Standalone Shamirs39 Tool
 
 Blah
 
@@ -194,7 +194,7 @@ Blah
 
 <br />
 
-##### Disconnect Networks And Switch Installtion To Read-Only
+#### Disconnect Networks And Switch Installtion To Read-Only
 
 Blah
 
@@ -202,7 +202,7 @@ Blah
 
 <br />
 
-##### Test Your Installation
+#### Test Your Installation
 
 Blah
 
@@ -218,13 +218,13 @@ Blah
 
 To use:
 
-##### Boot Machine
+#### Boot Machine
 
 Blah
 
 <img width="600" src="blah">
 
-##### Access downloaded Shamir39 page
+#### Access downloaded Shamir39 page
 
 Blah
 
