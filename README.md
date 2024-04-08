@@ -191,7 +191,15 @@ Open your web browser using the globe icon on the top left.
 
 Download https://github.com/iancoleman/shamir39/raw/b12d58d6d71a4db71ac9796e7d82c0a7691dd973/standalone.html (right click save link as) into your Downloads folder.
 
-<img width="600" src="blah">
+<img width="600" src="images/NewDeviceSetupDownloadShamir39Standalone1.png">
+
+Open your file explorer and navigate to your Downloads folders.
+
+<img width="600" src="images/NewDeviceSetupDownloadShamir39Standalone2.png">
+
+Double click on `standalone.html` to open the Shamir39 page.
+
+<img width="600" src="images/NewDeviceSetupDownloadShamir39Standalone3.png">
 
 <br />
 
