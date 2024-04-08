@@ -145,6 +145,49 @@ You now have a fully prepared Raspberry Pi OS MicroSD card.
 
 ## Preparing The Shamir39 Read-Only Raspberry Pi MicroSD Card
 
+Insert the card you prepared in the previous section into the Raspberry Pi, and connect your monitor, mouse and power supply. You now have to :
+
+<br />
+
+##### Install the Base Raspberry Pi OS
+
+Blah
+
+<img width="600" src="blah">
+
+<br />
+
+##### Download The Standalone Shamirs39 Tool
+
+Blah
+
+<img width="600" src="blah">
+
+<br />
+
+##### Disconnect Networks And Switch Installtion To Read-Only
+
+Blah
+
+<img width="600" src="blah">
+
+<br />
+
+##### Install the Base Raspberry Pi OS
+
+Blah
+
+<img width="600" src="blah">
+
+<br />
+
+##### Install the Base Raspberry Pi OS
+
+Blah
+
+<img width="600" src="blah">
+
+
 <br />
 
 ## Usage
