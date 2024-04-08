@@ -88,11 +88,49 @@ On your internet connected Linux, Mac or Windows computer, follow the instructio
 
 <img width="600" src="images/RaspberryPiImagerDownload.jpg">
 
-Note that you will have to provide this program some administrative access to your computer, so don't do this on your computers with sensitive information.
+Note that you will have to provide this program some administrative access to your computer, so don't do this on your computers with sensitive information. On Windows, you will see the following prompt, and you will have to click `Yes` to proceed:
 
 <img width="300" src="images/WindowsUACRaspberryPiImagerInstall.jpg">
 
+The Raspberry Pi Imager will then execute with the following prompt:
 
+<img width="300" src="images/RaspberryPiImager1.jpg">
+
+Click on `CHOOSE DEVICE`, and select `Raspberry Pi 4` that includes the 400 model:
+
+<img width="300" src="images/RaspberryPiImager2.png">
+
+Click on `CHOOSE OS`, and select `Raspberry Pi OS (64-bit)`:
+
+<img width="300" src="images/RaspberryPiImager3.png">
+
+Click on `CHOOSE STORAGE` and select `{your MicroSD device}`:
+
+<img width="300" src="images/RaspberryPiImager4.png">
+
+Click `NEXT`:
+
+<img width="300" src="images/RaspberryPiImager5.png">
+
+Select `NO`:
+
+<img width="300" src="images/RaspberryPiImager6.png">
+
+Select `YES`:
+
+<img width="300" src="images/RaspberryPiImager7.png">
+
+Writing:
+
+<img width="300" src="images/RaspberryPiImager8.png">
+
+Verifying:
+
+<img width="300" src="images/RaspberryPiImager9.png">
+
+The Imager program is now complete and you can remove your MicroSD card:
+
+<img width="300" src="images/RaspberryPiImager10.png">
 
 <br />
 
