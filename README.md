@@ -18,8 +18,8 @@ The Shamir39 tool linked above should only be used with a computer permanently d
 
 This is a simple recipe to create a small **dedicated** **offline** **read-only** **Raspberry Pi 400** computer to run the Shamir39 tool in **standalone** mode:
 
-* What You Need
-* Raspberry Pi OS MicroSD Card Preparation
+* [What You Need](#what-you-need)
+* [Raspberry Pi OS MicroSD Card Preparation](#raspberry-pi-os-microsd-card-preparation)
 * Usage
 * Risks
 * Alternatives
@@ -62,7 +62,7 @@ The [Raspberry Pi 400](https://www.raspberrypi.com/products/raspberry-pi-400-uni
 
 ##### Monitor
 
-Monitor connected via a HTMI cable that plugs into one of the two Raspberry Pi 400 **Micro HDMI** ports
+Monitor connected via a HDMI cable that plugs into one of the two Raspberry Pi 400 **Micro HDMI** ports
 
 <img width="600" src="https://www.waveshare.com/w/A6Y79bcq/Kdy80nYY.php?f=Raspberry-Pi-400-details-15.jpg&width=700">
 
