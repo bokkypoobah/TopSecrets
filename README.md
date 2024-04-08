@@ -38,10 +38,6 @@ This is a simple recipe to create a small **dedicated** **offline** **read-only*
 
 ## What You Need
 
-<img width="600" src="https://duet-cdn.vox-cdn.com/thumbor/0x535:3891x2779/1200x800/filters:focal(1137x1461:1138x1462):format(webp)/cdn.vox-cdn.com/uploads/chorus_asset/file/22002628/DESKTOP_SIDE_.jpg">
-
-<br />
-
 You will need the following items:
 
 ##### Raspberry Pi 400
@@ -158,7 +154,11 @@ You now have a fully prepared Raspberry Pi OS MicroSD card.
 
 ## Preparing The Shamir39 Read-Only Raspberry Pi MicroSD Card
 
-Insert the card you prepared in the previous section into the Raspberry Pi, and connect your monitor, mouse and power supply. You now have to :
+Insert the card you prepared in the previous section into the Raspberry Pi, and connect your monitor, mouse and power supply.
+
+<img width="600" src="https://duet-cdn.vox-cdn.com/thumbor/0x535:3891x2779/1200x800/filters:focal(1137x1461:1138x1462):format(webp)/cdn.vox-cdn.com/uploads/chorus_asset/file/22002628/DESKTOP_SIDE_.jpg">
+
+You now have to :
 
 <br />
 
