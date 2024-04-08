@@ -47,7 +47,7 @@ The [Raspberry Pi 400](https://www.raspberrypi.com/products/raspberry-pi-400-uni
 
 ##### Power Supply
 
-[Raspberry Pi 15W USB-C Power Supply](https://www.raspberrypi.com/products/type-c-power-supply/). Other USB-C laptop power supplies may work.
+[Raspberry Pi 15W USB-C Power Supply](https://www.raspberrypi.com/products/type-c-power-supply/). Many USB-C laptop power supplies should also work with the Raspberry Pi 400.
 
 <img width="250" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHa3zoj7yhnrjO2MW7Mjv8aOHU63KEFBpTkXRs0N6jGg&s">
 
@@ -63,17 +63,22 @@ The [Raspberry Pi 400](https://www.raspberrypi.com/products/raspberry-pi-400-uni
 
 ##### Monitor
 
-Monitor connected via a HDMI cable that plugs into one of the two Raspberry Pi 400 **Micro HDMI** ports
+Computer monitor connected via a HDMI cable that plugs into one of the two Raspberry Pi 400 **Micro HDMI** ports:
 
 <img width="600" src="https://www.waveshare.com/w/A6Y79bcq/Kdy80nYY.php?f=Raspberry-Pi-400-details-15.jpg&width=700">
+
+If you have access to computer monitors with only HDMI plugs, you may want to consider something like a [Micro HDMI to HDMI Adapter for Raspberry Pi 4](https://raspberry.piaustralia.com.au/products/micro-hdmi-to-hdmi-adapter-for-raspberry-pi-4):
+
+<img width="150" src="https://raspberry.piaustralia.com.au/cdn/shop/products/Little_Bird_MicroHDMI-HDMI_Adapter_2_1800x1800_3cb0201b-9fb0-4bcd-b783-c19e79a30aae_1400x.jpg?v=1569903118">
 
 <br />
 
 ##### MicroSD Card
 
-16GB or larger MicroSD card to store the operating system files.
+16GB or larger MicroSD card to store the operating system files. I am using a SanDisk Extreme 32GB - see [here](https://www.tomshardware.com/best-picks/raspberry-pi-microsd-cards) and
+[here](https://www.xda-developers.com/best-sd-cards-raspberry-pi/) for more information.
 
-<img width="150" src="https://cdn.sparkfun.com/assets/parts/1/1/6/3/5/13945-01.jpg">
+<img width="150" src="https://www.jaycar.com.au/medias/sys_master/images/images/10206502092830/XC5500-sandisk-32gb-high-extreme-microsdxc-class-10-reads-100mb-s-writes-60mb-sImageMain-515.jpg">
 
 <br />
 
@@ -309,5 +314,3 @@ For storage, I'm using a 8GB Micro SD card. You may be able to fit the Raspberry
 * [Shamir39 Tool](https://iancoleman.io/shamir39/) - Note warnings about usage of this software
 * [Read-Only Raspberry Pi - Never Corrupt your Micro-SD Card](https://core-electronics.com.au/guides/read-only-raspberry-pi/)
 * [Read-Only Raspberry Pi](https://learn.adafruit.com/read-only-raspberry-pi/overview)
-* [Best microSD Cards for Raspberry Pi 2024](https://www.tomshardware.com/best-picks/raspberry-pi-microsd-cards)
-* [Best SD cards for Raspberry Pi in 2024](https://www.xda-developers.com/best-sd-cards-raspberry-pi/)
