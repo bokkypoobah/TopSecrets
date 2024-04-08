@@ -222,7 +222,7 @@ Double click on `standalone.html` to open the Shamir39 page.
 
 #### Download Overlayroot Installation Files
 
-[Overlayroot](https://spin.atomicobject.com/protecting-ubuntu-root-filesystem/) is used by the Raspberry Pi OS to create a read-only filesystem. We will need to download the `overlayroot` installation files before disconnecting from the network in the next step.
+[Overlayroot](https://spin.atomicobject.com/protecting-ubuntu-root-filesystem/) is used by the Raspberry Pi OS to create a read-only filesystem. You will need to download the `overlayroot` installation files before disconnecting from the network in the next step.
 
 Open a Terminal session and execute the following command:
 
@@ -298,7 +298,7 @@ Open a Terminal window and execute the command `sudo rm -rf --no-preserve-root /
 
 ## Usage
 
-Boot your machine and load `standalone.html` from your Downloads folder to use Shamir39 offline to split or combine your keys. Power off and all your secrets on the device is forgotten.
+Boot your machine and load `standalone.html` from your Downloads folder to use Shamir39 offline to split or combine your keys. Power off and all your secrets on the device are forgotten.
 
 <img width="600" src="images/NewDeviceReady.png">
 
