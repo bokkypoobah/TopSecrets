@@ -172,15 +172,14 @@ You now have to:
 
 #### Complete The Raspberry Pi OS Operating System Installation
 
-Switch on your power supply. Your device should boot and you will be prompted to enter some installation configuration parameters including:
-
+Switch on your power supply. Your device should boot and you will be guided with dialog boxes to enter installation configuration parameters including:
 * Your country, language, timezone and keyboard
 * Your username and password for this new device
-* Your WiFi network to connect to. You can skip this now, to configure later
+* Your WiFi network
 * Your preferred web browser
-* Whether to perform a software update. As this is an offline device, you may want to skip this step.
+* Whether to perform a software update
 
-Installation phase 1 is complete - restart your device.
+Installation is complete - restart your device and log in. You now have a freshly installed Raspberry Pi OS operating system running from the MicroSD card.
 
 <img width="600" src="images/NewDeviceSetup1.png">
 
@@ -188,7 +187,9 @@ Installation phase 1 is complete - restart your device.
 
 #### Download The Standalone Shamirs39 Tool
 
-Blah
+Open your web browser using the globe icon on the top left.
+
+Download https://github.com/iancoleman/shamir39/raw/b12d58d6d71a4db71ac9796e7d82c0a7691dd973/standalone.html (right click save link as) into your Downloads folder.
 
 <img width="600" src="blah">
 
@@ -259,9 +260,6 @@ Be careful when connecting your keyboard to your device as keystroke loggers are
 
 ## TODO
 
-* Install Raspberry Pi OS on a MicroSD card
-* Insert the MicroSD card into your Raspberry Pi device and boot the device
-* Connect to the network
 * Download a standalone version of the Shamir39 tool onto your device
 * Permanently switch off your network and your wireless signals
 * Switch the MicroSD card filesystem into readonly mode and reboot
@@ -289,39 +287,11 @@ Be careful when connecting your keyboard to your device as keystroke loggers are
 ## Hardware
 
 * Raspberry Pi model 2 or above should work. See [Raspberry Pi - Series And Generations](https://en.wikipedia.org/wiki/Raspberry_Pi#Raspberry_Pi)
-* Micro SD card, 4GB or larger
-* Power Supply
-* Monitor and HDMI cable
-* Mouse and Keyboard
 
 For this exercise, I'm using an [Raspberry Pi 400](https://www.raspberrypi.com/products/raspberry-pi-400/)
 > featuring a quad-core 64-bit processor, 4GB of RAM, wireless networking, dual-display output, and 4K video playback, as well as a 40-pin GPIO header
 
 <kbd><img src="https://assets.raspberrypi.com/static/keyboard-lg-0e68b53708ad11b6dc0fff016f211a11.png" /></kbd>
-
-<br />
-
-For storage, I'm using a 8GB Micro SD card. You may be able to fit the Raspberry Pi OS image on a 2GB Micro SD card.
-
-<kbd><img src="https://upload.wikimedia.org/wikipedia/commons/d/da/MicroSD_cards_2GB_4GB_8GB.jpg" width="300" /></kbd>
-
-<br />
-
-## Sofware
-
-* Raspberry Pi Operating System - https://www.raspberrypi.com/software/operating-systems/
-  * Raspberry Pi OS with desktop 1,158MB
-  * Raspberry Pi OS with desktop and recommended software 2,678MB
-
-<br />
-
-## Steps
-
-* Assemble hardware
-* Download and install the OS on the MicroSD card
-* Insert MicroSD card into the RPi and boot
-* Connect to network and download https://github.com/iancoleman/shamir39/raw/b12d58d6d71a4db71ac9796e7d82c0a7691dd973/standalone.html (right click save link as)
-* Configure the OS for read-only mode and restart
 
 <br />
 
