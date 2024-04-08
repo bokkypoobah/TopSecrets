@@ -48,8 +48,8 @@ Please see [Risks](#risks) before any serious use.
 * [Preparing The Shamir39 Read-Only Raspberry Pi MicroSD Card](#preparing-the-shamir39-read-only-raspberry-pi-microsd-card)
 * [Usage](#usage)
 * [Risks](#risks)
-* Alternatives
-* FAQs
+* [Alternatives](alternatives)
+* [FAQs](#faqs)
 
 <br />
 
