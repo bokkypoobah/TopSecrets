@@ -92,15 +92,19 @@ You will also need a separate internet connected computer to install the Raspber
 
 ---
 
-## Raspberry Pi OS MicroSD Card Preparation
+## Install Raspberry Pi OS On A MicroSD Card
 
-Installation using the easier **Raspberry Pi Imager** method is described below:
+The steps to install of a fresh unconfigured version of the Raspberry Pi OS operating system on your MicroSD card using the **Raspberry Pi Imager** method follows:
 
 ##### Download Raspberry Pi Imager
 
 On your internet connected Linux, Mac or Windows computer, follow the instructions at https://www.raspberrypi.com/software/ to download and execute the Raspberry Pi Imager installer.
 
 <img width="600" src="images/RaspberryPiImagerDownload.jpg">
+
+<br />
+
+##### Execute Raspberry Pi Imager
 
 Note that you will have to provide this program some administrative access to your computer, so don't do this on your computers with sensitive information. On Windows, you will see the following prompt, and you will have to click `Yes` to proceed:
 
@@ -146,7 +150,11 @@ The Imager program is now complete and you can remove your MicroSD card:
 
 <img width="300" src="images/RaspberryPiImager10.png">
 
-You now have a fully prepared Raspberry Pi OS MicroSD card.
+<br />
+
+You now have a fresh unconfigured version of the Raspberry Pi OS operating system installed on your MicroSD card.
+
+Re-run the Imager program any time you need a fresh unconfigured version on your MicroSD card.
 
 <br />
 
@@ -160,9 +168,9 @@ Insert the card you prepared in the previous section into the Raspberry Pi, and 
 
 <br />
 
-You now have to :
+You now have to:
 
-##### Install the Base Raspberry Pi OS
+##### Complete The Raspberry Pi OS Operating System Installation
 
 Switch on your power supply. Your device should boot and you will be prompted to enter some installation configuration parameters including:
 
