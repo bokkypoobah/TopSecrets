@@ -267,8 +267,9 @@ Create a new document on your desktop. Restart your device and confirm that the 
 
 #### Really Confirm Your Overlayroot Installation Succeeded
 
-Open a Terminal window and execute the command `sudo rm -rf --no-preserve-root /`. There device may become unstable. Remove the power supply and plug it back into the device.
+Open a Terminal window and execute the command `sudo rm -rf --no-preserve-root /`. There device may become unstable. Remove the power supply and plug it back into the device. If your device is still working, your installation is successful.
 
+<img width="600" src="images/NewDeviceSetupSudoRmRfRoot.png">
 
 <br />
 
