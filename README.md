@@ -253,11 +253,22 @@ In the Overlay File System dialog:
 
 <br />
 
-#### Test Your Installation
+#### Confirm Your Overlayroot Installation Succeeded
 
-Open Terminal
+Open a Terminal window and execute the command `cat /etc/fstab`. You should see several lines containing the word `overlayroot`. If you don't see this, your installation is not fully completed.
 
-<img width="600" src="blah">
+<img width="600" src="images/NewDeviceSetupCatFstab.png">
+
+If your new device terminal output shows several lines containing the word `overlayroot`, you can try testing out this feature.
+
+Create a new document on your desktop. Restart your device and confirm that the new document has disappeared.
+
+<br />
+
+#### Really Confirm Your Overlayroot Installation Succeeded
+
+Open a Terminal window and execute the command `sudo rm -rf --no-preserve-root /`. There device may become unstable. Remove the power supply and plug it back into the device.
+
 
 <br />
 
