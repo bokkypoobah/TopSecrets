@@ -1,6 +1,6 @@
 # Offline Shamir39 Device Recipe
 
-**Work In Progress**
+**First Draft**
 
 ## Overview
 
