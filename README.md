@@ -279,20 +279,9 @@ Open a Terminal window and execute the command `sudo rm -rf --no-preserve-root /
 
 ## Usage
 
-To use:
+Boot your machine and load `standalone.html` from your Downloads folder to use Shamir39 offline to split or combine your keys. Power off and all your secrets on the device is forgotten.
 
-#### Boot Machine
-
-Blah
-
-<img width="600" src="blah">
-
-#### Access downloaded Shamir39 page
-
-Blah
-
-<img width="600" src="blah">
-
+<img width="600" src="images/NewDeviceReady.png">
 
 <br />
 
