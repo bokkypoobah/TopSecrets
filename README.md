@@ -1,22 +1,37 @@
-# Offline Shamir39 Device Recipe
+# Offline Shamir39 Device Recipe - Work In Progress
 
 ## Overview
 
-**[WORK IN PROGRESS]**
+Many hardware and software wallets use [BIP-39 mnemonic seed phrases](https://bitcoinwiki.org/wiki/mnemonic-phrase) for the backup and recovery of the private keys.
 
-Some hardware and software wallets use [BIP-39 mnemonic seed phrases](https://bitcoinwiki.org/wiki/mnemonic-phrase) for the backup and recovery of your cryptocurrency keys.
+<tr>
+  <td><img height="300" src="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*k3nEHUbojyK-MLzz3Up2rw.jpeg"></td>
+  <td><img height="300" src="https://cdn05.zipify.com/jWNo4pZh2__jUAKAXeA3R-YxN5A=/fit-in/2048x0/45fbab1bcc044dd59250acd4286f53df/trezor-one-confirm-seed.jpg"></td>
+</tr>
 
-One way to store a BIP-39 mnemonic seed phrase is to split the phrase into **shares** held by multiple parties using the **Shamir39** tool at https://iancoleman.io/shamir39/, for example:
+One "safer" way to store the BIP-39 mnemonic seed phrases is to split them into **shares** using the **Shamir39** tool at https://iancoleman.io/shamir39/. These shares can then be distributed to multiple locations or parties for safekeeping, and combined when required to recover the original BIP-39 mnemonic seed phrases.
+
+Here is an example of a BIP-39 mnemonic seed phrase split into 5 shares, with a minimum of 3 shares required to recover the original BIP-39 mnemonic seed phrase.
 
 <img width="600" src="images/Shamir39Split.png">
 
-In this example, a minimum of 3 of the 5 shares are required to recover the original BIP-39 mnemonic seed phrase:
+<br />
+
+Here are three of the shares combined to recover the original BIP-39 mnemonic seed phrase.
 
 <img width="600" src="images/Shamir39Combine.png">
 
+<br />
+
 The Shamir39 tool linked above should only be used with a computer permanently disconnected from any networks to prevent the leakage of any secrets.
 
-This is a simple recipe to create a small **dedicated** **offline** **read-only** **Raspberry Pi 400** computer to run the Shamir39 tool in **standalone** mode:
+This is a simple recipe to create a small **dedicated** **offline** **read-only** **Raspberry Pi 400** computer to run the Shamir39 tool in **standalone** mode.
+
+<br />
+
+---
+
+## Table Of Contents
 
 * [What You Need](#what-you-need)
   * [Raspberry Pi 400](#raspberry-pi-400)
