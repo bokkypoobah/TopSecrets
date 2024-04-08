@@ -20,6 +20,7 @@ This is a simple recipe to create a small **dedicated** **offline** **read-only*
 
 * [What You Need](#what-you-need)
 * [Raspberry Pi OS MicroSD Card Preparation](#raspberry-pi-os-microsd-card-preparation)
+* [Preparing The Shamir39 Read-Only Raspberry Pi MicroSD Card](#preparing-the-shamir39-read---only-raspberry-pi-microsd-card)
 * Usage
 * Risks
 * Alternatives
@@ -136,7 +137,13 @@ The Imager program is now complete and you can remove your MicroSD card:
 
 <img width="300" src="images/RaspberryPiImager10.png">
 
-You now have a fully prepared Raspberry Pi OS MicroSD Card.
+You now have a fully prepared Raspberry Pi OS MicroSD card.
+
+<br />
+
+---
+
+## Preparing The Shamir39 Read-Only Raspberry Pi MicroSD Card
 
 <br />
 
