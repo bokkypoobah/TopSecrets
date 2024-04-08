@@ -405,4 +405,6 @@ When running this device using the Overlayroot mode, any secrets generated in yo
 
 <br />
 
+Enjoy!
+
 © Bok Consulting Pty Ltd 2024, CC0-1.0 license
