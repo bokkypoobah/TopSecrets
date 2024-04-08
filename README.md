@@ -195,17 +195,55 @@ Download https://github.com/iancoleman/shamir39/raw/b12d58d6d71a4db71ac9796e7d82
 
 <br />
 
-#### Disconnect Networks And Switch Installtion To Read-Only
+#### Download Overlayroot Installation Files
 
-Blah
+Overlayroot is used by the Raspberry Pi OS to create a read-only filesystem. We will need to download the `overlayroot` installation files before disconnecting from the network in the next step.
+
+Open a Terminal and execute the following command:
+
+`sudo apt-get install overlayroot --download-only`
+
+<img width="600" src="images/NewDeviceSetupDownloadOverlayroot1.png">
+
+On completion, the following packages will be downloaded but not installed.
+
+<img width="600" src="images/NewDeviceSetupDownloadOverlayroot2.png">
+
+<br />
+
+#### Disconnect Bluetooth And Wireless Lan
+
+Disconnect your Bluetooth and Wireless Lan connections by clicking on the icons on the top right.
 
 <img width="600" src="blah">
 
 <br />
 
+#### Configure Installation To Read-Only
+
+Select the system menu from the top left -> Preferences -> Raspberry Pi Configuration
+
+In the System tab:
+* Switch on Auto login, if you wish to.
+* Select your preferred browser.
+
+In the Performance tab:
+* Select `Configure` for the Overlay File System. In the Overlay File System dialog:
+  * Switch on Overlay [this will enable the overlay file system]
+  * Switch on Boot Partition [this will set the boot partition to read-only]
+  * Click `OK`
+* Click `OK`
+* Click `Yes` to reboot the device
+
+<img width="600" src="blah">
+
+
+
+<br />
+
 #### Test Your Installation
 
-Blah
+Open Terminal
 
 <img width="600" src="blah">
 
