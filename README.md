@@ -19,13 +19,15 @@ The Shamir39 tool linked above should only be used with a computer permanently d
 This is a simple recipe to create a small **dedicated** **offline** **read-only** **Raspberry Pi 400** computer to run the Shamir39 tool in **standalone** mode:
 
 * What You Need
-* MicroSD Card Preparation
+* Raspberry Pi OS MicroSD Card Preparation
 * Usage
 * Risks
 * Alternatives
 * FAQs
 
 <br />
+
+---
 
 ## What You Need
 
@@ -78,7 +80,9 @@ You will also need a separate internet connected computer to install the Raspber
 
 <br />
 
-## MicroSD Card Preparation
+---
+
+## Raspberry Pi OS MicroSD Card Preparation
 
 Installation using the easier **Raspberry Pi Imager** method is described below:
 
@@ -131,6 +135,8 @@ Verifying:
 The Imager program is now complete and you can remove your MicroSD card:
 
 <img width="300" src="images/RaspberryPiImager10.png">
+
+You now have a fully prepared Raspberry Pi OS MicroSD Card.
 
 <br />
 
