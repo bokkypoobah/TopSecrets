@@ -24,6 +24,7 @@ This is a simple recipe to create a small **dedicated** **offline** **read-only*
   * [Mouse](#mouse)
   * [Monitor](#monitor)
   * [MicroSD Card](#microsd-card)
+  * [Another Computer And Internet](#another-computer-and-internet)
 * [Raspberry Pi OS MicroSD Card Preparation](#raspberry-pi-os-microsd-card-preparation)
 * [Preparing The Shamir39 Read-Only Raspberry Pi MicroSD Card](#preparing-the-shamir39-read-only-raspberry-pi-microsd-card)
 * [Usage](#usage)
