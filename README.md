@@ -1,4 +1,6 @@
-# Offline Shamir39 Device Recipe - Work In Progress
+# Offline Shamir39 Device Recipe
+
+**Work In Progress**
 
 ## Overview
 
@@ -354,9 +356,12 @@ The reason why the Raspberry Pi 400 is chosen for this recipe is because you do 
 
 ## Alternatives
 
-Alternatively, [**Raspberry Pi models 3 and 4**](https://www.raspberrypi.com/products/) are more portable. You will need an **external keyboard**, and you may want a [**case**](https://www.raspberrypi.com/products/case/).
+[Raspberry Pi models 4 and B](https://www.raspberrypi.com/products/) may also work. You may need a [**case**](https://www.raspberrypi.com/products/case/), and a USB-A or USB-C keyboard.
 
-<kbd><img src="https://assets.raspberrypi.com/static/a6331df010eb56a7fafb04466af3f1aa/f2559/3a15d4da-46e3-4940-8be6-9fc7d201affe_RPi_4B_FEATURED.webp" width="600" /></kbd>
+<p float="center">
+  <img width="200" src="https://assets.raspberrypi.com/static/a6331df010eb56a7fafb04466af3f1aa/f2559/3a15d4da-46e3-4940-8be6-9fc7d201affe_RPi_4B_FEATURED.webp">
+  <img width="200" src="https://assets.raspberrypi.com/static/492cb6e88e7d697fbb53f89f48350133/f2559/488f4e12-de49-4297-bbc6-c3753c060d40_Case%2BWhite.webp">
+</p>
 
 <br />
 
@@ -364,30 +369,21 @@ Alternatively, [**Raspberry Pi models 3 and 4**](https://www.raspberrypi.com/pro
 
 ## FAQs
 
+##### Why Raspberry Pi 400?
+
+The 400 comes in convenient keyboard case.
+
+##### Why Raspberry Pi?
+
+The parts are simple, readily available and cheap enough to make redundant backups. The software is well supported, and documentation is easily accessible.
+
+##### What Is So Cool About This Recipe?
+
+When running this device using the Overlayroot mode, any secrets generated in your use of this tool is lost when you power down this device. The Linux operating system overlays writes to Random Access Memory (RAM), while keeping the contents of the MicroSD card as read-only.
+
 <br />
 
 ---
-
-## Aims
-
-* Create a device that does not store any information in permanent storage
-  * When completed, this setup allows the Raspberry OS to execute with the MicroSD storage device in read-only mode
-* Create a device cheap enough that it can be dedicated for a single use and kept permanently offline
-* Create a device out of easily obtainable hardware and software
-* Document this process, and make it easily reproducible
-
-<br />
-
-## Hardware
-
-* Raspberry Pi model 2 or above should work. See [Raspberry Pi - Series And Generations](https://en.wikipedia.org/wiki/Raspberry_Pi#Raspberry_Pi)
-
-For this exercise, I'm using an [Raspberry Pi 400](https://www.raspberrypi.com/products/raspberry-pi-400/)
-> featuring a quad-core 64-bit processor, 4GB of RAM, wireless networking, dual-display output, and 4K video playback, as well as a 40-pin GPIO header
-
-<kbd><img src="https://assets.raspberrypi.com/static/keyboard-lg-0e68b53708ad11b6dc0fff016f211a11.png" /></kbd>
-
-<br />
 
 ## Notes
 
@@ -397,8 +393,16 @@ For this exercise, I'm using an [Raspberry Pi 400](https://www.raspberrypi.com/p
 
 <br />
 
+---
+
 ## References
 
 * [Shamir39 Tool](https://iancoleman.io/shamir39/) - Note warnings about usage of this software
 * [Read-Only Raspberry Pi - Never Corrupt your Micro-SD Card](https://core-electronics.com.au/guides/read-only-raspberry-pi/)
 * [Read-Only Raspberry Pi](https://learn.adafruit.com/read-only-raspberry-pi/overview)
+
+<br />
+
+<br />
+
+© Bok Consulting Pty Ltd 2024, CC0-1.0 license
