@@ -221,9 +221,9 @@ On completion, the following packages will be downloaded but not installed.
 
 #### Disconnect Bluetooth And Wireless Lan
 
-Disconnect your Bluetooth and Wireless Lan connections by clicking on the icons on the top right.
+Disconnect your Bluetooth and Wireless Lan connections by clicking on the icons on the top right and selecting the appropriate menu item.
 
-<img width="600" src="blah">
+<img width="600" src="images/NewDeviceSetupDisconnectBluetoothWLAN.png">
 
 <br />
 
