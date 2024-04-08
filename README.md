@@ -310,7 +310,7 @@ Boot your machine and load `standalone.html` from your Downloads folder to use S
 
 #### Shamir39 Tool
 
-The Shamir39 tool could have some weaknesses in the algorithms, or in the implementation of the algorithms.
+The [Shamir39 tool](https://iancoleman.io/shamir39/) could have some weaknesses in the algorithms, or in the implementation of the algorithms. Please carefully read the warnings messages in this tool.
 
 ##### Recoverability Of Original Keys
 
@@ -319,6 +319,18 @@ To be fully confident that you can recover your original BIP-39 mnemonic seed ph
 ##### Randomness
 
 Use your hardware wallet to generate your BIP-39 mnemonic seed phrase in preference to using the `Generate` button in this Shamir39 tool. This will reduce any risks in case of vulnerabilities in the random number generation process using this Shamir39 tool.
+
+##### Algorithm Not Standardised
+
+The Shamir39 tools does not use a standardised algorithm and there is no alternative implementation.
+
+When splitting important keys using this tool, remember to keep several "backups" of this offline Shamir39 devices.
+
+The main backups are copies of your offline Shamir39 MicroSD card.
+
+Having the Raspberry Pi hardware backup is slightly important, as you can use your MicroSD card in any readily available Raspberry Pi Models B and 4 series.
+
+Also keep good documentation as you may only access this very infrequently.
 
 ##### Hope And Pray
 
