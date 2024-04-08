@@ -309,3 +309,4 @@ For storage, I'm using a 8GB Micro SD card. You may be able to fit the Raspberry
 * [Shamir39 Tool](https://iancoleman.io/shamir39/) - Note warnings about usage of this software
 * [Read-Only Raspberry Pi - Never Corrupt your Micro-SD Card](https://core-electronics.com.au/guides/read-only-raspberry-pi/)
 * [Read-Only Raspberry Pi](https://learn.adafruit.com/read-only-raspberry-pi/overview)
+* [Best microSD Cards for Raspberry Pi 2024](https://www.tomshardware.com/best-picks/raspberry-pi-microsd-cards)
