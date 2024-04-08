@@ -164,9 +164,17 @@ You now have to :
 
 ##### Install the Base Raspberry Pi OS
 
-Blah
+Switch on your power supply. Your device should boot and you will be prompted to enter some installation configuration parameters including:
 
-<img width="600" src="blah">
+* Your country, language, timezone and keyboard
+* Your username and password for this new device
+* Your WiFi network to connect to. You can skip this now, to configure later
+* Your preferred web browser
+* Whether to perform a software update. As this is an offline device, you may want to skip this step.
+
+Installation phase 1 is complete - restart your device.
+
+<img width="600" src="images/NewDeviceSetup1.png">
 
 <br />
 
