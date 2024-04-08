@@ -27,6 +27,8 @@ The Shamir39 tool linked above should only be used with a computer permanently d
 
 This is a simple recipe to create a small **dedicated** **offline** **read-only** **Raspberry Pi 400** computer to run the Shamir39 tool in **standalone** mode.
 
+Please see [Risks](#risks) before any serious use.
+
 <br />
 
 ---
@@ -194,7 +196,7 @@ Switch on your power supply. Your device should boot and you will be guided with
 * Your preferred web browser
 * Whether to perform a software update
 
-Installation is complete - restart your device and log in. You now have a freshly installed Raspberry Pi OS operating system running from the MicroSD card.
+Restart your device and log in. You now have a freshly installed Raspberry Pi OS operating system running from the MicroSD card.
 
 <img width="600" src="images/NewDeviceSetup1.png">
 
@@ -220,9 +222,9 @@ Double click on `standalone.html` to open the Shamir39 page.
 
 #### Download Overlayroot Installation Files
 
-Overlayroot is used by the Raspberry Pi OS to create a read-only filesystem. We will need to download the `overlayroot` installation files before disconnecting from the network in the next step.
+[Overlayroot](https://spin.atomicobject.com/protecting-ubuntu-root-filesystem/) is used by the Raspberry Pi OS to create a read-only filesystem. We will need to download the `overlayroot` installation files before disconnecting from the network in the next step.
 
-Open a Terminal and execute the following command:
+Open a Terminal session and execute the following command:
 
 `sudo apt-get install overlayroot --download-only`
 
@@ -250,6 +252,8 @@ Select the system menu from the top left -> Preferences -> Raspberry Pi Configur
 
 
 In the Performance tab, select `Configure` to open up the Overlay File System configuration.
+
+NOTE: This step will fail if you have not downloaded the Overlayroot files as described [above](#download-overlayroot-installation-files).
 
 <img width="600" src="images/NewDeviceSetupConfigureOverlayReadOnly2.png">
 
@@ -304,6 +308,9 @@ Boot your machine and load `standalone.html` from your Downloads folder to use S
 
 ## Risks
 
+* Shamir39 tool could have some weaknesses in the algorithms, or in the implementation of the algorithms
+
+
 <br />
 
 ---
@@ -341,12 +348,6 @@ Be careful when connecting your keyboard to your device as keystroke loggers are
 * Create a device cheap enough that it can be dedicated for a single use and kept permanently offline
 * Create a device out of easily obtainable hardware and software
 * Document this process, and make it easily reproducible
-
-<br />
-
-## Risks
-
-* Shamir39 tool could have some weaknesses in the algorithms, or in the implementation of the algorithms
 
 <br />
 
