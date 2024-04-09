@@ -250,7 +250,7 @@ Double click on `standalone.html` to open the Shamir39 page.
 
 Open a Terminal session and execute the following command:
 
-`sudo apt-get install overlayroot --download-only`
+> sudo apt-get install overlayroot --download-only
 
 <img width="600" src="images/NewDeviceSetupDownloadOverlayroot1.png">
 
