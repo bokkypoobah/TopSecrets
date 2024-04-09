@@ -9,7 +9,7 @@ Status: **First Draft**
 ## Table Of Contents
 
 * [Overview](#overview)
-* [What You Need](#what-you-need)
+* [Shopping List](#shopping-list)
   * [Raspberry Pi 400](#raspberry-pi-400)
   * [Power Supply](#power-supply)
   * [Mouse](#mouse)
@@ -62,7 +62,7 @@ Please see [Risks](#risks) before any serious use.
 
 ---
 
-## What You Need
+## Shopping List
 
 You will need the following items:
 
