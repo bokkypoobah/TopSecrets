@@ -476,6 +476,10 @@ You may have to distribute these shares by copying them onto USB storage, as the
 
 Banana Split at https://github.com/paritytech/banana_split splits secrets into QR code shares for printing, with an additional handwritten passphrase required to recover your original secret.
 
+<img width="400" src="images/BananaSplit1.png">
+
+<img width="400" src="images/BananaSplit2.png">
+
 A backup of the contents of the link https://bs.parity.io/ has been made to [copy/Banana split.html](https://raw.githubusercontent.com/bokkypoobah/ReadOnlyOfflineShamir39DeviceRecipe/main/copy/Banana%20split.html), just in case.
 
 <br />
