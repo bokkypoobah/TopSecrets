@@ -378,7 +378,13 @@ Similar steps can be used to build this device on [other platforms](https://www.
 
 ##### Why Raspberry Pi And Why 400?
 
-The parts are simple, readily available and cheap enough to make redundant backups. The software is well supported, and documentation is easily accessible. The fully prepared MicroSD card is cheap and can easily be duplicated and distributed.
+The parts are simple, readily available and cheap enough to make redundant backups.
+
+There are no moving components (fans, disk drives) and should have a long lifespan.
+
+The software is well supported, and documentation is easily accessible.
+
+The fully prepared MicroSD card is cheap and can easily be duplicated and distributed.
 
 The 400 comes in convenient keyboard case - one less thing to worry about.
 
