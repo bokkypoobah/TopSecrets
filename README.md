@@ -478,9 +478,11 @@ Banana Split at https://github.com/paritytech/banana_split splits secrets into Q
 
 <img width="400" src="images/BananaSplit1.png">
 
+NOTE: You will need a [camera](https://www.raspberrypi.com/products/camera-module-v2/) for your Raspberry Pi device to restore your secret from the QR codes. You may be able to use USB webcams as well. I have not tested that this will work.
+
 <img width="400" src="images/BananaSplit2.png">
 
-NOTE: You will need a [camera](https://www.raspberrypi.com/products/camera-module-v2/) for your Raspberry Pi device to restore your secret from the QR codes. You may be able to use USB webcams as well. I have not tested that this will work.
+<img width="400" src="images/BananaSplit3.png">
 
 A backup of the contents of the link https://bs.parity.io/ has been made to [copy/Banana split.html](https://raw.githubusercontent.com/bokkypoobah/ReadOnlyOfflineShamir39DeviceRecipe/main/copy/Banana%20split.html), just in case.
 
