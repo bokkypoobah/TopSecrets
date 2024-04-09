@@ -17,7 +17,7 @@ This guide is a recipe for you to build a read-only offline Raspberry Pi 400 dev
   * [Monitor With Micro HDMI Cable](#monitor-with-micro-hdmi-cable)
   * [Component Prices](#comonent-prices)
   * [Another Computer And Wireless Internet](#another-computer-and-wireless-internet)
-* [Prepare Raspberring The Pi OS Installation MicroSD Card](#preparing-the-raspberry-pi-os-installation-microsd-card)
+* [Preparing The Raspberry Pi OS Installation MicroSD Card](#preparing-the-raspberry-pi-os-installation-microsd-card)
 * [Building The Read-Only Offline Shamir39 Device](#building-the-read-only-offline-shamir39-device)
 * [Using The Read-Only Offline Shamir39 Device](#using-the-read-only-offline-shamir39-device)
 * [Risks](#risks)
