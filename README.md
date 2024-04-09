@@ -16,9 +16,9 @@ Status: **First Draft**
   * [Monitor](#monitor)
   * [MicroSD Card](#microsd-card)
   * [Another Computer And Internet](#another-computer-and-internet)
-* [Raspberry Pi OS MicroSD Card Preparation](#raspberry-pi-os-microsd-card-preparation)
-* [Preparing The Shamir39 Read-Only Raspberry Pi MicroSD Card](#preparing-the-shamir39-read-only-raspberry-pi-microsd-card)
-* [Usage](#usage)
+* [Prepare Raspberry Pi OS Installation MicroSD Card](#prepare-raspberry-pi-os-installation-microsd-card)
+* [Build Read-Only Offline Shamir39 Device](#build-read-only-offline-shamir39-device)
+* [Use Read-Only Offline Shamir39 Device](#use-read-only-offline-shamir39-device)
 * [Risks](#risks)
 * [Alternatives](#alternatives)
 * [FAQs](#faqs)
@@ -118,7 +118,7 @@ You will also need a separate internet connected computer to install the Raspber
 
 ---
 
-## Install Raspberry Pi OS On A MicroSD Card
+## Prepare Raspberry Pi OS Installation MicroSD Card
 
 The steps to install of a fresh unconfigured version of the Raspberry Pi OS operating system on your MicroSD card using the **Raspberry Pi Imager** method follows:
 
@@ -186,7 +186,7 @@ Re-run the Imager program any time you need a fresh unconfigured version on your
 
 ---
 
-## Preparing The Shamir39 Read-Only Raspberry Pi MicroSD Card
+## Build Read-Only Offline Shamir39 Device
 
 Insert the card you prepared in the previous section into the Raspberry Pi, and connect your monitor, mouse and power supply.
 
@@ -305,7 +305,7 @@ Open a Terminal window and execute the command `sudo rm -rf --no-preserve-root /
 
 ---
 
-## Usage
+## Use Read-Only Offline Shamir39 Device
 
 Boot your machine and load `standalone.html` from your Downloads folder to use Shamir39 offline to split or combine your keys. Power off and all your secrets on the device are forgotten.
 
