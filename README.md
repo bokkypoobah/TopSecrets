@@ -114,10 +114,10 @@ If you have access to computer monitors with only HDMI plugs, you may want to co
 | Component | AUD, in Australia |
 | --- | ---:|
 | Raspberry Pi 400 | [149](https://www.jaycar.com.au/raspberry-pi-400-keyboard-desktop-computer/p/XC9115) |
-| Power Supply |  |
+| Power Supply | [25](https://www.jaycar.com.au/15-3w-raspberry-pi-4-power-supply-5-1vdc-at-3a/p/XC9122) |
 | Mouse |  |
 | Monitor |  |
-| MicroSD Card |  |
+| 32GB MicroSD Card | [22](https://www.jaycar.com.au/sandisk-32gb-high-extreme-microsdxc-class-10-reads-100mb-s-writes-60mb-s/p/XC5500) |
 
 <br />
 
