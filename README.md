@@ -65,14 +65,14 @@ Please see [Risks](#risks) before any serious use.
 
 You will need the following items:
 
-#### Raspberry Pi 400
+### Raspberry Pi 400
 The [Raspberry Pi 400](https://www.raspberrypi.com/products/raspberry-pi-400-unit/) is a compact self-contained computer built into a keyboard.
 
 <img width="600" src="https://assets.raspberrypi.com/static/keyboard-lg-0e68b53708ad11b6dc0fff016f211a11.png">
 
 <br />
 
-#### MicroSD Card
+### MicroSD Card
 
 8GB or larger MicroSD card to store the operating system files. I am using a SanDisk Extreme 32GB - see [here](https://www.tomshardware.com/best-picks/raspberry-pi-microsd-cards) and
 [here](https://www.xda-developers.com/best-sd-cards-raspberry-pi/) for some comparisons of these cards.
@@ -81,7 +81,7 @@ The [Raspberry Pi 400](https://www.raspberrypi.com/products/raspberry-pi-400-uni
 
 <br />
 
-#### USB-C Power Supply
+### USB-C Power Supply
 
 [Raspberry Pi 15W USB-C Power Supply](https://www.raspberrypi.com/products/type-c-power-supply/). Many USB-C laptop power supplies should also work with the Raspberry Pi 400.
 
@@ -89,7 +89,7 @@ The [Raspberry Pi 400](https://www.raspberrypi.com/products/raspberry-pi-400-uni
 
 <br />
 
-#### USB-A or USB-C Mouse
+### USB-A or USB-C Mouse
 
 [Raspberry Pi Mouse](https://www.raspberrypi.com/products/raspberry-pi-mouse/), or **USB-A** or **USB-C** equivalent.
 
@@ -97,7 +97,7 @@ The [Raspberry Pi 400](https://www.raspberrypi.com/products/raspberry-pi-400-uni
 
 <br />
 
-#### Monitor With Micro HDMI Cable
+### Monitor With Micro HDMI Cable
 
 Computer monitor connected via a HDMI cable that plugs into one of the two Raspberry Pi 400 **Micro HDMI** ports:
 
@@ -109,7 +109,7 @@ If you have access to computer monitors with only HDMI plugs, you may want to co
 
 <br />
 
-#### Component Prices
+### Component Prices
 
 | Component | AUD, in Australia |
 | --- | ---:|
@@ -121,7 +121,7 @@ If you have access to computer monitors with only HDMI plugs, you may want to co
 
 <br />
 
-#### Another Computer And Wireless Internet
+### Another Computer And Wireless Internet
 
 You will also need a separate internet connected computer to install the Raspberry Pi OS software onto the MicroSD card, and an wireless internet connection for the initial installation of this Shamir39 device.
 
@@ -133,7 +133,7 @@ You will also need a separate internet connected computer to install the Raspber
 
 The steps to install of a fresh unconfigured version of the Raspberry Pi OS operating system on your MicroSD card using the **Raspberry Pi Imager** method follows:
 
-#### Download Raspberry Pi Imager
+### Download Raspberry Pi Imager
 
 On your internet connected Linux, Mac or Windows computer, follow the instructions at https://www.raspberrypi.com/software/ to download and execute the Raspberry Pi Imager installer.
 
@@ -141,7 +141,7 @@ On your internet connected Linux, Mac or Windows computer, follow the instructio
 
 <br />
 
-#### Execute Raspberry Pi Imager
+### Execute Raspberry Pi Imager
 
 Note that you will have to provide this program some administrative access to your computer, so don't do this on your computers with sensitive information. On Windows, you will see the following prompt, and you will have to click `Yes` to proceed:
 
