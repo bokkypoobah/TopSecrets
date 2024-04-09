@@ -433,17 +433,28 @@ Yes. Trezor have their own Shamir backup system requiring different tools - see 
 
 See [here](https://core-electronics.com.au/guides/read-only-raspberry-pi/) and [here](https://learn.adafruit.com/read-only-raspberry-pi/overview) for steps.
 
-#### What is BIP-39?
+#### What Is BIP-39?
 
 See the official [BIP-39 specification](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) and [What is BIP39?](https://trezor.io/learn/a/what-is-bip39).
 
-#### What is Shamir39?
+#### What Is Shamir39?
 
 See the [Shamir39 specification](https://github.com/iancoleman/shamir39/blob/master/specification.md). There is only one known implementation of this specification at https://github.com/iancoleman/shamir39 by the same author.
 
-#### What is Shamirs Secret Sharing?
+#### What Is Shamirs Secret Sharing?
 
 See [Shamir's secret sharing](https://en.wikipedia.org/wiki/Shamir%27s_secret_sharing).
+
+#### What Wallets Support BIP-39?
+
+Here are some wallets:
+
+| Wallet | Type | BIP-39 Support? |
+| --- | --- | --- |
+| Gridplus | Hardware | [Yes](https://docs.gridplus.io/lattice1/security-features/lattice1-random-number-generation) |
+| MetaMask | Software | [Yes](https://support.metamask.io/hc/en-us/articles/4404722782107-User-Guide-Secret-Recovery-Phrase-password-and-private-keys) |
+| Ledger | Hardware | [Yes](https://support.ledger.com/hc/en-us/articles/4415198323089-How-Ledger-device-generates-24-word-recovery-phrase?docs=true) |
+| Trezor | Hardware | [Yes](https://trezor.io/learn/a/what-is-bip39) |
 
 <br />
 
