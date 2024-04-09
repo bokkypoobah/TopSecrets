@@ -462,7 +462,7 @@ Here are some wallets. Check the individual models for specifics:
 
  Simple Shamir's Secret Sharing (s4) from https://simon-frey.com/s4/ allows you to encrypt and decrypt messages. Save a copy of the web page in your Downloads folder before you remove the network connectivity and set the device to read-only mode.
 
- A backup of the contents of the above link has been made to [copy/Simple Shamir's Secret Sharing (s4).html](copy/Simple%20Shamir's%20Secret%20Sharing%20(s4).html), just in case.
+ A backup of the contents of the above link has been made to [copy/Simple Shamir's Secret Sharing (s4).html](https://raw.githubusercontent.com/bokkypoobah/ReadOnlyOfflineShamir39DeviceRecipe/main/copy/Simple%20Shamir's%20Secret%20Sharing%20(s4).html), just in case.
 
  <img width="400" src="images/SimpleShamirsSecretSharing.png">
 
