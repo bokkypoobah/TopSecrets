@@ -441,9 +441,9 @@ See the official [BIP-39 specification](https://github.com/bitcoin/bips/blob/mas
 
 See the [Shamir39 specification](https://github.com/iancoleman/shamir39/blob/master/specification.md). There is only one known implementation of this specification at https://github.com/iancoleman/shamir39 by the same author.
 
-#### What Is Shamirs Secret Sharing?
+#### What Is Shamir's Secret Sharing?
 
-See [Shamir's secret sharing](https://en.wikipedia.org/wiki/Shamir%27s_secret_sharing).
+See [Dev Corner: A Detailed Guide to Shamir Backup](https://blog.trezor.io/shamir-backup-a-new-security-standard-3aa42a6ebb5f).
 
 #### What Wallets Support BIP-39?
 
