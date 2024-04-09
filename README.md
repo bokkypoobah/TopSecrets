@@ -2,7 +2,7 @@
 
 If you hold, or will hold cryptocurrency, you will eventually search for a tool to distribute parts of your private keys to multiple locations or parties.
 
-This guide is a recipe for you to build a read-only offline Raspberry Pi 400 device to split and combine your private keys, in the form of BIP-39 mnemonic seed phrases, using the Shamir39 tool.
+This guide is a recipe for you to build a read-only offline Raspberry Pi 400 device to split and combine your private keys, in the form of BIP-39 mnemonic seed phrases, using the [Shamir39 tool](https://github.com/iancoleman/shamir39).
 
 <br />
 
