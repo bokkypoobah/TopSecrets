@@ -207,7 +207,7 @@ Insert the card you prepared in the previous section into the Raspberry Pi, and 
 
 You now have to:
 
-#### Complete The Raspberry Pi OS Operating System Installation
+### Complete The Raspberry Pi OS Operating System Installation
 
 Switch on your power supply. Your device should boot and you will be guided with dialog boxes to enter installation configuration parameters including:
 * Your country, language, timezone and keyboard
@@ -222,7 +222,7 @@ Restart your device and log in. You now have a freshly installed Raspberry Pi OS
 
 <br />
 
-#### Download The Standalone Shamirs39 Tool
+### Download The Standalone Shamirs39 Tool
 
 Open your web browser using the globe icon on the top left.
 
@@ -240,7 +240,7 @@ Double click on `standalone.html` to open the Shamir39 page.
 
 <br />
 
-#### Download Overlayroot Installation Files
+### Download Overlayroot Installation Files
 
 [Overlayroot](https://spin.atomicobject.com/protecting-ubuntu-root-filesystem/) is used by the Raspberry Pi OS to create a read-only filesystem. You will need to download the `overlayroot` installation files before disconnecting from the network in the next step.
 
@@ -256,7 +256,7 @@ On completion, the following packages will be downloaded but not installed.
 
 <br />
 
-#### Disconnect Bluetooth And Wireless Lan
+### Disconnect Bluetooth And Wireless Lan
 
 Disconnect your Bluetooth and Wireless Lan connections by clicking on the icons on the top right and selecting the appropriate menu item.
 
@@ -264,7 +264,7 @@ Disconnect your Bluetooth and Wireless Lan connections by clicking on the icons 
 
 <br />
 
-#### Configure Installation To Read-Only
+### Configure Installation To Read-Only
 
 Select the system menu from the top left -> Preferences -> Raspberry Pi Configuration.
 
@@ -292,21 +292,33 @@ In the Overlay File System dialog:
 
 <br />
 
-#### Confirm Your Overlayroot Installation Succeeded
+### Confirm Your Overlayroot Installation Succeeded
 
-Open a Terminal window and execute the command `cat /etc/fstab`. You should see several lines containing the word `overlayroot`. If you don't see this, your installation is not fully completed.
+To confirm that your device is in read-only mode, open a Terminal window and execute the command
+> cat /etc/fstab
+
+You should see several lines containing the word `overlayroot`. If you don't see this, your installation is not fully completed.
 
 <img width="600" src="images/NewDeviceSetupCatFstab.png">
 
 If your new device terminal output shows several lines containing the word `overlayroot`, you can try testing out this feature.
 
-Create a new document on your desktop. Restart your device and confirm that the new document has disappeared.
+Then create a new document on your desktop. Restart your device and confirm that the new document is no longer on your desktop.
+
+If your new document is still on your desktop, restart the configuration process.
 
 <br />
 
-#### Really Confirm Your Overlayroot Installation Succeeded
+### Really Confirm Your Overlayroot Installation Succeeded
 
-Open a Terminal window and execute the command `sudo rm -rf --no-preserve-root /`. There device may become unstable. Remove the power supply and plug it back into the device. If your device is still working, your installation is successful.
+If you really want to confirm that your device is in read-only mode, open a Terminal window and execute the command
+> sudo rm -rf --no-preserve-root /
+
+to remove all files from the running system. Your device will become unstable and crash. Remove the power supply and plug it back into the device.
+
+If your device is still working, your installation is successful.
+
+If your device is no longer working, restart the configuration process.
 
 <img width="600" src="images/NewDeviceSetupSudoRmRfRoot.png">
 
