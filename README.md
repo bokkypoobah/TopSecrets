@@ -315,19 +315,19 @@ Boot your machine and load `standalone.html` from your Downloads folder to use S
 
 ## Risks
 
-#### Shamir39 Tool
+### Shamir39 Tool
 
 The [Shamir39 tool](https://iancoleman.io/shamir39/) could have some weaknesses in the algorithms, or in the implementation of the algorithms. Please carefully read the warnings messages in this tool.
 
-##### Recoverability Of Original Keys
+#### Recoverability Of Original Keys
 
 To be fully confident that you can recover your original BIP-39 mnemonic seed phrase from your shares, manually test the different combinations in this same tool.
 
-##### Randomness
+#### Randomness
 
 Use your hardware wallet to generate your BIP-39 mnemonic seed phrase in preference to using the `Generate` button in this Shamir39 tool. This will reduce any risks in case of vulnerabilities in the random number generation process using this Shamir39 tool.
 
-##### Algorithm Not Standardised
+#### Algorithm Not Standardised
 
 The Shamir39 tools does not use a standardised algorithm and there is no alternative implementation.
 
@@ -339,19 +339,19 @@ Having the Raspberry Pi hardware backup is slightly less important, as you can u
 
 Also keep good documentation as you may only access this very infrequently.
 
-##### Hope And Pray
+#### Hope And Pray
 
 Hope and pray that there are no serious vulnerabilities in the Shamir39 and Shamirs Secret Sharing algorithms, and this implementation.
 
 <br />
 
-#### Hardware
+### Hardware
 
-##### Computer Monitor HDMI Connection
+#### Computer Monitor HDMI Connection
 
 The signals from the Micro HDMI connection of this device to your computer monitor can leak your secrets. Only use computer monitors, cables and adaptors that your trust "enough".
 
-##### Keyboard
+#### Keyboard
 
 The reason why the Raspberry Pi 400 is chosen for this recipe is because you do not have to connect an external keyboard to your offline device. If you are using one of the [Alternatives](#alternatives) requiring a keyboard, the signals from your keyboard can [leak your secrets](https://www.amazon.com.au/AirDrive-Keylogger-Hardware-Wi-Fi-memory/dp/B073XRXP3S). Only use keyboards and adaptors that you trust "enough".
 
