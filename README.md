@@ -15,6 +15,7 @@ Status: **First Draft**
   * [Mouse](#mouse)
   * [Monitor](#monitor)
   * [MicroSD Card](#microsd-card)
+  * [Component Prices](#comonent-prices)
   * [Another Computer And Internet](#another-computer-and-internet)
 * [Prepare Raspberry Pi OS Installation MicroSD Card](#prepare-raspberry-pi-os-installation-microsd-card)
 * [Build Read-Only Offline Shamir39 Device](#build-read-only-offline-shamir39-device)
@@ -101,10 +102,22 @@ If you have access to computer monitors with only HDMI plugs, you may want to co
 
 #### MicroSD Card
 
-16GB or larger MicroSD card to store the operating system files. I am using a SanDisk Extreme 32GB - see [here](https://www.tomshardware.com/best-picks/raspberry-pi-microsd-cards) and
+8GB or larger MicroSD card to store the operating system files. I am using a SanDisk Extreme 32GB - see [here](https://www.tomshardware.com/best-picks/raspberry-pi-microsd-cards) and
 [here](https://www.xda-developers.com/best-sd-cards-raspberry-pi/) for some comparisons of these cards.
 
 <img width="150" src="https://www.jaycar.com.au/medias/sys_master/images/images/10206502092830/XC5500-sandisk-32gb-high-extreme-microsdxc-class-10-reads-100mb-s-writes-60mb-sImageMain-515.jpg">
+
+<br />
+
+#### Component Prices
+
+| Component | AUD, in Australia |
+| --- | ---:|
+| Raspberry Pi 400 | [149](https://www.jaycar.com.au/raspberry-pi-400-keyboard-desktop-computer/p/XC9115) |
+| Power Supply |  |
+| Mouse |  |
+| Monitor |  |
+| MicroSD Card |  |
 
 <br />
 
