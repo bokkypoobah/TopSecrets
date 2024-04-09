@@ -337,7 +337,7 @@ The main backups are copies of your offline Shamir39 MicroSD card.
 
 Having the Raspberry Pi hardware backup is slightly less important, as you can use your MicroSD card in any readily available Raspberry Pi Model 4 series.
 
-Also keep good documentation as you may only access this very infrequently.
+Also keep good documentation as you may only access these devices and MicroSD cards very infrequently.
 
 #### Hope And Pray
 
