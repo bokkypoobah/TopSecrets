@@ -55,7 +55,7 @@ The Shamir39 tool linked above should only be used with a computer permanently d
 
 This is a simple recipe to create a small **dedicated** **offline** **read-only** **Raspberry Pi 400** computer to run the Shamir39 tool in **standalone** mode.
 
-When this device is being used, any changes to the file system is written to Random Access Memory (RAM) instead of the MicroSD card storage, and these changes will be lost when the device is switched off.
+When this device is being used, any changes to the file system is written to Random Access Memory (RAM) instead of the MicroSD card storage, and these changes will be lost when the device loses power.
 
 Please see [Risks](#risks) before any serious use.
 
