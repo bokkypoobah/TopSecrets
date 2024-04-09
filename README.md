@@ -406,6 +406,14 @@ Yes. Trezor have their own Shamir backup system requiring different tools - see 
 
 See [here](https://core-electronics.com.au/guides/read-only-raspberry-pi/) and [here](https://learn.adafruit.com/read-only-raspberry-pi/overview) for steps.
 
+##### What is BIP-39?
+
+See the official [BIP-39 specification](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) and [What is BIP39?](https://trezor.io/learn/a/what-is-bip39).
+
+##### What is Shamir39?
+
+See the [Shamir39 specification](https://github.com/iancoleman/shamir39/blob/master/specification.md). There is only one known implementation of this tool at https://github.com/iancoleman/shamir39 by the same author.
+
 <br />
 
 <br />
