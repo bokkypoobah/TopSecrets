@@ -22,7 +22,6 @@ Status: **First Draft**
 * [Risks](#risks)
 * [Alternatives](#alternatives)
 * [FAQs](#faqs)
-* [Notes](#notes)
 * [References](#references)
 
 <br />
@@ -376,27 +375,23 @@ The reason why the Raspberry Pi 400 is chosen for this recipe is because you do 
 
 ## FAQs
 
-##### Why Raspberry Pi 400?
-
-The 400 comes in convenient keyboard case.
-
-##### Why Raspberry Pi?
+##### Why Raspberry Pi And Why 400?
 
 The parts are simple, readily available and cheap enough to make redundant backups. The software is well supported, and documentation is easily accessible.
+
+The 400 comes in convenient keyboard case.
 
 ##### What Is So Cool About This Recipe?
 
 When running this device using the Overlayroot mode, any secrets generated in your use of this tool is lost when you power down this device. The Linux operating system overlays writes to Random Access Memory (RAM), while keeping the contents of the MicroSD card as read-only.
 
-<br />
+##### What Is Overlayroot?
 
----
+[Overlayroot](https://spin.atomicobject.com/protecting-ubuntu-root-filesystem/) is used by the Raspberry Pi OS to create a read-only filesystem.
 
-## Notes
+##### Is This Different From Trezors Shamir Backup?
 
-* Disable Bluetooth, WiFi. Tape over network port after setup completed.
-* No standard for using Shamirs Secret Sharing with BIP-39 mnemonics. Make sure the same Shamir39 tool is available when required
-* Trezor have their own Shamir backup system requiring different tools - see [What is Shamir backup?](https://trezor.io/learn/a/what-is-shamir-backup)
+Yes. Trezor have their own Shamir backup system requiring different tools - see [What is Shamir backup?](https://trezor.io/learn/a/what-is-shamir-backup)
 
 <br />
 
@@ -407,6 +402,7 @@ When running this device using the Overlayroot mode, any secrets generated in yo
 * [Shamir39 Tool](https://iancoleman.io/shamir39/) - Note warnings about usage of this software
 * [Read-Only Raspberry Pi - Never Corrupt your Micro-SD Card](https://core-electronics.com.au/guides/read-only-raspberry-pi/)
 * [Read-Only Raspberry Pi](https://learn.adafruit.com/read-only-raspberry-pi/overview)
+* [Protecting the Root Filesystem on Ubuntu with Overlayroot](https://spin.atomicobject.com/protecting-ubuntu-root-filesystem/)
 
 <br />
 
