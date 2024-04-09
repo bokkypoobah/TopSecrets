@@ -447,7 +447,7 @@ See [Shamir's secret sharing](https://en.wikipedia.org/wiki/Shamir%27s_secret_sh
 
 #### What Wallets Support BIP-39?
 
-Here are some wallets:
+Here are some wallets. Check the individual models for specifics:
 
 | Wallet | Type | BIP-39 Support? |
 | --- | --- | --- |
