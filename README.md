@@ -474,7 +474,7 @@ Research and test yourself before real use!
 
 ##### Banana Split
 
-Banana Split at https://github.com/paritytech/banana_split splits secrets into QR code shares for printing, with an additional handwritten passphrase required to recover your original secret.
+Banana Split at https://github.com/paritytech/banana_split splits secrets (maximum length 1024 characters) into QR code shares for printing, with an additional handwritten passphrase required to recover your original secret.
 
 <img width="400" src="images/BananaSplit1.png">
 
