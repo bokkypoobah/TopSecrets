@@ -377,13 +377,15 @@ The reason why the Raspberry Pi 400 is chosen for this recipe is because you do 
 
 ##### Why Raspberry Pi And Why 400?
 
-The parts are simple, readily available and cheap enough to make redundant backups. The software is well supported, and documentation is easily accessible.
+The parts are simple, readily available and cheap enough to make redundant backups. The software is well supported, and documentation is easily accessible. The fully prepared MicroSD card is cheap and can easily be duplicated and distributed.
 
-The 400 comes in convenient keyboard case.
+The 400 comes in convenient keyboard case - one less thing to worry about.
 
 ##### What Is So Cool About This Recipe?
 
 When running this device using the Overlayroot mode, any secrets generated in your use of this tool is lost when you power down this device. The Linux operating system overlays writes to Random Access Memory (RAM), while keeping the contents of the MicroSD card as read-only.
+
+Note that you will still need a secure HDMI connected computer monitor to use this tool securely.
 
 ##### What Is Overlayroot?
 
