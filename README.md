@@ -17,9 +17,9 @@ This guide is a recipe for you to build a read-only offline Raspberry Pi 400 dev
   * [Monitor With Micro HDMI Cable](#monitor-with-micro-hdmi-cable)
   * [Component Prices](#comonent-prices)
   * [Another Computer And Wireless Internet](#another-computer-and-wireless-internet)
-* [Prepare Raspberry Pi OS Installation MicroSD Card](#prepare-raspberry-pi-os-installation-microsd-card)
-* [Build Read-Only Offline Shamir39 Device](#build-read-only-offline-shamir39-device)
-* [Use Read-Only Offline Shamir39 Device](#use-read-only-offline-shamir39-device)
+* [Prepare Raspberring The Pi OS Installation MicroSD Card](#preparing-the-raspberry-pi-os-installation-microsd-card)
+* [Building The Read-Only Offline Shamir39 Device](#building-the-read-only-offline-shamir39-device)
+* [Using The Read-Only Offline Shamir39 Device](#using-the-read-only-offline-shamir39-device)
 * [Risks](#risks)
 * [Alternatives](#alternatives)
 * [FAQs](#faqs)
@@ -129,7 +129,7 @@ You will also need a separate internet connected computer to install the Raspber
 
 ---
 
-## Prepare Raspberry Pi OS Installation MicroSD Card
+## Preparing The Raspberry Pi OS Installation MicroSD Card
 
 The steps to install of a fresh unconfigured version of the Raspberry Pi OS operating system on your MicroSD card using the **Raspberry Pi Imager** method follows:
 
@@ -197,7 +197,7 @@ Re-run the Imager program any time you need a fresh unconfigured version on your
 
 ---
 
-## Build Read-Only Offline Shamir39 Device
+## Building The Read-Only Offline Shamir39 Device
 
 Insert the card you prepared in the previous section into the Raspberry Pi, and connect your monitor, mouse and power supply.
 
@@ -328,7 +328,7 @@ If your device is no longer working, restart the configuration process.
 
 ---
 
-## Use Read-Only Offline Shamir39 Device
+## Using The Read-Only Offline Shamir39 Device
 
 Boot your machine and load `standalone.html` from your Downloads folder to use Shamir39 offline to split or combine your keys. Power off and all your secrets on the device are forgotten.
 
