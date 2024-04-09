@@ -400,7 +400,7 @@ Note that you will still need a secure HDMI connected computer monitor to use th
 
 #### Is This Different From Trezors Shamir Backup?
 
-Yes. Trezor have their own Shamir backup system requiring different tools - see [What is Shamir backup?](https://trezor.io/learn/a/what-is-shamir-backup)
+Yes. Trezor have their own Shamir backup system requiring different tools - see [What is Shamir backup?](https://trezor.io/learn/a/what-is-shamir-backup). You can still use this device on your Trezor's BIP-39 mnemonic seed phrase.
 
 #### How Do I Remove The Read-Only Mode?
 
