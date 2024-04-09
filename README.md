@@ -1,4 +1,4 @@
-# Offline Shamir39 Device Recipe
+# Read-Only Offline Shamir39 Device Recipe
 
 A recipe to build a read-only offline Raspberry Pi 400 device to split and combine BIP39 mnemonic seed phrases using the Shamir39 tool.
 
