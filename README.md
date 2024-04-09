@@ -414,6 +414,10 @@ See the official [BIP-39 specification](https://github.com/bitcoin/bips/blob/mas
 
 See the [Shamir39 specification](https://github.com/iancoleman/shamir39/blob/master/specification.md). There is only one known implementation of this tool at https://github.com/iancoleman/shamir39 by the same author.
 
+#### What is Shamirs Secret Sharing?
+
+See [Shamir's secret sharing](https://en.wikipedia.org/wiki/Shamir%27s_secret_sharing).
+
 <br />
 
 <br />
