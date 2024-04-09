@@ -460,9 +460,11 @@ Here are some wallets. Check the individual models for specifics:
 
 #### What Other Tools Could Be Useful For This Read-Only Offline Device?
 
+Some useful tools. Research and test yourself before real use!
+
 ##### Simple Shamir's Secret Sharing
 
-Simple Shamir's Secret Sharing (s4) from https://simon-frey.com/s4/ allows you to encrypt and decrypt messages. Save a copy of the web page in your Downloads folder before you remove the network connectivity and set the device to read-only mode.
+Simple Shamir's Secret Sharing (s4) at https://simon-frey.com/s4/ allows you to encrypt and decrypt messages. Save a copy of the web page in your Downloads folder before you remove the network connectivity and set the device to read-only mode.
 
 A backup of the contents of the link https://simon-frey.com/s4/ has been made to [copy/Simple Shamir's Secret Sharing (s4).html](https://raw.githubusercontent.com/bokkypoobah/ReadOnlyOfflineShamir39DeviceRecipe/main/copy/Simple%20Shamir's%20Secret%20Sharing%20(s4).html), just in case.
 
@@ -472,9 +474,9 @@ You may have to distribute these shares by copying them onto USB storage, as the
 
 ##### Banana Split
 
-https://github.com/paritytech/banana_split 
+Banana Split at https://github.com/paritytech/banana_split splits secrets into QR code shares for printing, with an additional handwritten passphrase required to recover your original secret.
 
-A backup of the contents of the link https://bs.parity.io/ has been made to [copy/Simple Shamir's Secret Sharing (s4).html](https://raw.githubusercontent.com/bokkypoobah/ReadOnlyOfflineShamir39DeviceRecipe/main/copy/Banana%20split.html), just in case.
+A backup of the contents of the link https://bs.parity.io/ has been made to [copy/Banana split.html](https://raw.githubusercontent.com/bokkypoobah/ReadOnlyOfflineShamir39DeviceRecipe/main/copy/Banana%20split.html), just in case.
 
 <br />
 
