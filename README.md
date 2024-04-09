@@ -45,7 +45,7 @@ Here is an example of a BIP-39 mnemonic seed phrase split into 5 shares, with a 
 
 <br />
 
-Here are minimum three shares combined to recover the original BIP-39 mnemonic seed phrase.
+Here are the minimum three shares combined to recover the original BIP-39 mnemonic seed phrase.
 
 <img width="800" src="images/Shamir39Combine.png">
 
