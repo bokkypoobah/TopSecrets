@@ -1,10 +1,10 @@
 # Read-Only Offline Shamir39 Device Recipe
 
-A recipe to build a read-only offline Raspberry Pi 400 device to split and combine BIP39 mnemonic seed phrases using the Shamir39 tool.
+If you hold, or will hold cryptocurrency, you will eventually search for a tool to distribute parts of your private keys to multiple locations or parties.
 
-Status: **First Draft**
+This guide is a recipe for you to build a read-only offline Raspberry Pi 400 device for you to split and combine BIP-39 mnemonic seed phrases using the Shamir39 tool.
 
----
+<br />
 
 ## Table Of Contents
 
