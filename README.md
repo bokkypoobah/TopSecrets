@@ -458,6 +458,14 @@ Here are some wallets. Check the individual models for specifics:
 | [MetaMask](https://metamask.io/) | Software | [Yes](https://support.metamask.io/hc/en-us/articles/4404722782107-User-Guide-Secret-Recovery-Phrase-password-and-private-keys) |
 | [Trezor](https://trezor.io/) | Hardware | [Yes](https://trezor.io/learn/a/what-is-bip39) |
 
+#### What Other Tools Could Be Useful For This Read-Only Offline Device?
+
+ Simple Shamir's Secret Sharing (s4) from https://simon-frey.com/s4/ allows you to encrypt and decrypt messages. Save a copy of the web page in your Downloads folder before you remove the network connectivity and set the device to read-only mode.
+
+ <img width="400" src="images/SimpleShamirsSecretSharing.png">
+
+ You may have to distribute these shares by copying them onto USB devices, as these shares are much harder to write down.
+
 <br />
 
 <br />
