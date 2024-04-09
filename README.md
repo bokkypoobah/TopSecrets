@@ -337,7 +337,7 @@ When splitting important keys using this tool, remember to keep several "backups
 
 The main backups are copies of your offline Shamir39 MicroSD card.
 
-Having the Raspberry Pi hardware backup is slightly important, as you can use your MicroSD card in any readily available Raspberry Pi Models B and 4 series.
+Having the Raspberry Pi hardware backup is slightly less important, as you can use your MicroSD card in any readily available Raspberry Pi Model 4 series.
 
 Also keep good documentation as you may only access this very infrequently.
 
