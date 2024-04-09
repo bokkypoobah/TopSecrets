@@ -460,8 +460,6 @@ Here are some wallets. Check the individual models for specifics:
 
 #### What Other Tools Could Be Useful For This Read-Only Offline Device?
 
-Some useful tools. Research and test yourself before real use!
-
 ##### Simple Shamir's Secret Sharing
 
 Simple Shamir's Secret Sharing (s4) at https://simon-frey.com/s4/ allows you to encrypt and decrypt messages. Save a copy of the web page in your Downloads folder before you remove the network connectivity and set the device to read-only mode.
@@ -472,6 +470,8 @@ A backup of the contents of the link https://simon-frey.com/s4/ has been made to
 
 You may have to distribute these shares by copying them onto USB storage, as these shares are much harder to write down.
 
+Research and test yourself before real use!
+
 ##### Banana Split
 
 Banana Split at https://github.com/paritytech/banana_split splits secrets into QR code shares for printing, with an additional handwritten passphrase required to recover your original secret.
@@ -480,7 +480,11 @@ Banana Split at https://github.com/paritytech/banana_split splits secrets into Q
 
 <img width="400" src="images/BananaSplit2.png">
 
+NOTE: You will need a [camera](https://www.raspberrypi.com/products/camera-module-v2/) for your Raspberry Pi device to restore your secret from the QR codes. You may be able to use USB webcams as well. I have not tested that this will work.
+
 A backup of the contents of the link https://bs.parity.io/ has been made to [copy/Banana split.html](https://raw.githubusercontent.com/bokkypoobah/ReadOnlyOfflineShamir39DeviceRecipe/main/copy/Banana%20split.html), just in case.
+
+Research and test yourself before real use!
 
 <br />
 
