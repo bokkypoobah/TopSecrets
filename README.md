@@ -22,7 +22,6 @@ Status: **First Draft**
 * [Risks](#risks)
 * [Alternatives](#alternatives)
 * [FAQs](#faqs)
-* [References](#references)
 
 <br />
 
@@ -369,6 +368,8 @@ The reason why the Raspberry Pi 400 is chosen for this recipe is because you do 
   <img width="200" src="https://assets.raspberrypi.com/static/492cb6e88e7d697fbb53f89f48350133/f2559/488f4e12-de49-4297-bbc6-c3753c060d40_Case%2BWhite.webp">
 </p>
 
+Similar steps can be used to build this device on [other platforms](https://www.zdnet.com/article/best-raspberry-pi-alternative/) using the Ubuntu (or similar Linux) operating system.
+
 <br />
 
 ---
@@ -395,16 +396,9 @@ Note that you will still need a secure HDMI connected computer monitor to use th
 
 Yes. Trezor have their own Shamir backup system requiring different tools - see [What is Shamir backup?](https://trezor.io/learn/a/what-is-shamir-backup)
 
-<br />
+##### How Do I Remove The Read-Only Mode?
 
----
-
-## References
-
-* [Shamir39 Tool](https://iancoleman.io/shamir39/) - Note warnings about usage of this software
-* [Read-Only Raspberry Pi - Never Corrupt your Micro-SD Card](https://core-electronics.com.au/guides/read-only-raspberry-pi/)
-* [Read-Only Raspberry Pi](https://learn.adafruit.com/read-only-raspberry-pi/overview)
-* [Protecting the Root Filesystem on Ubuntu with Overlayroot](https://spin.atomicobject.com/protecting-ubuntu-root-filesystem/)
+See [here](https://core-electronics.com.au/guides/read-only-raspberry-pi/) and [here](https://learn.adafruit.com/read-only-raspberry-pi/overview) for steps.
 
 <br />
 
