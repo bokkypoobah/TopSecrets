@@ -376,7 +376,7 @@ Similar steps can be used to build this device on [other platforms](https://www.
 
 ## FAQs
 
-##### Why Raspberry Pi And Why 400?
+#### Why Raspberry Pi And Why 400?
 
 The parts are simple, readily available and cheap enough to make redundant backups.
 
@@ -388,29 +388,29 @@ The fully prepared MicroSD card is cheap and can easily be duplicated and distri
 
 The 400 comes in convenient keyboard case - one less thing to worry about.
 
-##### What Is So Cool About This Recipe?
+#### What Is So Cool About This Recipe?
 
 When running this device using the Overlayroot mode, any secrets generated in your use of this tool is lost when you power down this device. The Linux operating system overlays writes to Random Access Memory (RAM), while keeping the contents of the MicroSD card as read-only.
 
 Note that you will still need a secure HDMI connected computer monitor to use this tool securely.
 
-##### What Is Overlayroot?
+#### What Is Overlayroot?
 
 [Overlayroot](https://spin.atomicobject.com/protecting-ubuntu-root-filesystem/) is used by the Raspberry Pi OS to create a read-only filesystem.
 
-##### Is This Different From Trezors Shamir Backup?
+#### Is This Different From Trezors Shamir Backup?
 
 Yes. Trezor have their own Shamir backup system requiring different tools - see [What is Shamir backup?](https://trezor.io/learn/a/what-is-shamir-backup)
 
-##### How Do I Remove The Read-Only Mode?
+#### How Do I Remove The Read-Only Mode?
 
 See [here](https://core-electronics.com.au/guides/read-only-raspberry-pi/) and [here](https://learn.adafruit.com/read-only-raspberry-pi/overview) for steps.
 
-##### What is BIP-39?
+#### What is BIP-39?
 
 See the official [BIP-39 specification](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) and [What is BIP39?](https://trezor.io/learn/a/what-is-bip39).
 
-##### What is Shamir39?
+#### What is Shamir39?
 
 See the [Shamir39 specification](https://github.com/iancoleman/shamir39/blob/master/specification.md). There is only one known implementation of this tool at https://github.com/iancoleman/shamir39 by the same author.
 
