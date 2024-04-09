@@ -451,10 +451,10 @@ Here are some wallets:
 
 | Wallet | Type | BIP-39 Support? |
 | --- | --- | --- |
-| Gridplus | Hardware | [Yes](https://docs.gridplus.io/lattice1/security-features/lattice1-random-number-generation) |
-| MetaMask | Software | [Yes](https://support.metamask.io/hc/en-us/articles/4404722782107-User-Guide-Secret-Recovery-Phrase-password-and-private-keys) |
-| Ledger | Hardware | [Yes](https://support.ledger.com/hc/en-us/articles/4415198323089-How-Ledger-device-generates-24-word-recovery-phrase?docs=true) |
-| Trezor | Hardware | [Yes](https://trezor.io/learn/a/what-is-bip39) |
+| [Gridplus Lattice1](https://gridplus.io/products/grid-lattice1) | Hardware | [Yes](https://docs.gridplus.io/lattice1/security-features/lattice1-random-number-generation) |
+| [MetaMask](https://metamask.io/) | Software | [Yes](https://support.metamask.io/hc/en-us/articles/4404722782107-User-Guide-Secret-Recovery-Phrase-password-and-private-keys) |
+| [Ledger](https://www.ledger.com/) | Hardware | [Yes](https://support.ledger.com/hc/en-us/articles/4415198323089-How-Ledger-device-generates-24-word-recovery-phrase?docs=true) |
+| [Trezor](https://trezor.io/) | Hardware | [Yes](https://trezor.io/learn/a/what-is-bip39) |
 
 <br />
 
