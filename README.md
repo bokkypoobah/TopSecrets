@@ -458,17 +458,6 @@ Here are some wallets. Check the individual models for specifics:
 | [MetaMask](https://metamask.io/) | Software | [Yes](https://support.metamask.io/hc/en-us/articles/4404722782107-User-Guide-Secret-Recovery-Phrase-password-and-private-keys) |
 | [Trezor](https://trezor.io/) | Hardware | [Yes](https://trezor.io/learn/a/what-is-bip39) |
 
-### How Can I Trust The Downloaded Copies In This GitHub?
-
-If you plan on relying on the downloaded copies of the files in the [./copy](./copy) folder, download the files at the original links and verify them against the copies.
-
-| Original Links | Navigate To Copy And Download Raw |
-| --- | --- |
-| https://bs.parity.io/ | [copy/BananaSplit.html](copy/BananaSplit.html) |
-| https://simon-frey.com/s4/ | [copy/Simple Shamir's Secret Sharing (s4).html](copy/Simple%20Shamir's%20Secret%20Sharing%20(s4).html) |
-| [https://github.com/iancoleman/shamir39/raw/b12d...d973/standalone.html](https://github.com/iancoleman/shamir39/raw/b12d58d6d71a4db71ac9796e7d82c0a7691dd973/standalone.html) | [copy/standalone_iancoleman_shamir39_b12d...d973.html](copy/standalone_iancoleman_shamir39_b12d58d6d71a4db71ac9796e7d82c0a7691dd973.html) |
-| contents of the archive vanity-eth-offline.zip from the link https://github.com/bokub/vanity-eth/archive/refs/heads/offline.zip | [copy/vanity-eth.html](copy/vanity-eth.html) |
-
 ### What Other Tools Could Be Useful For This Read-Only Offline Device?
 
 #### Simple Shamir's Secret Sharing
@@ -510,6 +499,47 @@ You can download the offline version https://github.com/bokub/vanity-eth/archive
 A backup of the contents of the archive vanity-eth-offline.zip from the link https://github.com/bokub/vanity-eth/archive/refs/heads/offline.zip has been made to [copy/vanity-eth.html](https://raw.githubusercontent.com/bokkypoobah/ReadOnlyOfflineShamir39DeviceRecipe/main/copy/vanity-eth.html), just in case.
 
 Research and test yourself before real use!
+
+### How Can I Trust The Downloaded Copies In This GitHub?
+
+If you plan on relying on the downloaded copies of the files in the [./copy](./copy) folder, download the files at the original links and verify them against the copies.
+
+| Original Links | Navigate To Copy And Download Raw |
+| --- | --- |
+| https://bs.parity.io/ | [copy/BananaSplit.html](copy/BananaSplit.html) |
+| https://simon-frey.com/s4/ | [copy/Simple Shamir's Secret Sharing (s4).html](copy/Simple%20Shamir's%20Secret%20Sharing%20(s4).html) |
+| [https://github.com/iancoleman/shamir39/raw/b12d...d973/standalone.html](https://github.com/iancoleman/shamir39/raw/b12d58d6d71a4db71ac9796e7d82c0a7691dd973/standalone.html) | [copy/standalone_iancoleman_shamir39_b12d...d973.html](copy/standalone_iancoleman_shamir39_b12d58d6d71a4db71ac9796e7d82c0a7691dd973.html) |
+| contents of the archive vanity-eth-offline.zip from the link https://github.com/bokub/vanity-eth/archive/refs/heads/offline.zip | [copy/vanity-eth.html](copy/vanity-eth.html) |
+
+
+Note that you will find some differences in the downloaded `copy/Simple Shamir's Secret Sharing (s4).html` file as there are some active JavaScript menu selection changes when you download the file:
+```
+$ diff Simple\ Shamir\'s\ Secret\ Sharing\ \(s4\)_FromCopy.html Simple\ Shamir\'s\ Secret\ Sharing\ \(s4\)_FromLink.html | more
+218c218
+< <li class="" data-section="encrypt">Encrypt</li>
+---
+> <li class="active" data-section="encrypt">Encrypt</li>
+220c220
+< <li data-section="info" class="active">Info</li>
+---
+> <li data-section="info">Info</li>
+223c223
+< <div id="error" style="display: none;">
+---
+> <div id="error">
+227c227
+< <section id="encrypt" style="display: none;">
+---
+> <section id="encrypt">
+245c245
+< <section id="decrypt" style="display: none;">
+---
+> <section id="decrypt">
+255c255
+< <section id="info" style="display: block;">
+---
+> <section id="info">
+```
 
 <br />
 
