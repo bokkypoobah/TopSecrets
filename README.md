@@ -230,7 +230,7 @@ Open your web browser using the globe icon on the top left.
 
 Download https://github.com/iancoleman/shamir39/raw/b12d58d6d71a4db71ac9796e7d82c0a7691dd973/standalone.html (right click save link as) into your Downloads folder.
 
-A backup of the contents at the above link has been made to [copy/standalone_iancoleman_shamir39_b12d58d6d71a4db71ac9796e7d82c0a7691dd973.html](https://raw.githubusercontent.com/bokkypoobah/ReadOnlyOfflineShamir39DeviceRecipe/main/copy/standalone_iancoleman_shamir39_b12d58d6d71a4db71ac9796e7d82c0a7691dd973.html), just in case.
+A backup of the contents at the above link has been made to [copy/standalone_iancoleman_shamir39_b12d58d6d71a4db71ac9796e7d82c0a7691dd973.html](copy/standalone_iancoleman_shamir39_b12d58d6d71a4db71ac9796e7d82c0a7691dd973.html), just in case.
 
 <img width="600" src="images/NewDeviceSetupDownloadShamir39Standalone1.png">
 
@@ -250,7 +250,7 @@ Double click on `standalone.html` to open the Shamir39 page.
 
 Open a Terminal session and execute the following command:
 
-> sudo apt-get install overlayroot --download-only
+    sudo apt-get install overlayroot --download-only
 
 <img width="600" src="images/NewDeviceSetupDownloadOverlayroot1.png">
 
@@ -299,7 +299,8 @@ In the Overlay File System dialog:
 ### Confirm Your Overlayroot Installation Succeeded
 
 To confirm that your device is in read-only mode, open a Terminal window and execute the command
-> cat /etc/fstab
+
+    cat /etc/fstab
 
 You should see several lines containing the word `overlayroot`. If you don't see this, your installation is not fully completed.
 
@@ -316,7 +317,8 @@ If your new document is still on your desktop, restart the configuration process
 ### Really Confirm Your Overlayroot Installation Succeeded
 
 If you really want to confirm that your device is in read-only mode, open a Terminal window and execute the command
-> sudo rm -rf --no-preserve-root /
+
+    sudo rm -rf --no-preserve-root /
 
 to remove all files from the running system. Your device will become unstable and crash. Remove the power supply and plug it back into the device.
 
@@ -502,7 +504,9 @@ Research and test yourself before real use!
 
 ### How Can I Trust The Downloaded Copies In This GitHub?
 
-If you plan on relying on the downloaded copies of the files in the [./copy](./copy) folder, download the files at the original links and verify them against the copies.
+The backups in the [./copy](./copy) folder are taken just in case the original links are taken down, or renamed in the future.
+
+If you plan on relying on the these backups, download the files from the original links and download the files from [./copy](./copy), then use a tool to compare them.
 
 | Original Links | Navigate To Copy And Download Raw |
 | --- | --- |
@@ -512,7 +516,8 @@ If you plan on relying on the downloaded copies of the files in the [./copy](./c
 | contents of the archive vanity-eth-offline.zip from the link https://github.com/bokub/vanity-eth/archive/refs/heads/offline.zip | [copy/vanity-eth.html](copy/vanity-eth.html) |
 
 
-Note that you will find some differences in the downloaded `copy/Simple Shamir's Secret Sharing (s4).html` file as there are some active JavaScript menu selection changes when you download the file:
+Note that you may find some differences in the downloaded `copy/Simple Shamir's Secret Sharing (s4).html` file as there are some active JavaScript menu selection changes when you download the file:
+
 ```
 $ diff Simple\ Shamir\'s\ Secret\ Sharing\ \(s4\)_FromCopy.html Simple\ Shamir\'s\ Secret\ Sharing\ \(s4\)_FromLink.html | more
 218c218
