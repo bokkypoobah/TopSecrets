@@ -488,6 +488,18 @@ A backup of the contents of the link https://bs.parity.io/ has been made to [cop
 
 Research and test yourself before real use!
 
+##### Vanity-ETH
+
+Vanity-ETH at https://vanity-eth.tk/ (Note: use the online version only for testing) allows you to generate vanity Ethereum addresses. You can used this to generate an Ethereum private key and public key pair, or a password protected .json keystore file.
+
+The web browser based JavaScript generation process is slow on the Raspberry Pi, at about 5 addresses per second, so I would not bother trying to generate vanity addresses with this setup. Also note that groups of matching vanity addresses can leak information.
+
+You can download the offline version https://github.com/bokub/vanity-eth/archive/refs/heads/offline.zip and extract the file vanity-eth.html from the downloaded vanity-eth-offline.zip into your Downloads folder.
+
+A backup of the contents of the archive vanity-eth-offline.zip from the link https://github.com/bokub/vanity-eth/archive/refs/heads/offline.zip has been made to [copy/vanity-eth.html](https://raw.githubusercontent.com/bokkypoobah/ReadOnlyOfflineShamir39DeviceRecipe/main/copy/vanity-eth.html), just in case.
+
+Research and test yourself before real use!
+
 <br />
 
 <br />
