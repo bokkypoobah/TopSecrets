@@ -462,9 +462,9 @@ Here are some wallets. Check the individual models for specifics:
 
 If you plan on relying on the downloaded copies of the files in the [./copy](./copy) folder, download the files at the original links and verify them against the copies.
 
-| Original Links | Copy |
+| Original Links | Navigate To Copy And Download Raw |
 | --- | --- |
-| https://bs.parity.io/ | [copy/Banana split.html](copy/Banana%20split.html) |
+| https://bs.parity.io/ | [copy/BananaSplit.html](copy/BananaSplit.html) |
 | https://simon-frey.com/s4/ | [copy/Simple Shamir's Secret Sharing (s4).html](copy/Simple%20Shamir's%20Secret%20Sharing%20(s4).html) |
 | [https://github.com/iancoleman/shamir39/raw/b12d...d973/standalone.html](https://github.com/iancoleman/shamir39/raw/b12d58d6d71a4db71ac9796e7d82c0a7691dd973/standalone.html) | [copy/standalone_iancoleman_shamir39_b12d...d973.html](copy/standalone_iancoleman_shamir39_b12d58d6d71a4db71ac9796e7d82c0a7691dd973.html) |
 | contents of the archive vanity-eth-offline.zip from the link https://github.com/bokub/vanity-eth/archive/refs/heads/offline.zip | [copy/vanity-eth.html](copy/vanity-eth.html) |
@@ -495,7 +495,7 @@ NOTE: You will need a [camera](https://www.raspberrypi.com/products/camera-modul
 
 <img width="400" src="images/BananaSplit3.png">
 
-A backup of the contents of the link https://bs.parity.io/ has been made to [copy/Banana split.html](https://raw.githubusercontent.com/bokkypoobah/ReadOnlyOfflineShamir39DeviceRecipe/main/copy/Banana%20split.html), just in case.
+A backup of the contents of the link https://bs.parity.io/ has been made to [copy/BananaSplit.html](copy/BananaSplit.html), just in case.
 
 Research and test yourself before real use!
 
