@@ -27,3 +27,11 @@ See Risks about connecting external devices.
 ## Monitor And Cable
 
 { Micro HDMI for 400, check otherwise. Consider adaptor }
+
+<br />
+
+<br />
+
+Enjoy!
+
+© Bok Consulting Pty Ltd 2024, CC0-1.0 license
