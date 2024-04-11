@@ -4,17 +4,17 @@
 
 Your Read-Only Offline Crypto Device will need an operating system running on a storage device.
 
-For the RPi400 you can install the Raspberry Pi OS on a MicroSD card or USB storage device, 8GB or larger.
+For the Raspberry Pi 400 you can install the Raspberry Pi OS on a MicroSD card or USB storage device, 8GB or larger.
 
-The steps to install of a fresh un-configured version of the Raspberry Pi OS on your storage device using the **Raspberry Pi Imager** method follows. There is a manual method described at the link below.
+You will need an internet connect Linux, Mac or Windows computer for this step with the correct slots or adaptors for your storage device.
 
-You will need an internet connect Linux, Mac or Windows computer for this step.
+**Note** that you will have to provide administrative access for the **Raspberry Pi Imager** to your computer, so don't do this on computers with sensitive information.
 
-**Note** that you will have to provide this program administrative access to your computer, so don't do this on your computers with sensitive information.
+<br />
 
 ## Download Raspberry Pi Imager
 
-Follow the instructions at https://www.raspberrypi.com/software/ to download and execute the Raspberry Pi Imager installer on your internet connected computer.
+Follow the instructions at https://www.raspberrypi.com/software/ to download the Raspberry Pi Imager installer on your internet connected computer.
 
 <img width="600" src="images/RaspberryPiImagerDownload.jpg">
 
@@ -22,49 +22,59 @@ Follow the instructions at https://www.raspberrypi.com/software/ to download and
 
 ### Execute Raspberry Pi Imager
 
-On Windows, you will see the following prompt, and you will have to click `Yes` to proceed:
+The download process may automatically run the Imager.
 
-<img width="300" src="images/WindowsUACRaspberryPiImagerInstall.jpg">
+On Windows, you will have to click `Yes` to the proceed when the Imager program tries to access to your computer.
 
-The Raspberry Pi Imager will then execute with the following prompt:
+<img width="400" src="images/WindowsUACRaspberryPiImagerInstall.jpg">
 
-<img width="300" src="images/RaspberryPiImager1.jpg">
+<br />
+
+The Raspberry Pi Imager will then present the following menu:
+
+<img width="400" src="images/RaspberryPiImager1.jpg">
+
+<br />
 
 Click on `CHOOSE DEVICE`, and select `Raspberry Pi 4` that includes the 400 model:
 
-<img width="300" src="images/RaspberryPiImager2.png">
+<img width="400" src="images/RaspberryPiImager2.png">
+
+<br />
 
 Click on `CHOOSE OS`, and select `Raspberry Pi OS (64-bit)`:
 
-<img width="300" src="images/RaspberryPiImager3.png">
+<img width="400" src="images/RaspberryPiImager3.png">
+
+<br />
 
 Click on `CHOOSE STORAGE` and select `{your MicroSD device}`:
 
-<img width="300" src="images/RaspberryPiImager4.png">
+<img width="400" src="images/RaspberryPiImager4.png">
 
 Click `NEXT`:
 
-<img width="300" src="images/RaspberryPiImager5.png">
+<img width="400" src="images/RaspberryPiImager5.png">
 
 Select `NO`:
 
-<img width="300" src="images/RaspberryPiImager6.png">
+<img width="400" src="images/RaspberryPiImager6.png">
 
 Select `YES`:
 
-<img width="300" src="images/RaspberryPiImager7.png">
+<img width="400" src="images/RaspberryPiImager7.png">
 
 Writing:
 
-<img width="300" src="images/RaspberryPiImager8.png">
+<img width="400" src="images/RaspberryPiImager8.png">
 
 Verifying:
 
-<img width="300" src="images/RaspberryPiImager9.png">
+<img width="400" src="images/RaspberryPiImager9.png">
 
 The Imager program is now complete and you can remove your MicroSD card:
 
-<img width="300" src="images/RaspberryPiImager10.png">
+<img width="400" src="images/RaspberryPiImager10.png">
 
 <br />
 
