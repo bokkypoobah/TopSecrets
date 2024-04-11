@@ -22,7 +22,7 @@ Follow the instructions at https://www.raspberrypi.com/software/ to download the
 
 ### Execute Raspberry Pi Imager
 
-The download process may automatically run the Imager.
+The download process may automatically run the Imager. Otherwise you can execute the Imager from your computer's programs menu.
 
 On Windows, you will have to click `Yes` to the proceed when the Imager program tries to access to your computer.
 
