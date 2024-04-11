@@ -1,4 +1,6 @@
-# Read-Only Offline Shamir39 Device Recipe
+# Read-Only Offline Crypto Device Recipe
+
+**Work in Progress**
 
 If you hold, or will hold cryptocurrency, you will eventually search for a tool to distribute parts of your private keys to multiple locations or parties.
 

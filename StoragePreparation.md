@@ -1,4 +1,4 @@
-# Raspberry Pi Storage Preparation
+# Read-Only Offline Crypto Device Recipe - Storage Preparation
 
 {Summary, MicroSD, USB, other devices}
 

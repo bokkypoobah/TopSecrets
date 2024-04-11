@@ -1,4 +1,4 @@
-# Raspberry Pi Hardware
+# Read-Only Offline Crypto Device Recipe - Hardware
 
 {Summary, with table - 400 & alternatives }
 

@@ -1,4 +1,4 @@
-# Raspberry Pi Installation
+# Read-Only Offline Crypto Device Recipe - Installation
 
 Summary
 

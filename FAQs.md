@@ -1,4 +1,4 @@
-# Frequently Asked Questions
+# Read-Only Offline Crypto Device Recipe - FAQs
 
 ### Why Raspberry Pi And Why 400?
 
