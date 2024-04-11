@@ -30,7 +30,7 @@ On Windows, you will have to click `Yes` to the proceed when the Imager program 
 
 <br />
 
-The Raspberry Pi Imager will then present the following menu:
+Imager will then present the following menu:
 
 <img width="400" src="images/RaspberryPiImager1.jpg">
 
@@ -48,49 +48,52 @@ Click on `CHOOSE OS`, and select `Raspberry Pi OS (64-bit)`:
 
 <br />
 
-Click on `CHOOSE STORAGE` and select `{your MicroSD device}`:
+Click on `CHOOSE STORAGE` and select `{your MicroSD or USB device}`:
 
 <img width="400" src="images/RaspberryPiImager4.png">
+
+<br />
 
 Click `NEXT`:
 
 <img width="400" src="images/RaspberryPiImager5.png">
 
+<br />
+
 Select `NO`:
 
 <img width="400" src="images/RaspberryPiImager6.png">
+
+<br />
 
 Select `YES`:
 
 <img width="400" src="images/RaspberryPiImager7.png">
 
+<br />
+
 Writing:
 
 <img width="400" src="images/RaspberryPiImager8.png">
+
+<br />
 
 Verifying:
 
 <img width="400" src="images/RaspberryPiImager9.png">
 
-The Imager program is now complete and you can remove your MicroSD card:
+<br />
+
+The Imager program is now complete and you can remove your MicroSD or USB device:
 
 <img width="400" src="images/RaspberryPiImager10.png">
 
 <br />
 
-You now have a fresh unconfigured version of the Raspberry Pi OS operating system installed on your MicroSD card.
+You now have a fresh unconfigured version of the Raspberry Pi OS installed on your MicroSD or USB device.
 
-Re-run the Imager program any time you need a fresh unconfigured version on your MicroSD card.
+Re-run this Imager program any time you need a fresh unconfigured version of the OS on your MicroSD or USB device.
 
-
-
-{Summary, MicroSD, USB, other devices}
-
-{Need internet connected computer with slot for storage device}
-
-## Download Raspberry Pi Imager
-
-## Execute Raspberry Pi Imager
 
 <br />
 
