@@ -6,7 +6,7 @@ Your Read-Only Offline Crypto Device will need an operating system running on a 
 
 For the Raspberry Pi 400 you can install the Raspberry Pi OS on a MicroSD card or USB storage device, 8GB or larger.
 
-You will need an internet connect Linux, Mac or Windows computer for this step with the correct slots or adaptors for your storage device.
+You will need an internet connect Linux, Mac or Windows computer for this step, with the correct slots or adaptors for your MicroSD or USB storage device.
 
 **Note** that you will have to provide administrative access for the **Raspberry Pi Imager** to your computer, so don't do this on computers with sensitive information.
 
@@ -92,7 +92,7 @@ The Imager program is now complete and you can remove your MicroSD or USB device
 
 You now have a fresh unconfigured version of the Raspberry Pi OS installed on your MicroSD or USB device.
 
-Re-run this Imager program any time you need a fresh unconfigured version of the OS on your MicroSD or USB device.
+Re-run this Imager program any time you need a fresh unconfigured version of the latest Raspberry Pi OS on your MicroSD or USB device.
 
 
 <br />
