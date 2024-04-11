@@ -1,5 +1,7 @@
 # Read-Only Offline Crypto Device Recipe - Hardware
 
+[< Back to **Read-Only Offline Crypto Device Recipe**](README.md)
+
 You will need the following items:
 
 ### Raspberry Pi 400
@@ -62,6 +64,24 @@ If you have access to computer monitors with only HDMI plugs, you may want to co
 
 You will also need a separate internet connected computer to install the Raspberry Pi OS software onto the MicroSD card, and a wireless internet connection for the initial installation of this Shamir39 device.
 
+<br />
+
+---
+
+## Alternatives
+
+[Raspberry Pi models 4 and B](https://www.raspberrypi.com/products/) may also work. You may need a [**case**](https://www.raspberrypi.com/products/case/), and a USB-A or USB-C keyboard.
+
+<p float="center">
+  <img width="200" src="https://assets.raspberrypi.com/static/a6331df010eb56a7fafb04466af3f1aa/f2559/3a15d4da-46e3-4940-8be6-9fc7d201affe_RPi_4B_FEATURED.webp">
+  <img width="200" src="https://assets.raspberrypi.com/static/492cb6e88e7d697fbb53f89f48350133/f2559/488f4e12-de49-4297-bbc6-c3753c060d40_Case%2BWhite.webp">
+</p>
+
+Similar steps can be used to build this device on [other platforms](https://www.zdnet.com/article/best-raspberry-pi-alternative/) using the Ubuntu (or similar Linux) operating system.
+
+<br />
+
+---
 
 {Summary, with table - 400 & alternatives }
 
