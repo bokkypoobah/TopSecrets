@@ -1,6 +1,6 @@
 # Read-Only Offline Crypto Device Recipe - Storage Preparation
 
-[< Back to README.md](README.md)
+[< Back to **Read-Only Offline Crypto Device Recipe**](README.md)
 
 Your Read-Only Offline Crypto Device will need an operating system running on a storage device.
 
