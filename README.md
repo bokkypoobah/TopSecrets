@@ -12,12 +12,13 @@ The Operating System (OS) for this device is configured to write any file system
 
 The following open source software tools are installed for offline execution.
 
-| Tool | GitHub | Use, And URL For Testing |
+| Tool | GitHub | Some Uses, And URL For Testing |
 | --- | --- | --- |
-| Shamir39 | [iancoleman/shamir39](https://github.com/iancoleman/shamir39) | Split BIP-39 mnemonic seed phrases into shares that can be combined to recreate the original phrase. <br />[https://iancoleman.io/shamir39/](https://iancoleman.io/shamir39/) |
-| Simple Shamir's Secret Sharing (s4) | [simonfrey/s4](https://github.com/simonfrey/s4) | Encrypt messages into shares that can be combined to recreate the original unencrypted messages<br />[https://simon-frey.com/s4/](https://simon-frey.com/s4/) |
-| Banana Split | [paritytech/banana_split](https://github.com/paritytech/banana_split) | Encrypt messages up to 1024 characters into QR code shares that can be combined to recreate the original unencrypted messages. Requires a camera to scan the QR codes for the combining process<br />[https://bs.parity.io/](https://bs.parity.io/)  |
-| Vanity-ETH | [bokub/vanity-eth](https://github.com/bokub/vanity-eth) | Generate (vanity) Ethereum addresses as private and public key pairs or password protected .json keystore files<br />[https://vanity-eth.tk/](https://vanity-eth.tk/) |
+| Shamir39 | [iancoleman/shamir39](https://github.com/iancoleman/shamir39) | Split BIP-39 mnemonic seed phrases into shares that can be combined to recreate the original phrase.<br />[https://iancoleman.io/shamir39/](https://iancoleman.io/shamir39/) |
+| BIP39 Tool | [iancoleman/bip39](https://github.com/iancoleman/bip39) | Extract private key, public key and addresses derived from BIP-39 mnemonic seed phrases.<br />[https://iancoleman.io/bip39/](https://iancoleman.io/bip39/) |
+| Simple Shamir's Secret Sharing (s4) | [simonfrey/s4](https://github.com/simonfrey/s4) | Encrypt messages into shares that can be combined to recreate the original unencrypted messages.<br />[https://simon-frey.com/s4/](https://simon-frey.com/s4/) |
+| Banana Split | [paritytech/banana_split](https://github.com/paritytech/banana_split) | Encrypt messages up to 1024 characters into QR code shares that can be combined to recreate the original unencrypted messages. Requires a camera to scan the QR codes for the combining process.<br />[https://bs.parity.io/](https://bs.parity.io/)  |
+| Vanity-ETH | [bokub/vanity-eth](https://github.com/bokub/vanity-eth) | Generate (vanity) Ethereum addresses as private and public key pairs or password protected .json keystore files.<br />[https://vanity-eth.tk/](https://vanity-eth.tk/) |
 
 Please see [Risks](#risks) before any serious use.
 
