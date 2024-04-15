@@ -1,4 +1,20 @@
-# Recipe To Create A TopSecrets Read-Only Offline Crypto Device
+# TopSecrets
+
+<p align="center">
+  <img height="150" src="https://raw.githubusercontent.com/bokkypoobah/TopSecrets/main/images/topsecrets.svg" />
+</p>
+
+**TopSecrets** is a **read-only** **offline** crypto device. Here is the simple recipe for you to create one of these devices using inexpensive and readily available parts, with some useful open source software.
+
+<p align="center">
+  <img height="600" src="https://raw.githubusercontent.com/bokkypoobah/TopSecrets/main/images/mindmap_20240415_1245.png" />
+</p>
+
+<br />
+
+---
+
+## TODO REVISE BELOW
 
 **Work in Progress**
 
