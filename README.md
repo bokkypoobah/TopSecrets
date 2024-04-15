@@ -1,22 +1,24 @@
 # TopSecrets
 
+**Work in Progress**
+
 <p align="center">
   <img height="150" src="https://raw.githubusercontent.com/bokkypoobah/TopSecrets/main/images/topsecrets.svg" />
 </p>
 
-**TopSecrets** is a **read-only** **offline** crypto device. Here is the simple recipe for you to create one of these devices using inexpensive and readily available parts, with some useful open source software.
+**TopSecrets** is a **read-only** **offline** crypto device.
 
-<p align="center">
-  <img height="600" src="https://raw.githubusercontent.com/bokkypoobah/TopSecrets/main/images/mindmap_20240415_1245.png" />
-</p>
+Here is the simple recipe for you to create one of these devices using inexpensive and readily available parts with some useful open source software.
+
+Here is an overview of this project.
+
+![](images/mindmap_20240415_1245.png)
 
 <br />
 
 ---
 
 ## TODO REVISE BELOW
-
-**Work in Progress**
 
 If you hold, or will hold cryptocurrency, you will eventually search for a tool to distribute parts of your private keys to multiple locations or parties.
 
