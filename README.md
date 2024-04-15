@@ -1,4 +1,4 @@
-# Read-Only Offline Crypto Device Recipe
+# Recipe To Create A TopSecrets Read-Only Offline Crypto Device
 
 **Work in Progress**
 
