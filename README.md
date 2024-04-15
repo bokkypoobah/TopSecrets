@@ -10,7 +10,7 @@
 
 The Operating System (OS) for this device is configured to write any file system changes to Random Access Memory (RAM) and these changes are lost when power to the device is disconnected.
 
-The following open source software tools installed for offline execution.
+The following open source software tools are installed for offline execution.
 
 | Tool | GitHub | Use, And URL For Testing |
 | --- | --- | --- |
