@@ -6,18 +6,20 @@
   <img height="150" src="https://raw.githubusercontent.com/bokkypoobah/TopSecrets/main/images/topsecrets.svg" />
 </p>
 
-**Top Secrets** is a **read-only** **offline** crypto device. We configure the Operating System (OS) to write any file system changes to Random Access Memory (RAM) and these changes are lost when power is disconnected.
+**Top Secrets** is a **read-only** **offline** crypto device.
 
-We install some useful open source software tools to run offline.
+The Operating System (OS) is configured to write any file system changes to Random Access Memory (RAM) and these changes are lost when power to the device is disconnected.
 
-| Tool | GitHub | Notes And Testing URL |
+The following open source software tools installed for offline execution.
+
+| Tool | GitHub | Use, And URL For Testing |
 | --- | --- | --- |
 | Shamir39 | [iancoleman/shamir39](https://github.com/iancoleman/shamir39) | Split BIP-39 mnemonic seed phrases into shares that can be combined to recreate the original phrase. <br />[https://iancoleman.io/shamir39/](https://iancoleman.io/shamir39/) |
 | Simple Shamir's Secret Sharing (s4) | [simonfrey/s4](https://github.com/simonfrey/s4) | Encrypt messages into shares that can be combined to recreate the original unencrypted messages<br />[https://simon-frey.com/s4/](https://simon-frey.com/s4/) |
-| Banana Split | [paritytech/banana_split](https://github.com/paritytech/banana_split) | Encrypt messages up to 1024 characters into QR code shares that can be combined to recreate the original unencrypted messages. Requires a camera to scan the QR codes<br />[https://bs.parity.io/](https://bs.parity.io/)  |
+| Banana Split | [paritytech/banana_split](https://github.com/paritytech/banana_split) | Encrypt messages up to 1024 characters into QR code shares that can be combined to recreate the original unencrypted messages. Requires a camera to scan the QR codes for the combining process<br />[https://bs.parity.io/](https://bs.parity.io/)  |
 | Vanity-ETH | [bokub/vanity-eth](https://github.com/bokub/vanity-eth) | Generate (vanity) Ethereum addresses as private and public key pairs or password protected .json keystore files<br />[https://vanity-eth.tk/](https://vanity-eth.tk/) |
 
-This is a "simple" recipe for you to create your own **Top Secrets** device using readily available inexpensive parts with some useful open source software.
+This is a "simple" recipe for you to create your own **Top Secrets** device using readily available inexpensive parts.
 
 Please see [Risks](#risks) before any serious use.
 
