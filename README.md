@@ -6,11 +6,20 @@
   <img height="150" src="https://raw.githubusercontent.com/bokkypoobah/TopSecrets/main/images/topsecrets.svg" />
 </p>
 
-**TopSecrets** is a **read-only** **offline** crypto device.
+**TopSecrets** is a **read-only** **offline** crypto device. We configure the Operating System (OS) to write any file system changes to Random Access Memory (RAM) and these changes are lost when power is disconnected.
 
-Here is the simple recipe for you to create one of these devices using inexpensive and readily available parts with some useful open source software.
+Here is the "simple" recipe for you to create one of these devices using inexpensive and readily available parts with some useful open source software.
 
-Here is an overview of this project.
+Some useful open source software tools to run offline.
+
+| Tool | URL | GitHub | Use |
+| --- | --- | --- | --- |
+| Shamir39 | [https://iancoleman.io/shamir39/](https://iancoleman.io/shamir39/) | [iancoleman/shamir39](https://github.com/iancoleman/shamir39) |  |
+| Simple Shamir's Secret Sharing (s4) | [https://simon-frey.com/s4/](https://simon-frey.com/s4/) | [simonfrey/s4](https://github.com/simonfrey/s4) | |
+| Banana Split | [https://bs.parity.io/](https://bs.parity.io/) | [paritytech/banana_split](https://github.com/paritytech/banana_split) |
+| Vanity-ETH | [https://vanity-eth.tk/](https://vanity-eth.tk/) | [bokub/vanity-eth](https://github.com/bokub/vanity-eth) | 
+
+## Overview
 
 ![](images/mindmap_20240415_1245.png)
 
