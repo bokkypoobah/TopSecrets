@@ -1016,6 +1016,19 @@
 
           async testIt() {
             console.log(moment().format("HH:mm:ss") + " testIt");
+            const jsonText = '{"version":3,"id":"e14b94f9-cabc-445c-9b8a-ea090540d8db","address":"62325d923da56ab815367aa591c0a10cff1d0ddd","crypto":{"ciphertext":"4f19f96b36100b1b54d95f4106e38949cd56967dcba919d814ab962fed3b688b","cipherparams":{"iv":"befb0e2386402c71e06dd3d2cca4f828"},"cipher":"aes-128-ctr","kdf":"scrypt","kdfparams":{"dklen":32,"salt":"67d0ff891bbbbe29eb98828bae566f5a31c131ff05f207b22f4ff2bcc7643bc6","n":8192,"r":8,"p":1},"mac":"7092eb22b1d4c58ff07ff913555fe2ca5a36040f51c4edfbccf1ddfb49216f70"}}';
+            const password = '';
+            const json = JSON.parse(jsonText);
+            console.log("json: " + JSON.stringify(json, null, 2));
+            console.log("password: " + password);
+            try {
+              console.log(moment().format("HH:mm:ss") + " Start");
+              const wallet = await ethers.Wallet.fromEncryptedJsonSync(jsonText, password);
+              console.log(moment().format("HH:mm:ss") + " End");
+              console.log(JSON.stringify(wallet, null, 2));
+            } catch (e) {
+              console.log(moment().format("HH:mm:ss") + " testIt ERROR: " + e.message);
+            }
           },
 
           approvalsRowSelected(item) {
