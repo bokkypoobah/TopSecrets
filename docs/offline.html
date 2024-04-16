@@ -241,6 +241,17 @@
                       <b-form-textarea size="sm" id="wallet-mnemonics" v-model="wallet.mnemonics" @change="recomputeWallet();" rows="3" class="w-75"></b-form-textarea>
                     </b-form-group>
 
+                    <b-form-group v-if="wallet.type == 'keystorefile'" label="Keystore File:" label-for="wallet-keystorefile" label-size="sm" label-cols-sm="2" label-align-sm="right" :description="'Select backup .json file from your local computer to restore'" class="mx-0 my-1 p-0">
+                      <b-form-file size="sm" id="wallet-keystorefile" v-model="wallet.keystoreFile" @change="keystoreFileChange($event.target.name, $event.target.files)" class="w-75"></b-form-file>
+                    </b-form-group>
+                    <b-form-group v-if="wallet.type == 'keystorefile'" label="Keystore File Password:" label-for="wallet-keystorefilepassword" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+                      <b-form-input type="text" size="sm" id="wallet-keystorefilepassword" v-model="wallet.keystoreFilePassword" @change="recomputeWallet();" class="w-25"></b-form-input>
+                    </b-form-group>
+
+                    <b-form-group label="Test:" label-for="wallet-testit" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+                      <b-button size="sm" id="wallet-testit" @click="testIt()" variant="warning">Test</b-button>
+                    </b-form-group>
+
                   </b-form-group>
 
                   <b-form-group label-cols-lg="1" label="Output" label-size="md" label-class="font-weight-bold pt-0" class="mt-3 mb-0">
@@ -503,9 +514,11 @@
         // --- DATA ---
         data: {
           wallet: {
-            type: 'privatekey', // 'mnemonics', // 'privatekey', 'keystorefile'
+            type: 'keystorefile', // 'mnemonics', // 'privatekey', 'keystorefile'
             mnemonics: null,
-            keystore: null,
+            keystoreFile: null,
+            keystoreFilePassword: null,
+            keystoreFileContent: null,
             privateKey: null,
 
             publicKey: null,
@@ -975,7 +988,34 @@
               }
             } else if (this.wallet.type == 'keystorefile'){
               console.log(moment().format("HH:mm:ss") + " recomputeWallet - keystorefile: " + JSON.stringify(this.wallet));
+              try {
+                console.log(moment().format("HH:mm:ss") + " recomputeWallet - this.wallet.keystoreFileContent: " + JSON.stringify(this.wallet.keystoreFileContent, null, 2));
+                console.log(moment().format("HH:mm:ss") + " recomputeWallet - this.wallet.keystoreFilePassword: " + this.wallet.keystoreFilePassword);
+                const wallet = await ethers.Wallet.fromEncryptedJsonSync(JSON.stringify(this.wallet.keystoreFileContent), this.wallet.keystoreFilePassword);
+                this.wallet.address = wallet.address;
+                this.wallet.publicKey = wallet.publicKey;
+                this.wallet.compressedPublicKey = ethers.utils.computePublicKey(wallet.publicKey, true);
+              } catch (e) {
+                console.log(moment().format("HH:mm:ss") + " recomputeWallet - keystorefile ERROR: " + e.message);
+              }
             }
+          },
+
+          async keystoreFileChange(fileName, fileList) {
+            console.log(moment().format("HH:mm:ss") + " keystoreFileChange: " + JSON.stringify(fileName));
+            const reader = new FileReader();
+            this.wallet.keystoreFileContent = {};
+            const t = this;
+            reader.onload = function (event) {
+              const data = event.target.result;
+              t.wallet.keystoreFileContent = JSON.parse(data);
+              console.log(moment().format("HH:mm:ss") + " keystoreFileContent: " + JSON.stringify(t.wallet.keystoreFileContent, null, 2));
+            };
+            await reader.readAsText(fileList[0]);
+          },
+
+          async testIt() {
+            console.log(moment().format("HH:mm:ss") + " testIt");
           },
 
           approvalsRowSelected(item) {
