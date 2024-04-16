@@ -223,6 +223,32 @@
             </b-card-text>
 
             <b-card-text class="m-0 p-0">
+
+              <!-- :INFO -->
+              <b-card no-body class="my-1 p-1">
+                <b-card-body class="mt-1 p-1">
+
+                  <b-form-group label-cols-lg="1" label="Wallet" label-size="md" label-class="font-weight-bold pt-0" class="mt-3 mb-0">
+                    <b-form-group label="Type:" label-for="wallet-type" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+                      <b-form-select size="sm" id="wallet-type" v-model="wallet.type" :options="walletTypeOptions" class="w-25"></b-form-select>
+                    </b-form-group>
+
+                    <b-form-group v-if="wallet.type == 'privatekey'" label="Private Key:" label-for="wallet-privatekey" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+                      <b-form-input type="text" size="sm" id="wallet-privatekey" v-model="wallet.privateKey" class="w-50"></b-form-input>
+                    </b-form-group>
+                  </b-form-group>
+
+                  <b-form-group label-cols-lg="1" label="Debug" label-size="md" label-class="font-weight-bold pt-0" class="mt-3 mb-0">
+                    <b-form-group label="Type:" label-for="debug-textarea" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+                      <b-form-textarea size="sm" id="debug-textarea" :value="JSON.stringify(wallet, null, 2)" rows="3" max-rows="10" class="w-50"></b-form-textarea>
+                    </b-form-group>
+                  </b-form-group>
+
+                </b-card-body>
+              </b-card>
+
+
+
               <!-- :INFO -->
               <b-card v-if="false && (settings.showInfo || coinbase == null)" no-body class="my-1 p-1">
                 <b-card-body class="mt-1 p-1">
@@ -461,6 +487,13 @@
         el: '#app',
         // --- DATA ---
         data: {
+          wallet: {
+            type: 'privatekey',
+            mnemonics: null,
+            keystore: null,
+            privateKey: null,
+          },
+
           connected: false,
           chainId: null,
           coinbase: null,
@@ -512,6 +545,14 @@
             tokenId: null, // ERC-721 Approval
             approved: false, // ERC-721 & ERC-1155 ApprovalForAll
           },
+
+          walletTypeOptions: [
+            { value: 'privatekey', text: 'Private Key' },
+            { value: 'mnemonics', text: 'Mnemonic Seed Phrase' },
+            { value: 'keystorefile', text: 'JSON Keystore File' },
+          ],
+
+
           approvalsSortOptions: [
             { value: 'nameasc', text: '▲ Name' },
             { value: 'namedsc', text: '▼ Name' },
