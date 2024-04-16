@@ -247,7 +247,7 @@
                     <b-form-group label="Public Key:" label-for="output-publickey" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
                       <b-form-textarea size="sm" readonly id="output-publickey" :value="wallet.publicKey" rows="3" class="w-75"></b-form-textarea>
                     </b-form-group>
-                    <b-form-group v-if="false" label="Compressed Public Key:" label-for="output-compressedpublickey" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <b-form-group label="Compressed Public Key:" label-for="output-compressedpublickey" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
                       <b-form-input type="text" size="sm" readonly id="output-compressedpublickey" :value="wallet.compressedPublicKey" class="w-75"></b-form-input>
                     </b-form-group>
                     <b-form-group label="ETH Address:" label-for="output-address" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
@@ -503,13 +503,13 @@
         // --- DATA ---
         data: {
           wallet: {
-            type: 'mnemonics', // 'privatekey', 'keystorefile'
+            type: 'privatekey', // 'mnemonics', // 'privatekey', 'keystorefile'
             mnemonics: null,
             keystore: null,
             privateKey: null,
 
             publicKey: null,
-            //  compressedPublicKey: null, // TODO: ethers.js returns a error
+            compressedPublicKey: null,
             address: null,
           },
 
@@ -954,15 +954,14 @@
           async recomputeWallet() {
             console.log(moment().format("HH:mm:ss") + " recomputeWallet: " + JSON.stringify(this.wallet));
             if (this.wallet.type == 'privatekey') {
+              console.log(moment().format("HH:mm:ss") + " recomputeWallet - privatekey: " + JSON.stringify(this.wallet));
               try {
                 const wallet = new ethers.Wallet(this.wallet.privateKey);
                 this.wallet.address = wallet.address;
                 this.wallet.publicKey = wallet.publicKey;
-                // TODO: ethers.js returns an error
-                // this.wallet.compressedPublicKey = wallet.compressedPublicKey || 'ethers.js returning an error';
-                console.table(wallet);
+                this.wallet.compressedPublicKey = ethers.utils.computePublicKey(wallet.publicKey, true);
               } catch (e) {
-                console.log(moment().format("HH:mm:ss") + " recomputeWallet ERROR: " + e.message);
+                console.log(moment().format("HH:mm:ss") + " recomputeWallet - privatekey ERROR: " + e.message);
               }
             } else if (this.wallet.type == 'mnemonics') {
               console.log(moment().format("HH:mm:ss") + " recomputeWallet - mnemonics: " + JSON.stringify(this.wallet));
@@ -970,11 +969,9 @@
                 const wallet = new ethers.Wallet.fromMnemonic(this.wallet.mnemonics);
                 this.wallet.address = wallet.address;
                 this.wallet.publicKey = wallet.publicKey;
-                // TODO: ethers.js returns an error
-                // this.wallet.compressedPublicKey = wallet.compressedPublicKey || 'ethers.js returning an error';
-                console.table(wallet);
+                this.wallet.compressedPublicKey = ethers.utils.computePublicKey(wallet.publicKey, true);
               } catch (e) {
-                console.log(moment().format("HH:mm:ss") + " recomputeWallet ERROR: " + e.message);
+                console.log(moment().format("HH:mm:ss") + " recomputeWallet - mnemonics ERROR: " + e.message);
               }
             } else if (this.wallet.type == 'keystorefile'){
               console.log(moment().format("HH:mm:ss") + " recomputeWallet - keystorefile: " + JSON.stringify(this.wallet));
