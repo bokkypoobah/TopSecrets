@@ -170,8 +170,8 @@
         // --- DATA ---
         data: {
           wallet: {
-            tab: 0, // 0: 'privatekey', 1: 'mnemonics', 2: 'keystorefile'
-            type: 'keystorefile', // 'mnemonics', // 'privatekey', 'keystorefile'
+            tab: 0, // 0: 'mnemonic', 1: 'keystorefile', 2: 'privatekey'
+            type: 'mnemonic', // 'mnemonic', 'keystorefile', 'privatekey'
             mnemonics: null,
             keystoreFile: null,
             keystoreFilePassword: null,
@@ -238,15 +238,15 @@
           // },
 
           tabs: [
+            { name: 'mnemonic', text: 'Mnemonic Seed Phrase' },
+            { name: 'keystorefile', text: 'JSON/UTC Keystore File' },
             { name: 'privatekey', text: 'Private Key' },
-            { name: 'mnemonics', text: 'Mnemonics' },
-            { name: 'keystorefile', text: 'Keystore File' },
           ],
 
           walletTypeOptions: [
+            { value: 'mnemonic', text: 'Mnemonic Seed Phrase' },
+            { value: 'keystorefile', text: 'JSON/UTC Keystore File' },
             { value: 'privatekey', text: 'Private Key' },
-            { value: 'mnemonics', text: 'Mnemonic Seed Phrase' },
-            { value: 'keystorefile', text: 'JSON Keystore File' },
           ],
 
 
