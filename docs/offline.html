@@ -71,8 +71,16 @@
                 </b-tabs>
                 <b-card-text class="m-0 p-2">
 
-                  <b-form-group v-if="wallet.tab == 0" label="Mnemonic Seed Phrase:" label-for="wallet-mnemonics" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
-                    <b-form-textarea size="sm" id="wallet-mnemonics" v-model="wallet.mnemonics" @change="recomputeWallet();" rows="3" class="w-100"></b-form-textarea>
+                  <b-form-group v-if="wallet.tab == 3" label="New Wallet:" label-for="wallet-new" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <b-button size="sm" id="wallet-new" @click="newWallet()" variant="warning">Generate</b-button>
+                  </b-form-group>
+
+                  <b-form-group v-if="wallet.tab == 0 || wallet.tab == 3" label="Mnemonic Seed Phrase:" label-for="wallet-mnemonicphrase" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
+                    <b-form-textarea size="sm" :readonly="wallet.tab == 3" id="wallet-mnemonicphrase" v-model="wallet.mnemonic.phrase" @change="recomputeWallet();" rows="3" class="w-100"></b-form-textarea>
+                  </b-form-group>
+
+                  <b-form-group v-if="wallet.tab == 0 || wallet.tab == 3" label="Mnemonic Path:" label-for="wallet-mnemonicpath" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
+                    <b-form-input type="text" size="sm" :readonly="wallet.tab == 0 || wallet.tab == 3" id="wallet-mnemonicpath" v-model="wallet.mnemonic.path" @change="recomputeWallet();" class="w-75"></b-form-input>
                   </b-form-group>
 
                   <b-form-group v-if="wallet.tab == 1" label="Keystore File:" label-for="wallet-keystorefile" label-size="sm" label-cols-sm="2" label-align-sm="right" :description="'Select encrypted keystore (JSON/UTC) file from your local computer'" class="mx-0 my-1 p-0">
@@ -82,12 +90,16 @@
                     <b-form-input type="password" autocomplete="current-password" size="sm" id="wallet-keystorefilepassword" v-model="wallet.keystoreFilePassword" @change="recomputeWallet();" class="w-25"></b-form-input>
                   </b-form-group>
 
-                  <b-form-group v-if="wallet.tab == 2" label="Private Key:" label-for="wallet-privatekey" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <b-form-input type="text" size="sm" id="wallet-privatekey" v-model="wallet.privateKey" @change="recomputeWallet();" class="w-75"></b-form-input>
+                  <b-form-group v-if="wallet.tab == 2 || wallet.tab == 3" label="Private Key:" label-for="wallet-privatekey" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <b-form-input type="text" :readonly="wallet.tab == 3" size="sm" id="wallet-privatekey" v-model="wallet.privateKey" @change="recomputeWallet();" class="w-75"></b-form-input>
                   </b-form-group>
 
                   <b-form-group label="ETH Address:" label-for="output-address" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
                     <b-form-input type="text" size="sm" readonly id="output-address" :value="wallet.address" class="w-50"></b-form-input>
+                  </b-form-group>
+
+                  <b-form-group v-if="false" label="Debug:" label-for="debug-textarea" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <b-form-textarea size="sm" readonly id="debug-textarea" :value="JSON.stringify(wallet, null, 2)" rows="3" max-rows="10" class="w-100"></b-form-textarea>
                   </b-form-group>
 
                 </b-card-text>
@@ -113,6 +125,9 @@
 
                       <b-form-group v-if="wallet.type == 'mnemonic'" label="Mnemonics:" label-for="wallet-mnemonics" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
                         <b-form-textarea size="sm" id="wallet-mnemonics" v-model="wallet.mnemonics" @change="recomputeWallet();" rows="3" class="w-75"></b-form-textarea>
+                      </b-form-group>
+                      <b-form-group v-if="wallet.type == 'mnemonic'" label="Path:" label-for="wallet-mnemonicspath" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+                        <b-form-textarea size="sm" id="wallet-mnemonicspath" v-model="wallet.mnemonic.path" @change="recomputeWallet();" rows="3" class="w-75"></b-form-textarea>
                       </b-form-group>
 
                       <b-form-group v-if="wallet.type == 'keystorefile'" label="Keystore File:" label-for="wallet-keystorefile" label-size="sm" label-cols-sm="2" label-align-sm="right" :description="'Select encrypted keystore (JSON/UTC) file from your local computer'" class="mx-0 my-1 p-0">
@@ -189,9 +204,13 @@
         // --- DATA ---
         data: {
           wallet: {
-            tab: 0, // 0: 'mnemonic', 1: 'keystorefile', 2: 'privatekey'
+            tab: 3, // 0: 'mnemonic', 1: 'keystorefile', 2: 'privatekey', 3: 'new'
             type: 'mnemonic', // 'mnemonic', 'keystorefile', 'privatekey'
-            mnemonics: null,
+            mnemonic: {
+              phrase: null,
+              path: "m/44'/60'/0'/0/0", // null,
+              locale: null,
+            },
             keystoreFile: null,
             keystoreFilePassword: null,
             keystoreFileContent: null,
@@ -213,53 +232,20 @@
 
           settings: {
             tabIndex: 0,
-            // showInfo: false,
-            // reportingDateTime: 0,
-            // searchAttachedAccount: true,
-            // searchAccounts: null,
-            // approvalsTable: {
-            //   filter: null,
-            //   includeInactive: false,
-            //   currentPage: 1,
-            //   pageSize: 100,
-            //   sortOption: 'typenameasc',
-            // },
-            // eventsTable: {
-            //   includeFluff: false,
-            //   filter: null,
-            //   currentPage: 1,
-            //   pageSize: 100,
-            //   sortOption: 'txorderdsc',
-            // },
-            // accountsTable: {
-            //   filter: null,
-            //   currentPage: 1,
-            //   pageSize: 100,
-            //   sortOption: 'typenameasc',
-            // },
             version: 12,
           },
-          sync: {
-            section: null,
-            total: null,
-            completed: null,
-            halt: false,
-          },
-          // events: {},
-          // accounts: {},
-          // blockTimestamps: {},
-          // modalApproval: {
-          //   item: null,
-          //   tokens: null, // ERC-20 Approval
-          //   spender: null, // ERC-721 Approval
-          //   tokenId: null, // ERC-721 Approval
-          //   approved: false, // ERC-721 & ERC-1155 ApprovalForAll
+          // sync: {
+          //   section: null,
+          //   total: null,
+          //   completed: null,
+          //   halt: false,
           // },
 
           tabs: [
             { name: 'mnemonic', text: 'Mnemonic Seed Phrase' },
             { name: 'keystorefile', text: 'JSON/UTC Keystore File' },
             { name: 'privatekey', text: 'Private Key' },
+            { name: 'new', text: 'New Wallet' },
           ],
 
           walletTypeOptions: [
@@ -268,108 +254,6 @@
             { value: 'privatekey', text: 'Private Key' },
           ],
 
-
-          // approvalsSortOptions: [
-          //   { value: 'nameasc', text: '▲ Name' },
-          //   { value: 'namedsc', text: '▼ Name' },
-          //   { value: 'typenameasc', text: '▲ Type, ▲ Name' },
-          //   { value: 'typenamedsc', text: '▼ Type, ▼ Name' },
-          // ],
-          // eventsSortOptions: [
-          //   { value: 'txorderasc', text: '▲ TxOrder' },
-          //   { value: 'txorderdsc', text: '▼ TxOrder' },
-          // ],
-          // accountsSortOptions: [
-          //   { value: 'typenameasc', text: '▲ Type, ▲ Name' },
-          //   { value: 'typenamedsc', text: '▼ Type, ▼ Name' },
-          //   { value: 'nameasc', text: '▲ Name' },
-          //   { value: 'namedsc', text: '▼ Name' },
-          //   { value: 'addressasc', text: '▲ Address' },
-          //   { value: 'addressdsc', text: '▼ Address' },
-          // ],
-          // pageSizes: [
-          //   { value: 5, text: '5' },
-          //   { value: 10, text: '10' },
-          //   { value: 25, text: '25' },
-          //   { value: 50, text: '50' },
-          //   { value: 100, text: '100' },
-          //   { value: 500, text: '500' },
-          //   { value: 1000, text: '1k' },
-          //   { value: 2500, text: '2.5k' },
-          //   { value: 10000, text: '10k' },
-          // ],
-          // falseTrueOptions: [
-          //   { value: false, text: 'false' },
-          //   { value: true, text: 'true' },
-          // ],
-          // accountTypeOptions: [
-          //   { value: null, text: '(use default)' },
-          //   { value: "eoa", text: 'EOA' },
-          //   { value: "erc20", text: 'ERC-20' },
-          //   { value: "erc721", text: 'ERC-721' },
-          //   { value: "erc1155", text: 'ERC-1155' },
-          //   { value: "ftexchange", text: 'FTExchange' },
-          //   { value: "nftexchange", text: 'NFTExchange' },
-          //   { value: "unknown", text: '(Unknown)' },
-          // ],
-          // decimalsOptions: [
-          //   { value: null, text: '(use default)' },
-          //   { value: "0", text: '0' },
-          //   { value: "1", text: '1' },
-          //   { value: "2", text: '2' },
-          //   { value: "3", text: '3' },
-          //   { value: "4", text: '4' },
-          //   { value: "5", text: '5' },
-          //   { value: "6", text: '6 (some)' },
-          //   { value: "7", text: '7' },
-          //   { value: "8", text: '8' },
-          //   { value: "9", text: '9' },
-          //   { value: "10", text: '10' },
-          //   { value: "11", text: '11' },
-          //   { value: "12", text: '12' },
-          //   { value: "13", text: '13' },
-          //   { value: "14", text: '14' },
-          //   { value: "15", text: '15' },
-          //   { value: "16", text: '16' },
-          //   { value: "17", text: '17' },
-          //   { value: "18", text: '18 (common)' },
-          // ],
-          // approvalsFields: [
-          //   { key: 'number', label: '#', sortable: false, thStyle: 'width: 5%;', tdClass: 'text-truncate' },
-          //   { key: 'type', label: 'Type', sortable: false, thStyle: 'width: 5%;', thClass: 'text-left', tdClass: 'text-left' },
-          //   { key: 'symbol', label: 'Symbol', sortable: false, thStyle: 'width: 10%;', thClass: 'text-left', tdClass: 'text-left' },
-          //   { key: 'name', label: 'Name', sortable: false, thStyle: 'width: 20%;', thClass: 'text-left', tdClass: 'text-left' },
-          //   { key: 'approvalType', label: 'Approval Type', sortable: false, thStyle: 'width: 10%;', thClass: 'text-left', tdClass: 'text-left' },
-          //   { key: 'owner', label: 'Owner', sortable: false, thStyle: 'width: 15%;', thClass: 'text-left', tdClass: 'text-truncate' },
-          //   { key: 'spender', label: 'Spender', sortable: false, thStyle: 'width: 15%;', thClass: 'text-left', tdClass: 'text-truncate' },
-          //   { key: 'approved', label: 'Approved', sortable: false, thStyle: 'width: 20%;', thClass: 'text-left', tdClass: 'text-left' },
-          // ],
-          // eventsFields: [
-          //   { key: 'number', label: '#', sortable: false, thStyle: 'width: 5%;', tdClass: 'text-truncate' },
-          //   { key: 'timestamp', label: 'When', sortable: false, thStyle: 'width: 10%;', tdClass: 'text-truncate' },
-          //   { key: 'type', label: 'Type', sortable: false, thStyle: 'width: 5%;', thClass: 'text-left', tdClass: 'text-left' },
-          //   { key: 'contract', label: 'Contract', sortable: false, thStyle: 'width: 15%;', thClass: 'text-left', tdClass: 'text-truncate' },
-          //   { key: 'eventName', label: 'Event', sortable: false, thStyle: 'width: 10%;', thClass: 'text-left', tdClass: 'text-left' },
-          //   { key: 'owner', label: 'Owner', sortable: false, thStyle: 'width: 15%;', thClass: 'text-left', tdClass: 'text-truncate' },
-          //   { key: 'spender', label: 'Spender', sortable: false, thStyle: 'width: 15%;', thClass: 'text-left', tdClass: 'text-truncate' },
-          //   { key: 'approved', label: 'Approved', /*sortable: true,*/ thStyle: 'width: 20%;', thClass: 'text-left', tdClass: 'text-left' },
-          // ],
-          // accountsFields: [
-          //   { key: 'number', label: '#', sortable: false, thStyle: 'width: 5%;', tdClass: 'text-truncate' },
-          //   { key: 'address', label: 'Address', sortable: false, thStyle: 'width: 10%;', thClass: 'text-left', tdClass: 'text-truncate' },
-          //   { key: 'source', label: 'Source', sortable: false, thStyle: 'width: 5%;', thClass: 'text-left', tdClass: 'text-left' },
-          //   { key: 'type', label: 'Type', sortable: false, thStyle: 'width: 10%;', thClass: 'text-left', tdClass: 'text-left' },
-          //   { key: 'customType', label: '', sortable: false, thStyle: 'width: 10%;', thClass: 'text-left', tdClass: 'text-left' },
-          //   { key: 'symbol', label: 'Symbol', sortable: false, thStyle: 'width: 10%;', thClass: 'text-left', tdClass: 'text-truncate' },
-          //   { key: 'name', label: 'Name', sortable: false, thStyle: 'width: 15%;', thClass: 'text-left', tdClass: 'text-truncate' },
-          //   { key: 'customName', label: '', sortable: false, thStyle: 'width: 15%;', thClass: 'text-left', tdClass: 'text-left' },
-          //   { key: 'decimals', label: 'Decimals', sortable: false, thStyle: 'width: 10%;', thClass: 'text-right', tdClass: 'text-right' },
-          //   { key: 'customDecimals', label: '', sortable: false, thStyle: 'width: 10%;', thClass: 'text-right', tdClass: 'text-right' },
-          // ],
-          // reportingDateTimeOptions: [
-          //   { value: 0, text: 'Local Time' },
-          //   { value: 1, text: 'UTC Time' },
-          // ],
         },
 
         // --- COMPUTED ---
@@ -386,12 +270,32 @@
             console.log(moment().format("HH:mm:ss") + " TODO updateURL: " + where);
           },
 
+          newWallet() {
+            console.log(moment().format("HH:mm:ss") + " newWallet");
+            try {
+              const wallet = new ethers.Wallet.createRandom();
+              console.table(wallet);
+              this.wallet.address = wallet.address;
+              this.wallet.privateKey = wallet.privateKey;
+              console.log("wallet.privateKey: " + wallet.privateKey);
+              console.log("wallet.mnemonic: " + JSON.stringify(wallet.mnemonic));
+              this.wallet.mnemonic.phrase = wallet.mnemonic.phrase;
+              this.wallet.mnemonic.path = wallet.mnemonic.path;
+              this.wallet.mnemonic.locale = wallet.mnemonic.locale;
+              // this.wallet.publicKey = wallet.publicKey;
+              // this.wallet.compressedPublicKey = ethers.utils.computePublicKey(wallet.publicKey, true);
+            } catch (e) {
+              console.log(moment().format("HH:mm:ss") + " newWallet ERROR: " + e.message);
+            }
+
+          },
+
           async recomputeWallet() {
             console.log(moment().format("HH:mm:ss") + " recomputeWallet: " + JSON.stringify(this.wallet));
             if (this.wallet.tab == 0) {
               console.log(moment().format("HH:mm:ss") + " recomputeWallet - mnemonics: " + JSON.stringify(this.wallet));
               try {
-                const wallet = new ethers.Wallet.fromMnemonic(this.wallet.mnemonics);
+                const wallet = new ethers.Wallet.fromMnemonic(this.wallet.mnemonic.phrase);
                 this.wallet.address = wallet.address;
                 this.wallet.publicKey = wallet.publicKey;
                 this.wallet.compressedPublicKey = ethers.utils.computePublicKey(wallet.publicKey, true);
