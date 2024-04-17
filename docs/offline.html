@@ -62,6 +62,22 @@
 
           <b-card class="m-0 p-0 border-0" body-class="m-1 p-0">
 
+            <b-card no-body class="p-0 mt-1">
+              <b-tabs card align="left" no-body v-model="wallet.tab" active-tab-class="m-0 p-0">
+                <b-tab v-for="t in tabs" :key="'dyn-tabx-' + t.name" @click="updateURL(t.name);" :title="t.text" title-item-class="p-0" title-link-class="px-2">
+                </b-tab>
+              </b-tabs>
+              <b-card-text>
+                <p>Blah Blah</p>
+                <p>Blah Blah</p>
+                <p>Blah Blah</p>
+                <p>Blah Blah</p>
+                <p>Blah Blah</p>
+              </b-card-text>
+            </b-card>
+
+
+
             <b-card-text class="m-0 p-0">
               <!-- :WALLET -->
               <b-card no-body class="my-0 p-1">
@@ -154,6 +170,7 @@
         // --- DATA ---
         data: {
           wallet: {
+            tab: 0, // 0: 'privatekey', 1: 'mnemonics', 2: 'keystorefile'
             type: 'keystorefile', // 'mnemonics', // 'privatekey', 'keystorefile'
             mnemonics: null,
             keystoreFile: null,
@@ -219,6 +236,12 @@
           //   tokenId: null, // ERC-721 Approval
           //   approved: false, // ERC-721 & ERC-1155 ApprovalForAll
           // },
+
+          tabs: [
+            { name: 'privatekey', text: 'Private Key' },
+            { name: 'mnemonics', text: 'Mnemonics' },
+            { name: 'keystorefile', text: 'Keystore File' },
+          ],
 
           walletTypeOptions: [
             { value: 'privatekey', text: 'Private Key' },
@@ -339,6 +362,10 @@
 
         // --- METHODS ---
         methods: {
+
+          updateURL(where) {
+            console.log(moment().format("HH:mm:ss") + " TODO updateURL: " + where);
+          },
 
           async recomputeWallet() {
             console.log(moment().format("HH:mm:ss") + " recomputeWallet: " + JSON.stringify(this.wallet));
