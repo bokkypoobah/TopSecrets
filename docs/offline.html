@@ -69,12 +69,19 @@
                   <b-tab v-for="t in tabs" :key="'dyn-tabx-' + t.name" @click="updateURL(t.name);" :title="t.text" title-item-class="p-0" title-link-class="mt-2 px-2">
                   </b-tab>
                 </b-tabs>
-                <b-card-text>
-                  <p>Blah Blah</p>
-                  <p>Blah Blah</p>
-                  <p>Blah Blah</p>
-                  <p>Blah Blah</p>
-                  <p>Blah Blah</p>
+                <b-card-text class="m-0 p-2">
+
+                  <b-form-group v-if="wallet.tab == 0" label="Mnemonic Seed Phrase:" label-for="wallet-mnemonics" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
+                    <b-form-textarea size="sm" id="wallet-mnemonics" v-model="wallet.mnemonics" @change="recomputeWallet();" rows="3" class="w-75"></b-form-textarea>
+                  </b-form-group>
+
+                  <b-form-group v-if="wallet.tab == 1" label="Keystore File:" label-for="wallet-keystorefile" label-size="sm" label-cols-sm="2" label-align-sm="right" :description="'Select encrypted keystore (JSON/UTC) file from your local computer'" class="mx-0 my-1 p-0">
+                    <b-form-file size="sm" id="wallet-keystorefile" v-model="wallet.keystoreFile" @change="keystoreFileChange($event.target.name, $event.target.files)" class="w-75"></b-form-file>
+                  </b-form-group>
+                  <b-form-group v-if="wallet.tab == 1" label="Keystore File Password:" label-for="wallet-keystorefilepassword" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <b-form-input type="password" autocomplete="current-password" size="sm" id="wallet-keystorefilepassword" v-model="wallet.keystoreFilePassword" @change="recomputeWallet();" class="w-25"></b-form-input>
+                  </b-form-group>
+
                 </b-card-text>
               </b-card>
 
@@ -96,7 +103,7 @@
                         <b-form-input type="text" size="sm" id="wallet-privatekey" v-model="wallet.privateKey" @change="recomputeWallet();" class="w-75"></b-form-input>
                       </b-form-group>
 
-                      <b-form-group v-if="wallet.type == 'mnemonics'" label="Mnemonics:" label-for="wallet-mnemonics" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+                      <b-form-group v-if="wallet.type == 'mnemonic'" label="Mnemonics:" label-for="wallet-mnemonics" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
                         <b-form-textarea size="sm" id="wallet-mnemonics" v-model="wallet.mnemonics" @change="recomputeWallet();" rows="3" class="w-75"></b-form-textarea>
                       </b-form-group>
 
@@ -373,17 +380,7 @@
 
           async recomputeWallet() {
             console.log(moment().format("HH:mm:ss") + " recomputeWallet: " + JSON.stringify(this.wallet));
-            if (this.wallet.type == 'privatekey') {
-              console.log(moment().format("HH:mm:ss") + " recomputeWallet - privatekey: " + JSON.stringify(this.wallet));
-              try {
-                const wallet = new ethers.Wallet(this.wallet.privateKey);
-                this.wallet.address = wallet.address;
-                this.wallet.publicKey = wallet.publicKey;
-                this.wallet.compressedPublicKey = ethers.utils.computePublicKey(wallet.publicKey, true);
-              } catch (e) {
-                console.log(moment().format("HH:mm:ss") + " recomputeWallet - privatekey ERROR: " + e.message);
-              }
-            } else if (this.wallet.type == 'mnemonics') {
+            if (this.wallet.tab == 0) {
               console.log(moment().format("HH:mm:ss") + " recomputeWallet - mnemonics: " + JSON.stringify(this.wallet));
               try {
                 const wallet = new ethers.Wallet.fromMnemonic(this.wallet.mnemonics);
@@ -393,7 +390,8 @@
               } catch (e) {
                 console.log(moment().format("HH:mm:ss") + " recomputeWallet - mnemonics ERROR: " + e.message);
               }
-            } else if (this.wallet.type == 'keystorefile'){
+
+            } else if (this.wallet.tab == 1) {
               console.log(moment().format("HH:mm:ss") + " recomputeWallet - keystorefile: " + JSON.stringify(this.wallet));
               try {
                 console.log(moment().format("HH:mm:ss") + " recomputeWallet - this.wallet.keystoreFileContent: " + this.wallet.keystoreFileContent);
@@ -404,6 +402,16 @@
                 this.wallet.compressedPublicKey = ethers.utils.computePublicKey(wallet.publicKey, true);
               } catch (e) {
                 console.log(moment().format("HH:mm:ss") + " recomputeWallet - keystorefile ERROR: " + e.message);
+              }
+            } else if (this.wallet.tab == 2){
+              console.log(moment().format("HH:mm:ss") + " recomputeWallet - privatekey: " + JSON.stringify(this.wallet));
+              try {
+                const wallet = new ethers.Wallet(this.wallet.privateKey);
+                this.wallet.address = wallet.address;
+                this.wallet.publicKey = wallet.publicKey;
+                this.wallet.compressedPublicKey = ethers.utils.computePublicKey(wallet.publicKey, true);
+              } catch (e) {
+                console.log(moment().format("HH:mm:ss") + " recomputeWallet - privatekey ERROR: " + e.message);
               }
             }
           },
