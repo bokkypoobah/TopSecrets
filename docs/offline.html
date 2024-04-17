@@ -72,7 +72,7 @@
                 <b-card-text class="m-0 p-2">
 
                   <b-form-group v-if="wallet.tab == 0" label="Mnemonic Seed Phrase:" label-for="wallet-mnemonics" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
-                    <b-form-textarea size="sm" id="wallet-mnemonics" v-model="wallet.mnemonics" @change="recomputeWallet();" rows="3" class="w-75"></b-form-textarea>
+                    <b-form-textarea size="sm" id="wallet-mnemonics" v-model="wallet.mnemonics" @change="recomputeWallet();" rows="3" class="w-100"></b-form-textarea>
                   </b-form-group>
 
                   <b-form-group v-if="wallet.tab == 1" label="Keystore File:" label-for="wallet-keystorefile" label-size="sm" label-cols-sm="2" label-align-sm="right" :description="'Select encrypted keystore (JSON/UTC) file from your local computer'" class="mx-0 my-1 p-0">
@@ -80,6 +80,14 @@
                   </b-form-group>
                   <b-form-group v-if="wallet.tab == 1" label="Keystore File Password:" label-for="wallet-keystorefilepassword" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
                     <b-form-input type="password" autocomplete="current-password" size="sm" id="wallet-keystorefilepassword" v-model="wallet.keystoreFilePassword" @change="recomputeWallet();" class="w-25"></b-form-input>
+                  </b-form-group>
+
+                  <b-form-group v-if="wallet.tab == 2" label="Private Key:" label-for="wallet-privatekey" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <b-form-input type="text" size="sm" id="wallet-privatekey" v-model="wallet.privateKey" @change="recomputeWallet();" class="w-75"></b-form-input>
+                  </b-form-group>
+
+                  <b-form-group label="ETH Address:" label-for="output-address" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <b-form-input type="text" size="sm" readonly id="output-address" :value="wallet.address" class="w-50"></b-form-input>
                   </b-form-group>
 
                 </b-card-text>
