@@ -66,50 +66,52 @@
               <!-- :WALLET -->
               <b-card no-body class="my-0 p-1">
                 <b-card-body class="mt-1 p-1">
+                  <b-form>
+                    <b-form-group label-cols-lg="1" label="Wallet" label-size="md" label-class="font-weight-bold pt-0" class="mt-3 mb-0">
+                      <b-form-group label="Type:" label-for="wallet-type" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+                        <b-form-select size="sm" id="wallet-type" v-model="wallet.type" @change="recomputeWallet();" :options="walletTypeOptions" class="w-25"></b-form-select>
+                      </b-form-group>
 
-                  <b-form-group label-cols-lg="1" label="Wallet" label-size="md" label-class="font-weight-bold pt-0" class="mt-3 mb-0">
-                    <b-form-group label="Type:" label-for="wallet-type" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-                      <b-form-select size="sm" id="wallet-type" v-model="wallet.type" @change="recomputeWallet();" :options="walletTypeOptions" class="w-25"></b-form-select>
+                      <b-form-group v-if="wallet.type == 'privatekey'" label="Private Key:" label-for="wallet-privatekey" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+                        <b-form-input type="text" size="sm" id="wallet-privatekey" v-model="wallet.privateKey" @change="recomputeWallet();" class="w-75"></b-form-input>
+                      </b-form-group>
+
+                      <b-form-group v-if="wallet.type == 'mnemonics'" label="Mnemonics:" label-for="wallet-mnemonics" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+                        <b-form-textarea size="sm" id="wallet-mnemonics" v-model="wallet.mnemonics" @change="recomputeWallet();" rows="3" class="w-75"></b-form-textarea>
+                      </b-form-group>
+
+                      <b-form-group v-if="wallet.type == 'keystorefile'" label="Keystore File:" label-for="wallet-keystorefile" label-size="sm" label-cols-sm="2" label-align-sm="right" :description="'Select encrypted keystore (JSON/UTC) file from your local computer'" class="mx-0 my-1 p-0">
+                        <b-form-file size="sm" id="wallet-keystorefile" v-model="wallet.keystoreFile" @change="keystoreFileChange($event.target.name, $event.target.files)" class="w-75"></b-form-file>
+                      </b-form-group>
+                      <b-form-group v-if="wallet.type == 'keystorefile'" label="Keystore File Password:" label-for="wallet-keystorefilepassword" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+                        <b-form-input type="password" autocomplete="current-password" size="sm" id="wallet-keystorefilepassword" v-model="wallet.keystoreFilePassword" @change="recomputeWallet();" class="w-25"></b-form-input>
+                      </b-form-group>
+                      <!-- <b-form-input type="text" size="sm" id="wallet-username" v-model="wallet.hiddenUsername" style="display: none;"></b-form-input> -->
+
+                      <b-form-group v-if="false" label="Test:" label-for="wallet-testit" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+                        <b-button size="sm" id="wallet-testit" @click="testIt()" variant="warning">Test</b-button>
+                      </b-form-group>
                     </b-form-group>
 
-                    <b-form-group v-if="wallet.type == 'privatekey'" label="Private Key:" label-for="wallet-privatekey" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-                      <b-form-input type="text" size="sm" id="wallet-privatekey" v-model="wallet.privateKey" @change="recomputeWallet();" class="w-75"></b-form-input>
+                    <b-form-group label-cols-lg="1" label="Output" label-size="md" label-class="font-weight-bold pt-0" class="mt-3 mb-0">
+                      <b-form-group label="Public Key:" label-for="output-publickey" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+                        <b-form-textarea size="sm" readonly id="output-publickey" :value="wallet.publicKey" rows="3" class="w-75"></b-form-textarea>
+                      </b-form-group>
+                      <b-form-group label="Compressed Public Key:" label-for="output-compressedpublickey" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+                        <b-form-input type="text" size="sm" readonly id="output-compressedpublickey" :value="wallet.compressedPublicKey" class="w-75"></b-form-input>
+                      </b-form-group>
+                      <b-form-group label="ETH Address:" label-for="output-address" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+                        <b-form-input type="text" size="sm" readonly id="output-address" :value="wallet.address" class="w-50"></b-form-input>
+                      </b-form-group>
                     </b-form-group>
 
-                    <b-form-group v-if="wallet.type == 'mnemonics'" label="Mnemonics:" label-for="wallet-mnemonics" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-                      <b-form-textarea size="sm" id="wallet-mnemonics" v-model="wallet.mnemonics" @change="recomputeWallet();" rows="3" class="w-75"></b-form-textarea>
+                    <b-form-group v-if="false" label-cols-lg="1" label="Debug" label-size="md" label-class="font-weight-bold pt-0" class="mt-3 mb-0">
+                      <b-form-group label="Type:" label-for="debug-textarea" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+                        <b-form-textarea size="sm" readonly id="debug-textarea" :value="JSON.stringify(wallet, null, 2)" rows="3" max-rows="10" class="w-100"></b-form-textarea>
+                      </b-form-group>
                     </b-form-group>
 
-                    <b-form-group v-if="wallet.type == 'keystorefile'" label="Keystore File:" label-for="wallet-keystorefile" label-size="sm" label-cols-sm="2" label-align-sm="right" :description="'Select encrypted keystore (JSON/UTC) file from your local computer'" class="mx-0 my-1 p-0">
-                      <b-form-file size="sm" id="wallet-keystorefile" v-model="wallet.keystoreFile" @change="keystoreFileChange($event.target.name, $event.target.files)" class="w-75"></b-form-file>
-                    </b-form-group>
-                    <b-form-group v-if="wallet.type == 'keystorefile'" label="Keystore File Password:" label-for="wallet-keystorefilepassword" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-                      <b-form-input type="password" size="sm" id="wallet-keystorefilepassword" v-model="wallet.keystoreFilePassword" @change="recomputeWallet();" class="w-25"></b-form-input>
-                    </b-form-group>
-
-                    <b-form-group v-if="false" label="Test:" label-for="wallet-testit" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-                      <b-button size="sm" id="wallet-testit" @click="testIt()" variant="warning">Test</b-button>
-                    </b-form-group>
-
-                  </b-form-group>
-
-                  <b-form-group label-cols-lg="1" label="Output" label-size="md" label-class="font-weight-bold pt-0" class="mt-3 mb-0">
-                    <b-form-group label="Public Key:" label-for="output-publickey" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-                      <b-form-textarea size="sm" readonly id="output-publickey" :value="wallet.publicKey" rows="3" class="w-75"></b-form-textarea>
-                    </b-form-group>
-                    <b-form-group label="Compressed Public Key:" label-for="output-compressedpublickey" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-                      <b-form-input type="text" size="sm" readonly id="output-compressedpublickey" :value="wallet.compressedPublicKey" class="w-75"></b-form-input>
-                    </b-form-group>
-                    <b-form-group label="ETH Address:" label-for="output-address" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-                      <b-form-input type="text" size="sm" readonly id="output-address" :value="wallet.address" class="w-50"></b-form-input>
-                    </b-form-group>
-                  </b-form-group>
-
-                  <b-form-group v-if="false" label-cols-lg="1" label="Debug" label-size="md" label-class="font-weight-bold pt-0" class="mt-3 mb-0">
-                    <b-form-group label="Type:" label-for="debug-textarea" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-                      <b-form-textarea size="sm" readonly id="debug-textarea" :value="JSON.stringify(wallet, null, 2)" rows="3" max-rows="10" class="w-100"></b-form-textarea>
-                    </b-form-group>
-                  </b-form-group>
+                  </b-form>
 
                 </b-card-body>
               </b-card>
@@ -162,6 +164,8 @@
             publicKey: null,
             compressedPublicKey: null,
             address: null,
+
+            hiddenUsername: null, // For HTML accessibility
           },
 
           connected: false,
