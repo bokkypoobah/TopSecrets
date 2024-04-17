@@ -98,6 +98,13 @@
                     <b-form-input type="text" size="sm" readonly id="output-address" :value="wallet.address" class="w-50"></b-form-input>
                   </b-form-group>
 
+                  <b-form-group v-if="wallet.tab == 3" label="Password:" label-for="keystore-password" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <b-form-input type="password" autocomplete="current-password" size="sm" id="keystore-password" v-model="wallet.keystoreFilePassword" @change="recomputeWallet();" class="w-25"></b-form-input>
+                  </b-form-group>
+                  <b-form-group v-if="wallet.tab == 3" label="JSON/UTC Keystore:" label-for="wallet-download" label-size="sm" label-cols-sm="2" label-align-sm="right" description="This will take around half a minute" class="mx-0 my-1 p-0">
+                    <b-button size="sm" :disabled="!wallet.keystoreFilePassword || !wallet.privateKey" id="wallet-download" @click="downloadKeystore()" variant="warning">Download</b-button>
+                  </b-form-group>
+
                   <b-form-group v-if="false" label="Debug:" label-for="debug-textarea" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
                     <b-form-textarea size="sm" readonly id="debug-textarea" :value="JSON.stringify(wallet, null, 2)" rows="3" max-rows="10" class="w-100"></b-form-textarea>
                   </b-form-group>
@@ -215,6 +222,7 @@
             keystoreFilePassword: null,
             keystoreFileContent: null,
             privateKey: null,
+            newWallet: null,
 
             publicKey: null,
             compressedPublicKey: null,
@@ -282,12 +290,30 @@
               this.wallet.mnemonic.phrase = wallet.mnemonic.phrase;
               this.wallet.mnemonic.path = wallet.mnemonic.path;
               this.wallet.mnemonic.locale = wallet.mnemonic.locale;
+              this.wallet.newWallet = wallet;
               // this.wallet.publicKey = wallet.publicKey;
               // this.wallet.compressedPublicKey = ethers.utils.computePublicKey(wallet.publicKey, true);
             } catch (e) {
               console.log(moment().format("HH:mm:ss") + " newWallet ERROR: " + e.message);
             }
+          },
 
+          async downloadKeystore() {
+            console.log(moment().format("HH:mm:ss") + " downloadKeystore - this.wallet.newWallet: " + JSON.stringify(this.wallet.newWallet));
+            const encrypted = await this.wallet.newWallet.encrypt(this.wallet.keystoreFilePassword);
+            console.log(moment().format("HH:mm:ss") + " downloadKeystore - encrypted: " + encrypted);
+            const encryptedObject = JSON.parse(encrypted);
+            const filename = encryptedObject && encryptedObject['x-ethers'] && encryptedObject['x-ethers'].gethFilename || "UTC--error-getting-filename";
+            console.log("filename: " + filename);
+            console.log(moment().format("HH:mm:ss") + " downloadKeystore - JSON.stringify(JSON.parse(encrypted), null, 2): " + JSON.stringify(JSON.parse(encrypted), null, 2));
+            let jsonContent = "data:text/json;charset=utf-8," + encrypted;
+            console.log(moment().format("HH:mm:ss") + " downloadKeystore - jsonContent: " + jsonContent);
+            var encodedUri = encodeURI(jsonContent);
+            var link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", filename);
+            document.body.appendChild(link); // Required for FF
+            link.click(); // This will download the data with the specified file name
           },
 
           async recomputeWallet() {
