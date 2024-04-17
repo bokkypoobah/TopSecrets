@@ -300,8 +300,25 @@
 
             try {
               const randomBytes = ethers.utils.randomBytes(this.wallet.randomBytesLength);
-              const m = ethers.utils.entropyToMnemonic(randomBytes);
-              console.log(moment().format("HH:mm:ss") + " newWallet - randomBytes[" + length + "]: " + JSON.stringify(m));
+              this.wallet.mnemonic.phrase = ethers.utils.entropyToMnemonic(randomBytes);
+              const node = ethers.utils.HDNode.fromMnemonic(this.wallet.mnemonic.phrase);
+              console.table(node);
+              console.log(moment().format("HH:mm:ss") + " newWallet - randomBytes[" + this.wallet.randomBytesLength + "]: " + this.wallet.mnemonic.phrase);
+
+              for (let index = 0; index < 10; index++) {
+                const path = "m/44'/60'/0'/0/" + index;
+                const wallet = node.derivePath(path);
+                console.log(moment().format("HH:mm:ss") + " newWallet: " + path + " => " + wallet.address + " " + wallet.privateKey);
+              }
+
+              //
+              // for (let i = 0; i < 1000; i++) {
+              //   const path = "m/44'/60'/0'/0/" + i
+              //   const wallet = node.derivePath(path).getWallet()
+              //   wallets.push(wallet)
+              // }
+
+
             } catch (e) {
               console.log(moment().format("HH:mm:ss") + " newWallet ERROR: " + e.message);
             }
@@ -395,12 +412,6 @@
 
           async testIt() {
             console.log(moment().format("HH:mm:ss") + " testIt");
-            for (let length = 16; length <= 32; length += 4) {
-              const randomBytes = ethers.utils.randomBytes(length);
-              const m = ethers.utils.entropyToMnemonic(randomBytes);
-              console.log(moment().format("HH:mm:ss") + " testIt - randomBytes[" + length + "]: " + JSON.stringify(m));
-            }
-
 
             // bytes length, mnemonic words
             // 16, 12
@@ -408,12 +419,17 @@
             // 24, 18
             // 28, 21
             // 32, 24
+            // offline.html:378 18:35:10 testIt - randomBytes[16]: "crew ridge trash elbow tiny theme open exotic call giraffe tray drill"
+            // offline.html:378 18:35:10 testIt - randomBytes[20]: "curtain awkward stem improve meadow whisper knee enlist try worry guard devote behave cabbage top"
+            // offline.html:378 18:35:10 testIt - randomBytes[24]: "present drastic plastic bring section hamster cable elbow despair first dutch mystery modify kind thing swim clog art"
+            // offline.html:378 18:35:10 testIt - randomBytes[28]: "afraid path security exile cave rhythm autumn now digital glory cricket unusual meat drill bonus ring rain inhale fabric thunder wish"
+            // offline.html:378 18:35:10 testIt - randomBytes[32]: "comic salt ignore veteran web search window horn tackle act asset jaguar shoe position bundle balance jealous box ticket barrel also ceiling radar ball"
 
-          // offline.html:378 18:35:10 testIt - randomBytes[16]: "crew ridge trash elbow tiny theme open exotic call giraffe tray drill"
-          // offline.html:378 18:35:10 testIt - randomBytes[20]: "curtain awkward stem improve meadow whisper knee enlist try worry guard devote behave cabbage top"
-          // offline.html:378 18:35:10 testIt - randomBytes[24]: "present drastic plastic bring section hamster cable elbow despair first dutch mystery modify kind thing swim clog art"
-          // offline.html:378 18:35:10 testIt - randomBytes[28]: "afraid path security exile cave rhythm autumn now digital glory cricket unusual meat drill bonus ring rain inhale fabric thunder wish"
-          // offline.html:378 18:35:10 testIt - randomBytes[32]: "comic salt ignore veteran web search window horn tackle act asset jaguar shoe position bundle balance jealous box ticket barrel also ceiling radar ball"
+            // for (let length = 16; length <= 32; length += 4) {
+            //   const randomBytes = ethers.utils.randomBytes(length);
+            //   const m = ethers.utils.entropyToMnemonic(randomBytes);
+            //   console.log(moment().format("HH:mm:ss") + " testIt - randomBytes[" + length + "]: " + JSON.stringify(m));
+            // }
 
             // const jsonText = '{"version":3,"id":"e14b94f9-cabc-445c-9b8a-ea090540d8db","address":"62325d923da56ab815367aa591c0a10cff1d0ddd","crypto":{"ciphertext":"4f19f96b36100b1b54d95f4106e38949cd56967dcba919d814ab962fed3b688b","cipherparams":{"iv":"befb0e2386402c71e06dd3d2cca4f828"},"cipher":"aes-128-ctr","kdf":"scrypt","kdfparams":{"dklen":32,"salt":"67d0ff891bbbbe29eb98828bae566f5a31c131ff05f207b22f4ff2bcc7643bc6","n":8192,"r":8,"p":1},"mac":"7092eb22b1d4c58ff07ff913555fe2ca5a36040f51c4edfbccf1ddfb49216f70"}}';
             // const password = '';
@@ -521,19 +537,6 @@
           //   }
           //   this.forceRefresh++; // UI refresh workaround
           //   console.log(moment().format("HH:mm:ss") + " processData END");
-          // },
-
-          // customTypeUpdated(address, type) {
-          //   Vue.set(this.accounts[this.chainId][address], 'customType', type);
-          //   localStorage.approvalAccounts = JSON.stringify(this.accounts);
-          // },
-          // customNameUpdated(address, name) {
-          //   Vue.set(this.accounts[this.chainId][address], 'customName', name);
-          //   localStorage.approvalAccounts = JSON.stringify(this.accounts);
-          // },
-          // customDecimalsUpdated(address, decimals) {
-          //   Vue.set(this.accounts[this.chainId][address], 'customDecimals', decimals);
-          //   localStorage.approvalAccounts = JSON.stringify(this.accounts);
           // },
 
           saveSettings() {
@@ -678,22 +681,6 @@
           //     this.settings = tempSettings;
           //     if (this.settings.approvalsTable.currentPage > 1) {
           //       this.settings.approvalsTable.currentPage = 1;
-          //     }
-          //     if (this.settings.eventsTable.currentPage > 1) {
-          //       this.settings.eventsTable.currentPage = 1;
-          //     }
-          //     if (this.settings.accountsTable.currentPage > 1) {
-          //       this.settings.accountsTable.currentPage = 1;
-          //     }
-          //     // Restore other settings for the same version
-          //     if ('approvalEvents' in localStorage) {
-          //       this.events = JSON.parse(localStorage.approvalEvents);
-          //     }
-          //     if ('approvalAccounts' in localStorage) {
-          //       this.accounts = JSON.parse(localStorage.approvalAccounts);
-          //     }
-          //     if ('approvalBlockTimestamps' in localStorage) {
-          //       this.blockTimestamps = JSON.parse(localStorage.approvalBlockTimestamps);
           //     }
           //   }
           // }
