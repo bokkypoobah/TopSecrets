@@ -76,11 +76,11 @@
                   </b-form-group>
 
                   <b-form-group v-if="wallet.tab == 0 || wallet.tab == 3" label="Mnemonic Seed Phrase:" label-for="wallet-mnemonicphrase" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
-                    <b-form-textarea size="sm" :readonly="wallet.tab == 3" id="wallet-mnemonicphrase" v-model="wallet.mnemonic.phrase" @change="recomputeWallet();" rows="3" class="w-100"></b-form-textarea>
+                    <b-form-textarea size="sm" :readonly="wallet.tab == 3" id="wallet-mnemonicphrase" v-model="wallet.mnemonic.phrase" @change="recomputeWallet();" rows="3" class="w-75"></b-form-textarea>
                   </b-form-group>
 
                   <b-form-group v-if="wallet.tab == 0 || wallet.tab == 3" label="Mnemonic Path:" label-for="wallet-mnemonicpath" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
-                    <b-form-input type="text" size="sm" :readonly="wallet.tab == 0 || wallet.tab == 3" id="wallet-mnemonicpath" v-model="wallet.mnemonic.path" @change="recomputeWallet();" class="w-75"></b-form-input>
+                    <b-form-input type="text" size="sm" :readonly="wallet.tab == 0 || wallet.tab == 3" id="wallet-mnemonicpath" v-model="wallet.mnemonic.path" @change="recomputeWallet();" class="w-50"></b-form-input>
                   </b-form-group>
 
                   <b-form-group v-if="wallet.tab == 1" label="Keystore File:" label-for="wallet-keystorefile" label-size="sm" label-cols-sm="2" label-align-sm="right" :description="'Select encrypted keystore (JSON/UTC) file from your local computer'" class="mx-0 my-1 p-0">
@@ -109,6 +109,9 @@
                     <b-form-textarea size="sm" readonly id="debug-textarea" :value="JSON.stringify(wallet, null, 2)" rows="3" max-rows="10" class="w-100"></b-form-textarea>
                   </b-form-group>
 
+                  <b-form-group v-if="true" label="Test:" label-for="wallet-testit" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <b-button size="sm" id="wallet-testit" @click="testIt()" variant="warning">Test</b-button>
+                  </b-form-group>
                 </b-card-text>
               </b-card>
 
@@ -211,7 +214,7 @@
         // --- DATA ---
         data: {
           wallet: {
-            tab: 3, // 0: 'mnemonic', 1: 'keystorefile', 2: 'privatekey', 3: 'new'
+            tab: 0, // 0: 'mnemonic', 1: 'keystorefile', 2: 'privatekey', 3: 'new'
             type: 'mnemonic', // 'mnemonic', 'keystorefile', 'privatekey'
             mnemonic: {
               phrase: null,
@@ -301,13 +304,13 @@
           async downloadKeystore() {
             console.log(moment().format("HH:mm:ss") + " downloadKeystore - this.wallet.newWallet: " + JSON.stringify(this.wallet.newWallet));
             const encrypted = await this.wallet.newWallet.encrypt(this.wallet.keystoreFilePassword);
-            console.log(moment().format("HH:mm:ss") + " downloadKeystore - encrypted: " + encrypted);
+            // console.log(moment().format("HH:mm:ss") + " downloadKeystore - encrypted: " + encrypted);
             const encryptedObject = JSON.parse(encrypted);
             const filename = encryptedObject && encryptedObject['x-ethers'] && encryptedObject['x-ethers'].gethFilename || "UTC--error-getting-filename";
             console.log("filename: " + filename);
-            console.log(moment().format("HH:mm:ss") + " downloadKeystore - JSON.stringify(JSON.parse(encrypted), null, 2): " + JSON.stringify(JSON.parse(encrypted), null, 2));
+            // console.log(moment().format("HH:mm:ss") + " downloadKeystore - JSON.stringify(JSON.parse(encrypted), null, 2): " + JSON.stringify(JSON.parse(encrypted), null, 2));
             let jsonContent = "data:text/json;charset=utf-8," + encrypted;
-            console.log(moment().format("HH:mm:ss") + " downloadKeystore - jsonContent: " + jsonContent);
+            // console.log(moment().format("HH:mm:ss") + " downloadKeystore - jsonContent: " + jsonContent);
             var encodedUri = encodeURI(jsonContent);
             var link = document.createElement("a");
             link.setAttribute("href", encodedUri);
@@ -369,19 +372,25 @@
 
           async testIt() {
             console.log(moment().format("HH:mm:ss") + " testIt");
-            const jsonText = '{"version":3,"id":"e14b94f9-cabc-445c-9b8a-ea090540d8db","address":"62325d923da56ab815367aa591c0a10cff1d0ddd","crypto":{"ciphertext":"4f19f96b36100b1b54d95f4106e38949cd56967dcba919d814ab962fed3b688b","cipherparams":{"iv":"befb0e2386402c71e06dd3d2cca4f828"},"cipher":"aes-128-ctr","kdf":"scrypt","kdfparams":{"dklen":32,"salt":"67d0ff891bbbbe29eb98828bae566f5a31c131ff05f207b22f4ff2bcc7643bc6","n":8192,"r":8,"p":1},"mac":"7092eb22b1d4c58ff07ff913555fe2ca5a36040f51c4edfbccf1ddfb49216f70"}}';
-            const password = '';
-            const json = JSON.parse(jsonText);
-            console.log("json: " + JSON.stringify(json, null, 2));
-            console.log("password: " + password);
-            try {
-              console.log(moment().format("HH:mm:ss") + " Start");
-              const wallet = await ethers.Wallet.fromEncryptedJsonSync(jsonText, password);
-              console.log(moment().format("HH:mm:ss") + " End");
-              console.log(JSON.stringify(wallet, null, 2));
-            } catch (e) {
-              console.log(moment().format("HH:mm:ss") + " testIt ERROR: " + e.message);
+            for (let length = 16; length <= 32; length += 4) {
+              const randomBytes = ethers.utils.randomBytes(length);
+              const m = ethers.utils.entropyToMnemonic(randomBytes);
+              console.log(moment().format("HH:mm:ss") + " testIt - randomBytes[" + length + "]: " + JSON.stringify(m));
             }
+
+            // const jsonText = '{"version":3,"id":"e14b94f9-cabc-445c-9b8a-ea090540d8db","address":"62325d923da56ab815367aa591c0a10cff1d0ddd","crypto":{"ciphertext":"4f19f96b36100b1b54d95f4106e38949cd56967dcba919d814ab962fed3b688b","cipherparams":{"iv":"befb0e2386402c71e06dd3d2cca4f828"},"cipher":"aes-128-ctr","kdf":"scrypt","kdfparams":{"dklen":32,"salt":"67d0ff891bbbbe29eb98828bae566f5a31c131ff05f207b22f4ff2bcc7643bc6","n":8192,"r":8,"p":1},"mac":"7092eb22b1d4c58ff07ff913555fe2ca5a36040f51c4edfbccf1ddfb49216f70"}}';
+            // const password = '';
+            // const json = JSON.parse(jsonText);
+            // console.log("json: " + JSON.stringify(json, null, 2));
+            // console.log("password: " + password);
+            // try {
+            //   console.log(moment().format("HH:mm:ss") + " Start");
+            //   const wallet = await ethers.Wallet.fromEncryptedJsonSync(jsonText, password);
+            //   console.log(moment().format("HH:mm:ss") + " End");
+            //   console.log(JSON.stringify(wallet, null, 2));
+            // } catch (e) {
+            //   console.log(moment().format("HH:mm:ss") + " testIt ERROR: " + e.message);
+            // }
           },
 
 
