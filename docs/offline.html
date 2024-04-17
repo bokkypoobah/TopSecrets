@@ -62,19 +62,23 @@
 
           <b-card class="m-0 p-0 border-0" body-class="m-1 p-0">
 
-            <b-card no-body class="p-0 mt-1">
-              <b-tabs card align="left" no-body v-model="wallet.tab" active-tab-class="m-0 p-0">
-                <b-tab v-for="t in tabs" :key="'dyn-tabx-' + t.name" @click="updateURL(t.name);" :title="t.text" title-item-class="p-0" title-link-class="px-2">
-                </b-tab>
-              </b-tabs>
-              <b-card-text>
-                <p>Blah Blah</p>
-                <p>Blah Blah</p>
-                <p>Blah Blah</p>
-                <p>Blah Blah</p>
-                <p>Blah Blah</p>
-              </b-card-text>
-            </b-card>
+            <b-form-group label-cols-lg="1" label="Wallet" label-size="md" label-class="font-weight-bold pt-0" class="mt-3 mb-0">
+
+              <b-card bg-variant="light" no-body class="p-0 m-1">
+                <b-tabs card align="left" no-body v-model="wallet.tab" active-tab-class="m-0 p-0">
+                  <b-tab v-for="t in tabs" :key="'dyn-tabx-' + t.name" @click="updateURL(t.name);" :title="t.text" title-item-class="p-0" title-link-class="mt-2 px-2">
+                  </b-tab>
+                </b-tabs>
+                <b-card-text>
+                  <p>Blah Blah</p>
+                  <p>Blah Blah</p>
+                  <p>Blah Blah</p>
+                  <p>Blah Blah</p>
+                  <p>Blah Blah</p>
+                </b-card-text>
+              </b-card>
+
+            </b-form-group>
 
 
 
