@@ -83,6 +83,10 @@
                     <b-form-textarea size="sm" :readonly="wallet.tab == 3" id="wallet-mnemonicphrase" v-model="wallet.mnemonic.phrase" @change="recomputeWallet();" rows="3" class="w-75"></b-form-textarea>
                   </b-form-group>
 
+                  <b-form-group v-if="wallet.tab == 0 || wallet.tab == 3" label="Mnemonic Passphrase:" label-for="wallet-mnemonicpassphrase" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
+                    <b-form-input type="text" size="sm" id="wallet-mnemonicpassphrase" v-model="wallet.mnemonic.passphrase" @change="newWallet();" class="w-25"></b-form-input>
+                  </b-form-group>
+
                   <b-form-group v-if="wallet.tab == 0 || wallet.tab == 3" label="Mnemonic Path:" label-for="wallet-mnemonicpath" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
                     <b-form-input type="text" size="sm" :readonly="wallet.tab == 0 || wallet.tab == 3" id="wallet-mnemonicpath" v-model="wallet.mnemonic.path" @change="recomputeWallet();" class="w-50"></b-form-input>
                   </b-form-group>
@@ -222,6 +226,7 @@
             type: 'mnemonic', // 'mnemonic', 'keystorefile', 'privatekey'
             mnemonic: {
               phrase: null,
+              passphrase: null,
               path: "m/44'/60'/0'/0/0", // null,
               locale: null,
             },
@@ -295,21 +300,31 @@
           },
 
           newWallet() {
-            console.log(moment().format("HH:mm:ss") + " newWallet");
             console.log(moment().format("HH:mm:ss") + " newWallet - this.wallet.randomBytesLength: " + this.wallet.randomBytesLength);
-
             try {
               const randomBytes = ethers.utils.randomBytes(this.wallet.randomBytesLength);
               this.wallet.mnemonic.phrase = ethers.utils.entropyToMnemonic(randomBytes);
-              const node = ethers.utils.HDNode.fromMnemonic(this.wallet.mnemonic.phrase);
-              console.table(node);
-              console.log(moment().format("HH:mm:ss") + " newWallet - randomBytes[" + this.wallet.randomBytesLength + "]: " + this.wallet.mnemonic.phrase);
+              const node = ethers.utils.HDNode.fromMnemonic(this.wallet.mnemonic.phrase, this.wallet.mnemonic.passphrase);
+              console.log(moment().format("HH:mm:ss") + " newWallet - node: " + JSON.stringify(node, null, 2));
+              // console.log(moment().format("HH:mm:ss") + " newWallet - randomBytes[" + this.wallet.randomBytesLength + "]: " + this.wallet.mnemonic.phrase);
 
-              for (let index = 0; index < 10; index++) {
-                const path = "m/44'/60'/0'/0/" + index;
-                const wallet = node.derivePath(path);
-                console.log(moment().format("HH:mm:ss") + " newWallet: " + path + " => " + wallet.address + " " + wallet.privateKey);
-              }
+              const defaultPath = "m/44'/60'/0'/0/0";
+              const wallet = node.derivePath(defaultPath);
+              this.wallet.privateKey = wallet.privateKey;
+              this.wallet.address = wallet.address;
+              this.wallet.publicKey = wallet.publicKey;
+              this.wallet.compressedPublicKey = ethers.utils.computePublicKey(wallet.publicKey, true);
+
+              console.log(moment().format("HH:mm:ss") + " newWallet - this.wallet: " + JSON.stringify(this.wallet, null, 2));
+
+              //
+              // for (let index = 0; index < 1; index++) {
+              //   const path = "m/44'/60'/0'/0/" + index;
+              //   const wallet = node.derivePath(path);
+              //   console.log("wallet: " + JSON.stringify(wallet, null, 2));
+              //   console.log(moment().format("HH:mm:ss") + " newWallet: " + path + " => " + wallet.address + " " + wallet.privateKey);
+              // }
+
 
               //
               // for (let i = 0; i < 1000; i++) {
