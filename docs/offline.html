@@ -69,10 +69,24 @@
               <b-form-select size="sm" id="modal-generatemnemonic-numberofwords" v-model="wallet.randomBytesLength" @change="recomputeWallet();" :options="randomBytesLengthMnemonicWordsOptions"></b-form-select>
             </b-form-group>
             <b-form-group label="" label-for="modal-generatemnemonic-generate" label-size="sm" label-cols-sm="6" label-align-sm="right" class="mx-0 my-1 p-0">
-              <b-button size="sm" id="modal-generatemnemonic-generate" @click="generateMnemonic()" variant="warning">Generate</b-button>
+              <b-button size="sm" id="modal-generatemnemonic-generate" @click="generateMnemonic()" variant="primary">Generate</b-button>
             </b-form-group>
           </b-modal>
 
+          <!-- :MODALLOADPRIVATEKEYFROMKEYSTORE -->
+          <b-modal id="modal-loadprivatekeyfromkeystore" hide-footer size="md">
+            <template #modal-title>
+              Load Private Key From JSON/UTC Keystore
+            </template>
+          </b-modal>
+
+
+          <!-- :MODALSAVEPRIVATEKEYTOKEYSTORE -->
+          <b-modal id="modal-saveprivatekeytokeystore" hide-footer size="md">
+            <template #modal-title>
+              Save Private Key To JSON/UTC Keystore
+            </template>
+          </b-modal>
 
           <b-card class="m-0 p-0 border-0" body-class="m-1 p-0">
 
@@ -94,11 +108,11 @@
                   </b-form-group>
 
                   <b-form-group v-if="wallet.tab == 0 || wallet.tab == 3" label="Mnemonic Seed Phrase:" label-for="wallet-mnemonicphrase" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
-                    <b-form-textarea size="sm" :readonly="wallet.tab == 3" id="wallet-mnemonicphrase" v-model="wallet.mnemonic.phrase" @change="recomputeWallet();" rows="3" placeholder="Type or paste your mnemnonic seed phrase here. Or click [Generate New] below" class="w-75"></b-form-textarea>
+                    <b-form-textarea size="sm" :readonly="wallet.tab == 3" id="wallet-mnemonicphrase" v-model="wallet.mnemonic.phrase" @change="recomputeWallet();" rows="3" placeholder="Type/paste your mnemnonic seed phrase here or click [Generate New]" class="w-75"></b-form-textarea>
                   </b-form-group>
 
-                  <b-form-group v-if="wallet.tab == 0" label="" label-for="wallet-generatemnemonic" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <b-button size="sm" id="wallet-generatemnemonic" @click="showGenerateMnemonicModal()" variant="warning">Generate New</b-button>
+                  <b-form-group v-if="wallet.tab == 0" label="" label-for="wallet-showgeneratemnemonicmodal" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <b-button size="sm" id="wallet-showgeneratemnemonicmodal" @click="showGenerateMnemonicModal()" variant="primary">Generate New</b-button>
                   </b-form-group>
 
                   <b-form-group v-if="wallet.tab == 0 || wallet.tab == 3" label="Mnemonic Passphrase:" label-for="wallet-mnemonicpassphrase" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
@@ -117,7 +131,13 @@
                   </b-form-group>
 
                   <b-form-group v-if="wallet.tab == 2 || wallet.tab == 3" label="Private Key:" label-for="wallet-privatekey" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <b-form-input type="text" :readonly="wallet.tab == 3" size="sm" id="wallet-privatekey" v-model="wallet.privateKey" @change="recomputeWallet();" class="w-75"></b-form-input>
+                    <b-form-input type="text" :readonly="wallet.tab == 3" size="sm" id="wallet-privatekey" v-model="wallet.privateKey" @change="recomputeWallet();" placeholder="Type/paste your private key here, click [Generate New] or [Load From Keystore]" class="w-75"></b-form-input>
+                  </b-form-group>
+
+                  <b-form-group v-if="wallet.tab == 2" label="" label-for="wallet-generaterandomprivatekey" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <b-button size="sm" id="wallet-generaterandomprivatekey" @click="generateRandomPrivateKey()" variant="primary">Generate New</b-button>
+                    <b-button size="sm" @click="showLoadPrivateKeyFromKeystoreModal()" variant="primary">Load From Keystore</b-button>
+                    <b-button size="sm" @click="showSavePrivateKeyToKeystoreModal()" variant="primary">Save To Keystore</b-button>
                   </b-form-group>
 
                   <b-form-group label="ETH Address:" label-for="output-address" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
@@ -240,7 +260,7 @@
         // --- DATA ---
         data: {
           wallet: {
-            tab: 0, // 0: 'mnemonic', 1: 'keystorefile', 2: 'privatekey', 3: 'new'
+            tab: 2, // 0: 'mnemonic', 1: 'keystorefile', 2: 'privatekey', 3: 'new'
             type: 'mnemonic', // 'mnemonic', 'keystorefile', 'privatekey'
             mnemonic: {
               phrase: null,
@@ -318,8 +338,35 @@
           },
 
           showGenerateMnemonicModal() {
-            console.log(moment().format("HH:mm:ss") + " generateMnemonic");
+            console.log(moment().format("HH:mm:ss") + " showGenerateMnemonicModal");
             this.$bvModal.show('modal-generatemnemonic');
+          },
+
+          generateRandomPrivateKey() {
+            console.log(moment().format("HH:mm:ss") + " generateRandomPrivateKey");
+            try {
+              const randomBytes = ethers.utils.randomBytes(16);
+              this.wallet.mnemonic.phrase = ethers.utils.entropyToMnemonic(randomBytes);
+              const node = ethers.utils.HDNode.fromMnemonic(this.wallet.mnemonic.phrase);
+              console.log(moment().format("HH:mm:ss") + " generateRandomPrivateKey - node: " + JSON.stringify(node, null, 2));
+              const defaultPath = "m/44'/60'/0'/0/0";
+              const wallet = node.derivePath(defaultPath);
+              this.wallet.privateKey = wallet.privateKey;
+              this.wallet.address = wallet.address;
+              this.wallet.publicKey = wallet.publicKey;
+              this.wallet.compressedPublicKey = ethers.utils.computePublicKey(wallet.publicKey, true);
+              console.log(moment().format("HH:mm:ss") + " generateRandomPrivateKey - this.wallet: " + JSON.stringify(this.wallet, null, 2));
+            } catch (e) {
+              console.log(moment().format("HH:mm:ss") + " generateRandomPrivateKey ERROR: " + e.message);
+            }
+          },
+          showLoadPrivateKeyFromKeystoreModal() {
+            console.log(moment().format("HH:mm:ss") + " showLoadPrivateKeyFromKeystoreModal");
+            this.$bvModal.show('modal-loadprivatekeyfromkeystore');
+          },
+          showSavePrivateKeyToKeystoreModal() {
+            console.log(moment().format("HH:mm:ss") + " showSavePrivateKeyToKeystoreModal");
+            this.$bvModal.show('modal-saveprivatekeytokeystore');
           },
 
           generateMnemonic() {
