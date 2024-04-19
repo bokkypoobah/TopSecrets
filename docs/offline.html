@@ -114,8 +114,8 @@
                 </b-tabs>
                 <b-card-text class="m-0 p-2">
 
-                  <b-form-group v-if="wallet.tab == 0" label="Mnemonic Seed Phrase:" label-for="wallet-mnemonicphrase" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
-                    <b-form-textarea size="sm" id="wallet-mnemonicphrase" v-model="wallet.mnemonic.phrase" @change="recomputeWallet();" rows="3" placeholder="Type/paste your mnemnonic seed phrase here or click [Generate New]" class="w-75"></b-form-textarea>
+                  <b-form-group v-if="wallet.tab == 0" label="Mnemonic Seed Phrase:" label-for="wallet-mnemonicphrase" label-size="sm" label-cols-sm="2" label-align-sm="right" :state="!wallet.mnemonic.phraseError" :invalid-feedback="wallet.mnemonic.phraseError" class="mx-0 my-2 p-0">
+                    <b-form-textarea size="sm" id="wallet-mnemonicphrase" v-model="wallet.mnemonic.phrase" @change="recomputeFromMnemonic();" rows="3" placeholder="Type/paste your mnemnonic seed phrase here or click [Generate New]" class="w-75"></b-form-textarea>
                   </b-form-group>
 
                   <b-form-group v-if="wallet.tab == 0" label="" label-for="wallet-showgeneratemnemonicmodal" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
@@ -124,11 +124,11 @@
 
                   <b-form-group v-if="wallet.tab == 0" label="Mnemonic Passphrase:" label-for="wallet-mnemonicpassphrase" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
                     <!-- <b-form-input type="text" size="sm" id="wallet-mnemonicpassphrase" v-model="wallet.mnemonic.passphrase" @change="newWallet();" class="w-25"></b-form-input> -->
-                    <b-form-input type="text" size="sm" id="wallet-mnemonicpassphrase" v-model="wallet.mnemonic.passphrase" class="w-25"></b-form-input>
+                    <b-form-input type="text" size="sm" id="wallet-mnemonicpassphrase" v-model="wallet.mnemonic.passphrase" @change="recomputeFromMnemonic();" placeholder="Optional" class="w-25"></b-form-input>
                   </b-form-group>
 
                   <b-form-group v-if="wallet.tab == 0" label="Mnemonic Path:" label-for="wallet-mnemonicpath" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
-                    <b-form-input type="text" size="sm" :readonly="wallet.tab == 0 || wallet.tab == 3" id="wallet-mnemonicpath" v-model="wallet.mnemonic.path" @change="recomputeWallet();" class="w-50"></b-form-input>
+                    <b-form-input type="text" size="sm" :readonly="wallet.tab == 0 || wallet.tab == 3" id="wallet-mnemonicpath" v-model="wallet.mnemonic.path" @change="recomputeFromMnemonic();" class="w-50"></b-form-input>
                   </b-form-group>
 
                   <b-form-group v-if="wallet.tab == 1" label="Private Key:" label-for="wallet-privatekey" label-size="sm" label-cols-sm="2" label-align-sm="right" :state="!wallet.privateKeyError" :invalid-feedback="wallet.privateKeyError" class="mx-0 my-2 p-0">
@@ -253,13 +253,14 @@
         // --- DATA ---
         data: {
           wallet: {
-            tab: 1, // 0: 'mnemonic', 1: 'privatekey'
+            tab: 0, // 0: 'mnemonic', 1: 'privatekey'
 
             type: 'mnemonic', // 'mnemonic', 'privatekey'
             wallet: null, // HDNode for type 'mnemonic', Wallet for type 'privatekey'
 
             mnemonic: {
               phrase: null,
+              phraseError: null,
               passphrase: null,
               path: "m/44'/60'/0'/0/0", // null,
               locale: null,
@@ -449,6 +450,7 @@
             try {
               const randomBytes = ethers.utils.randomBytes(this.wallet.randomBytesLength);
               this.wallet.mnemonic.phrase = ethers.utils.entropyToMnemonic(randomBytes);
+              this.wallet.mnemonic.phraseError == null;
               const node = ethers.utils.HDNode.fromMnemonic(this.wallet.mnemonic.phrase, this.wallet.mnemonic.passphrase);
               console.log(moment().format("HH:mm:ss") + " generateMnemonic - node: " + JSON.stringify(node, null, 2));
               // console.log(moment().format("HH:mm:ss") + " generateMnemonic - randomBytes[" + this.wallet.randomBytesLength + "]: " + this.wallet.mnemonic.phrase);
@@ -532,40 +534,22 @@
             // this.$bvModal.hide('modal-generatemnemonic');
           },
 
-          async recomputeWallet() {
-            console.log(moment().format("HH:mm:ss") + " recomputeWallet: " + JSON.stringify(this.wallet));
+          async recomputeFromMnemonic() {
+            console.log(moment().format("HH:mm:ss") + " recomputeFromMnemonic: " + JSON.stringify(this.wallet));
             if (this.wallet.tab == 0) {
-              console.log(moment().format("HH:mm:ss") + " recomputeWallet - mnemonics: " + JSON.stringify(this.wallet));
+              console.log(moment().format("HH:mm:ss") + " recomputeFromMnemonic - mnemonics: " + JSON.stringify(this.wallet));
               try {
                 const wallet = new ethers.Wallet.fromMnemonic(this.wallet.mnemonic.phrase);
+                this.wallet.mnemonic.phraseError = null;
                 this.wallet.address = wallet.address;
                 this.wallet.publicKey = wallet.publicKey;
                 this.wallet.compressedPublicKey = ethers.utils.computePublicKey(wallet.publicKey, true);
               } catch (e) {
-                console.log(moment().format("HH:mm:ss") + " recomputeWallet - mnemonics ERROR: " + e.message);
-              }
-
-            } else if (this.wallet.tab == 1) {
-              console.log(moment().format("HH:mm:ss") + " recomputeWallet - keystorefile: " + JSON.stringify(this.wallet));
-              try {
-                console.log(moment().format("HH:mm:ss") + " recomputeWallet - this.wallet.keystoreFileContent: " + this.wallet.keystoreFileContent);
-                console.log(moment().format("HH:mm:ss") + " recomputeWallet - this.wallet.keystoreFilePassword: " + this.wallet.keystoreFilePassword);
-                const wallet = await ethers.Wallet.fromEncryptedJsonSync(this.wallet.keystoreFileContent, this.wallet.keystoreFilePassword);
-                this.wallet.address = wallet.address;
-                this.wallet.publicKey = wallet.publicKey;
-                this.wallet.compressedPublicKey = ethers.utils.computePublicKey(wallet.publicKey, true);
-              } catch (e) {
-                console.log(moment().format("HH:mm:ss") + " recomputeWallet - keystorefile ERROR: " + e.message);
-              }
-            } else if (this.wallet.tab == 2) {
-              console.log(moment().format("HH:mm:ss") + " recomputeWallet - privatekey: " + JSON.stringify(this.wallet));
-              try {
-                const wallet = new ethers.Wallet(this.wallet.privateKey);
-                this.wallet.address = wallet.address;
-                this.wallet.publicKey = wallet.publicKey;
-                this.wallet.compressedPublicKey = ethers.utils.computePublicKey(wallet.publicKey, true);
-              } catch (e) {
-                console.log(moment().format("HH:mm:ss") + " recomputeWallet - privatekey ERROR: " + e.message);
+                console.log(moment().format("HH:mm:ss") + " recomputeFromMnemonic - mnemonics ERROR: " + e.message);
+                this.wallet.mnemonic.phraseError = e.message;
+                this.wallet.address = null;
+                this.wallet.publicKey = null;
+                this.wallet.compressedPublicKey = null;
               }
             }
           },
