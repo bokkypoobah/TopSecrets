@@ -74,10 +74,19 @@
           </b-modal>
 
           <!-- :MODALLOADPRIVATEKEYFROMKEYSTORE -->
-          <b-modal id="modal-loadprivatekeyfromkeystore" hide-footer size="md">
+          <b-modal id="modal-loadprivatekeyfromkeystore" hide-footer size="lg">
             <template #modal-title>
               Load Private Key From JSON/UTC Keystore
             </template>
+            <b-form-group label="Keystore File:" label-for="modal-loadprivatekeyfromkeystore-keystorefile" label-size="sm" label-cols-sm="2" label-align-sm="right" :description="'Select encrypted keystore (JSON/UTC) file from your local computer'" class="mx-0 my-1 p-0">
+              <b-form-file size="sm" id="modal-loadprivatekeyfromkeystore-keystorefile" v-model="wallet.keystoreFile" @change="keystoreFileChange($event.target.name, $event.target.files)"></b-form-file>
+            </b-form-group>
+            <b-form-group label="Password:" label-for="modal-loadprivatekeyfromkeystore-keystorefilepassword" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-form-input type="password" autocomplete="current-password" size="sm" id="modal-loadprivatekeyfromkeystore-keystorefilepassword" v-model="wallet.keystoreFilePassword" class="w-50"></b-form-input>
+            </b-form-group>
+            <b-form-group label="" label-for="modal-loadprivatekeyfromkeystore-load" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-button size="sm" id="modal-loadprivatekeyfromkeystore-load" @click="loadPrivateKeyFromKeystore()" variant="primary">Load</b-button>
+            </b-form-group>
           </b-modal>
 
 
@@ -367,6 +376,22 @@
           showSavePrivateKeyToKeystoreModal() {
             console.log(moment().format("HH:mm:ss") + " showSavePrivateKeyToKeystoreModal");
             this.$bvModal.show('modal-saveprivatekeytokeystore');
+          },
+
+          async loadPrivateKeyFromKeystore() {
+            console.log(moment().format("HH:mm:ss") + " loadPrivateKeyFromKeystore");
+            try {
+              console.log(moment().format("HH:mm:ss") + " loadPrivateKeyFromKeystore - this.wallet.keystoreFileContent: " + this.wallet.keystoreFileContent);
+              console.log(moment().format("HH:mm:ss") + " loadPrivateKeyFromKeystore - this.wallet.keystoreFilePassword: " + this.wallet.keystoreFilePassword);
+              const wallet = await ethers.Wallet.fromEncryptedJsonSync(this.wallet.keystoreFileContent, this.wallet.keystoreFilePassword);
+              this.wallet.privateKey = wallet.privateKey;
+              this.wallet.address = wallet.address;
+              this.wallet.publicKey = wallet.publicKey;
+              this.wallet.compressedPublicKey = ethers.utils.computePublicKey(wallet.publicKey, true);
+            } catch (e) {
+              console.log(moment().format("HH:mm:ss") + " loadPrivateKeyFromKeystore - keystorefile ERROR: " + e.message);
+            }
+            this.$bvModal.hide('modal-loadprivatekeyfromkeystore');
           },
 
           generateMnemonic() {
