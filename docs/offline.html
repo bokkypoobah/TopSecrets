@@ -108,7 +108,7 @@
             <b-form-group label-cols-lg="1" label="Wallet" label-size="md" label-class="font-weight-bold pt-0" class="mt-3 mb-0">
 
               <b-card bg-variant="light" no-body class="p-0 m-1">
-                
+
                 <b-tabs card align="left" no-body v-model="wallet.tab" active-tab-class="m-0 p-0">
                   <b-tab v-for="t in tabs" :key="'dyn-tabx-' + t.name" @click="updateURL(t.name);" :title="t.text" title-item-class="p-0" title-link-class="mt-2 px-3">
                   </b-tab>
@@ -128,21 +128,50 @@
                     <b-form-input type="text" size="sm" id="wallet-mnemonicpassphrase" v-model="wallet.mnemonic.passphrase" @change="generateDerivedAddresses();" placeholder="Optional" style="max-width: 300px;"></b-form-input>
                   </b-form-group>
 
-                  <b-form-group v-if="wallet.tab == 0" label="Derivation Path:" label-for="wallet-derivationpath" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <!-- <b-form-group v-if="wallet.tab == 0" label="Derivation Path:" label-for="wallet-derivationpath" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
                     <b-form-select size="sm" id="wallet-derivationpath" v-model="wallet.derivationPath" :options="derivationPathOptions" @change="generateDerivedAddresses();" style="max-width: 300px;"></b-form-select>
-                  </b-form-group>
+                  </b-form-group> -->
 
-                  <b-form-group v-if="wallet.tab == 0" label="Index From:" label-for="wallet-indexfrom" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <!-- <b-form-group v-if="wallet.tab == 0" label="Index From:" label-for="wallet-indexfrom" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
                     <b-form-input type="number" size="sm" id="wallet-indexfrom" v-model="wallet.indexFrom" @change="generateDerivedAddresses();" style="max-width: 100px;"></b-form-input>
-                  </b-form-group>
+                  </b-form-group> -->
 
-                  <b-form-group v-if="wallet.tab == 0" label="Index To:" label-for="wallet-indexto" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <!-- <b-form-group v-if="wallet.tab == 0" label="Index To:" label-for="wallet-indexto" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
                     <b-form-input type="number" size="sm" id="wallet-indexto" v-model="wallet.indexTo" @change="generateDerivedAddresses();" style="max-width: 100px;"></b-form-input>
-                  </b-form-group>
+                  </b-form-group> -->
 
-                  <b-form-group v-if="false && wallet.tab == 0" label="Mnemonic Path:" label-for="wallet-mnemonicpath" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
+                  <!-- <b-form-group v-if="false && wallet.tab == 0" label="Mnemonic Path:" label-for="wallet-mnemonicpath" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
                     <b-form-input type="text" size="sm" :readonly="wallet.tab == 0 || wallet.tab == 3" id="wallet-mnemonicpath" v-model="wallet.mnemonic.path" @change="recomputeFromMnemonic();" class="w-50"></b-form-input>
-                  </b-form-group>
+                  </b-form-group> -->
+
+                  <b-card v-if="wallet.tab == 0" class="m-0 p-0 border-0" body-class="m-1 p-0">
+                    <div class="d-flex flex-wrap m-0 p-0">
+                      <div class="mt-1 pr-1">
+                        <font size="-1">Derivation Path:</font>
+                      </div>
+                      <div class="mt-0 pr-1">
+                        <b-form-select size="sm" id="wallet-derivationpath" v-model="wallet.derivationPath" :options="derivationPathOptions" @change="generateDerivedAddresses();" style="max-width: 300px;" v-b-popover.hover.bottom="'Derivation Path'"></b-form-select>
+                      </div>
+                      <div class="mt-0 flex-grow-1">
+                      </div>
+                      <div class="mt-1 pr-1">
+                        <font size="-1">Index From:</font>
+                      </div>
+                      <div class="mt-0 pr-1">
+                        <b-form-input type="number" size="sm" id="wallet-indexfrom" v-model="wallet.indexFrom" @change="generateDerivedAddresses();" style="max-width: 100px;" v-b-popover.hover.bottom="'Index From'"></b-form-input>
+                      </div>
+                      <div class="mt-1 pr-1">
+                        <font size="-1">To:</font>
+                      </div>
+                      <div class="mt-0 pr-1">
+                        <b-form-input type="number" size="sm" id="wallet-indexto" v-model="wallet.indexTo" @change="generateDerivedAddresses();" style="max-width: 100px;" v-b-popover.hover.bottom="'Index To'"></b-form-input>
+                      </div>
+                    </div>
+                    <!-- <b-table v-if="settings.tabIndex == 0 && !settings.showInfo" ref="approvalsTable" small fixed striped responsive hover selectable select-mode="single" @row-selected='approvalsRowSelected' :fields="approvalsFields" :items="pagedFilteredSortedApprovals" show-empty empty-html="Click Sync above to retrieve ERC-20, ERC-721 and ERC-1155 approval events" head-variant="light" class="mx-0 my-1"> -->
+                    <b-table ref="addressesTable" small fixed striped responsive hover :items="addresses" show-empty empty-html="Enter information above" head-variant="light" class="mx-0 my-1">
+                    </b-table>
+                  </b-card>
+
 
                   <b-form-group v-if="wallet.tab == 1" label="Private Key:" label-for="wallet-privatekey" label-size="sm" label-cols-sm="2" label-align-sm="right" :state="!wallet.privateKeyError" :invalid-feedback="wallet.privateKeyError" class="mx-0 my-2 p-0">
                     <b-form-input type="text" size="sm" id="wallet-privatekey" v-model="wallet.privateKey" @change="recomputeFromPrivateKey();" placeholder="Type/paste your private key here, click [Generate New] or [Load From Keystore]" class="w-75"></b-form-input>
@@ -158,11 +187,8 @@
                     <b-form-input type="text" size="sm" readonly id="output-address" :value="wallet.address" class="w-50"></b-form-input>
                   </b-form-group>
 
-                  <!-- <b-table v-if="settings.tabIndex == 0 && !settings.showInfo" ref="approvalsTable" small fixed striped responsive hover selectable select-mode="single" @row-selected='approvalsRowSelected' :fields="approvalsFields" :items="pagedFilteredSortedApprovals" show-empty empty-html="Click Sync above to retrieve ERC-20, ERC-721 and ERC-1155 approval events" head-variant="light" class="mx-0 my-1"> -->
-                  <b-table v-if="wallet.tab == 0" ref="addressesTable" small fixed striped responsive hover :items="addresses" show-empty empty-html="Enter information above" head-variant="light" class="mx-0 my-1">
-                  </b-table>
 
-                  <b-form-group v-if="wallet.tab == 0" label="Debug Addresses:" label-for="debug-addresses-textarea" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 mt-3 p-0">
+                  <b-form-group v-if="false && wallet.tab == 0" label="Debug Addresses:" label-for="debug-addresses-textarea" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 mt-3 p-0">
                     <b-form-textarea size="sm" readonly id="debug-addresses-textarea" :value="JSON.stringify(addresses, null, 2)" rows="3" max-rows="10" class="w-100"></b-form-textarea>
                   </b-form-group>
                   <b-form-group v-if="false" label="Debug:" label-for="debug-textarea" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 mt-3 p-0">
