@@ -69,7 +69,7 @@
               <b-form-select size="sm" id="modal-generatemnemonic-numberofwords" v-model="wallet.randomBytesLength" :options="randomBytesLengthMnemonicWordsOptions"></b-form-select>
             </b-form-group>
             <b-form-group label="" label-for="modal-generatemnemonic-generate" label-size="sm" label-cols-sm="6" label-align-sm="right" class="mx-0 my-1 p-0">
-              <b-button size="sm" id="modal-generatemnemonic-generate" @click="generateMnemonic()" variant="primary">Generate</b-button>
+              <b-button size="sm" id="modal-generatemnemonic-generate" @click="generateRandomMnemonic()" variant="primary">Generate</b-button>
             </b-form-group>
           </b-modal>
 
@@ -124,7 +124,11 @@
 
                   <b-form-group v-if="wallet.tab == 0" label="Mnemonic Passphrase:" label-for="wallet-mnemonicpassphrase" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
                     <!-- <b-form-input type="text" size="sm" id="wallet-mnemonicpassphrase" v-model="wallet.mnemonic.passphrase" @change="newWallet();" class="w-25"></b-form-input> -->
-                    <b-form-input type="text" size="sm" id="wallet-mnemonicpassphrase" v-model="wallet.mnemonic.passphrase" @change="recomputeFromMnemonic();" placeholder="Optional" class="w-25"></b-form-input>
+                    <b-form-input type="text" size="sm" id="wallet-mnemonicpassphrase" v-model="wallet.mnemonic.passphrase" @change="recomputeFromMnemonic();" placeholder="Optional" style="max-width: 300px;"></b-form-input>
+                  </b-form-group>
+
+                  <b-form-group v-if="wallet.tab == 0" label="Derivation Path:" label-for="wallet-derivationpath" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <b-form-select size="sm" id="wallet-derivationpath" v-model="wallet.derivationPath" :options="derivationPathOptions" style="max-width: 300px;"></b-form-select>
                   </b-form-group>
 
                   <b-form-group v-if="wallet.tab == 0" label="Mnemonic Path:" label-for="wallet-mnemonicpath" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
@@ -145,12 +149,16 @@
                     <b-form-input type="text" size="sm" readonly id="output-address" :value="wallet.address" class="w-50"></b-form-input>
                   </b-form-group>
 
-                  <b-form-group v-if="true" label="Debug:" label-for="debug-textarea" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 mt-3 p-0">
+                  <b-form-group v-if="wallet.tab == 0" label="Debug Addresses:" label-for="debug-addresses-textarea" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 mt-3 p-0">
+                    <b-form-textarea size="sm" readonly id="debug-addresses-textarea" :value="JSON.stringify(addresses, null, 2)" rows="3" max-rows="10" class="w-100"></b-form-textarea>
+                  </b-form-group>
+                  <b-form-group v-if="false" label="Debug:" label-for="debug-textarea" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 mt-3 p-0">
                     <b-form-textarea size="sm" readonly id="debug-textarea" :value="JSON.stringify(wallet, null, 2)" rows="3" max-rows="10" class="w-100"></b-form-textarea>
                   </b-form-group>
                   <b-form-group v-if="false" label="Test:" label-for="wallet-testit" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
                     <b-button size="sm" id="wallet-testit" @click="testIt()" variant="warning">Test</b-button>
                   </b-form-group>
+
                 </b-card-text>
               </b-card>
 
@@ -265,6 +273,11 @@
               path: "m/44'/60'/0'/0/0", // null,
               locale: null,
             },
+
+            derivationPath: "m/44'/60'/0'/0/{index}",
+            indexFrom: 0,
+            indexTo: 10,
+
             keystoreFile: null,
             keystoreFilePassword: null,
             keystoreFileContent: null,
@@ -318,12 +331,27 @@
             { value: 32, text: '24 Words' },
           ],
 
+          // MM HW Paths
+          // Ledger Live
+          // Legacy (MEW/MyCrypto)
+          // BIP44 Standard (e.g. MetaMask, Trezor)
+          derivationPathOptions: [
+            { value: "m/44'/60'/0'/0/{index}", text: "BIP-44 m/44'/60'/0'/0/{index}" },
+            { value: "m/44'/60'/0'/0/{index}", text: "Legacy (MEW/MyCrypto) m/44'/60'/0'/0/{index}" }, // TODO: Check difference in MM settings with Ledger
+            { value: "m/44'/60'/0'/0/{index}/0", text: "Test m/44'/60'/0'/0/{index}/0" },
+          ],
         },
 
         // --- COMPUTED ---
         computed: {
           accountsToSearch() {
             return this.settings.searchAttachedAccount ? [ this.coinbase ] : (this.settings.searchAccounts && this.settings.searchAccounts.split(/[, \t\n]+/).filter(name => name.match(/0x[0-9a-fA-F]{40}/)) || []);
+          },
+
+          addresses() {
+            return [
+              { "a": "b" },
+            ];
           },
         },
 
@@ -345,6 +373,52 @@
           showSavePrivateKeyToKeystoreModal() {
             console.log(moment().format("HH:mm:ss") + " showSavePrivateKeyToKeystoreModal");
             this.$bvModal.show('modal-saveprivatekeytokeystore');
+          },
+
+          generateRandomMnemonic() {
+            console.log(moment().format("HH:mm:ss") + " generateRandomMnemonic - this.wallet.randomBytesLength: " + this.wallet.randomBytesLength);
+            try {
+              const randomBytes = ethers.utils.randomBytes(this.wallet.randomBytesLength);
+              this.wallet.mnemonic.phrase = ethers.utils.entropyToMnemonic(randomBytes);
+              this.wallet.mnemonic.phraseError == null;
+              const node = ethers.utils.HDNode.fromMnemonic(this.wallet.mnemonic.phrase, this.wallet.mnemonic.passphrase);
+              console.log(moment().format("HH:mm:ss") + " generateRandomMnemonic - node: " + JSON.stringify(node, null, 2));
+              // console.log(moment().format("HH:mm:ss") + " generateRandomMnemonic - randomBytes[" + this.wallet.randomBytesLength + "]: " + this.wallet.mnemonic.phrase);
+              const defaultPath = "m/44'/60'/0'/0/0";
+              const wallet = node.derivePath(defaultPath);
+
+              this.wallet.type = 'mnemonic';
+              this.wallet.wallet = wallet;
+
+              this.wallet.privateKey = wallet.privateKey;
+              this.wallet.address = wallet.address;
+              this.wallet.publicKey = wallet.publicKey;
+              this.wallet.compressedPublicKey = ethers.utils.computePublicKey(wallet.publicKey, true);
+              console.log(moment().format("HH:mm:ss") + " generateRandomMnemonic - this.wallet: " + JSON.stringify(this.wallet, null, 2));
+            } catch (e) {
+              console.log(moment().format("HH:mm:ss") + " generateRandomMnemonic ERROR: " + e.message);
+            }
+            this.$bvModal.hide('modal-generatemnemonic');
+          },
+
+          async recomputeFromMnemonic() {
+            console.log(moment().format("HH:mm:ss") + " recomputeFromMnemonic: " + JSON.stringify(this.wallet));
+            if (this.wallet.tab == 0) {
+              console.log(moment().format("HH:mm:ss") + " recomputeFromMnemonic - mnemonics: " + JSON.stringify(this.wallet));
+              try {
+                const wallet = new ethers.Wallet.fromMnemonic(this.wallet.mnemonic.phrase);
+                this.wallet.mnemonic.phraseError = null;
+                this.wallet.address = wallet.address;
+                this.wallet.publicKey = wallet.publicKey;
+                this.wallet.compressedPublicKey = ethers.utils.computePublicKey(wallet.publicKey, true);
+              } catch (e) {
+                console.log(moment().format("HH:mm:ss") + " recomputeFromMnemonic - mnemonics ERROR: " + e.message);
+                this.wallet.mnemonic.phraseError = e.message;
+                this.wallet.address = null;
+                this.wallet.publicKey = null;
+                this.wallet.compressedPublicKey = null;
+              }
+            }
           },
 
           generateRandomPrivateKey() {
@@ -446,37 +520,7 @@
             this.$bvModal.hide('modal-saveprivatekeytokeystore');
           },
 
-          generateMnemonic() {
-            console.log(moment().format("HH:mm:ss") + " generateMnemonic - this.wallet.randomBytesLength: " + this.wallet.randomBytesLength);
-            try {
-              const randomBytes = ethers.utils.randomBytes(this.wallet.randomBytesLength);
-              this.wallet.mnemonic.phrase = ethers.utils.entropyToMnemonic(randomBytes);
-              this.wallet.mnemonic.phraseError == null;
-              const node = ethers.utils.HDNode.fromMnemonic(this.wallet.mnemonic.phrase, this.wallet.mnemonic.passphrase);
-              console.log(moment().format("HH:mm:ss") + " generateMnemonic - node: " + JSON.stringify(node, null, 2));
-              // console.log(moment().format("HH:mm:ss") + " generateMnemonic - randomBytes[" + this.wallet.randomBytesLength + "]: " + this.wallet.mnemonic.phrase);
-              const defaultPath = "m/44'/60'/0'/0/0";
-              const wallet = node.derivePath(defaultPath);
 
-              this.wallet.type = 'mnemonic';
-              this.wallet.wallet = wallet;
-
-              this.wallet.privateKey = wallet.privateKey;
-              this.wallet.address = wallet.address;
-              this.wallet.publicKey = wallet.publicKey;
-              this.wallet.compressedPublicKey = ethers.utils.computePublicKey(wallet.publicKey, true);
-              console.log(moment().format("HH:mm:ss") + " generateMnemonic - this.wallet: " + JSON.stringify(this.wallet, null, 2));
-            } catch (e) {
-              console.log(moment().format("HH:mm:ss") + " generateMnemonic ERROR: " + e.message);
-            }
-            this.$bvModal.hide('modal-generatemnemonic');
-          },
-
-
-          // MM HW Paths
-          // Ledger Live
-          // Legacy (MEW/MyCrypto)
-          // BIP44 Standard (e.g. MetaMask, Trezor)
           changeNewWalletToHDWallets() {
             console.log(moment().format("HH:mm:ss") + " newWallet - this.wallet.randomBytesLength: " + this.wallet.randomBytesLength);
             try {
@@ -533,26 +577,6 @@
             //   console.log(moment().format("HH:mm:ss") + " newWallet ERROR: " + e.message);
             // }
             // this.$bvModal.hide('modal-generatemnemonic');
-          },
-
-          async recomputeFromMnemonic() {
-            console.log(moment().format("HH:mm:ss") + " recomputeFromMnemonic: " + JSON.stringify(this.wallet));
-            if (this.wallet.tab == 0) {
-              console.log(moment().format("HH:mm:ss") + " recomputeFromMnemonic - mnemonics: " + JSON.stringify(this.wallet));
-              try {
-                const wallet = new ethers.Wallet.fromMnemonic(this.wallet.mnemonic.phrase);
-                this.wallet.mnemonic.phraseError = null;
-                this.wallet.address = wallet.address;
-                this.wallet.publicKey = wallet.publicKey;
-                this.wallet.compressedPublicKey = ethers.utils.computePublicKey(wallet.publicKey, true);
-              } catch (e) {
-                console.log(moment().format("HH:mm:ss") + " recomputeFromMnemonic - mnemonics ERROR: " + e.message);
-                this.wallet.mnemonic.phraseError = e.message;
-                this.wallet.address = null;
-                this.wallet.publicKey = null;
-                this.wallet.compressedPublicKey = null;
-              }
-            }
           },
 
           async keystoreFileChange(fileName, fileList) {
