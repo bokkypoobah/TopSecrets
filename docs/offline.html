@@ -549,65 +549,6 @@
             this.$bvModal.hide('modal-saveprivatekeytokeystore');
           },
 
-
-          changeNewWalletToHDWallets() {
-            console.log(moment().format("HH:mm:ss") + " newWallet - this.wallet.randomBytesLength: " + this.wallet.randomBytesLength);
-            try {
-              const randomBytes = ethers.utils.randomBytes(this.wallet.randomBytesLength);
-              this.wallet.mnemonic.phrase = ethers.utils.entropyToMnemonic(randomBytes);
-              const node = ethers.utils.HDNode.fromMnemonic(this.wallet.mnemonic.phrase, this.wallet.mnemonic.passphrase);
-              console.log(moment().format("HH:mm:ss") + " newWallet - node: " + JSON.stringify(node, null, 2));
-              // console.log(moment().format("HH:mm:ss") + " newWallet - randomBytes[" + this.wallet.randomBytesLength + "]: " + this.wallet.mnemonic.phrase);
-
-              const defaultPath = "m/44'/60'/0'/0/0";
-              const wallet = node.derivePath(defaultPath);
-              this.wallet.privateKey = wallet.privateKey;
-              this.wallet.address = wallet.address;
-              this.wallet.publicKey = wallet.publicKey;
-              this.wallet.compressedPublicKey = ethers.utils.computePublicKey(wallet.publicKey, true);
-
-              console.log(moment().format("HH:mm:ss") + " newWallet - this.wallet: " + JSON.stringify(this.wallet, null, 2));
-
-              //
-              // for (let index = 0; index < 1; index++) {
-              //   const path = "m/44'/60'/0'/0/" + index;
-              //   const wallet = node.derivePath(path);
-              //   console.log("wallet: " + JSON.stringify(wallet, null, 2));
-              //   console.log(moment().format("HH:mm:ss") + " newWallet: " + path + " => " + wallet.address + " " + wallet.privateKey);
-              // }
-
-
-              //
-              // for (let i = 0; i < 1000; i++) {
-              //   const path = "m/44'/60'/0'/0/" + i
-              //   const wallet = node.derivePath(path).getWallet()
-              //   wallets.push(wallet)
-              // }
-
-
-            } catch (e) {
-              console.log(moment().format("HH:mm:ss") + " newWallet ERROR: " + e.message);
-            }
-
-            // try {
-            //   const wallet = new ethers.Wallet.createRandom();
-            //   console.table(wallet);
-            //   this.wallet.address = wallet.address;
-            //   this.wallet.privateKey = wallet.privateKey;
-            //   console.log("wallet.privateKey: " + wallet.privateKey);
-            //   console.log("wallet.mnemonic: " + JSON.stringify(wallet.mnemonic));
-            //   this.wallet.mnemonic.phrase = wallet.mnemonic.phrase;
-            //   this.wallet.mnemonic.path = wallet.mnemonic.path;
-            //   this.wallet.mnemonic.locale = wallet.mnemonic.locale;
-            //   this.wallet.newWallet = wallet;
-            //   // this.wallet.publicKey = wallet.publicKey;
-            //   // this.wallet.compressedPublicKey = ethers.utils.computePublicKey(wallet.publicKey, true);
-            // } catch (e) {
-            //   console.log(moment().format("HH:mm:ss") + " newWallet ERROR: " + e.message);
-            // }
-            // this.$bvModal.hide('modal-generatemnemonic');
-          },
-
           async keystoreFileChange(fileName, fileList) {
             console.log(moment().format("HH:mm:ss") + " keystoreFileChange: " + JSON.stringify(fileName));
             const reader = new FileReader();
@@ -623,38 +564,6 @@
 
           async testIt() {
             console.log(moment().format("HH:mm:ss") + " testIt");
-
-            // bytes length, mnemonic words
-            // 16, 12
-            // 20, 15
-            // 24, 18
-            // 28, 21
-            // 32, 24
-            // offline.html:378 18:35:10 testIt - randomBytes[16]: "crew ridge trash elbow tiny theme open exotic call giraffe tray drill"
-            // offline.html:378 18:35:10 testIt - randomBytes[20]: "curtain awkward stem improve meadow whisper knee enlist try worry guard devote behave cabbage top"
-            // offline.html:378 18:35:10 testIt - randomBytes[24]: "present drastic plastic bring section hamster cable elbow despair first dutch mystery modify kind thing swim clog art"
-            // offline.html:378 18:35:10 testIt - randomBytes[28]: "afraid path security exile cave rhythm autumn now digital glory cricket unusual meat drill bonus ring rain inhale fabric thunder wish"
-            // offline.html:378 18:35:10 testIt - randomBytes[32]: "comic salt ignore veteran web search window horn tackle act asset jaguar shoe position bundle balance jealous box ticket barrel also ceiling radar ball"
-
-            // for (let length = 16; length <= 32; length += 4) {
-            //   const randomBytes = ethers.utils.randomBytes(length);
-            //   const m = ethers.utils.entropyToMnemonic(randomBytes);
-            //   console.log(moment().format("HH:mm:ss") + " testIt - randomBytes[" + length + "]: " + JSON.stringify(m));
-            // }
-
-            // const jsonText = '{"version":3,"id":"e14b94f9-cabc-445c-9b8a-ea090540d8db","address":"62325d923da56ab815367aa591c0a10cff1d0ddd","crypto":{"ciphertext":"4f19f96b36100b1b54d95f4106e38949cd56967dcba919d814ab962fed3b688b","cipherparams":{"iv":"befb0e2386402c71e06dd3d2cca4f828"},"cipher":"aes-128-ctr","kdf":"scrypt","kdfparams":{"dklen":32,"salt":"67d0ff891bbbbe29eb98828bae566f5a31c131ff05f207b22f4ff2bcc7643bc6","n":8192,"r":8,"p":1},"mac":"7092eb22b1d4c58ff07ff913555fe2ca5a36040f51c4edfbccf1ddfb49216f70"}}';
-            // const password = '';
-            // const json = JSON.parse(jsonText);
-            // console.log("json: " + JSON.stringify(json, null, 2));
-            // console.log("password: " + password);
-            // try {
-            //   console.log(moment().format("HH:mm:ss") + " Start");
-            //   const wallet = await ethers.Wallet.fromEncryptedJsonSync(jsonText, password);
-            //   console.log(moment().format("HH:mm:ss") + " End");
-            //   console.log(JSON.stringify(wallet, null, 2));
-            // } catch (e) {
-            //   console.log(moment().format("HH:mm:ss") + " testIt ERROR: " + e.message);
-            // }
           },
 
 
