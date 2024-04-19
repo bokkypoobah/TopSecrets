@@ -42,8 +42,11 @@
             <em v-b-popover.hover.bottom="'gm gm gm'">Offline:TopSecrets</em>
           </b-navbar-brand>
           <b-navbar-nav class="ml-auto">
-            <!-- <b-nav-item size="sm" @click="settings.tabIndex = 0; saveSettings();" :active="settings.tabIndex == 0" active-class="active" v-b-popover.hover="'Approvals'">Approvals</b-nav-item> -->
-            <!-- <b-nav-item size="sm" @click="settings.tabIndex = 1; saveSettings();" :active="settings.tabIndex == 1" active-class="active" v-b-popover.hover="'Events'">Events</b-nav-item> -->
+            <b-nav-item size="sm" @click="settings.tabIndex = 0; saveSettings();" :active="settings.tabIndex == 0" active-class="active" v-b-popover.hover="'Wallet'">Wallet</b-nav-item>
+            <b-nav-item size="sm" @click="settings.tabIndex = 1; saveSettings();" :active="settings.tabIndex == 1" active-class="active" v-b-popover.hover="'Wallets'">Wallets</b-nav-item>
+            <b-nav-item size="sm" @click="settings.tabIndex = 2; saveSettings();" :active="settings.tabIndex == 2" active-class="active" v-b-popover.hover="'ETH'">ETH</b-nav-item>
+            <b-nav-item size="sm" @click="settings.tabIndex = 3; saveSettings();" :active="settings.tabIndex == 3" active-class="active" v-b-popover.hover="'ERC-20'">ERC-20</b-nav-item>
+            <b-nav-item size="sm" @click="settings.tabIndex = 4; saveSettings();" :active="settings.tabIndex == 4" active-class="active" v-b-popover.hover="'ERC-721'">ERC-721</b-nav-item>
             <!-- <b-nav-item size="sm" @click="settings.tabIndex = 2; saveSettings();" :active="settings.tabIndex == 2" active-class="active" v-b-popover.hover="'Accounts'">Accounts</b-nav-item> -->
             <!-- <b-avatar v-if="coinbase && coinbase != nameOrAddress(coinbase)" rounded variant="light" size="3.0rem" :src="'https://metadata.ens.domains/mainnet/avatar/' + nameOrAddress(coinbase, 100)" v-b-popover.hover="'Your ENS avatar if set'"></b-avatar> -->
             <!-- <b-button size="sm" variant="outline-primary" class="ml-1" @click="connectToWeb3(); processNewBlock(0);" v-b-popover.hover.bottom="'Click to update wallet'">{{ coinbase ? nameOrAddress(coinbase, 16) : 'Connect' }}</b-button> -->
@@ -103,7 +106,7 @@
             </b-form-group>
           </b-modal>
 
-          <b-card class="m-0 p-0 border-0" body-class="m-1 p-0">
+          <b-card v-if="settings.tabIndex == 0" class="m-0 p-0 border-0" body-class="m-1 p-0">
 
             <b-form-group label-cols-lg="1" label="Wallet" label-size="md" label-class="font-weight-bold pt-0" class="mt-3 mb-0">
 
@@ -158,18 +161,18 @@
                         <font size="-1">Start:</font>
                       </div>
                       <div class="mt-0 pr-1">
-                        <b-form-input type="number" size="sm" v-model="wallet.indexStart" min="0" @change="generateDerivedAddresses();" style="max-width: 100px;" v-b-popover.hover.bottom="'Index From'"></b-form-input>
+                        <b-form-input type="number" size="sm" v-model="wallet.indexStart" min="0" @change="generateDerivedAddresses();" style="max-width: 100px;" v-b-popover.hover.bottom="'Index Start'"></b-form-input>
                       </div>
                       <!-- <div class="mt-1 pr-1">
                         <font size="-1">Count:</font>
                       </div> -->
-                      <div class="mt-0 pr-1">
+                      <div class="mt-0">
                         <!-- <b-form-input type="number" size="sm" v-model="wallet.indexCount" @change="generateDerivedAddresses();" style="max-width: 100px;" v-b-popover.hover.bottom="'Index To'"></b-form-input> -->
                         <b-form-select size="sm" v-model="wallet.indexCount" :options="indexCountOptions" @change="generateDerivedAddresses();"></b-form-select>
                       </div>
                     </div>
                     <!-- <b-table v-if="settings.tabIndex == 0 && !settings.showInfo" ref="approvalsTable" small fixed striped responsive hover selectable select-mode="single" @row-selected='approvalsRowSelected' :fields="approvalsFields" :items="pagedFilteredSortedApprovals" show-empty empty-html="Click Sync above to retrieve ERC-20, ERC-721 and ERC-1155 approval events" head-variant="light" class="mx-0 my-1"> -->
-                    <b-table ref="addressesTable" small fixed striped responsive hover :fields="addressesFields" :items="addresses" show-empty empty-html="Enter information above" head-variant="light" class="mx-0 my-1">
+                    <b-table ref="addressesTable" small fixed striped responsive hover selectable select-mode="single" @row-selected='addressesRowSelected':fields="addressesFields" :items="addresses" show-empty empty-html="Enter information above" head-variant="light" class="mx-0 my-1">
                       <template #cell(index)="data">
                         <font size="-1">
                           {{ data.item.index }}
@@ -192,7 +195,6 @@
                       </template>
                     </b-table>
                   </b-card>
-
 
                   <b-form-group v-if="wallet.tab == 1" label="Private Key:" label-for="wallet-privatekey" label-size="sm" label-cols-sm="2" label-align-sm="right" :state="!wallet.privateKeyError" :invalid-feedback="wallet.privateKeyError" class="mx-0 my-2 p-0">
                     <b-form-input type="text" size="sm" id="wallet-privatekey" v-model="wallet.privateKey" @change="recomputeFromPrivateKey();" placeholder="Type/paste your private key here, click [Generate New] or [Load From Keystore]" class="w-75"></b-form-input>
@@ -225,6 +227,30 @@
 
             </b-form-group>
           </b-card>
+
+          <!-- :WALLETS -->
+          <b-card v-if="settings.tabIndex == 1" class="m-0 p-0 border-0" body-class="m-1 p-0">
+            TODO: Wallets
+          </b-card>
+
+          <!-- :ETH -->
+          <b-card v-if="settings.tabIndex == 2" class="m-0 p-0 border-0" body-class="m-1 p-0">
+            TODO: Send ETH tx, with data field
+            <b-form-group label="Test:" label-for="wallet-testit" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-button size="sm" id="wallet-testit" @click="testIt()" variant="warning">Test</b-button>
+            </b-form-group>
+          </b-card>
+
+          <!-- :ERC20 -->
+          <b-card v-if="settings.tabIndex == 3" class="m-0 p-0 border-0" body-class="m-1 p-0">
+            TODO: ERC-20 Functions - approve, transfer, transferFrom
+          </b-card>
+
+          <!-- :ERC721 -->
+          <b-card v-if="settings.tabIndex == 4" class="m-0 p-0 border-0" body-class="m-1 p-0">
+            TODO: ERC-721 Functions - *approv*, *transfer*
+          </b-card>
+
         </b-card>
 
         <b-card no-header body-class="m-0 p-0" class="m-0 p-0 border-0">
@@ -295,6 +321,7 @@
           },
 
           addresses: [],
+          selectedAddress: null,
 
           connected: false,
           chainId: null,
@@ -373,6 +400,15 @@
 
           updateURL(where) {
             console.log(moment().format("HH:mm:ss") + " TODO updateURL: " + where);
+          },
+
+          addressesRowSelected(item) {
+            console.log(moment().format("HH:mm:ss") + " addressesRowSelected: " + JSON.stringify(item));
+            if (item && item.length > 0) {
+              this.selectedAddress = item[0];
+            } else {
+              this.selectedAddress = null;
+            }
           },
 
           showGenerateMnemonicModal() {
