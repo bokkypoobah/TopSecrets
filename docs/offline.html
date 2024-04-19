@@ -103,7 +103,7 @@
             </b-form-group>
           </b-modal>
 
-          <b-card class="m-0 p-0 border-0" body-class="m-1 p-0">
+          <b-card class="m-0 p-0 border-0" body-class="m-1 p-0" style="max-width: 1200px;">
 
             <b-form-group label-cols-lg="1" label="Wallet" label-size="md" label-class="font-weight-bold pt-0" class="mt-3 mb-0">
 
@@ -114,16 +114,15 @@
                 </b-tabs>
                 <b-card-text class="m-0 p-2">
 
-                  <b-form-group v-if="wallet.tab == 0" label="Mnemonic Seed Phrase:" label-for="wallet-mnemonicphrase" label-size="sm" label-cols-sm="2" label-align-sm="right" :state="!wallet.mnemonic.phraseError" :invalid-feedback="wallet.mnemonic.phraseError" class="mx-0 my-2 p-0">
-                    <b-form-textarea size="sm" id="wallet-mnemonicphrase" v-model="wallet.mnemonic.phrase" @change="recomputeFromMnemonic();" rows="3" placeholder="Type/paste your mnemnonic seed phrase here or click [Generate New]" class="w-75"></b-form-textarea>
+                  <b-form-group v-if="wallet.tab == 0" label="Phrase:" label-for="wallet-mnemonicphrase" label-size="sm" label-cols-sm="2" label-align-sm="right" :state="!wallet.mnemonic.phraseError" :invalid-feedback="wallet.mnemonic.phraseError" class="mx-0 my-2 p-0">
+                    <b-form-textarea size="sm" id="wallet-mnemonicphrase" v-model="wallet.mnemonic.phrase" @change="recomputeFromMnemonic();" rows="3" placeholder="Type/paste your mnemnonic seed phrase here or click [Generate New]" style="max-width: 800px;"></b-form-textarea>
                   </b-form-group>
 
                   <b-form-group v-if="wallet.tab == 0" label="" label-for="wallet-showgeneratemnemonicmodal" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
                     <b-button size="sm" id="wallet-showgeneratemnemonicmodal" @click="showGenerateMnemonicModal()" variant="primary">Generate New</b-button>
                   </b-form-group>
 
-                  <b-form-group v-if="wallet.tab == 0" label="Mnemonic Passphrase:" label-for="wallet-mnemonicpassphrase" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
-                    <!-- <b-form-input type="text" size="sm" id="wallet-mnemonicpassphrase" v-model="wallet.mnemonic.passphrase" @change="recomputeFromMnemonic();" class="w-25"></b-form-input> -->
+                  <b-form-group v-if="wallet.tab == 0" label="Passphrase:" label-for="wallet-mnemonicpassphrase" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
                     <b-form-input type="text" size="sm" id="wallet-mnemonicpassphrase" v-model="wallet.mnemonic.passphrase" @change="generateDerivedAddresses();" placeholder="Optional" style="max-width: 300px;"></b-form-input>
                   </b-form-group>
 
