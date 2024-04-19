@@ -95,6 +95,12 @@
             <template #modal-title>
               Save Private Key To JSON/UTC Keystore
             </template>
+            <b-form-group label="Keystore File Password:" label-for="modal-saveprivatekeytokeystore-password" label-size="sm" label-cols-sm="5" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-form-input type="password" autocomplete="current-password" size="sm" id="modal-saveprivatekeytokeystore-password" v-model="wallet.keystoreFilePassword"></b-form-input>
+            </b-form-group>
+            <b-form-group label="" label-for="modal-saveprivatekeytokeystore-save" label-size="sm" label-cols-sm="5" label-align-sm="right" description="This will take around half a minute" class="mx-0 my-1 p-0">
+              <b-button size="sm" id="modal-saveprivatekeytokeystore-save" @click="savePrivateKeyToKeystore()" variant="primary">Load</b-button>
+            </b-form-group>
           </b-modal>
 
           <b-card class="m-0 p-0 border-0" body-class="m-1 p-0">
@@ -270,7 +276,10 @@
         data: {
           wallet: {
             tab: 2, // 0: 'mnemonic', 1: 'keystorefile', 2: 'privatekey', 3: 'new'
-            type: 'mnemonic', // 'mnemonic', 'keystorefile', 'privatekey'
+
+            type: 'mnemonic', // 'mnemonic', 'privatekey'
+            wallet: null, // HDNode for type 'mnemonic', Wallet for type 'privatekey'
+
             mnemonic: {
               phrase: null,
               passphrase: null,
@@ -392,6 +401,25 @@
               console.log(moment().format("HH:mm:ss") + " loadPrivateKeyFromKeystore - keystorefile ERROR: " + e.message);
             }
             this.$bvModal.hide('modal-loadprivatekeyfromkeystore');
+          },
+
+          savePrivateKeyToKeystore() {
+            console.log(moment().format("HH:mm:ss") + " savePrivateKeyToKeystore - this.wallet.newWallet: " + JSON.stringify(this.wallet.newWallet));
+            // const encrypted = await this.wallet.newWallet.encrypt(this.wallet.keystoreFilePassword);
+            // // console.log(moment().format("HH:mm:ss") + " downloadKeystore - encrypted: " + encrypted);
+            // const encryptedObject = JSON.parse(encrypted);
+            // const filename = encryptedObject && encryptedObject['x-ethers'] && encryptedObject['x-ethers'].gethFilename || "UTC--error-getting-filename";
+            // console.log("filename: " + filename);
+            // // console.log(moment().format("HH:mm:ss") + " downloadKeystore - JSON.stringify(JSON.parse(encrypted), null, 2): " + JSON.stringify(JSON.parse(encrypted), null, 2));
+            // let jsonContent = "data:text/json;charset=utf-8," + encrypted;
+            // // console.log(moment().format("HH:mm:ss") + " downloadKeystore - jsonContent: " + jsonContent);
+            // var encodedUri = encodeURI(jsonContent);
+            // var link = document.createElement("a");
+            // link.setAttribute("href", encodedUri);
+            // link.setAttribute("download", filename);
+            // document.body.appendChild(link); // Required for FF
+            // link.click(); // This will download the data with the specified file name
+
           },
 
           generateMnemonic() {
