@@ -114,42 +114,27 @@
                 </b-tabs>
                 <b-card-text class="m-0 p-2">
 
-                  <b-form-group v-if="wallet.tab == 3" label="Number of words:" label-for="wallet-numberofwords" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <b-form-select size="sm" id="wallet-numberofwords" v-model="wallet.randomBytesLength" @change="recomputeWallet();" :options="randomBytesLengthMnemonicWordsOptions" class="w-25"></b-form-select>
-                  </b-form-group>
-
-                  <b-form-group v-if="wallet.tab == 3" label="" label-for="wallet-new" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <b-button size="sm" id="wallet-new" @click="newWallet()" variant="warning">Generate</b-button>
-                  </b-form-group>
-
-                  <b-form-group v-if="wallet.tab == 0 || wallet.tab == 3" label="Mnemonic Seed Phrase:" label-for="wallet-mnemonicphrase" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
-                    <b-form-textarea size="sm" :readonly="wallet.tab == 3" id="wallet-mnemonicphrase" v-model="wallet.mnemonic.phrase" @change="recomputeWallet();" rows="3" placeholder="Type/paste your mnemnonic seed phrase here or click [Generate New]" class="w-75"></b-form-textarea>
+                  <b-form-group v-if="wallet.tab == 0" label="Mnemonic Seed Phrase:" label-for="wallet-mnemonicphrase" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
+                    <b-form-textarea size="sm" id="wallet-mnemonicphrase" v-model="wallet.mnemonic.phrase" @change="recomputeWallet();" rows="3" placeholder="Type/paste your mnemnonic seed phrase here or click [Generate New]" class="w-75"></b-form-textarea>
                   </b-form-group>
 
                   <b-form-group v-if="wallet.tab == 0" label="" label-for="wallet-showgeneratemnemonicmodal" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
                     <b-button size="sm" id="wallet-showgeneratemnemonicmodal" @click="showGenerateMnemonicModal()" variant="primary">Generate New</b-button>
                   </b-form-group>
 
-                  <b-form-group v-if="wallet.tab == 0 || wallet.tab == 3" label="Mnemonic Passphrase:" label-for="wallet-mnemonicpassphrase" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
+                  <b-form-group v-if="wallet.tab == 0" label="Mnemonic Passphrase:" label-for="wallet-mnemonicpassphrase" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
                     <b-form-input type="text" size="sm" id="wallet-mnemonicpassphrase" v-model="wallet.mnemonic.passphrase" @change="newWallet();" class="w-25"></b-form-input>
                   </b-form-group>
 
-                  <b-form-group v-if="wallet.tab == 0 || wallet.tab == 3" label="Mnemonic Path:" label-for="wallet-mnemonicpath" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
+                  <b-form-group v-if="wallet.tab == 0" label="Mnemonic Path:" label-for="wallet-mnemonicpath" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
                     <b-form-input type="text" size="sm" :readonly="wallet.tab == 0 || wallet.tab == 3" id="wallet-mnemonicpath" v-model="wallet.mnemonic.path" @change="recomputeWallet();" class="w-50"></b-form-input>
                   </b-form-group>
 
-                  <b-form-group v-if="wallet.tab == 1" label="Keystore File:" label-for="wallet-keystorefile" label-size="sm" label-cols-sm="2" label-align-sm="right" :description="'Select encrypted keystore (JSON/UTC) file from your local computer'" class="mx-0 my-1 p-0">
-                    <b-form-file size="sm" id="wallet-keystorefile" v-model="wallet.keystoreFile" @change="keystoreFileChange($event.target.name, $event.target.files)" class="w-75"></b-form-file>
-                  </b-form-group>
-                  <b-form-group v-if="wallet.tab == 1" label="Keystore File Password:" label-for="wallet-keystorefilepassword" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <b-form-input type="password" autocomplete="current-password" size="sm" id="wallet-keystorefilepassword" v-model="wallet.keystoreFilePassword" @change="recomputeWallet();" class="w-25"></b-form-input>
+                  <b-form-group v-if="wallet.tab == 1" label="Private Key:" label-for="wallet-privatekey" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <b-form-input type="text" size="sm" id="wallet-privatekey" v-model="wallet.privateKey" @change="recomputeWallet();" placeholder="Type/paste your private key here, click [Generate New] or [Load From Keystore]" class="w-75"></b-form-input>
                   </b-form-group>
 
-                  <b-form-group v-if="wallet.tab == 2 || wallet.tab == 3" label="Private Key:" label-for="wallet-privatekey" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <b-form-input type="text" :readonly="wallet.tab == 3" size="sm" id="wallet-privatekey" v-model="wallet.privateKey" @change="recomputeWallet();" placeholder="Type/paste your private key here, click [Generate New] or [Load From Keystore]" class="w-75"></b-form-input>
-                  </b-form-group>
-
-                  <b-form-group v-if="wallet.tab == 2" label="" label-for="wallet-generaterandomprivatekey" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-form-group v-if="wallet.tab == 1" label="" label-for="wallet-generaterandomprivatekey" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
                     <b-button size="sm" id="wallet-generaterandomprivatekey" @click="generateRandomPrivateKey()" variant="primary">Generate New</b-button>
                     <b-button size="sm" @click="showLoadPrivateKeyFromKeystoreModal()" variant="primary">Load From Keystore</b-button>
                     <b-button size="sm" @click="showSavePrivateKeyToKeystoreModal()" variant="primary">Save To Keystore</b-button>
@@ -159,18 +144,11 @@
                     <b-form-input type="text" size="sm" readonly id="output-address" :value="wallet.address" class="w-50"></b-form-input>
                   </b-form-group>
 
-                  <b-form-group v-if="wallet.tab == 3" label="Password:" label-for="keystore-password" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <b-form-input type="password" autocomplete="current-password" size="sm" id="keystore-password" v-model="wallet.keystoreFilePassword" @change="recomputeWallet();" class="w-25"></b-form-input>
-                  </b-form-group>
-                  <b-form-group v-if="wallet.tab == 3" label="JSON/UTC Keystore:" label-for="wallet-download" label-size="sm" label-cols-sm="2" label-align-sm="right" description="This will take around half a minute" class="mx-0 my-1 p-0">
-                    <b-button size="sm" :disabled="!wallet.keystoreFilePassword || !wallet.privateKey" id="wallet-download" @click="downloadKeystore()" variant="warning">Download</b-button>
-                  </b-form-group>
-
                   <b-form-group v-if="false" label="Debug:" label-for="debug-textarea" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
                     <b-form-textarea size="sm" readonly id="debug-textarea" :value="JSON.stringify(wallet, null, 2)" rows="3" max-rows="10" class="w-100"></b-form-textarea>
                   </b-form-group>
 
-                  <b-form-group v-if="true" label="Test:" label-for="wallet-testit" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-form-group v-if="false" label="Test:" label-for="wallet-testit" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
                     <b-button size="sm" id="wallet-testit" @click="testIt()" variant="warning">Test</b-button>
                   </b-form-group>
                 </b-card-text>
@@ -275,7 +253,7 @@
         // --- DATA ---
         data: {
           wallet: {
-            tab: 2, // 0: 'mnemonic', 1: 'keystorefile', 2: 'privatekey', 3: 'new'
+            tab: 1, // 0: 'mnemonic', 1: 'privatekey'
 
             type: 'mnemonic', // 'mnemonic', 'privatekey'
             wallet: null, // HDNode for type 'mnemonic', Wallet for type 'privatekey'
@@ -320,9 +298,7 @@
 
           tabs: [
             { name: 'mnemonic', text: 'Mnemonic Seed Phrase' },
-            { name: 'keystorefile', text: 'JSON/UTC Keystore File' },
             { name: 'privatekey', text: 'Private Key' },
-            { name: 'new', text: 'Create New' },
           ],
 
           walletTypeOptions: [
