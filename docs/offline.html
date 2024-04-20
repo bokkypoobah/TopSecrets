@@ -460,9 +460,9 @@
 
 
             <!-- TODO: Send ETH tx, with data field -->
-            <!-- <b-form-group label="Test:" label-for="wallet-testit" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+            <b-form-group label="Test:" label-for="wallet-testit" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-button size="sm" id="wallet-testit" @click="testIt()" variant="warning">Test</b-button>
-            </b-form-group> -->
+            </b-form-group>
           </b-card>
 
           <!-- :ERC20 -->
@@ -1223,6 +1223,29 @@
 
           async testIt() {
             console.log(moment().format("HH:mm:ss") + " testIt");
+            const privateKey = "{myprivatekey}";
+            const wallet = new ethers.Wallet(privateKey);
+            console.log("address: " + wallet.address);
+            const tx = {
+              from: wallet.address,
+              to: wallet.address,
+              gasLimit: 21000,
+              gasPrice: 1000000,
+              // maxFeePerGas: 1234,
+              // maxPriorityFeePerGas: 1234,
+              value: 0,
+              data: "",
+              nonce: 33,
+              chainId: 11155111,
+            };
+            console.log("tx: " + JSON.stringify(tx));
+
+            // const populatedTx = await wallet.populateTransaction(tx);
+            // console.log("populatedTx: " + populatedTx);
+
+            const sig = await wallet.signTransaction(tx);
+            console.log("sig: " + sig);
+
           },
 
 
