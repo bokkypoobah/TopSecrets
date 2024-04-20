@@ -1245,8 +1245,10 @@
               chainId: 11155111,
             };
             console.log("tx: " + JSON.stringify(tx));
-            const sig = await wallet.signTransaction(tx);
-            console.log("sig: " + sig);
+            const signedTx = await wallet.signTransaction(tx);
+            console.log("signedTx: " + signedTx);
+            const decoded = ethers.utils.parseTransaction(signedTx);
+            console.log("decoded: " + JSON.stringify(decoded, null, 2));
           },
 
           async testItOld() {
