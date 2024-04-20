@@ -106,10 +106,29 @@
           </b-modal>
 
           <!-- :MODALNEWWALLETFROMMNEMONIC -->
-          <b-modal id="modal-newwalletfrommnemonic" hide-footer size="md">
+          <b-modal id="modal-newwalletfrommnemonic" hide-footer size="lg">
             <template #modal-title>
               New Wallet From Mnemonic Seed Phrase
             </template>
+            <b-form-group label="Phrase:" label-for="newwalletfrommnemonic-mnemonicphrase" label-size="sm" label-cols-sm="2" label-align-sm="right" :state="!newWalletFromMnemonic.phraseError" :invalid-feedback="newWalletFromMnemonic.phraseError" class="mx-0 my-2 p-0">
+              <!-- <b-form-textarea size="sm" id="newwalletfrommnemonic-mnemonicphrase" v-model="newWalletFromMnemonic.phrase" @change="generateDerivedAddresses();" rows="3" placeholder="Type/paste your mnemnonic seed phrase here or click [Generate New]" style="max-width: 800px;"></b-form-textarea> -->
+              <b-form-textarea size="sm" id="newwalletfrommnemonic-mnemonicphrase" v-model="newWalletFromMnemonic.phrase" rows="3" placeholder="Type/paste your mnemnonic seed phrase here or click [Generate New]" style="max-width: 800px;"></b-form-textarea>
+            </b-form-group>
+            <!-- <b-form-group label="Number of words:" label-for="newwalletfrommnemonic-numberofwords" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-form-select size="sm" id="newwalletfrommnemonic-numberofwords" v-model="newWalletFromMnemonic.randomBytesLength" :options="randomBytesLengthMnemonicWordsOptions"></b-form-select>
+            </b-form-group> -->
+            <b-form-group label="" label-for="newwalletfrommnemonic-generaterandom" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-input-group>
+                <b-form-select size="sm" v-model="newWalletFromMnemonic.randomBytesLength" :options="randomBytesLengthMnemonicWordsOptions"></b-form-select>
+                <b-input-group-append>
+                  <b-button size="sm" id="newwalletfrommnemonic-generaterandom" @click="newWalletFromMnemonicGenerateRandom()" variant="primary">Generate Random</b-button>
+                </b-input-group-append>
+              </b-input-group>
+            </b-form-group>
+            <!-- <b-form-group v-if="wallet.tab == 0" label="Passphrase:" label-for="wallet-mnemonicpassphrase" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
+              <b-form-input type="text" size="sm" id="wallet-mnemonicpassphrase" v-model="wallet.mnemonic.passphrase" @change="generateDerivedAddresses();" placeholder="Optional" style="max-width: 300px;"></b-form-input>
+            </b-form-group> -->
+
           </b-modal>
 
           <!-- :MODALNEWWALLETFROMPRIVATEKEY -->
@@ -423,6 +442,12 @@
           },
 
           newWalletFromMnemonic: {
+            phrase: null,
+            randomBytesLength: 16, // 12 words
+            phraseError: null,
+            passphrase: null,
+            // path: "m/44'/60'/0'/0/0", // null,
+            // locale: null,
           },
 
           newWalletFromPrivateKey: {
@@ -658,6 +683,29 @@
             console.log(moment().format("HH:mm:ss") + " showNewWalletFromKeystore");
             this.$bvModal.show('modal-newwalletfromkeystore');
           },
+
+          newWalletFromMnemonicGenerateRandom() {
+            console.log(moment().format("HH:mm:ss") + " newWalletFromMnemonicGenerateRandom");
+            try {
+              const randomBytes = ethers.utils.randomBytes(this.newWalletFromMnemonic.randomBytesLength);
+              this.newWalletFromMnemonic.phrase = ethers.utils.entropyToMnemonic(randomBytes);
+              this.newWalletFromMnemonic.phraseError = null;
+
+              // const randomBytes = ethers.utils.randomBytes(16);
+              // const phrase = ethers.utils.entropyToMnemonic(randomBytes);
+              // const node = ethers.utils.HDNode.fromMnemonic(phrase);
+              // console.log(moment().format("HH:mm:ss") + " newWalletFromMnemonicGenerateRandom - node: " + JSON.stringify(node, null, 2));
+              // const defaultPath = "m/44'/60'/0'/0/0";
+              // const wallet = node.derivePath(defaultPath);
+              // this.newWalletFromPrivateKey.privateKey = wallet.privateKey;
+              // this.newWalletFromPrivateKey.privateKeyError = null;
+              // this.newWalletFromPrivateKey.address = wallet.address;
+              // console.log(moment().format("HH:mm:ss") + " newWalletFromMnemonicGenerateRandom - this.newWalletFromPrivateKey: " + JSON.stringify(this.newWalletFromPrivateKey, null, 2));
+            } catch (e) {
+              console.log(moment().format("HH:mm:ss") + " newWalletFromMnemonicGenerateRandom ERROR: " + e.message);
+            }
+          },
+
 
           newWalletFromPrivateKeyGenerateRandom() {
             console.log(moment().format("HH:mm:ss") + " newWalletFromPrivateKeyGenerateRandom");
