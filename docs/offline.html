@@ -1240,15 +1240,36 @@
               chainId: 11155111,
             };
             console.log("tx: " + JSON.stringify(tx));
-
             // const populatedTx = await wallet.populateTransaction(tx);
             // console.log("populatedTx: " + populatedTx);
-
             const sig = await wallet.signTransaction(tx);
             console.log("sig: " + sig);
-
           },
 
+          async testItOld() {
+            console.log(moment().format("HH:mm:ss") + " testIt");
+            const privateKey = "{myprivatekey}";
+            const wallet = new ethers.Wallet(privateKey);
+            console.log("address: " + wallet.address);
+            const tx = {
+              from: wallet.address,
+              to: "0x7439E9Bb6D8a84dd3A23fe621A30F95403F87fB9",
+              gasLimit: 50000,
+              // gasPrice: 1000000,
+              type: 2,
+              maxFeePerGas: 1234000,
+              maxPriorityFeePerGas: 1234000,
+              value: 0,
+              data: "",
+              nonce: 35,
+              chainId: 11155111,
+            };
+            console.log("tx: " + JSON.stringify(tx));
+            // const populatedTx = await wallet.populateTransaction(tx);
+            // console.log("populatedTx: " + populatedTx);
+            const sig = await wallet.signTransaction(tx);
+            console.log("sig: " + sig);
+          },
 
           // async processData(provider) {
           //   console.log(moment().format("HH:mm:ss") + " processData BEGIN");
