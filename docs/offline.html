@@ -118,7 +118,7 @@
               <b-form-select size="sm" id="newwalletfrommnemonic-numberofwords" v-model="newWalletFromMnemonic.randomBytesLength" :options="randomBytesLengthMnemonicWordsOptions"></b-form-select>
             </b-form-group> -->
             <b-form-group label="" label-for="newwalletfrommnemonic-generaterandom" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-              <b-input-group>
+              <b-input-group style="max-width: 300px;">
                 <b-form-select size="sm" v-model="newWalletFromMnemonic.randomBytesLength" :options="randomBytesLengthMnemonicWordsOptions"></b-form-select>
                 <b-input-group-append>
                   <b-button size="sm" id="newwalletfrommnemonic-generaterandom" @click="newWalletFromMnemonicGenerateRandom()" variant="primary">Generate Random</b-button>
