@@ -113,10 +113,25 @@
           </b-modal>
 
           <!-- :MODALNEWWALLETFROMPRIVATEKEY -->
-          <b-modal id="modal-newwalletfromprivatekey" hide-footer size="md">
+          <b-modal id="modal-newwalletfromprivatekey" hide-footer size="lg">
             <template #modal-title>
               New Wallet From Private Key
             </template>
+            <b-form-group label="Private Key:" label-for="newwalletfromprivatekey-privatekey" label-size="sm" label-cols-sm="2" label-align-sm="right" :state="!newWalletFromPrivateKey.privateKeyError" :invalid-feedback="newWalletFromPrivateKey.privateKeyError" class="mx-0 my-1 p-0">
+              <b-form-input type="text" size="sm" id="newwalletfromprivatekey-privatekey" v-model="newWalletFromPrivateKey.privateKey" @change="newWalletFromPrivateKeyRecompute();" placeholder="Type/paste your private key here or click [Generate New]" style="max-width: 600px;"></b-form-input>
+            </b-form-group>
+            <b-form-group label="" label-for="newwalletfromprivatekey-generaterandom" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-button size="sm" id="newwalletfromprivatekey-generaterandom" @click="newWalletFromPrivateKeyGenerateRandom()" variant="primary">Generate Random</b-button>
+            </b-form-group>
+            <b-form-group label="ETH Address:" label-for="newwalletfromprivatekey-address" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-form-input type="text" size="sm" readonly id="newwalletfromprivatekey-address" :value="newWalletFromPrivateKey.address" style="max-width: 400px;"></b-form-input>
+            </b-form-group>
+            <b-form-group label="Name:" label-for="newwalletfromprivatekey-name" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-form-input type="text" size="sm" id="newwalletfromprivatekey-name" v-model="newWalletFromPrivateKey.name" placeholder="Optional" style="max-width: 300px;"></b-form-input>
+            </b-form-group>
+            <b-form-group label="" label-for="newwalletfromprivatekey-add" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-button size="sm" :disabled="!newWalletFromPrivateKey.address" id="newwalletfromprivatekey-add" @click="newWalletFromPrivateKeyAdd()" variant="primary">Add</b-button>
+            </b-form-group>
           </b-modal>
 
           <!-- :MODALNEWWALLETFROMKEYSTORE -->
@@ -386,6 +401,19 @@
             hiddenUsername: null, // For HTML accessibility
           },
 
+          newWalletFromMnemonic: {
+          },
+
+          newWalletFromPrivateKey: {
+            privateKey: null,
+            privateKeyError: null,
+            address: null,
+            name: null,
+          },
+
+          newWalletFromKeystore: {
+          },
+
           addresses: [],
           selectedAddress: null,
 
@@ -407,40 +435,40 @@
             version: 12,
           },
           wallets: [
-            { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
-            { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
-            { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
-            { address: "0xblah", name: "cde", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
-            { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
-            { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
-            { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
-            { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
-            { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
-            { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
-            { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
-            { address: "0xblerg", name: "efg", type: "privatekey", privateKey: "0x1234" },
-            { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
-            { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
-            { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
-            { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
-            { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
-            { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
-            { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
-            { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
-            { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
-            { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
-            { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
-            { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
-            { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
-            { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
-            { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
-            { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
-            { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
-            { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
-            { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
-            { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
-            { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
-            { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
+            // { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
+            // { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
+            // { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
+            // { address: "0xblah", name: "cde", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
+            // { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
+            // { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
+            // { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
+            // { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
+            // { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
+            // { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
+            // { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
+            // { address: "0xblerg", name: "efg", type: "privatekey", privateKey: "0x1234" },
+            // { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
+            // { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
+            // { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
+            // { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
+            // { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
+            // { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
+            // { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
+            // { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
+            // { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
+            // { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
+            // { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
+            // { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
+            // { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
+            // { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
+            // { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
+            // { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
+            // { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
+            // { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
+            // { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
+            // { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
+            // { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
+            // { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
           ],
           // sync: {
           //   section: null,
@@ -633,6 +661,52 @@
           showNewWalletFromKeystore() {
             console.log(moment().format("HH:mm:ss") + " showNewWalletFromKeystore");
             this.$bvModal.show('modal-newwalletfromkeystore');
+          },
+
+          newWalletFromPrivateKeyGenerateRandom() {
+            console.log(moment().format("HH:mm:ss") + " newWalletFromPrivateKeyGenerateRandom");
+            try {
+              const randomBytes = ethers.utils.randomBytes(16);
+              const phrase = ethers.utils.entropyToMnemonic(randomBytes);
+              const node = ethers.utils.HDNode.fromMnemonic(phrase);
+              console.log(moment().format("HH:mm:ss") + " newWalletFromPrivateKeyGenerateRandom - node: " + JSON.stringify(node, null, 2));
+              const defaultPath = "m/44'/60'/0'/0/0";
+              const wallet = node.derivePath(defaultPath);
+              this.newWalletFromPrivateKey.privateKey = wallet.privateKey;
+              this.newWalletFromPrivateKey.privateKeyError = null;
+              this.newWalletFromPrivateKey.address = wallet.address;
+              console.log(moment().format("HH:mm:ss") + " newWalletFromPrivateKeyGenerateRandom - this.newWalletFromPrivateKey: " + JSON.stringify(this.newWalletFromPrivateKey, null, 2));
+            } catch (e) {
+              console.log(moment().format("HH:mm:ss") + " newWalletFromPrivateKeyGenerateRandom ERROR: " + e.message);
+            }
+          },
+
+          newWalletFromPrivateKeyRecompute() {
+            console.log(moment().format("HH:mm:ss") + " recomputeFromPrivateKey: " + JSON.stringify(this.newWalletFromPrivateKey));
+            if (this.newWalletFromPrivateKey.privateKey) {
+              try {
+                const wallet = new ethers.Wallet(this.newWalletFromPrivateKey.privateKey);
+                this.newWalletFromPrivateKey.privateKeyError = null;
+                this.newWalletFromPrivateKey.address = wallet.address;
+                console.log(moment().format("HH:mm:ss") + " recomputeFromPrivateKey - AFTER: " + JSON.stringify(this.newWalletFromPrivateKey));
+              } catch (e) {
+                console.log(moment().format("HH:mm:ss") + " recomputeFromPrivateKey - privatekey ERROR: " + e.message);
+                this.newWalletFromPrivateKey.privateKeyError = e.message;
+                this.newWalletFromPrivateKey.address = null;
+              }
+            } else {
+              this.newWalletFromPrivateKey.privateKeyError = null;
+              this.newWalletFromPrivateKey.address = null;
+            }
+          },
+
+          newWalletFromPrivateKeyAdd() {
+            this.wallets.push({
+              address: this.newWalletFromPrivateKey.address,
+              type: "privatekey",
+              name: this.newWalletFromPrivateKey.name,
+              privateKey: this.newWalletFromPrivateKey.privateKey,
+            });
           },
 
           generateDerivedAddresses() {
