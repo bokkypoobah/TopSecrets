@@ -112,7 +112,7 @@
             </template>
             <b-form-group label="Phrase:" label-for="newwalletfrommnemonic-mnemonicphrase" label-size="sm" label-cols-sm="2" label-align-sm="right" :state="!newWalletFromMnemonic.phraseError" :invalid-feedback="newWalletFromMnemonic.phraseError" class="mx-0 my-2 p-0">
               <!-- <b-form-textarea size="sm" id="newwalletfrommnemonic-mnemonicphrase" v-model="newWalletFromMnemonic.phrase" @change="generateDerivedAddresses();" rows="3" placeholder="Type/paste your mnemnonic seed phrase here or click [Generate New]" style="max-width: 800px;"></b-form-textarea> -->
-              <b-form-textarea size="sm" id="newwalletfrommnemonic-mnemonicphrase" v-model="newWalletFromMnemonic.phrase" @change="newWalletFromMnemonicRecompute();" debounce="600" rows="3" placeholder="Type/paste your mnemnonic seed phrase here or click [Generate Random]" style="max-width: 800px;"></b-form-textarea>
+              <b-form-textarea size="sm" id="newwalletfrommnemonic-mnemonicphrase" v-model.trim="newWalletFromMnemonic.phrase" @change="newWalletFromMnemonicRecompute();" debounce="600" rows="3" placeholder="Type/paste your mnemnonic seed phrase here or click [Generate Random]" style="max-width: 800px;"></b-form-textarea>
             </b-form-group>
             <!-- <b-form-group label="Number of words:" label-for="newwalletfrommnemonic-numberofwords" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-form-select size="sm" id="newwalletfrommnemonic-numberofwords" v-model="newWalletFromMnemonic.randomBytesLength" :options="randomBytesLengthMnemonicWordsOptions"></b-form-select>
@@ -127,12 +127,12 @@
             </b-form-group>
             <b-form-group label="Passphrase:" label-for="newwalletfrommnemonic-mnemonicpassphrase" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
               <!-- <b-form-input type="text" size="sm" id="newwalletfrommnemonic-mnemonicpassphrase" v-model="newWalletFromMnemonic.passphrase" @change="generateDerivedAddresses();" placeholder="Optional" style="max-width: 300px;"></b-form-input> -->
-              <b-form-input type="text" size="sm" id="newwalletfrommnemonic-mnemonicpassphrase" v-model="newWalletFromMnemonic.passphrase" placeholder="Optional" debounce="600" style="max-width: 300px;"></b-form-input>
+              <b-form-input type="text" size="sm" id="newwalletfrommnemonic-mnemonicpassphrase" v-model.trim="newWalletFromMnemonic.passphrase" placeholder="Optional" debounce="600" style="max-width: 300px;"></b-form-input>
             </b-form-group>
             <b-form-group label="Derivation Path:" label-for="newwalletfrommnemonic-derivationpath" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
               <!-- <b-form-input type="text" size="sm" id="newwalletfrommnemonic-derivationpath" v-model="newWalletFromMnemonic.passphrase" @change="generateDerivedAddresses();" placeholder="Optional" style="max-width: 300px;"></b-form-input> -->
               <!-- <b-form-select size="sm" id="newwalletfrommnemonic-derivationpath" v-model="newWalletFromMnemonic.derivationPath" :options="derivationPathOptions" @change="generateDerivedAddresses();" style="max-width: 300px;" v-b-popover.hover.bottom="'Derivation Path'"></b-form-select> -->
-              <b-form-select size="sm" id="newwalletfrommnemonic-derivationpath" v-model="newWalletFromMnemonic.derivationPath" :options="derivationPathOptions" style="max-width: 300px;" v-b-popover.hover.bottom="'Derivation Path'"></b-form-select>
+              <b-form-select size="sm" id="newwalletfrommnemonic-derivationpath" v-model.trim="newWalletFromMnemonic.derivationPath" :options="derivationPathOptions" style="max-width: 300px;" v-b-popover.hover.bottom="'Derivation Path'"></b-form-select>
             </b-form-group>
 
             <div class="d-flex flex-wrap m-0 p-0">
@@ -150,7 +150,7 @@
                 <b-form-select size="sm" v-model="newWalletFromMnemonic.pageSize" :options="indexPageSizeOptions" v-b-popover.hover.bottom="'Page Size'"></b-form-select>
               </div>
             </div>
-            <b-table ref="addressesTable" small fixed striped responsive hover selectable select-mode="single" @row-selected='addressesRowSelected':fields="newWalletFromMnemonicAddressesFields" :items="newWalletFromMnemonicAddresses" show-empty empty-html="Enter information above" head-variant="light" class="mx-0 my-1">
+            <b-table ref="newWalletFromMnemonicAddressesTable" small fixed striped responsive hover selectable select-mode="single" @row-selected='newWalletFromMnemonicAddressesRowSelected':fields="newWalletFromMnemonicAddressesFields" :items="newWalletFromMnemonicAddresses" show-empty empty-html="Enter information above" head-variant="light" class="mx-0 my-1">
               <template #cell(index)="data">
                 <font size="-1">
                   {{ data.item.index }}
@@ -186,6 +186,29 @@
               // locale: null,
             }, -->
 
+          </b-modal>
+
+          <!-- :MODALNEWWALLETFROMMNEMONICADD -->
+          <b-modal id="modal-newwalletfrommnemonic-add" hide-footer size="lg">
+            <template #modal-title>
+              Add New Wallet From Mnemonic Seed Phrase
+            </template>
+            <b-form-group v-if="newWalletFromMnemonic.selectedItem" label="Path:" label-for="newwalletfrommnemonic-add-path" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-form-input type="text" size="sm" readonly id="newwalletfrommnemonic-add-path" :value="newWalletFromMnemonic.selectedItem.path" style="max-width: 400px;"></b-form-input>
+            </b-form-group>
+            <b-form-group v-if="newWalletFromMnemonic.selectedItem" label="ETH Address:" label-for="newwalletfrommnemonic-add-address" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-form-input type="text" size="sm" readonly id="newwalletfrommnemonic-add-address" :value="newWalletFromMnemonic.selectedItem.address" style="max-width: 400px;"></b-form-input>
+            </b-form-group>
+            <b-form-group v-if="newWalletFromMnemonic.selectedItem" label="Private Key:" label-for="newwalletfrommnemonic-add-privatekey" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-form-input type="text" size="sm" readonly id="newwalletfrommnemonic-add-privatekey" v-model="newWalletFromMnemonic.selectedItem.privateKey" style="max-width: 600px;"></b-form-input>
+            </b-form-group>
+            <b-form-group label="Name:" label-for="newwalletfrommnemonic-add-name" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-form-input type="text" size="sm" id="newwalletfrommnemonic-add-name" v-model.trim="newWalletFromMnemonic.name" debounce="600" placeholder="Optional" style="max-width: 300px;"></b-form-input>
+            </b-form-group>
+            <b-form-group label="" label-for="newwalletfrommnemonic-add-add" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-button size="sm" :disabled="!newWalletFromMnemonic.selectedItem || !newWalletFromMnemonic.selectedItem.address" id="newwalletfrommnemonic-add-add" @click="newWalletFromMnemonicAdd()" variant="primary">Add</b-button>
+            </b-form-group>
+            {{ newWalletFromMnemonic }}
           </b-modal>
 
           <!-- :MODALNEWWALLETFROMPRIVATEKEY -->
@@ -506,6 +529,8 @@
             derivationPath: "m/44'/60'/0'/0/{index}",
             page: 0,
             pageSize: 10,
+            selectedItem: null,
+            name: null,
             // path: "m/44'/60'/0'/0/0", // null,
             // locale: null,
           },
@@ -830,6 +855,32 @@
             } else {
               this.newWalletFromMnemonic.phraseError = null;
             }
+          },
+
+          newWalletFromMnemonicAddressesRowSelected(item) {
+            console.log(moment().format("HH:mm:ss") + " newWalletFromMnemonicAddressesRowSelected: " + JSON.stringify(item));
+            if (item && item.length > 0) {
+              this.newWalletFromMnemonic.selectedItem = item[0];
+              this.$bvModal.show('modal-newwalletfrommnemonic-add');
+            } else {
+              this.newWalletFromMnemonic.selectedItem = null;
+            }
+            console.log(moment().format("HH:mm:ss") + " newWalletFromMnemonicAddressesRowSelected - this.newWalletFromMnemonic: " + JSON.stringify(this.newWalletFromMnemonic, null, 2));
+          },
+
+          newWalletFromMnemonicAdd() {
+            console.log(moment().format("HH:mm:ss") + " newWalletFromPrivateKeyAdd - this.newWalletFromMnemonic: " + JSON.stringify(this.newWalletFromMnemonic, null, 2));
+            Vue.set(this.wallets, this.newWalletFromMnemonic.selectedItem.address, {
+              type: "mnemonic",
+              name: this.newWalletFromMnemonic.name,
+              privateKey: this.newWalletFromMnemonic.selectedItem.privateKey,
+              phrase: this.newWalletFromMnemonic.phrase,
+              passphrase: this.newWalletFromMnemonic.passphrase,
+              path: this.newWalletFromMnemonic.selectedItem.path,
+            });
+            localStorage.topSecretsOfflineWallets = JSON.stringify(this.wallets);
+            console.log(moment().format("HH:mm:ss") + " newWalletFromPrivateKeyAdd - this.wallets: " + JSON.stringify(this.wallets, null, 2));
+            this.$bvModal.hide('modal-newwalletfrommnemonic-add');
           },
 
           newWalletFromPrivateKeyGenerateRandom() {
