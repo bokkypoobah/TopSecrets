@@ -434,42 +434,7 @@
             },
             version: 12,
           },
-          wallets: [
-            // { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
-            // { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
-            // { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
-            // { address: "0xblah", name: "cde", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
-            // { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
-            // { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
-            // { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
-            // { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
-            // { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
-            // { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
-            // { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
-            // { address: "0xblerg", name: "efg", type: "privatekey", privateKey: "0x1234" },
-            // { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
-            // { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
-            // { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
-            // { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
-            // { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
-            // { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
-            // { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
-            // { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
-            // { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
-            // { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
-            // { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
-            // { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
-            // { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
-            // { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
-            // { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
-            // { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
-            // { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
-            // { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
-            // { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
-            // { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
-            // { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
-            // { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
-          ],
+          wallets: {},
           // sync: {
           //   section: null,
           //   total: null,
@@ -553,14 +518,18 @@
         computed: {
 
           filteredWallets() {
+            console.log(moment().format("HH:mm:ss") + " filteredWallets: " + JSON.stringify(this.wallets));
             // let results = this.forceRefresh % 2 == 0 ? [] : [];
-            // const accounts = this.accounts[this.chainId] || {};
-            // for (const [address, accountData] of Object.entries(accounts)) {
-            //   const [ type, symbol, name, decimals, source, customType, customName, customDecimals ] = [ accountData.type, accountData.symbol, accountData.name, accountData.decimals, accountData.source, accountData.customType || null, accountData.customName || null, accountData.customDecimals || null ];
-            //   results.push({ address, type, symbol, name, decimals, source, customType, customName, customDecimals });
-            // }
-            // return results;
-            return this.wallets;
+            const results = [];
+            for (const [address, data] of Object.entries(this.wallets)) {
+              results.push({
+                address,
+                type: data.type,
+                privateKey: data.privateKey,
+                name: data.name,
+              });
+            }
+            return results;
           },
           filteredSortedWallets() {
             let results = this.filteredWallets;
@@ -701,12 +670,14 @@
           },
 
           newWalletFromPrivateKeyAdd() {
-            this.wallets.push({
-              address: this.newWalletFromPrivateKey.address,
+            Vue.set(this.wallets, this.newWalletFromPrivateKey.address, {
               type: "privatekey",
               name: this.newWalletFromPrivateKey.name,
               privateKey: this.newWalletFromPrivateKey.privateKey,
             });
+            localStorage.topSecretsOfflineWallets = JSON.stringify(this.wallets);
+            console.log(moment().format("HH:mm:ss") + " newWalletFromPrivateKeyAdd - this.wallets: " + JSON.stringify(this.wallets, null, 2));
+            this.$bvModal.hide('modal-newwalletfromprivatekey');
           },
 
           generateDerivedAddresses() {
@@ -1107,6 +1078,10 @@
 
         // --- MOUNTED ---
         mounted() {
+          if ('topSecretsOfflineWallets' in localStorage) {
+            this.wallets = JSON.parse(localStorage.topSecretsOfflineWallets);
+          }
+
           // (async() => {
           //   await this.connectToWeb3();
           // })();
