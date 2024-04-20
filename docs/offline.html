@@ -92,7 +92,6 @@
             </b-form-group>
           </b-modal>
 
-
           <!-- :MODALSAVEPRIVATEKEYTOKEYSTORE -->
           <b-modal id="modal-saveprivatekeytokeystore" hide-footer size="md">
             <template #modal-title>
@@ -106,47 +105,56 @@
             </b-form-group>
           </b-modal>
 
+          <!-- :MODALNEWFROMMNEMONIC -->
+          <b-modal id="modal-newfrommnemonic" hide-footer size="md">
+            <template #modal-title>
+              New Wallet From Mnemonic Seed Phrase
+            </template>
+          </b-modal>
+
+          <!-- :MODALNEWFROMPRIVATEKEY -->
+          <b-modal id="modal-newfromprivatekey" hide-footer size="md">
+            <template #modal-title>
+              New Wallet From Private Key
+            </template>
+          </b-modal>
+
+          <!-- :MODALIMPORTFROMKEYSTORE -->
+          <b-modal id="modal-importfromkeystore" hide-footer size="md">
+            <template #modal-title>
+              New Wallet From JSON/UTC Keystore Private Key
+            </template>
+          </b-modal>
+
           <b-card v-if="settings.tabIndex == 0" class="m-0 p-0 border-0" body-class="m-1 p-0">
-
             <b-form-group label-cols-lg="1" label="Wallet" label-size="md" label-class="font-weight-bold pt-0" class="mt-3 mb-0">
-
               <b-card bg-variant="light" no-body class="p-0 m-1">
-
                 <b-tabs card align="left" no-body v-model="wallet.tab" active-tab-class="m-0 p-0">
                   <b-tab v-for="t in tabs" :key="'dyn-tabx-' + t.name" @click="updateURL(t.name);" :title="t.text" title-item-class="p-0" title-link-class="mt-2 px-3">
                   </b-tab>
                 </b-tabs>
-
                 <b-card-text class="m-0 p-2">
-
                   <b-form-group v-if="wallet.tab == 0" label="Phrase:" label-for="wallet-mnemonicphrase" label-size="sm" label-cols-sm="2" label-align-sm="right" :state="!wallet.mnemonic.phraseError" :invalid-feedback="wallet.mnemonic.phraseError" class="mx-0 my-2 p-0">
                     <b-form-textarea size="sm" id="wallet-mnemonicphrase" v-model="wallet.mnemonic.phrase" @change="generateDerivedAddresses();" rows="3" placeholder="Type/paste your mnemnonic seed phrase here or click [Generate New]" style="max-width: 800px;"></b-form-textarea>
                   </b-form-group>
-
                   <b-form-group v-if="wallet.tab == 0" label="" label-for="wallet-showgeneratemnemonicmodal" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
                     <b-button size="sm" id="wallet-showgeneratemnemonicmodal" @click="showGenerateMnemonicModal()" variant="primary">Generate New</b-button>
                   </b-form-group>
-
                   <b-form-group v-if="wallet.tab == 0" label="Passphrase:" label-for="wallet-mnemonicpassphrase" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
                     <b-form-input type="text" size="sm" id="wallet-mnemonicpassphrase" v-model="wallet.mnemonic.passphrase" @change="generateDerivedAddresses();" placeholder="Optional" style="max-width: 300px;"></b-form-input>
                   </b-form-group>
-
                   <!-- <b-form-group v-if="wallet.tab == 0" label="Derivation Path:" label-for="wallet-derivationpath" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
                     <b-form-select size="sm" id="wallet-derivationpath" v-model="wallet.derivationPath" :options="derivationPathOptions" @change="generateDerivedAddresses();" style="max-width: 300px;"></b-form-select>
                   </b-form-group> -->
-
                   <!-- <b-form-group v-if="wallet.tab == 0" label="Index From:" label-for="wallet-indexfrom" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
                     <b-form-input type="number" size="sm" id="wallet-indexfrom" v-model="wallet.indexStart" @change="generateDerivedAddresses();" style="max-width: 100px;"></b-form-input>
                   </b-form-group> -->
-
                   <!-- <b-form-group v-if="wallet.tab == 0" label="Index To:" label-for="wallet-indexto" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
                     <b-form-input type="number" size="sm" id="wallet-indexto" v-model="wallet.indexCount" @change="generateDerivedAddresses();" style="max-width: 100px;"></b-form-input>
                   </b-form-group> -->
-
                   <!-- <b-form-group v-if="false && wallet.tab == 0" label="Mnemonic Path:" label-for="wallet-mnemonicpath" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
                     <b-form-input type="text" size="sm" :readonly="wallet.tab == 0 || wallet.tab == 3" id="wallet-mnemonicpath" v-model="wallet.mnemonic.path" @change="recomputeFromMnemonic();" class="w-50"></b-form-input>
                   </b-form-group> -->
-
                   <b-card v-if="wallet.tab == 0" class="m-0 mt-2 p-0 border-0" body-class="m-1 p-0">
                     <div class="d-flex flex-wrap m-0 p-0">
                       <div class="mt-1 pl-1">
@@ -195,22 +203,17 @@
                       </template>
                     </b-table>
                   </b-card>
-
                   <b-form-group v-if="wallet.tab == 1" label="Private Key:" label-for="wallet-privatekey" label-size="sm" label-cols-sm="2" label-align-sm="right" :state="!wallet.privateKeyError" :invalid-feedback="wallet.privateKeyError" class="mx-0 my-2 p-0">
                     <b-form-input type="text" size="sm" id="wallet-privatekey" v-model="wallet.privateKey" @change="recomputeFromPrivateKey();" placeholder="Type/paste your private key here, click [Generate New] or [Load From Keystore]" class="w-75"></b-form-input>
                   </b-form-group>
-
                   <b-form-group v-if="wallet.tab == 1" label="" label-for="wallet-generaterandomprivatekey" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
                     <b-button size="sm" id="wallet-generaterandomprivatekey" @click="generateRandomPrivateKey()" variant="primary">Generate New</b-button>
                     <b-button size="sm" @click="showLoadPrivateKeyFromKeystoreModal()" variant="primary">Load From Keystore</b-button>
                     <b-button size="sm" :disabled="!wallet.privateKey || !!wallet.privateKeyError" @click="showSavePrivateKeyToKeystoreModal()" variant="primary">Save To Keystore</b-button>
                   </b-form-group>
-
                   <b-form-group v-if="wallet.tab == 1" label="ETH Address:" label-for="output-address" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-3 p-0">
                     <b-form-input type="text" size="sm" readonly id="output-address" :value="wallet.address" class="w-50"></b-form-input>
                   </b-form-group>
-
-
                   <b-form-group v-if="false && wallet.tab == 0" label="Debug Addresses:" label-for="debug-addresses-textarea" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 mt-3 p-0">
                     <b-form-textarea size="sm" readonly id="debug-addresses-textarea" :value="JSON.stringify(addresses, null, 2)" rows="3" max-rows="10" class="w-100"></b-form-textarea>
                   </b-form-group>
@@ -220,11 +223,8 @@
                   <b-form-group v-if="false" label="Test:" label-for="wallet-testit" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
                     <b-button size="sm" id="wallet-testit" @click="testIt()" variant="warning">Test</b-button>
                   </b-form-group>
-
                 </b-card-text>
-
               </b-card>
-
             </b-form-group>
           </b-card>
 
@@ -233,6 +233,21 @@
 
             <div class="d-flex flex-wrap m-0 p-0">
               <div class="mt-0 flex-grow-1">
+              </div>
+              <div class="mt-0 pr-1">
+                <b-dropdown size="sm" variant="link" v-b-popover.hover.bottom="'New Wallet'">
+                  <template #button-content>
+                    <b-icon-plus shift-v="+1" font-scale="1.0"></b-icon-plus>
+                  </template>
+                  <b-dropdown-item @click="showNewFromMnemonic">From Mnemonic</b-dropdown-item>
+                  <b-dropdown-item @click="showNewFromPrivateKey">From Private Key</b-dropdown-item>
+                  <b-dropdown-item @click="showImportFromKeystore">From JSON/UTC Keystore Private Key</b-dropdown-item>
+                </b-dropdown>
+              </div>
+              <div class="mt-0 flex-grow-1">
+              </div>
+              <div class="mt-0 pl-1">
+                <font size="-2" v-b-popover.hover.bottom="'# wallets'">{{ commify0(wallets.length) }}</font>
               </div>
               <div class="mt-0 pl-1">
                 <b-pagination size="sm" v-model="settings.walletsTable.currentPage" @input="saveSettings" :total-rows="filteredSortedWallets.length" :per-page="settings.walletsTable.pageSize" style="height: 0;"></b-pagination>
@@ -395,6 +410,7 @@
             { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
             { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
             { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
+            { address: "0xblah", name: "cde", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
             { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
             { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
             { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
@@ -402,6 +418,7 @@
             { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
             { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
             { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
+            { address: "0xblerg", name: "efg", type: "privatekey", privateKey: "0x1234" },
             { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
             { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
             { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
@@ -491,12 +508,12 @@
 
           walletsFields: [
             { key: 'number', label: '#', sortable: false, thStyle: 'width: 5%;', tdClass: 'text-truncate' },
-            { key: 'address', label: 'Address', sortable: false, thStyle: 'width: 10%;', thClass: 'text-left', tdClass: 'text-truncate' },
+            { key: 'type', label: 'Type', sortable: false, thStyle: 'width: 15%;', thClass: 'text-left', tdClass: 'text-left' },
+            { key: 'address', label: 'Address', sortable: false, thStyle: 'width: 40%;', thClass: 'text-left', tdClass: 'text-truncate' },
             // { key: 'source', label: 'Source', sortable: false, thStyle: 'width: 5%;', thClass: 'text-left', tdClass: 'text-left' },
-            { key: 'type', label: 'Type', sortable: false, thStyle: 'width: 10%;', thClass: 'text-left', tdClass: 'text-left' },
             // { key: 'customType', label: '', sortable: false, thStyle: 'width: 10%;', thClass: 'text-left', tdClass: 'text-left' },
             // { key: 'symbol', label: 'Symbol', sortable: false, thStyle: 'width: 10%;', thClass: 'text-left', tdClass: 'text-truncate' },
-            // { key: 'name', label: 'Name', sortable: false, thStyle: 'width: 15%;', thClass: 'text-left', tdClass: 'text-truncate' },
+            { key: 'name', label: 'Name', sortable: false, thStyle: 'width: 40%;', thClass: 'text-left', tdClass: 'text-truncate' },
             // { key: 'customName', label: '', sortable: false, thStyle: 'width: 15%;', thClass: 'text-left', tdClass: 'text-left' },
             // { key: 'decimals', label: 'Decimals', sortable: false, thStyle: 'width: 10%;', thClass: 'text-right', tdClass: 'text-right' },
             // { key: 'customDecimals', label: '', sortable: false, thStyle: 'width: 10%;', thClass: 'text-right', tdClass: 'text-right' },
@@ -603,6 +620,19 @@
           showSavePrivateKeyToKeystoreModal() {
             console.log(moment().format("HH:mm:ss") + " showSavePrivateKeyToKeystoreModal");
             this.$bvModal.show('modal-saveprivatekeytokeystore');
+          },
+
+          showNewFromMnemonic() {
+            console.log(moment().format("HH:mm:ss") + " showNewFromMnemonic");
+            this.$bvModal.show('modal-newfrommnemonic');
+          },
+          showNewFromPrivateKey() {
+            console.log(moment().format("HH:mm:ss") + " showNewFromPrivateKey");
+            this.$bvModal.show('modal-newfromprivatekey');
+          },
+          showImportFromKeystore() {
+            console.log(moment().format("HH:mm:ss") + " showImportFromKeystore");
+            this.$bvModal.show('modal-importfromkeystore');
           },
 
           generateDerivedAddresses() {
@@ -886,12 +916,12 @@
           //   this.sync.halt = true;
           //   console.log(moment().format("HH:mm:ss") + " halt()");
           // },
-          // commify0(n) {
-          //   if (n != null) {
-          //     return Number(n).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-          //   }
-          //   return null;
-          // },
+          commify0(n) {
+            if (n != null) {
+              return Number(n).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+            }
+            return null;
+          },
           // formatETH(e, precision = 9) {
           //   try {
           //     if (precision == 0) {
