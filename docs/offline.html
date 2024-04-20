@@ -903,12 +903,13 @@
           },
 
           generateDerivedAddresses() {
-            console.log(moment().format("HH:mm:ss") + " generateDerivedAddresses");
+            console.log(moment().format("HH:mm:ss") + " generateDerivedAddresses - this.wallet: " + JSON.stringify(this.wallet, null, 2));
             const results = [];
             if (this.wallet.type == 'mnemonic' && this.wallet.mnemonic.phrase) {
               try {
                 const node = ethers.utils.HDNode.fromMnemonic(this.wallet.mnemonic.phrase, this.wallet.mnemonic.passphrase);
                 for (let index = this.wallet.indexStart; index < (parseInt(this.wallet.indexStart) + this.wallet.indexCount); index++) {
+                  // console.log("index: " + index);
                   let path = this.wallet.derivationPath.replace(/{index}/, index);
                   const w = node.derivePath(path);
                   results.push({
@@ -925,7 +926,9 @@
                 this.wallet.mnemonic.phraseError = e.message;
               }
             }
-            this.addresses = results;
+            // this.addresses = results;
+            Vue.set(this, 'addresses', results);
+            // console.log(moment().format("HH:mm:ss") + " generateDerivedAddresses - this.addresses: " + JSON.stringify(this.addresses, null, 2));
           },
 
           generateRandomMnemonic() {
