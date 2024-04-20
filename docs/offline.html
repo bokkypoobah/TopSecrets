@@ -230,7 +230,58 @@
 
           <!-- :WALLETS -->
           <b-card v-if="settings.tabIndex == 1" class="m-0 p-0 border-0" body-class="m-1 p-0">
-            TODO: Wallets
+
+            <div class="d-flex flex-wrap m-0 p-0">
+              <div class="mt-0 flex-grow-1">
+              </div>
+              <div class="mt-0 pl-1">
+                <b-pagination size="sm" v-model="settings.walletsTable.currentPage" @input="saveSettings" :total-rows="filteredSortedWallets.length" :per-page="settings.walletsTable.pageSize" style="height: 0;"></b-pagination>
+              </div>
+              <div class="mt-0 pl-1">
+                <!-- <b-form-select size="sm" v-model="settings.walletsTable.pageSize" @change="saveSettings();" :options="pageSizes" v-b-popover.hover.bottom="'Yeah. Page size'"></b-form-select> -->
+                <b-form-select size="sm" v-model="settings.walletsTable.pageSize" :options="pageSizes" v-b-popover.hover.bottom="'Yeah. Page size'"></b-form-select>
+              </div>
+            </div>
+            <!-- <b-table small fixed striped responsive hover :fields="accountsFields" :items="pagedFilteredSortedAccounts" show-empty empty-html="Click Sync above to retrieve ERC-20, ERC-721 and ERC-1155 approval events" head-variant="light" class="mx-0 my-1"> -->
+            <b-table small fixed striped responsive hover :fields="walletsFields" :items="pagedFilteredSortedWallets" show-empty empty-html="Add new wallets" head-variant="light" class="mx-0 my-1">
+              <template #cell(number)="data">
+                <font size="-1">
+                  {{ parseInt(data.index) + ((settings.walletsTable.currentPage - 1) * settings.walletsTable.pageSize) + 1 }}
+                </font>
+              </template>
+              <!-- <template #cell(address)="data">
+                <b-link :href="'https://etherscan.io/address/' + data.item.address" target="_blank">
+                  <b-badge pill variant="transparent" v-b-popover.hover="addressDescription(data.item.address)" class="px-0">{{ data.item.address.substring(0, 6) + '...' + data.item.address.substring(38) }}</b-badge>
+                </b-link>
+              </template> -->
+              <!-- <template #cell(source)="data">
+                <b-badge pill variant="transparent" v-b-popover.hover="'Owner, contract or spender from approvals'" class="px-0">{{ data.item.source.substring(0, 1).toUpperCase() + data.item.source.substring(1) }}</b-badge>
+              </template> -->
+              <!-- <template #cell(type)="data">
+                <b-badge pill variant="transparent" v-b-popover.hover="'Detected account type'" class="px-0">{{ accountTypeOptions.filter(e => e.value == data.item.type)[0].text }}</b-badge>
+              </template> -->
+              <!-- <template #cell(customType)="data">
+                <b-form-select size="sm" v-model="data.item.customType" @change="customTypeUpdated(data.item.address, $event)" :options="accountTypeOptions" v-b-popover.hover.bottom="'Override detected type'"></b-form-select>
+              </template> -->
+              <!-- <template #cell(symbol)="data">
+                <b-badge pill variant="transparent" v-b-popover.hover="'Symbol for ERC-20, ERC-721 and ERC-1155: ' + data.item.symbol " class="px-0">{{ data.item.symbol }}</b-badge>
+              </template> -->
+              <!-- <template #cell(name)="data">
+                <b-badge pill variant="transparent" v-b-popover.hover="'Name: ' + data.item.name" class="px-0">{{ data.item.name }}</b-badge>
+              </template> -->
+              <!-- <template #cell(customName)="data">
+                <b-form-input size="sm" v-model="data.item.customName" @change="customNameUpdated(data.item.address, $event)" placeholder="Custom name" v-b-popover.hover.bottom="'Override detected name'"></b-form-input>
+              </template> -->
+              <!-- <template #cell(decimals)="data">
+                <b-badge pill variant="transparent" v-b-popover.hover="'Detected decimals'" class="px-0">{{ data.item.decimals }}</b-badge>
+              </template> -->
+              <!-- <template #cell(customDecimals)="data">
+                <span v-if="(data.item.customType == null && data.item.type == 'erc20') || data.item.customType == 'erc20'">
+                  <b-form-select size="sm" v-model="data.item.customDecimals" @change="customDecimalsUpdated(data.item.address, $event)" :options="decimalsOptions" v-b-popover.hover.bottom="'Override detected decimals'"></b-form-select>
+                </span>
+              </template> -->
+            </b-table>
+
           </b-card>
 
           <!-- :ETH -->
@@ -331,9 +382,49 @@
           forceRefresh: 0,
 
           settings: {
-            tabIndex: 0,
+            tabIndex: 1,
+            walletsTable: {
+              filter: null,
+              currentPage: 1,
+              pageSize: 10,
+              sortOption: 'addressasc',
+            },
             version: 12,
           },
+          wallets: [
+            { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
+            { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
+            { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
+            { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
+            { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
+            { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
+            { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
+            { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
+            { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
+            { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
+            { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
+            { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
+            { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
+            { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
+            { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
+            { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
+            { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
+            { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
+            { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
+            { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
+            { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
+            { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
+            { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
+            { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
+            { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
+            { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
+            { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
+            { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
+            { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
+            { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
+            { address: "0xblah", name: "abc", type: "mnemonic", phrase: "one two three", passphrase: "", derivationPath: "m/44'/60'/0'/0/{index}" },
+            { address: "0xblerg", name: "abcd", type: "privatekey", privateKey: "0x1234" },
+          ],
           // sync: {
           //   section: null,
           //   total: null,
@@ -379,6 +470,18 @@
             { value: 100, text: '100' },
           ],
 
+          pageSizes: [
+            { value: 5, text: '5' },
+            { value: 10, text: '10' },
+            { value: 25, text: '25' },
+            { value: 50, text: '50' },
+            { value: 100, text: '100' },
+            { value: 500, text: '500' },
+            { value: 1000, text: '1k' },
+            { value: 2500, text: '2.5k' },
+            { value: 10000, text: '10k' },
+          ],
+
           addressesFields: [
             { key: 'index', label: '#', sortable: false, thStyle: 'width: 5%;', tdClass: 'text-truncate' },
             { key: 'path', label: 'Path', sortable: false, thStyle: 'width: 15%;', thClass: 'text-left', tdClass: 'text-left' },
@@ -386,10 +489,88 @@
             { key: 'privateKey', label: 'Private Key', sortable: false, thStyle: 'width: 50%;', thClass: 'text-left', tdClass: 'text-left' },
           ],
 
+          walletsFields: [
+            { key: 'number', label: '#', sortable: false, thStyle: 'width: 5%;', tdClass: 'text-truncate' },
+            { key: 'address', label: 'Address', sortable: false, thStyle: 'width: 10%;', thClass: 'text-left', tdClass: 'text-truncate' },
+            // { key: 'source', label: 'Source', sortable: false, thStyle: 'width: 5%;', thClass: 'text-left', tdClass: 'text-left' },
+            { key: 'type', label: 'Type', sortable: false, thStyle: 'width: 10%;', thClass: 'text-left', tdClass: 'text-left' },
+            // { key: 'customType', label: '', sortable: false, thStyle: 'width: 10%;', thClass: 'text-left', tdClass: 'text-left' },
+            // { key: 'symbol', label: 'Symbol', sortable: false, thStyle: 'width: 10%;', thClass: 'text-left', tdClass: 'text-truncate' },
+            // { key: 'name', label: 'Name', sortable: false, thStyle: 'width: 15%;', thClass: 'text-left', tdClass: 'text-truncate' },
+            // { key: 'customName', label: '', sortable: false, thStyle: 'width: 15%;', thClass: 'text-left', tdClass: 'text-left' },
+            // { key: 'decimals', label: 'Decimals', sortable: false, thStyle: 'width: 10%;', thClass: 'text-right', tdClass: 'text-right' },
+            // { key: 'customDecimals', label: '', sortable: false, thStyle: 'width: 10%;', thClass: 'text-right', tdClass: 'text-right' },
+          ],
+
         },
 
         // --- COMPUTED ---
         computed: {
+
+          filteredWallets() {
+            // let results = this.forceRefresh % 2 == 0 ? [] : [];
+            // const accounts = this.accounts[this.chainId] || {};
+            // for (const [address, accountData] of Object.entries(accounts)) {
+            //   const [ type, symbol, name, decimals, source, customType, customName, customDecimals ] = [ accountData.type, accountData.symbol, accountData.name, accountData.decimals, accountData.source, accountData.customType || null, accountData.customName || null, accountData.customDecimals || null ];
+            //   results.push({ address, type, symbol, name, decimals, source, customType, customName, customDecimals });
+            // }
+            // return results;
+            return this.wallets;
+          },
+          filteredSortedWallets() {
+            let results = this.filteredWallets;
+          //   if (this.settings.accountsTable.sortOption == 'typenameasc') {
+          //     results.sort((a, b) => {
+          //       const typeA = a.customType || a.type;
+          //       const typeB = b.customType || b.type;
+          //       const sortIndexA = this.accountTypeOptions.findIndex(e => e.value == typeA);
+          //       const sortIndexB = this.accountTypeOptions.findIndex(e => e.value == typeB);
+          //       if (sortIndexA == sortIndexB) {
+          //         const namea = a.customName || a.name;
+          //         const nameb = b.customName || b.name;
+          //         return ('' + namea).localeCompare(nameb);
+          //       } else {
+          //         return sortIndexA - sortIndexB;
+          //       }
+          //     });
+          //   } else if (this.settings.accountsTable.sortOption == 'typenamedsc') {
+          //     results.sort((a, b) => {
+          //       const typeA = a.customType || a.type;
+          //       const typeB = b.customType || b.type;
+          //       const sortIndexA = this.accountTypeOptions.findIndex(e => e.value == typeA);
+          //       const sortIndexB = this.accountTypeOptions.findIndex(e => e.value == typeB);
+          //       if (sortIndexA == sortIndexB) {
+          //         const namea = a.customName || a.name;
+          //         const nameb = b.customName || b.name;
+          //         return ('' + nameb).localeCompare(namea);
+          //       } else {
+          //         return sortIndexB - sortIndexA;
+          //       }
+          //     });
+          //   } else if (this.settings.accountsTable.sortOption == 'nameasc') {
+          //     results.sort((a, b) => {
+          //       return ('' + a.name).localeCompare(b.name);
+          //     });
+          //   } else if (this.settings.accountsTable.sortOption == 'namedsc') {
+          //     results.sort((a, b) => {
+          //       return ('' + b.name).localeCompare(a.name);
+          //     });
+          //   } else if (this.settings.accountsTable.sortOption == 'addressasc') {
+          //     results.sort((a, b) => {
+          //       return ('' + a.address).localeCompare(b.address);
+          //     });
+          //   } else if (this.settings.accountsTable.sortOption == 'addressdsc') {
+          //     results.sort((a, b) => {
+          //       return ('' + b.address).localeCompare(a.address);
+          //     });
+          //   }
+            return results;
+          },
+          pagedFilteredSortedWallets() {
+            console.log(moment().format("HH:mm:ss") + " pagedFilteredSortedWallets - results[0..9]: " + JSON.stringify(this.filteredSortedWallets.slice(0, 10), null, 2));
+            return this.filteredSortedWallets.slice((this.settings.walletsTable.currentPage - 1) * this.settings.walletsTable.pageSize, this.settings.walletsTable.currentPage * this.settings.walletsTable.pageSize);
+          },
+
           accountsToSearch() {
             return this.settings.searchAttachedAccount ? [ this.coinbase ] : (this.settings.searchAccounts && this.settings.searchAccounts.split(/[, \t\n]+/).filter(name => name.match(/0x[0-9a-fA-F]{40}/)) || []);
           },
