@@ -125,9 +125,10 @@
                 </b-input-group-append>
               </b-input-group>
             </b-form-group>
-            <!-- <b-form-group v-if="wallet.tab == 0" label="Passphrase:" label-for="wallet-mnemonicpassphrase" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
-              <b-form-input type="text" size="sm" id="wallet-mnemonicpassphrase" v-model="wallet.mnemonic.passphrase" @change="generateDerivedAddresses();" placeholder="Optional" style="max-width: 300px;"></b-form-input>
-            </b-form-group> -->
+            <b-form-group label="Passphrase:" label-for="newwalletfrommnemonic-mnemonicpassphrase" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
+              <!-- <b-form-input type="text" size="sm" id="newwalletfrommnemonic-mnemonicpassphrase" v-model="newWalletFromMnemonic.passphrase" @change="generateDerivedAddresses();" placeholder="Optional" style="max-width: 300px;"></b-form-input> -->
+              <b-form-input type="text" size="sm" id="newwalletfrommnemonic-mnemonicpassphrase" v-model="newWalletFromMnemonic.passphrase" placeholder="Optional" style="max-width: 300px;"></b-form-input>
+            </b-form-group>
 
           </b-modal>
 
