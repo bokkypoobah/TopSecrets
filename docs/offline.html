@@ -135,10 +135,31 @@
           </b-modal>
 
           <!-- :MODALNEWWALLETFROMKEYSTORE -->
-          <b-modal id="modal-newwalletfromkeystore" hide-footer size="md">
+          <b-modal id="modal-newwalletfromkeystore" hide-footer size="lg">
             <template #modal-title>
               New Wallet From JSON/UTC Keystore Private Key
             </template>
+            <b-form-group label="Keystore File:" label-for="newwalletfromkeystore-keystorefile" label-size="sm" label-cols-sm="2" label-align-sm="right" :description="'Select encrypted keystore (JSON/UTC) file from your local computer'" class="mx-0 my-1 p-0">
+              <b-form-file size="sm" id="newwalletfromkeystore-keystorefile" v-model="newWalletFromKeystore.keystoreFile" @change="newWalletFromKeystoreFileChange($event.target.name, $event.target.files)"></b-form-file>
+            </b-form-group>
+            <b-form-group label="Password:" label-for="newwalletfromkeystore-keystorefilepassword" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-form-input type="password" autocomplete="current-password" size="sm" id="newwalletfromkeystore-keystorefilepassword" v-model="newWalletFromKeystore.keystoreFilePassword" class="w-50"></b-form-input>
+            </b-form-group>
+            <b-form-group label="" label-for="newwalletfromkeystore-load" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-button size="sm" :disabled="!newWalletFromKeystore.keystoreFile" id="newwalletfromkeystore-load" @click="newWalletFromKeystoreLoad()" variant="primary">Load</b-button>
+            </b-form-group>
+            <b-form-group label="Private Key:" label-for="newwalletfromkeystore-privatekey" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-form-input type="text" size="sm" readonly id="newwalletfromkeystore-privatekey" v-model="newWalletFromKeystore.privateKey" style="max-width: 600px;"></b-form-input>
+            </b-form-group>
+            <b-form-group label="ETH Address:" label-for="newwalletfromkeystore-address" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-form-input type="text" size="sm" readonly id="newwalletfromkeystore-address" :value="newWalletFromKeystore.address" style="max-width: 400px;"></b-form-input>
+            </b-form-group>
+            <b-form-group label="Name:" label-for="newwalletfromkeystore-name" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-form-input type="text" size="sm" id="newwalletfromkeystore-name" v-model="newWalletFromKeystore.name" placeholder="Optional" style="max-width: 300px;"></b-form-input>
+            </b-form-group>
+            <b-form-group label="" label-for="newwalletfromkeystore-add" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-button size="sm" :disabled="!newWalletFromKeystore.address" id="newwalletfromkeystore-add" @click="newWalletFromKeystoreAdd()" variant="primary">Add</b-button>
+            </b-form-group>
           </b-modal>
 
           <b-card v-if="settings.tabIndex == 0" class="m-0 p-0 border-0" body-class="m-1 p-0">
@@ -412,6 +433,12 @@
           },
 
           newWalletFromKeystore: {
+            keystoreFile: null,
+            keystoreFilePassword: "my_keystore_file", // null,
+            keystoreFileContent: null,
+            privateKey: null,
+            address: null,
+            name: null,
           },
 
           addresses: [],
@@ -678,6 +705,42 @@
             localStorage.topSecretsOfflineWallets = JSON.stringify(this.wallets);
             console.log(moment().format("HH:mm:ss") + " newWalletFromPrivateKeyAdd - this.wallets: " + JSON.stringify(this.wallets, null, 2));
             this.$bvModal.hide('modal-newwalletfromprivatekey');
+          },
+
+          async newWalletFromKeystoreFileChange(fileName, fileList) {
+            console.log(moment().format("HH:mm:ss") + " newWalletFromKeystoreFileChange: " + JSON.stringify(fileName));
+            const reader = new FileReader();
+            this.newWalletFromKeystore.keystoreFileContent = {};
+            const t = this;
+            reader.onload = function (event) {
+              const data = event.target.result;
+              t.newWalletFromKeystore.keystoreFileContent = data;
+              console.log(moment().format("HH:mm:ss") + " newWalletFromKeystoreFileChange - keystoreFileContent: " + t.newWalletFromKeystore.keystoreFileContent);
+            };
+            await reader.readAsText(fileList[0]);
+          },
+
+          async newWalletFromKeystoreLoad() {
+            console.log(moment().format("HH:mm:ss") + " newWalletFromKeystoreLoad - this.newWalletFromKeystore.keystoreFileContent: " + this.newWalletFromKeystore.keystoreFileContent);
+            console.log(moment().format("HH:mm:ss") + " newWalletFromKeystoreLoad - this.newWalletFromKeystore.keystoreFilePassword: " + this.newWalletFromKeystore.keystoreFilePassword);
+            try {
+              const wallet = await ethers.Wallet.fromEncryptedJsonSync(this.newWalletFromKeystore.keystoreFileContent, this.newWalletFromKeystore.keystoreFilePassword);
+              this.newWalletFromKeystore.privateKey = wallet.privateKey;
+              this.newWalletFromKeystore.address = wallet.address;
+            } catch (e) {
+              console.log(moment().format("HH:mm:ss") + " newWalletFromKeystoreLoad - keystorefile ERROR: " + e.message);
+            }
+          },
+
+          newWalletFromKeystoreAdd() {
+            Vue.set(this.wallets, this.newWalletFromKeystore.address, {
+              type: "keystore",
+              name: this.newWalletFromKeystore.name,
+              privateKey: this.newWalletFromKeystore.privateKey,
+            });
+            localStorage.topSecretsOfflineWallets = JSON.stringify(this.wallets);
+            console.log(moment().format("HH:mm:ss") + " newWalletFromKeystoreAdd - this.wallets: " + JSON.stringify(this.wallets, null, 2));
+            this.$bvModal.hide('modal-newwalletfromkeystore');
           },
 
           generateDerivedAddresses() {
