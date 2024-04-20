@@ -112,7 +112,7 @@
             </template>
             <b-form-group label="Phrase:" label-for="newwalletfrommnemonic-mnemonicphrase" label-size="sm" label-cols-sm="2" label-align-sm="right" :state="!newWalletFromMnemonic.phraseError" :invalid-feedback="newWalletFromMnemonic.phraseError" class="mx-0 my-2 p-0">
               <!-- <b-form-textarea size="sm" id="newwalletfrommnemonic-mnemonicphrase" v-model="newWalletFromMnemonic.phrase" @change="generateDerivedAddresses();" rows="3" placeholder="Type/paste your mnemnonic seed phrase here or click [Generate New]" style="max-width: 800px;"></b-form-textarea> -->
-              <b-form-textarea size="sm" id="newwalletfrommnemonic-mnemonicphrase" v-model="newWalletFromMnemonic.phrase" rows="3" placeholder="Type/paste your mnemnonic seed phrase here or click [Generate New]" style="max-width: 800px;"></b-form-textarea>
+              <b-form-textarea size="sm" id="newwalletfrommnemonic-mnemonicphrase" v-model="newWalletFromMnemonic.phrase" @change="newWalletFromMnemonicRecompute();" rows="3" placeholder="Type/paste your mnemnonic seed phrase here or click [Generate Random]" style="max-width: 800px;"></b-form-textarea>
             </b-form-group>
             <!-- <b-form-group label="Number of words:" label-for="newwalletfrommnemonic-numberofwords" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-form-select size="sm" id="newwalletfrommnemonic-numberofwords" v-model="newWalletFromMnemonic.randomBytesLength" :options="randomBytesLengthMnemonicWordsOptions"></b-form-select>
@@ -706,6 +706,19 @@
             }
           },
 
+          newWalletFromMnemonicRecompute() {
+            console.log(moment().format("HH:mm:ss") + " newWalletFromMnemonicRecompute");
+            if (this.newWalletFromMnemonic.phrase) {
+              try {
+                const node = ethers.utils.HDNode.fromMnemonic(this.newWalletFromMnemonic.phrase);
+              } catch (e) {
+                console.log(moment().format("HH:mm:ss") + " newWalletFromMnemonicRecompute ERROR: " + e.message);
+                this.newWalletFromMnemonic.phraseError = e.message;
+              }
+            } else {
+              this.newWalletFromMnemonic.phraseError = null;
+            }
+          },
 
           newWalletFromPrivateKeyGenerateRandom() {
             console.log(moment().format("HH:mm:ss") + " newWalletFromPrivateKeyGenerateRandom");
