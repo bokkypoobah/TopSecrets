@@ -394,7 +394,7 @@
             <!-- :SIGNMESSAGE -->
             <b-card sub-title="Sign Message" bg-variant="light" class="p-0 m-1" style="max-width: 800px;">
               <b-form-group label="Wallet:" label-for="signmessage-wallet" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
-                <b-form-select size="sm" id="signmessage-wallet" v-model="signMessage.wallet" :options="walletOptions" v-b-popover.hover.bottom="'Select Wallet'" style="max-width: 500px;"></b-form-select>
+                <b-form-select size="sm" id="signmessage-wallet" v-model="signMessage.wallet" :options="walletOptions" v-b-popover.hover.bottom="'Select Wallet'"></b-form-select>
               </b-form-group>
               <b-form-group label="Message:" label-for="signmessage-message" label-size="sm" label-cols-sm="2" label-align-sm="right" :state="!wallet.mnemonic.phraseError" :invalid-feedback="wallet.mnemonic.phraseError" class="mx-0 my-2 p-0">
                 <b-form-textarea size="sm" id="signmessage-message" v-model.trim="signMessage.message" rows="3" placeholder="Type/paste your message here, then click [Sign]" style="max-width: 800px;"></b-form-textarea>
@@ -428,7 +428,7 @@
             <!-- :SIGNETHTX -->
             <b-card sub-title="Sign ETH Transaction" bg-variant="light" class="p-0 m-1" style="max-width: 800px;">
               <b-form-group label="From:" label-for="signethtx-from" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-                <b-form-select size="sm" id="signethtx-from" v-model="signEthTx.from" :options="walletOptions" v-b-popover.hover.bottom="'Select Wallet'" style="max-width: 500px;"></b-form-select>
+                <b-form-select size="sm" id="signethtx-from" v-model="signEthTx.from" :options="walletOptions" v-b-popover.hover.bottom="'Select Wallet'"></b-form-select>
               </b-form-group>
               <b-form-group label="To:" label-for="signethtx-to" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
                 <b-form-input type="text" size="sm" id="signethtx-to" v-model.trim="signEthTx.to" placeholder="Optional for contract deployment" style="max-width: 500px;"></b-form-input>
@@ -715,7 +715,7 @@
             const results = [];
             results.push({ value: null, text: "(Select)" });
             for (const [address, data] of Object.entries(this.wallets)) {
-              results.push({ value: address, text: address + " " + data.name });
+              results.push({ value: address, text: address + (data.name ? (" " + data.name) : "") });
             }
             return results;
           },
