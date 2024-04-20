@@ -105,22 +105,22 @@
             </b-form-group>
           </b-modal>
 
-          <!-- :MODALNEWFROMMNEMONIC -->
-          <b-modal id="modal-newfrommnemonic" hide-footer size="md">
+          <!-- :MODALNEWWALLETFROMMNEMONIC -->
+          <b-modal id="modal-newwalletfrommnemonic" hide-footer size="md">
             <template #modal-title>
               New Wallet From Mnemonic Seed Phrase
             </template>
           </b-modal>
 
-          <!-- :MODALNEWFROMPRIVATEKEY -->
-          <b-modal id="modal-newfromprivatekey" hide-footer size="md">
+          <!-- :MODALNEWWALLETFROMPRIVATEKEY -->
+          <b-modal id="modal-newwalletfromprivatekey" hide-footer size="md">
             <template #modal-title>
               New Wallet From Private Key
             </template>
           </b-modal>
 
-          <!-- :MODALIMPORTFROMKEYSTORE -->
-          <b-modal id="modal-importfromkeystore" hide-footer size="md">
+          <!-- :MODALNEWWALLETFROMKEYSTORE -->
+          <b-modal id="modal-newwalletfromkeystore" hide-footer size="md">
             <template #modal-title>
               New Wallet From JSON/UTC Keystore Private Key
             </template>
@@ -239,9 +239,9 @@
                   <template #button-content>
                     <b-icon-plus shift-v="+1" font-scale="1.0"></b-icon-plus>
                   </template>
-                  <b-dropdown-item @click="showNewFromMnemonic">New Wallet From Mnemonic</b-dropdown-item>
-                  <b-dropdown-item @click="showNewFromPrivateKey">New Wallet From Private Key</b-dropdown-item>
-                  <b-dropdown-item @click="showImportFromKeystore">New Wallet From JSON/UTC Keystore Private Key</b-dropdown-item>
+                  <b-dropdown-item @click="showNewWalletFromMnemonic">New Wallet From Mnemonic</b-dropdown-item>
+                  <b-dropdown-item @click="showNewWalletFromPrivateKey">New Wallet From Private Key</b-dropdown-item>
+                  <b-dropdown-item @click="showNewWalletFromKeystore">New Wallet From JSON/UTC Keystore Private Key</b-dropdown-item>
                 </b-dropdown>
               </div>
               <div class="mt-0 flex-grow-1">
@@ -622,17 +622,17 @@
             this.$bvModal.show('modal-saveprivatekeytokeystore');
           },
 
-          showNewFromMnemonic() {
-            console.log(moment().format("HH:mm:ss") + " showNewFromMnemonic");
-            this.$bvModal.show('modal-newfrommnemonic');
+          showNewWalletFromMnemonic() {
+            console.log(moment().format("HH:mm:ss") + " showNewWalletFromMnemonic");
+            this.$bvModal.show('modal-newwalletfrommnemonic');
           },
-          showNewFromPrivateKey() {
-            console.log(moment().format("HH:mm:ss") + " showNewFromPrivateKey");
-            this.$bvModal.show('modal-newfromprivatekey');
+          showNewWalletFromPrivateKey() {
+            console.log(moment().format("HH:mm:ss") + " showNewWalletFromPrivateKey");
+            this.$bvModal.show('modal-newwalletfromprivatekey');
           },
-          showImportFromKeystore() {
-            console.log(moment().format("HH:mm:ss") + " showImportFromKeystore");
-            this.$bvModal.show('modal-importfromkeystore');
+          showNewWalletFromKeystore() {
+            console.log(moment().format("HH:mm:ss") + " showNewWalletFromKeystore");
+            this.$bvModal.show('modal-newwalletfromkeystore');
           },
 
           generateDerivedAddresses() {
