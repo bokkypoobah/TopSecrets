@@ -208,8 +208,22 @@
                 <b-form-select size="sm" id="checkethaccount-from" v-model="checkEthAccount.from" :options="walletOptions" @change="checkEthAccountRefresh();" v-b-popover.hover.bottom="'Select Wallet'"></b-form-select>
               </b-form-group>
               <b-form-group label="Transaction Count:" label-for="checkethaccount-transactioncount" label-size="sm" label-cols-sm="4" label-align-sm="right" class="mx-0 my-1 p-0">
-                <b-form-input type="text" size="sm" id="checkethaccount-transactioncount" v-model.trim="checkEthAccount.transactionCount" style="max-width: 150px;"></b-form-input>
+                <b-form-input type="text" size="sm" readonly id="checkethaccount-transactioncount" v-model.trim="checkEthAccount.transactionCount" style="max-width: 150px;"></b-form-input>
               </b-form-group>
+
+              <b-form-group label="lastBaseFeePerGas:" label-for="checkethaccount-lastbasefeepergas" label-size="sm" label-cols-sm="4" label-align-sm="right" class="mx-0 my-1 p-0">
+                <b-form-input type="text" size="sm" readonly id="checkethaccount-lastbasefeepergas" v-model.trim="checkEthAccount.feeData.lastBaseFeePerGas" style="max-width: 150px;"></b-form-input>
+              </b-form-group>
+              <b-form-group label="maxFeePerGas:" label-for="checkethaccount-maxfeepergas" label-size="sm" label-cols-sm="4" label-align-sm="right" class="mx-0 my-1 p-0">
+                <b-form-input type="text" size="sm" readonly id="checkethaccount-maxfeepergas" v-model.trim="checkEthAccount.feeData.maxFeePerGas" style="max-width: 150px;"></b-form-input>
+              </b-form-group>
+              <b-form-group label="maxPriorityFeePerGas:" label-for="checkethaccount-maxpriorityfeepergas" label-size="sm" label-cols-sm="4" label-align-sm="right" class="mx-0 my-1 p-0">
+                <b-form-input type="text" size="sm" readonly id="checkethaccount-maxpriorityfeepergas" v-model.trim="checkEthAccount.feeData.maxPriorityFeePerGas" style="max-width: 150px;"></b-form-input>
+              </b-form-group>
+              <b-form-group label="gasPrice:" label-for="checkethaccount-gasprice" label-size="sm" label-cols-sm="4" label-align-sm="right" class="mx-0 my-1 p-0">
+                <b-form-input type="text" size="sm" readonly id="checkethaccount-gasprice" v-model.trim="checkEthAccount.feeData.gasPrice" style="max-width: 150px;"></b-form-input>
+              </b-form-group>
+
               <!-- <b-form-group label="To:" label-for="signethtx-to" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
                 <b-form-input type="text" size="sm" id="signethtx-to" v-model.trim="signEthTx.to" placeholder="Optional for contract deployment" style="max-width: 500px;"></b-form-input>
               </b-form-group> -->
@@ -574,6 +588,13 @@
           checkEthAccount: {
             from: null,
             transactionCount: null,
+            feeData: {
+              lastBaseFeePerGas: null,
+              maxFeePerGas: null,
+              maxPriorityFeePerGas: null,
+              gasPrice: null,
+            }
+
             // to: null,
             // amount: null,
             // amountUnit: "ethers",
@@ -1135,10 +1156,14 @@
           async checkEthAccountRefresh() {
             console.log(moment().format("HH:mm:ss") + " checkEthAccountRefresh: " + JSON.stringify(this.checkEthAccount, null, 2));
             const provider = new ethers.providers.Web3Provider(window.ethereum);
-
             if (this.checkEthAccount.from) {
               this.checkEthAccount.transactionCount = await provider.getTransactionCount(this.checkEthAccount.from);
             }
+            const feeData = await provider.getFeeData();
+            this.checkEthAccount.feeData.lastBaseFeePerGas = feeData.lastBaseFeePerGas.toString();
+            this.checkEthAccount.feeData.maxFeePerGas = feeData.maxFeePerGas.toString();
+            this.checkEthAccount.feeData.maxPriorityFeePerGas = feeData.maxPriorityFeePerGas.toString();
+            this.checkEthAccount.feeData.gasPrice = feeData.gasPrice.toString();
             console.log(moment().format("HH:mm:ss") + " checkEthAccountRefresh - AFTER: " + JSON.stringify(this.checkEthAccount, null, 2));
           },
 
