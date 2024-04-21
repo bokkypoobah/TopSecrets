@@ -42,7 +42,7 @@
             <em v-b-popover.hover.bottom="'gm gm gm'">Offline:TopSecrets</em>
           </b-navbar-brand>
           <b-navbar-nav class="ml-auto">
-            <b-nav-item size="sm" @click="settings.tabIndex = 0; saveSettings();" :active="settings.tabIndex == 0" active-class="active" v-b-popover.hover="'Maintain list of wallets. NOTE this is insecure!'">Wallets</b-nav-item>
+            <b-nav-item size="sm" @click="settings.tabIndex = 0; saveSettings();" :active="settings.tabIndex == 0" active-class="active" v-b-popover.hover="'Addresses, including your wallets, public ETH addresses, token contracts, ...'">Addresses</b-nav-item>
             <b-nav-item size="sm" @click="settings.tabIndex = 1; saveSettings();" :active="settings.tabIndex == 1" active-class="active" v-b-popover.hover="'Craft Ether transactions'">ETH</b-nav-item>
             <b-nav-item size="sm" @click="settings.tabIndex = 2; saveSettings();" :active="settings.tabIndex == 2" active-class="active" v-b-popover.hover="'ERC-20'">ERC-20</b-nav-item>
             <b-nav-item size="sm" @click="settings.tabIndex = 3; saveSettings();" :active="settings.tabIndex == 3" active-class="active" v-b-popover.hover="'ERC-721'">ERC-721</b-nav-item>
@@ -234,13 +234,13 @@
             </b-form-group>
           </b-modal>
 
-          <!-- :WALLETS -->
+          <!-- :ADDRESSES -->
           <b-card v-if="settings.tabIndex == 0" class="m-0 p-0 border-0" body-class="m-1 p-0">
             <div class="d-flex flex-wrap m-0 p-0">
               <div class="mt-0 flex-grow-1">
               </div>
               <div class="mt-0 pr-1">
-                <b-dropdown size="sm" variant="link" v-b-popover.hover.bottom="'New Wallet'">
+                <b-dropdown size="sm" variant="link" v-b-popover.hover.bottom="'New Address'">
                   <template #button-content>
                     <b-icon-plus shift-v="+1" font-scale="1.0"></b-icon-plus>
                   </template>
@@ -252,19 +252,19 @@
               <div class="mt-0 flex-grow-1">
               </div>
               <div class="mt-0 pl-1">
-                <font size="-2" v-b-popover.hover.bottom="'# wallets'">{{ commify0(wallets.length) }}</font>
+                <font size="-2" v-b-popover.hover.bottom="'# addresses'">{{ commify0(addresses.length) }}</font>
               </div>
               <div class="mt-0 pl-1">
-                <b-pagination size="sm" v-model="settings.walletsTable.currentPage" @input="saveSettings" :total-rows="filteredSortedWallets.length" :per-page="settings.walletsTable.pageSize" style="height: 0;"></b-pagination>
+                <b-pagination size="sm" v-model="settings.addressesTable.currentPage" @input="saveSettings" :total-rows="filteredSortedAddresses.length" :per-page="settings.addressesTable.pageSize" style="height: 0;"></b-pagination>
               </div>
               <div class="mt-0 pl-1">
-                <b-form-select size="sm" v-model="settings.walletsTable.pageSize" :options="pageSizes" v-b-popover.hover.bottom="'Yeah. Page size'"></b-form-select>
+                <b-form-select size="sm" v-model="settings.addressesTable.pageSize" :options="pageSizes" v-b-popover.hover.bottom="'Yeah. Page size'"></b-form-select>
               </div>
             </div>
-            <b-table small fixed striped responsive hover :fields="walletsFields" :items="pagedFilteredSortedWallets" show-empty empty-html="Add new wallets" head-variant="light" class="mx-0 my-1">
+            <b-table small fixed striped responsive hover :fields="addressesFields" :items="pagedFilteredSortedWallets" show-empty empty-html="Add new wallets" head-variant="light" class="mx-0 my-1">
               <template #cell(number)="data">
                 <font size="-1">
-                  {{ parseInt(data.index) + ((settings.walletsTable.currentPage - 1) * settings.walletsTable.pageSize) + 1 }}
+                  {{ parseInt(data.index) + ((settings.addressesTable.currentPage - 1) * settings.addressesTable.pageSize) + 1 }}
                 </font>
               </template>
             </b-table>
@@ -275,7 +275,7 @@
             <!-- :SIGNETHTX -->
             <b-card sub-title="Sign ETH Transaction" bg-variant="light" class="p-0 m-1" style="max-width: 800px;">
               <b-form-group label="From:" label-for="signethtx-from" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-                <b-form-select size="sm" id="signethtx-from" v-model="signEthTx.from" :options="walletOptions" v-b-popover.hover.bottom="'Select Wallet'"></b-form-select>
+                <b-form-select size="sm" id="signethtx-from" v-model="signEthTx.from" :options="addressesOptions" v-b-popover.hover.bottom="'Select Wallet'"></b-form-select>
               </b-form-group>
               <b-form-group label="To:" label-for="signethtx-to" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
                 <b-form-input type="text" size="sm" id="signethtx-to" v-model.trim="signEthTx.to" placeholder="Optional for contract deployment" style="max-width: 500px;"></b-form-input>
@@ -325,7 +325,7 @@
             <!-- :SIGNMESSAGE -->
             <b-card sub-title="Sign Message" bg-variant="light" class="p-0 m-1" style="max-width: 800px;">
               <b-form-group label="Wallet:" label-for="signmessage-wallet" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
-                <b-form-select size="sm" id="signmessage-wallet" v-model="signMessage.wallet" :options="walletOptions" v-b-popover.hover.bottom="'Select Wallet'"></b-form-select>
+                <b-form-select size="sm" id="signmessage-wallet" v-model="signMessage.wallet" :options="addressesOptions" v-b-popover.hover.bottom="'Select Wallet'"></b-form-select>
               </b-form-group>
               <b-form-group label="Message:" label-for="signmessage-message" label-size="sm" label-cols-sm="2" label-align-sm="right" :state="!wallet.mnemonic.phraseError" :invalid-feedback="wallet.mnemonic.phraseError" class="mx-0 my-2 p-0">
                 <b-form-textarea size="sm" id="signmessage-message" v-model.trim="signMessage.message" rows="3" placeholder="Type/paste your message here, then click [Sign]" style="max-width: 800px;"></b-form-textarea>
@@ -390,7 +390,7 @@
                         <b-form-select size="sm" v-model="wallet.indexCount" :options="indexPageSizeOptions" @change="generateDerivedAddresses();"></b-form-select>
                       </div>
                     </div>
-                    <b-table ref="addressesTable" small fixed striped responsive hover selectable select-mode="single" @row-selected='addressesRowSelected':fields="addressesFields" :items="addresses" show-empty empty-html="Enter information above" head-variant="light" class="mx-0 my-1">
+                    <b-table ref="addressesTable" small fixed striped responsive hover selectable select-mode="single" @row-selected='addressesRowSelected':fields="generatedAddressesFields" :items="generatedAddresses" show-empty empty-html="Enter information above" head-variant="light" class="mx-0 my-1">
                       <template #cell(index)="data">
                         <font size="-1">
                           {{ data.item.index }}
@@ -425,7 +425,7 @@
                     <b-form-input type="text" size="sm" readonly id="output-address" :value="wallet.address" class="w-50"></b-form-input>
                   </b-form-group>
                   <b-form-group v-if="false && wallet.tab == 0" label="Debug Addresses:" label-for="debug-addresses-textarea" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 mt-3 p-0">
-                    <b-form-textarea size="sm" readonly id="debug-addresses-textarea" :value="JSON.stringify(addresses, null, 2)" rows="3" max-rows="10" class="w-100"></b-form-textarea>
+                    <b-form-textarea size="sm" readonly id="debug-addresses-textarea" :value="JSON.stringify(generatedAddresses, null, 2)" rows="3" max-rows="10" class="w-100"></b-form-textarea>
                   </b-form-group>
                   <b-form-group v-if="false" label="Debug:" label-for="debug-textarea" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 mt-3 p-0">
                     <b-form-textarea size="sm" readonly id="debug-textarea" :value="JSON.stringify(wallet, null, 2)" rows="3" max-rows="10" class="w-100"></b-form-textarea>
@@ -558,7 +558,7 @@
             signature: null,
           },
 
-          addresses: [],
+          generatedAddresses: [],
           selectedAddress: null,
 
           connected: false,
@@ -570,7 +570,7 @@
 
           settings: {
             tabIndex: 1,
-            walletsTable: {
+            addressesTable: {
               filter: null,
               currentPage: 1,
               pageSize: 10,
@@ -578,7 +578,7 @@
             },
             version: 12,
           },
-          wallets: {},
+          addresses: {},
           // sync: {
           //   section: null,
           //   total: null,
@@ -649,14 +649,14 @@
             { key: 'privateKey', label: 'Private Key', sortable: false, thStyle: 'width: 30%;', thClass: 'text-left', tdClass: 'text-left' },
           ],
 
-          addressesFields: [
+          generatedAddressesFields: [
             { key: 'index', label: '#', sortable: false, thStyle: 'width: 5%;', tdClass: 'text-truncate' },
             { key: 'path', label: 'Path', sortable: false, thStyle: 'width: 15%;', thClass: 'text-left', tdClass: 'text-left' },
             { key: 'address', label: 'Address', sortable: false, thStyle: 'width: 30%;', thClass: 'text-left', tdClass: 'text-left' },
             { key: 'privateKey', label: 'Private Key', sortable: false, thStyle: 'width: 50%;', thClass: 'text-left', tdClass: 'text-left' },
           ],
 
-          walletsFields: [
+          addressesFields: [
             { key: 'number', label: '#', sortable: false, thStyle: 'width: 5%;', tdClass: 'text-truncate' },
             { key: 'type', label: 'Type', sortable: false, thStyle: 'width: 15%;', thClass: 'text-left', tdClass: 'text-left' },
             { key: 'address', label: 'Address', sortable: false, thStyle: 'width: 40%;', thClass: 'text-left', tdClass: 'text-truncate' },
@@ -668,10 +668,10 @@
         // --- COMPUTED ---
         computed: {
 
-          walletOptions() {
+          addressesOptions() {
             const results = [];
             results.push({ value: null, text: "(Select)" });
-            for (const [address, data] of Object.entries(this.wallets)) {
+            for (const [address, data] of Object.entries(this.addresses)) {
               results.push({ value: address, text: address + (data.name ? (" " + data.name) : "") });
             }
             return results;
@@ -717,11 +717,11 @@
             return results;
           },
 
-          filteredWallets() {
-            console.log(moment().format("HH:mm:ss") + " filteredWallets: " + JSON.stringify(this.wallets));
+          filteredAddresses() {
+            console.log(moment().format("HH:mm:ss") + " filteredAddresses: " + JSON.stringify(this.addresses));
             // let results = this.forceRefresh % 2 == 0 ? [] : [];
             const results = [];
-            for (const [address, data] of Object.entries(this.wallets)) {
+            for (const [address, data] of Object.entries(this.addresses)) {
               results.push({
                 address,
                 type: data.type,
@@ -731,8 +731,8 @@
             }
             return results;
           },
-          filteredSortedWallets() {
-            let results = this.filteredWallets;
+          filteredSortedAddresses() {
+            let results = this.filteredAddresses;
           //   if (this.settings.accountsTable.sortOption == 'typenameasc') {
           //     results.sort((a, b) => {
           //       const typeA = a.customType || a.type;
@@ -781,8 +781,8 @@
             return results;
           },
           pagedFilteredSortedWallets() {
-            console.log(moment().format("HH:mm:ss") + " pagedFilteredSortedWallets - results[0..9]: " + JSON.stringify(this.filteredSortedWallets.slice(0, 10), null, 2));
-            return this.filteredSortedWallets.slice((this.settings.walletsTable.currentPage - 1) * this.settings.walletsTable.pageSize, this.settings.walletsTable.currentPage * this.settings.walletsTable.pageSize);
+            console.log(moment().format("HH:mm:ss") + " pagedFilteredSortedWallets - results[0..9]: " + JSON.stringify(this.filteredSortedAddresses.slice(0, 10), null, 2));
+            return this.filteredSortedAddresses.slice((this.settings.addressesTable.currentPage - 1) * this.settings.addressesTable.pageSize, this.settings.addressesTable.currentPage * this.settings.addressesTable.pageSize);
           },
 
           accountsToSearch() {
@@ -882,7 +882,7 @@
 
           newWalletFromMnemonicAdd() {
             console.log(moment().format("HH:mm:ss") + " newWalletFromPrivateKeyAdd - this.newWalletFromMnemonic: " + JSON.stringify(this.newWalletFromMnemonic, null, 2));
-            Vue.set(this.wallets, this.newWalletFromMnemonic.selectedItem.address, {
+            Vue.set(this.addresses, this.newWalletFromMnemonic.selectedItem.address, {
               type: "mnemonic",
               name: this.newWalletFromMnemonic.name,
               privateKey: this.newWalletFromMnemonic.selectedItem.privateKey,
@@ -890,8 +890,8 @@
               passphrase: this.newWalletFromMnemonic.passphrase,
               path: this.newWalletFromMnemonic.selectedItem.path,
             });
-            localStorage.topSecretsOfflineWallets = JSON.stringify(this.wallets);
-            console.log(moment().format("HH:mm:ss") + " newWalletFromPrivateKeyAdd - this.wallets: " + JSON.stringify(this.wallets, null, 2));
+            localStorage.topSecretsOfflineAddresses = JSON.stringify(this.addresses);
+            console.log(moment().format("HH:mm:ss") + " newWalletFromPrivateKeyAdd - this.addresses: " + JSON.stringify(this.addresses, null, 2));
             this.$bvModal.hide('modal-newwalletfrommnemonic-add');
           },
 
@@ -933,13 +933,13 @@
           },
 
           newWalletFromPrivateKeyAdd() {
-            Vue.set(this.wallets, this.newWalletFromPrivateKey.address, {
+            Vue.set(this.addresses, this.newWalletFromPrivateKey.address, {
               type: "privatekey",
               name: this.newWalletFromPrivateKey.name,
               privateKey: this.newWalletFromPrivateKey.privateKey,
             });
-            localStorage.topSecretsOfflineWallets = JSON.stringify(this.wallets);
-            console.log(moment().format("HH:mm:ss") + " newWalletFromPrivateKeyAdd - this.wallets: " + JSON.stringify(this.wallets, null, 2));
+            localStorage.topSecretsOfflineAddresses = JSON.stringify(this.addresses);
+            console.log(moment().format("HH:mm:ss") + " newWalletFromPrivateKeyAdd - this.addresses: " + JSON.stringify(this.addresses, null, 2));
             this.$bvModal.hide('modal-newwalletfromprivatekey');
           },
 
@@ -969,19 +969,19 @@
           },
 
           newWalletFromKeystoreAdd() {
-            Vue.set(this.wallets, this.newWalletFromKeystore.address, {
+            Vue.set(this.addresses, this.newWalletFromKeystore.address, {
               type: "keystore",
               name: this.newWalletFromKeystore.name,
               privateKey: this.newWalletFromKeystore.privateKey,
             });
-            localStorage.topSecretsOfflineWallets = JSON.stringify(this.wallets);
-            console.log(moment().format("HH:mm:ss") + " newWalletFromKeystoreAdd - this.wallets: " + JSON.stringify(this.wallets, null, 2));
+            localStorage.topSecretsOfflineAddresses = JSON.stringify(this.addresses);
+            console.log(moment().format("HH:mm:ss") + " newWalletFromKeystoreAdd - this.addresses: " + JSON.stringify(this.addresses, null, 2));
             this.$bvModal.hide('modal-newwalletfromkeystore');
           },
 
           async signMessageSign() {
             console.log(moment().format("HH:mm:ss") + " signMessageSign - this.signMessage: " + JSON.stringify(this.signMessage, null, 2));
-            const walletInfo = this.wallets[this.signMessage.wallet];
+            const walletInfo = this.addresses[this.signMessage.wallet];
             // console.log(moment().format("HH:mm:ss") + " signMessageSign - walletInfo: " + JSON.stringify(walletInfo, null, 2));
             const wallet = new ethers.Wallet(walletInfo.privateKey);
             // console.log(moment().format("HH:mm:ss") + " signMessageSign - wallet: " + JSON.stringify(wallet, null, 2));
@@ -1025,9 +1025,8 @@
                 this.wallet.mnemonic.phraseError = e.message;
               }
             }
-            // this.addresses = results;
-            Vue.set(this, 'addresses', results);
-            // console.log(moment().format("HH:mm:ss") + " generateDerivedAddresses - this.addresses: " + JSON.stringify(this.addresses, null, 2));
+            Vue.set(this, 'generatedAddresses', results);
+            // console.log(moment().format("HH:mm:ss") + " generateDerivedAddresses - this.generatedAddresses: " + JSON.stringify(this.generatedAddresses, null, 2));
           },
 
           generateRandomMnemonic() {
@@ -1041,7 +1040,7 @@
               console.log(moment().format("HH:mm:ss") + " generateRandomMnemonic ERROR: " + e.message);
               this.wallet.mnemonic.phrase = null;
               this.wallet.mnemonic.phraseError = e.message;
-              this.addresses = [];
+              this.generatedAddresses = [];
             }
             this.$bvModal.hide('modal-generatemnemonic');
           },
@@ -1077,13 +1076,10 @@
               console.log(moment().format("HH:mm:ss") + " generateRandomPrivateKey - node: " + JSON.stringify(node, null, 2));
               const defaultPath = "m/44'/60'/0'/0/0";
               const wallet = node.derivePath(defaultPath);
-
               this.wallet.type = 'keystore';
               this.wallet.wallet = wallet;
-
               this.wallet.privateKey = wallet.privateKey;
               this.wallet.privateKeyError = null;
-
               this.wallet.address = wallet.address;
               this.wallet.publicKey = wallet.publicKey;
               this.wallet.compressedPublicKey = ethers.utils.computePublicKey(wallet.publicKey, true);
@@ -1126,10 +1122,8 @@
               console.log(moment().format("HH:mm:ss") + " loadPrivateKeyFromKeystore - this.wallet.keystoreFileContent: " + this.wallet.keystoreFileContent);
               console.log(moment().format("HH:mm:ss") + " loadPrivateKeyFromKeystore - this.wallet.keystoreFilePassword: " + this.wallet.keystoreFilePassword);
               const wallet = await ethers.Wallet.fromEncryptedJsonSync(this.wallet.keystoreFileContent, this.wallet.keystoreFilePassword);
-
               this.wallet.type = 'keystore';
               this.wallet.wallet = wallet;
-
               this.wallet.privateKey = wallet.privateKey;
               this.wallet.privateKeyError = null;
               this.wallet.address = wallet.address;
@@ -1143,10 +1137,8 @@
 
           async savePrivateKeyToKeystore() {
             console.log(moment().format("HH:mm:ss") + " savePrivateKeyToKeystore - this.wallet.privateKey: " + JSON.stringify(this.wallet.privateKey));
-
             const filename = "UTC--" + moment.utc().format("YYYY-MM-DDTHH-mm-ss") + ".0Z--" + this.wallet.address.slice(2).toLowerCase();
             console.log("filename: " + filename);
-
             const wallet = new ethers.Wallet(this.wallet.privateKey);
             const encrypted = await wallet.encrypt(this.wallet.keystoreFilePassword);
             console.log(moment().format("HH:mm:ss") + " savePrivateKeyToKeystore - encrypted: " + encrypted);
@@ -1184,7 +1176,7 @@
             const wallet = new ethers.Wallet(privateKey);
             const WEENUSADDRESS = "0x7439E9Bb6D8a84dd3A23fe621A30F95403F87fB9";
             const interface = new ethers.utils.Interface(ERC20ABI);
-            const contractWithoutProvider = new ethers.Contract(WEENUSADDRESS, interface, wallet); // note that there is no signer or provider here
+            const contractWithoutProvider = new ethers.Contract(WEENUSADDRESS, interface, wallet);
             const unsignedTx = await contractWithoutProvider.populateTransaction.transfer(wallet.address, 1);
             console.log("unsignedTx: " + JSON.stringify(unsignedTx, null, 2));
             console.log("address: " + wallet.address);
@@ -1452,8 +1444,8 @@
 
         // --- MOUNTED ---
         mounted() {
-          if ('topSecretsOfflineWallets' in localStorage) {
-            this.wallets = JSON.parse(localStorage.topSecretsOfflineWallets);
+          if ('topSecretsOfflineAddresses' in localStorage) {
+            this.addresses = JSON.parse(localStorage.topSecretsOfflineAddresses);
           }
 
           // (async() => {
