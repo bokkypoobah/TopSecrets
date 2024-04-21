@@ -101,7 +101,7 @@
             <b-form-group label="Keystore File Password:" label-for="modal-saveprivatekeytokeystore-password" label-size="sm" label-cols-sm="5" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-form-input type="password" autocomplete="current-password" size="sm" id="modal-saveprivatekeytokeystore-password" v-model="wallet.keystoreFilePassword"></b-form-input>
             </b-form-group>
-            <b-form-group label="" label-for="modal-saveprivatekeytokeystore-save" label-size="sm" label-cols-sm="5" label-align-sm="right" description="Encryption will take around half a minute" class="mx-0 my-1 p-0">
+            <b-form-group label="" label-for="modal-saveprivatekeytokeystore-save" label-size="sm" label-cols-sm="5" label-align-sm="right" description="Encrypting will take around half a minute" class="mx-0 my-1 p-0">
               <b-button size="sm" :disabled="!wallet.keystoreFilePassword" id="modal-saveprivatekeytokeystore-save" @click="savePrivateKeyToKeystore()" variant="primary">Save</b-button>
             </b-form-group>
           </b-modal>
@@ -189,20 +189,26 @@
             <template #modal-title>
               New Wallet From Private Key
             </template>
-            <b-form-group label="Private Key:" label-for="newwalletfromprivatekey-privatekey" label-size="sm" label-cols-sm="2" label-align-sm="right" :state="!newWalletFromPrivateKey.privateKeyError" :invalid-feedback="newWalletFromPrivateKey.privateKeyError" class="mx-0 my-1 p-0">
+            <b-form-group label="Private Key:" label-for="newwalletfromprivatekey-privatekey" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!newWalletFromPrivateKey.privateKeyError" :invalid-feedback="newWalletFromPrivateKey.privateKeyError" class="mx-0 my-1 p-0">
               <b-form-input type="text" size="sm" id="newwalletfromprivatekey-privatekey" v-model.trim="newWalletFromPrivateKey.privateKey" @change="newWalletFromPrivateKeyRecompute();" placeholder="Type/paste your private key here or click [Generate New]" style="max-width: 600px;"></b-form-input>
             </b-form-group>
-            <b-form-group label="" label-for="newwalletfromprivatekey-generaterandom" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+            <b-form-group label="" label-for="newwalletfromprivatekey-generaterandom" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-button size="sm" id="newwalletfromprivatekey-generaterandom" @click="newWalletFromPrivateKeyGenerateRandom()" variant="primary">Generate Random</b-button>
             </b-form-group>
-            <b-form-group label="ETH Address:" label-for="newwalletfromprivatekey-address" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+            <b-form-group label="ETH Address:" label-for="newwalletfromprivatekey-address" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-form-input type="text" size="sm" readonly id="newwalletfromprivatekey-address" :value="newWalletFromPrivateKey.address" style="max-width: 400px;"></b-form-input>
             </b-form-group>
-            <b-form-group label="Name:" label-for="newwalletfromprivatekey-name" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+            <b-form-group label="Name:" label-for="newwalletfromprivatekey-name" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-form-input type="text" size="sm" id="newwalletfromprivatekey-name" v-model.trim="newWalletFromPrivateKey.name" placeholder="Optional" style="max-width: 300px;"></b-form-input>
             </b-form-group>
-            <b-form-group label="" label-for="newwalletfromprivatekey-add" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-              <b-button size="sm" :disabled="!newWalletFromPrivateKey.address" id="newwalletfromprivatekey-add" @click="newWalletFromPrivateKeyAdd()" variant="primary">Add</b-button>
+            <b-form-group label="Password:" label-for="newwalletfromprivatekey-password" label-size="sm" label-cols-sm="3" label-align-sm="right" description="Password to encrypt this wallet within this dapp" class="mx-0 my-1 p-0">
+              <b-form-input type="password" size="sm" id="newwalletfromprivatekey-password" v-model.trim="newWalletFromPrivateKey.password" style="max-width: 300px;"></b-form-input>
+            </b-form-group>
+            <b-form-group label="Confirm Password:" label-for="newwalletfromprivatekey-confirmpassword" label-size="sm" label-cols-sm="3" label-align-sm="right" description="Confirm password above" class="mx-0 my-1 p-0">
+              <b-form-input type="password" size="sm" id="newwalletfromprivatekey-confirmpassword" v-model.trim="newWalletFromPrivateKey.confirmPassword" style="max-width: 300px;"></b-form-input>
+            </b-form-group>
+            <b-form-group label="" label-for="newwalletfromprivatekey-add" label-size="sm" label-cols-sm="3" label-align-sm="right" description="Encrypting will take around half a minute" class="mx-0 my-1 p-0">
+              <b-button size="sm" :disabled="!newWalletFromPrivateKey.address || !newWalletFromPrivateKey.password || (newWalletFromPrivateKey.password != newWalletFromPrivateKey.confirmPassword)" id="newwalletfromprivatekey-add" @click="newWalletFromPrivateKeyAdd()" variant="primary">Add</b-button>
             </b-form-group>
           </b-modal>
 
@@ -237,28 +243,22 @@
           <!-- :MODALADDRESS -->
           <b-modal id="modal-address" hide-footer size="lg">
             <template #modal-title>
-              New Address
+              {{ address.mode == 'add' ? 'New' : 'Update'}} Address
             </template>
-            <b-form-group label="Keystore File:" label-for="newwalletfromkeystore-keystorefile" label-size="sm" label-cols-sm="2" label-align-sm="right" :description="'Select encrypted keystore (JSON/UTC) file from your local computer'" class="mx-0 my-1 p-0">
-              <b-form-file size="sm" id="newwalletfromkeystore-keystorefile" v-model="newWalletFromKeystore.keystoreFile" @change="newWalletFromKeystoreFileChange($event.target.name, $event.target.files)"></b-form-file>
+            <b-form-group label="Type:" label-for="address-type" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-form-select size="sm" :disabled="['walletfrommnemonic', 'walletfromprivatekey'].includes(address.type)" id="address-type" v-model="address.type" :options="addressTypeOptions"></b-form-select>
             </b-form-group>
-            <b-form-group label="Password:" label-for="newwalletfromkeystore-keystorefilepassword" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-              <b-form-input type="password" autocomplete="current-password" size="sm" id="newwalletfromkeystore-keystorefilepassword" v-model="newWalletFromKeystore.keystoreFilePassword" class="w-50"></b-form-input>
+            <b-form-group label="Address:" label-for="address-address" label-size="sm" label-cols-sm="2" label-align-sm="right" :state="!address.addressError" :invalid-feedback="address.addressError" class="mx-0 my-1 p-0">
+              <b-form-input type="text" size="sm" :readonly="address.mode != 'add'" id="address-address" v-model.trim="address.address" @change="newAddressRecompute();" style="max-width: 400px;"></b-form-input>
             </b-form-group>
-            <b-form-group label="" label-for="newwalletfromkeystore-load" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-              <b-button size="sm" :disabled="!newWalletFromKeystore.keystoreFile" id="newwalletfromkeystore-load" @click="newWalletFromKeystoreLoad()" variant="primary">Load</b-button>
+            <b-form-group label="Name:" label-for="address-name" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-form-input type="text" size="sm" id="address-name" v-model.trim="address.name" placeholder="Optional" style="max-width: 300px;"></b-form-input>
             </b-form-group>
-            <b-form-group label="Private Key:" label-for="newwalletfromkeystore-privatekey" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-              <b-form-input type="text" size="sm" readonly id="newwalletfromkeystore-privatekey" v-model="newWalletFromKeystore.privateKey" style="max-width: 600px;"></b-form-input>
+            <b-form-group v-if="address.mode == 'add'" label="" label-for="address-add" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-button size="sm" :disabled="!address.address" id="address-add" @click="addressAdd()" variant="primary">Add</b-button>
             </b-form-group>
-            <b-form-group label="ETH Address:" label-for="newwalletfromkeystore-address" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-              <b-form-input type="text" size="sm" readonly id="newwalletfromkeystore-address" :value="newWalletFromKeystore.address" style="max-width: 400px;"></b-form-input>
-            </b-form-group>
-            <b-form-group label="Name:" label-for="newwalletfromkeystore-name" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-              <b-form-input type="text" size="sm" id="newwalletfromkeystore-name" v-model.trim="newWalletFromKeystore.name" placeholder="Optional" style="max-width: 300px;"></b-form-input>
-            </b-form-group>
-            <b-form-group label="" label-for="newwalletfromkeystore-add" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-              <b-button size="sm" :disabled="!newWalletFromKeystore.address" id="newwalletfromkeystore-add" @click="newWalletFromKeystoreAdd()" variant="primary">Add</b-button>
+            <b-form-group v-if="address.mode == 'vieworupdate'" label="" label-for="address-update" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-button size="sm" :disabled="!address.address" id="address-update" @click="addressUpdate()" variant="primary">Update</b-button>
             </b-form-group>
           </b-modal>
 
@@ -290,7 +290,7 @@
                 <b-form-select size="sm" v-model="settings.addressesTable.pageSize" :options="pageSizes" v-b-popover.hover.bottom="'Yeah. Page size'"></b-form-select>
               </div>
             </div>
-            <b-table small fixed striped responsive hover selectable select-mode="single" @row-selected='addressesRowSelected' :fields="addressesFields" :items="pagedFilteredSortedWallets" show-empty empty-html="Add new wallets" head-variant="light" class="mx-0 my-1">
+            <b-table ref="addressesTable" small fixed striped responsive hover selectable select-mode="single" @row-selected='addressesRowSelected' :fields="addressesFields" :items="pagedFilteredSortedWallets" show-empty empty-html="Add new wallets" head-variant="light" class="mx-0 my-1">
               <template #cell(number)="data">
                 <font size="-1">
                   {{ parseInt(data.index) + ((settings.addressesTable.currentPage - 1) * settings.addressesTable.pageSize) + 1 }}
@@ -555,6 +555,8 @@
             privateKeyError: null,
             address: null,
             name: null,
+            password: null,
+            confirmPassword: null,
           },
 
           newWalletFromKeystore: {
@@ -567,9 +569,10 @@
           },
 
           address: {
+            mode: 'vieworupdate', // TODO: 'add' or 'vieworupdate'
+            type: null,
             address: null,
             addressError: null,
-            type: null,
           },
 
           signMessage: {
@@ -627,12 +630,12 @@
           ],
 
           addressTypeOptions: [
-            { value: 'walletfrommnemonic', text: 'Wallet From Mnemonic' },
-            { value: 'walletfromprivatekey', text: 'Wallet From Private Key' },
+            { value: 'walletfrommnemonic', text: 'Wallet From Mnemonic', disabled: true },
+            { value: 'walletfromprivatekey', text: 'Wallet From Private Key', disabled: true },
+            { value: 'address', text: 'Address' },
             { value: 'erc20', text: 'ERC-20 Token Contract' },
             { value: 'erc721', text: 'ERC-721 Token Contract' },
             { value: 'contract', text: 'Contract' },
-            { value: 'address', text: 'Address' },
           ],
 
           walletTypeOptions: [
@@ -844,13 +847,15 @@
           addressesRowSelected(item) {
             console.log(moment().format("HH:mm:ss") + " addressesRowSelected: " + JSON.stringify(item));
             if (item && item.length > 0) {
+              this.address.mode = 'vieworupdate';
+              this.address.type = item[0].type;
               this.address.address = item[0].address;
               this.address.addressError = null;
-            } else {
-              this.address.address = null;
-              this.address.addressError = null;
+              this.address.name = item[0].name;
+              console.log(moment().format("HH:mm:ss") + " addressesRowSelected - this.address: " + JSON.stringify(this.address));
+              this.$refs.addressesTable.clearSelected();
             }
-            this.$bvModal.show('modal-address');            
+            this.$bvModal.show('modal-address');
           },
 
           generatedAddressesRowSelected(item) {
@@ -889,7 +894,11 @@
           },
           showAddressNew() {
             console.log(moment().format("HH:mm:ss") + " showAddressNew");
-            // TODO: Reset address data
+            this.address.mode = 'add';
+            this.address.type = 'address';
+            this.address.address = null;
+            this.address.addressError = null;
+            // TODO: Reset other address data
             this.$bvModal.show('modal-address');
           },
 
@@ -942,7 +951,7 @@
           },
 
           newWalletFromMnemonicAdd() {
-            console.log(moment().format("HH:mm:ss") + " newWalletFromPrivateKeyAdd - this.newWalletFromMnemonic: " + JSON.stringify(this.newWalletFromMnemonic, null, 2));
+            console.log(moment().format("HH:mm:ss") + " newWalletFromMnemonicAdd - this.newWalletFromMnemonic: " + JSON.stringify(this.newWalletFromMnemonic, null, 2));
             Vue.set(this.addresses, this.newWalletFromMnemonic.selectedItem.address, {
               type: "mnemonic",
               name: this.newWalletFromMnemonic.name,
@@ -952,7 +961,7 @@
               path: this.newWalletFromMnemonic.selectedItem.path,
             });
             localStorage.topSecretsOfflineAddresses = JSON.stringify(this.addresses);
-            console.log(moment().format("HH:mm:ss") + " newWalletFromPrivateKeyAdd - this.addresses: " + JSON.stringify(this.addresses, null, 2));
+            console.log(moment().format("HH:mm:ss") + " newWalletFromMnemonicAdd - this.addresses: " + JSON.stringify(this.addresses, null, 2));
             this.$bvModal.hide('modal-newwalletfrommnemonic-add');
           },
 
@@ -993,11 +1002,17 @@
             }
           },
 
-          newWalletFromPrivateKeyAdd() {
+          async newWalletFromPrivateKeyAdd() {
+            const filename = "UTC--" + moment.utc().format("YYYY-MM-DDTHH-mm-ss") + ".0Z--" + this.newWalletFromPrivateKey.address.slice(2).toLowerCase();
+            const wallet = new ethers.Wallet(this.newWalletFromPrivateKey.privateKey);
+            const encryptedText = await wallet.encrypt(this.newWalletFromPrivateKey.password);
+            const keystore = JSON.parse(encryptedText);
+            keystore.filename = "UTC--" + moment.utc().format("YYYY-MM-DDTHH-mm-ss") + ".0Z--" + this.newWalletFromPrivateKey.address.slice(2).toLowerCase();
+            // console.log(moment().format("HH:mm:ss") + " newWalletFromPrivateKeyAdd - keystore: " + JSON.stringify(keystore));
             Vue.set(this.addresses, this.newWalletFromPrivateKey.address, {
-              type: "privatekey",
+              type: "walletfromprivatekey",
               name: this.newWalletFromPrivateKey.name,
-              privateKey: this.newWalletFromPrivateKey.privateKey,
+              keystore,
             });
             localStorage.topSecretsOfflineAddresses = JSON.stringify(this.addresses);
             console.log(moment().format("HH:mm:ss") + " newWalletFromPrivateKeyAdd - this.addresses: " + JSON.stringify(this.addresses, null, 2));
@@ -1038,6 +1053,42 @@
             localStorage.topSecretsOfflineAddresses = JSON.stringify(this.addresses);
             console.log(moment().format("HH:mm:ss") + " newWalletFromKeystoreAdd - this.addresses: " + JSON.stringify(this.addresses, null, 2));
             this.$bvModal.hide('modal-newwalletfromkeystore');
+          },
+
+          newAddressRecompute() {
+            console.log(moment().format("HH:mm:ss") + " newAddressRecompute: " + JSON.stringify(this.address));
+            if (this.address.address) {
+              try {
+                const addr = ethers.utils.getAddress(this.address.address);
+                this.address.addressError = null;
+                console.log(moment().format("HH:mm:ss") + " newAddressRecompute - AFTER: " + JSON.stringify(this.address));
+              } catch (e) {
+                console.log(moment().format("HH:mm:ss") + " newAddressRecompute - ERROR: " + e.message);
+                this.address.addressError = e.message;
+              }
+            } else {
+              this.address.addressError = null;
+            }
+          },
+
+          async addressAdd() {
+            console.log(moment().format("HH:mm:ss") + " addressAdd - this.address: " + JSON.stringify(this.address, null, 2));
+            Vue.set(this.addresses, this.address.address, {
+              type: this.address.type,
+              name: this.address.name,
+            });
+            localStorage.topSecretsOfflineAddresses = JSON.stringify(this.addresses);
+            console.log(moment().format("HH:mm:ss") + " addressAdd - this.addresses: " + JSON.stringify(this.addresses, null, 2));
+            this.$bvModal.hide('modal-address');
+          },
+
+          async addressUpdate() {
+            console.log(moment().format("HH:mm:ss") + " addressUpdate - this.address: " + JSON.stringify(this.address, null, 2));
+            Vue.set(this.addresses[this.address.address], 'type', this.address.type);
+            Vue.set(this.addresses[this.address.address], 'name', this.address.name);
+            localStorage.topSecretsOfflineAddresses = JSON.stringify(this.addresses);
+            console.log(moment().format("HH:mm:ss") + " addressUpdate - this.addresses: " + JSON.stringify(this.addresses, null, 2));
+            this.$bvModal.hide('modal-address');
           },
 
           async signMessageSign() {
