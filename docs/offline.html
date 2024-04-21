@@ -281,6 +281,7 @@
             </b-form-group>
             <b-form-group v-if="address.mode == 'vieworupdate'" label="" label-for="address-update" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-button size="sm" :disabled="!address.address" id="address-update" @click="addressUpdate()" variant="primary">Update</b-button>
+              <b-button size="sm" :disabled="!address.address" @click="addressDelete()" variant="warning">Delete</b-button>
             </b-form-group>
           </b-modal>
 
@@ -930,7 +931,11 @@
             this.address.type = 'address';
             this.address.address = null;
             this.address.addressError = null;
-            // TODO: Reset other address data
+            this.address.name = null;
+            this.address.keystore = null;
+            this.address.password = null;
+            this.address.passwordError = null;
+            this.address.privateKey = null;
             this.$bvModal.show('modal-address');
           },
 
@@ -1137,6 +1142,21 @@
             localStorage.topSecretsOfflineAddresses = JSON.stringify(this.addresses);
             console.log(moment().format("HH:mm:ss") + " addressUpdate - this.addresses: " + JSON.stringify(this.addresses, null, 2));
             this.$bvModal.hide('modal-address');
+          },
+
+          async addressDelete() {
+            console.log(moment().format("HH:mm:ss") + " addressDelete - this.address: " + JSON.stringify(this.address, null, 2));
+            this.$bvModal.msgBoxConfirm("Delete " + this.address.address + '?')
+              .then(confirmed => {
+                if (confirmed) {
+                  Vue.delete(this.addresses, this.address.address);
+                  localStorage.topSecretsOfflineAddresses = JSON.stringify(this.addresses);
+                  console.log(moment().format("HH:mm:ss") + " addressDelete - this.addresses: " + JSON.stringify(this.addresses, null, 2));
+                  this.$bvModal.hide('modal-address');
+                }
+              })
+              .catch(err => {
+              });
           },
 
           async signMessageSign() {
