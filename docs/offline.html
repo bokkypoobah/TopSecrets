@@ -43,10 +43,10 @@
           </b-navbar-brand>
           <b-navbar-nav class="ml-auto">
             <b-nav-item size="sm" @click="settings.tabIndex = 0; saveSettings();" :active="settings.tabIndex == 0" active-class="active" v-b-popover.hover="'Maintain list of wallets. NOTE this is insecure!'">Wallets</b-nav-item>
-            <b-nav-item size="sm" @click="settings.tabIndex = 1; saveSettings();" :active="settings.tabIndex == 1" active-class="active" v-b-popover.hover="'Sign and check messages'">Messages</b-nav-item>
-            <b-nav-item size="sm" @click="settings.tabIndex = 2; saveSettings();" :active="settings.tabIndex == 2" active-class="active" v-b-popover.hover="'Craft Ether transactions'">ETH</b-nav-item>
-            <b-nav-item size="sm" @click="settings.tabIndex = 3; saveSettings();" :active="settings.tabIndex == 3" active-class="active" v-b-popover.hover="'ERC-20'">ERC-20</b-nav-item>
-            <b-nav-item size="sm" @click="settings.tabIndex = 4; saveSettings();" :active="settings.tabIndex == 4" active-class="active" v-b-popover.hover="'ERC-721'">ERC-721</b-nav-item>
+            <b-nav-item size="sm" @click="settings.tabIndex = 1; saveSettings();" :active="settings.tabIndex == 1" active-class="active" v-b-popover.hover="'Craft Ether transactions'">ETH</b-nav-item>
+            <b-nav-item size="sm" @click="settings.tabIndex = 2; saveSettings();" :active="settings.tabIndex == 2" active-class="active" v-b-popover.hover="'ERC-20'">ERC-20</b-nav-item>
+            <b-nav-item size="sm" @click="settings.tabIndex = 3; saveSettings();" :active="settings.tabIndex == 3" active-class="active" v-b-popover.hover="'ERC-721'">ERC-721</b-nav-item>
+            <b-nav-item size="sm" @click="settings.tabIndex = 4; saveSettings();" :active="settings.tabIndex == 4" active-class="active" v-b-popover.hover="'Sign and check messages'">Messages</b-nav-item>
             <b-nav-item size="sm" @click="settings.tabIndex = 5; saveSettings();" :active="settings.tabIndex == 5" active-class="active" v-b-popover.hover="'Explore Mnemonic and Private Key Wallets'">Wallet</b-nav-item>
             <!-- <b-nav-item size="sm" @click="settings.tabIndex = 2; saveSettings();" :active="settings.tabIndex == 2" active-class="active" v-b-popover.hover="'Accounts'">Accounts</b-nav-item> -->
             <!-- <b-avatar v-if="coinbase && coinbase != nameOrAddress(coinbase)" rounded variant="light" size="3.0rem" :src="'https://metadata.ens.domains/mainnet/avatar/' + nameOrAddress(coinbase, 100)" v-b-popover.hover="'Your ENS avatar if set'"></b-avatar> -->
@@ -270,42 +270,8 @@
             </b-table>
           </b-card>
 
-          <!-- :MESSAGES -->
-          <b-card v-if="settings.tabIndex == 1" class="m-0 p-0 border-0" body-class="m-1 p-0">
-            <!-- :SIGNMESSAGE -->
-            <b-card sub-title="Sign Message" bg-variant="light" class="p-0 m-1" style="max-width: 800px;">
-              <b-form-group label="Wallet:" label-for="signmessage-wallet" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
-                <b-form-select size="sm" id="signmessage-wallet" v-model="signMessage.wallet" :options="walletOptions" v-b-popover.hover.bottom="'Select Wallet'"></b-form-select>
-              </b-form-group>
-              <b-form-group label="Message:" label-for="signmessage-message" label-size="sm" label-cols-sm="2" label-align-sm="right" :state="!wallet.mnemonic.phraseError" :invalid-feedback="wallet.mnemonic.phraseError" class="mx-0 my-2 p-0">
-                <b-form-textarea size="sm" id="signmessage-message" v-model.trim="signMessage.message" rows="3" placeholder="Type/paste your message here, then click [Sign]" style="max-width: 800px;"></b-form-textarea>
-              </b-form-group>
-              <b-form-group label="" label-for="signmessage-sign" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-                <b-button size="sm" :disabled="!signMessage.wallet || !signMessage.message" id="signmessage-sign" @click="signMessageSign()" variant="primary">Sign</b-button>
-              </b-form-group>
-              <b-form-group label="Signature:" label-for="signmessage-signature" label-size="sm" label-cols-sm="2" label-align-sm="right" :state="!wallet.mnemonic.phraseError" :invalid-feedback="wallet.mnemonic.phraseError" class="mx-0 my-2 p-0">
-                <b-form-textarea size="sm" readonly id="signmessage-signature" v-model.trim="signMessage.signature" rows="3" placeholder="Click [Sign]" style="max-width: 800px;"></b-form-textarea>
-              </b-form-group>
-            </b-card>
-
-            <!-- :CHECKMESSAGE -->
-            <b-card sub-title="Check Message" bg-variant="light" class="p-0 m-1" style="max-width: 800px;">
-              <b-form-group label="Message:" label-for="checkmessage-message" label-size="sm" label-cols-sm="2" label-align-sm="right" :state="!wallet.mnemonic.phraseError" :invalid-feedback="wallet.mnemonic.phraseError" class="mx-0 my-2 p-0">
-                <b-form-textarea size="sm" id="checkmessage-message" v-model="checkMessage.message" rows="3" placeholder="Type/paste your message here, then click [Sign]" style="max-width: 800px;"></b-form-textarea>
-              </b-form-group>
-              <b-form-group label="Signature:" label-for="checkmessage-signature" label-size="sm" label-cols-sm="2" label-align-sm="right" :state="!wallet.mnemonic.phraseError" :invalid-feedback="wallet.mnemonic.phraseError" class="mx-0 my-2 p-0">
-                <b-form-textarea size="sm" id="checkmessage-signature" v-model="checkMessage.signature" rows="3" placeholder="Paste your signature here" style="max-width: 800px;"></b-form-textarea>
-              </b-form-group>
-              <b-form-group label="Recovered Address:" label-for="checkmessage-recoveredaddress" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-3 p-0">
-                <b-form-input type="text" size="sm" readonly id="checkmessage-recoveredaddress" :value="checkMessageRecoveredAddress" style="max-width: 500px;"></b-form-input>
-              </b-form-group>
-            </b-card>
-
-          </b-card>
-
           <!-- :ETH -->
-          <b-card v-if="settings.tabIndex == 2" class="m-0 p-0 border-0" body-class="m-1 p-0">
-
+          <b-card v-if="settings.tabIndex == 1" class="m-0 p-0 border-0" body-class="m-1 p-0">
             <!-- :SIGNETHTX -->
             <b-card sub-title="Sign ETH Transaction" bg-variant="light" class="p-0 m-1" style="max-width: 800px;">
               <b-form-group label="From:" label-for="signethtx-from" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
@@ -338,8 +304,6 @@
                 <b-form-textarea size="sm" readonly id="signmessage-signature" v-model.trim="signMessage.signature" rows="3" placeholder="Click [Sign]" style="max-width: 800px;"></b-form-textarea>
               </b-form-group> -->
             </b-card>
-
-
             <!-- TODO: Send ETH tx, with data field -->
             <b-form-group label="Test:" label-for="wallet-testit" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-button size="sm" id="wallet-testit" @click="testIt()" variant="warning">Test</b-button>
@@ -347,13 +311,46 @@
           </b-card>
 
           <!-- :ERC20 -->
-          <b-card v-if="settings.tabIndex == 3" class="m-0 p-0 border-0" body-class="m-1 p-0">
+          <b-card v-if="settings.tabIndex == 2" class="m-0 p-0 border-0" body-class="m-1 p-0">
             TODO: ERC-20 Functions - approve, transfer, transferFrom
           </b-card>
 
           <!-- :ERC721 -->
-          <b-card v-if="settings.tabIndex == 4" class="m-0 p-0 border-0" body-class="m-1 p-0">
+          <b-card v-if="settings.tabIndex == 3" class="m-0 p-0 border-0" body-class="m-1 p-0">
             TODO: ERC-721 Functions - *approv*, *transfer*
+          </b-card>
+
+          <!-- :MESSAGES -->
+          <b-card v-if="settings.tabIndex == 4" class="m-0 p-0 border-0" body-class="m-1 p-0">
+            <!-- :SIGNMESSAGE -->
+            <b-card sub-title="Sign Message" bg-variant="light" class="p-0 m-1" style="max-width: 800px;">
+              <b-form-group label="Wallet:" label-for="signmessage-wallet" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
+                <b-form-select size="sm" id="signmessage-wallet" v-model="signMessage.wallet" :options="walletOptions" v-b-popover.hover.bottom="'Select Wallet'"></b-form-select>
+              </b-form-group>
+              <b-form-group label="Message:" label-for="signmessage-message" label-size="sm" label-cols-sm="2" label-align-sm="right" :state="!wallet.mnemonic.phraseError" :invalid-feedback="wallet.mnemonic.phraseError" class="mx-0 my-2 p-0">
+                <b-form-textarea size="sm" id="signmessage-message" v-model.trim="signMessage.message" rows="3" placeholder="Type/paste your message here, then click [Sign]" style="max-width: 800px;"></b-form-textarea>
+              </b-form-group>
+              <b-form-group label="" label-for="signmessage-sign" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+                <b-button size="sm" :disabled="!signMessage.wallet || !signMessage.message" id="signmessage-sign" @click="signMessageSign()" variant="primary">Sign</b-button>
+              </b-form-group>
+              <b-form-group label="Signature:" label-for="signmessage-signature" label-size="sm" label-cols-sm="2" label-align-sm="right" :state="!wallet.mnemonic.phraseError" :invalid-feedback="wallet.mnemonic.phraseError" class="mx-0 my-2 p-0">
+                <b-form-textarea size="sm" readonly id="signmessage-signature" v-model.trim="signMessage.signature" rows="3" placeholder="Click [Sign]" style="max-width: 800px;"></b-form-textarea>
+              </b-form-group>
+            </b-card>
+
+            <!-- :CHECKMESSAGE -->
+            <b-card sub-title="Check Message" bg-variant="light" class="p-0 m-1" style="max-width: 800px;">
+              <b-form-group label="Message:" label-for="checkmessage-message" label-size="sm" label-cols-sm="2" label-align-sm="right" :state="!wallet.mnemonic.phraseError" :invalid-feedback="wallet.mnemonic.phraseError" class="mx-0 my-2 p-0">
+                <b-form-textarea size="sm" id="checkmessage-message" v-model="checkMessage.message" rows="3" placeholder="Type/paste your message here, then click [Sign]" style="max-width: 800px;"></b-form-textarea>
+              </b-form-group>
+              <b-form-group label="Signature:" label-for="checkmessage-signature" label-size="sm" label-cols-sm="2" label-align-sm="right" :state="!wallet.mnemonic.phraseError" :invalid-feedback="wallet.mnemonic.phraseError" class="mx-0 my-2 p-0">
+                <b-form-textarea size="sm" id="checkmessage-signature" v-model="checkMessage.signature" rows="3" placeholder="Paste your signature here" style="max-width: 800px;"></b-form-textarea>
+              </b-form-group>
+              <b-form-group label="Recovered Address:" label-for="checkmessage-recoveredaddress" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-3 p-0">
+                <b-form-input type="text" size="sm" readonly id="checkmessage-recoveredaddress" :value="checkMessageRecoveredAddress" style="max-width: 500px;"></b-form-input>
+              </b-form-group>
+            </b-card>
+
           </b-card>
 
           <b-card v-if="settings.tabIndex == 5" class="m-0 p-0 border-0" body-class="m-1 p-0">
@@ -572,7 +569,7 @@
           forceRefresh: 0,
 
           settings: {
-            tabIndex: 0,
+            tabIndex: 1,
             walletsTable: {
               filter: null,
               currentPage: 1,
