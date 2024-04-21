@@ -63,6 +63,28 @@
             </b-card-text>
           </b-card>
 
+          <!-- :MODALNEWWALLET -->
+          <b-modal id="modal-newwallet" hide-footer size="lg">
+            <template #modal-title>
+              New Wallet
+            </template>
+            <!-- <b-form-group label="Private Key:" label-for="newwalletfromprivatekey-privatekey" label-size="sm" label-cols-sm="2" label-align-sm="right" :state="!newWalletFromPrivateKey.privateKeyError" :invalid-feedback="newWalletFromPrivateKey.privateKeyError" class="mx-0 my-1 p-0">
+              <b-form-input type="text" size="sm" id="newwalletfromprivatekey-privatekey" v-model="newWalletFromPrivateKey.privateKey" @change="newWalletFromPrivateKeyRecompute();" placeholder="Type/paste your private key here or click [Generate New]" style="max-width: 600px;"></b-form-input>
+            </b-form-group> -->
+            <!-- <b-form-group label="" label-for="newwalletfromprivatekey-generaterandom" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-button size="sm" id="newwalletfromprivatekey-generaterandom" @click="newWalletFromPrivateKeyGenerateRandom()" variant="primary">Generate Random</b-button>
+            </b-form-group> -->
+            <b-form-group label="ETH Address:" label-for="newwallet-address" label-size="sm" label-cols-sm="2" label-align-sm="right" :state="!newWallet.addressError" :invalid-feedback="newWallet.addressError" class="mx-0 my-1 p-0">
+              <b-form-input type="text" size="sm" id="newwallet-address" v-model.trim="newWallet.address" @change="newWalletRecompute();" placeholder="Type/paste your ETH address here" style="max-width: 400px;"></b-form-input>
+            </b-form-group>
+            <b-form-group label="Name:" label-for="newwallet-name" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-form-input type="text" size="sm" id="newwallet-name" v-model.trim="newWallet.name" placeholder="Optional" style="max-width: 300px;"></b-form-input>
+            </b-form-group>
+            <b-form-group label="" label-for="newwallet-add" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-button size="sm" :disabled="!newWallet.address" id="newwallet-add" @click="newWalletAdd()" variant="primary">Add</b-button>
+            </b-form-group>
+          </b-modal>
+
           <!-- :MODALAPPROVAL -->
           <b-modal id="modal-approval" hide-footer size="lg">
             <template #modal-title>
@@ -135,6 +157,47 @@
               </b-form-group>
             </b-form-group>
           </b-modal>
+
+          <!-- :WALLETS -->
+          <b-card v-if="settings.tabIndex == 0" class="m-0 p-0 border-0" body-class="m-1 p-0">
+            <div class="d-flex flex-wrap m-0 p-0">
+              <div class="mt-0 flex-grow-1">
+              </div>
+              <div class="mt-0 pr-1">
+                <b-button size="sm" @click="showNewWallet" variant="link" v-b-popover.hover.bottom="'New Wallet'">
+                  <b-icon-plus shift-v="+1" font-scale="1.0"></b-icon-plus>
+                </b-button>
+              </div>
+              <!-- <div class="mt-0 pr-1">
+                <b-dropdown size="sm" variant="link" v-b-popover.hover.bottom="'New Wallet'">
+                  <template #button-content>
+                    <b-icon-plus shift-v="+1" font-scale="1.0"></b-icon-plus>
+                  </template>
+                  <b-dropdown-item @click="showNewWalletFromMnemonic">New Wallet From Mnemonic</b-dropdown-item>
+                  <b-dropdown-item @click="showNewWalletFromPrivateKey">New Wallet From Private Key</b-dropdown-item>
+                  <b-dropdown-item @click="showNewWalletFromKeystore">New Wallet From JSON/UTC Keystore Private Key</b-dropdown-item>
+                </b-dropdown>
+              </div> -->
+              <div class="mt-0 flex-grow-1">
+              </div>
+              <div class="mt-0 pl-1">
+                <font size="-2" v-b-popover.hover.bottom="'# wallets'">{{ commify0(wallets.length) }}</font>
+              </div>
+              <div class="mt-0 pl-1">
+                <b-pagination size="sm" v-model="settings.walletsTable.currentPage" @input="saveSettings" :total-rows="filteredSortedWallets.length" :per-page="settings.walletsTable.pageSize" style="height: 0;"></b-pagination>
+              </div>
+              <div class="mt-0 pl-1">
+                <b-form-select size="sm" v-model="settings.walletsTable.pageSize" :options="pageSizes" v-b-popover.hover.bottom="'Yeah. Page size'"></b-form-select>
+              </div>
+            </div>
+            <b-table small fixed striped responsive hover :fields="walletsFields" :items="pagedFilteredSortedWallets" show-empty empty-html="Add new wallets" head-variant="light" class="mx-0 my-1">
+              <template #cell(number)="data">
+                <font size="-1">
+                  {{ parseInt(data.index) + ((settings.walletsTable.currentPage - 1) * settings.walletsTable.pageSize) + 1 }}
+                </font>
+              </template>
+            </b-table>
+          </b-card>
 
           <b-card class="m-0 p-0 border-0" body-class="m-1 p-0">
             <!-- :TOOLBAR -->
@@ -468,8 +531,22 @@
           timestamp: null,
           forceRefresh: 0,
 
+          newWallet: {
+            address: null,
+            addressError: null,
+            name: null,
+          },
+
           settings: {
             tabIndex: 0,
+
+            walletsTable: {
+              filter: null,
+              currentPage: 1,
+              pageSize: 10,
+              sortOption: 'addressasc',
+            },
+
             showInfo: false,
             reportingDateTime: 0,
             searchAttachedAccount: true,
@@ -494,7 +571,7 @@
               pageSize: 100,
               sortOption: 'typenameasc',
             },
-            version: 12,
+            version: 0,
           },
           sync: {
             section: null,
@@ -502,6 +579,9 @@
             completed: null,
             halt: false,
           },
+
+          wallets: {},
+
           events: {},
           accounts: {},
           blockTimestamps: {},
@@ -577,6 +657,14 @@
             { value: "17", text: '17' },
             { value: "18", text: '18 (common)' },
           ],
+
+          walletsFields: [
+            { key: 'number', label: '#', sortable: false, thStyle: 'width: 5%;', tdClass: 'text-truncate' },
+            { key: 'type', label: 'Type', sortable: false, thStyle: 'width: 15%;', thClass: 'text-left', tdClass: 'text-left' },
+            { key: 'address', label: 'Address', sortable: false, thStyle: 'width: 40%;', thClass: 'text-left', tdClass: 'text-truncate' },
+            { key: 'name', label: 'Name', sortable: false, thStyle: 'width: 40%;', thClass: 'text-left', tdClass: 'text-truncate' },
+          ],
+
           approvalsFields: [
             { key: 'number', label: '#', sortable: false, thStyle: 'width: 5%;', tdClass: 'text-truncate' },
             { key: 'type', label: 'Type', sortable: false, thStyle: 'width: 5%;', thClass: 'text-left', tdClass: 'text-left' },
@@ -617,6 +705,75 @@
 
         // --- COMPUTED ---
         computed: {
+
+          filteredWallets() {
+            console.log(moment().format("HH:mm:ss") + " filteredWallets: " + JSON.stringify(this.wallets));
+            // let results = this.forceRefresh % 2 == 0 ? [] : [];
+            const results = [];
+            for (const [address, data] of Object.entries(this.wallets)) {
+              results.push({
+                address,
+                type: data.type,
+                privateKey: data.privateKey,
+                name: data.name,
+              });
+            }
+            return results;
+          },
+          filteredSortedWallets() {
+            let results = this.filteredWallets;
+          //   if (this.settings.accountsTable.sortOption == 'typenameasc') {
+          //     results.sort((a, b) => {
+          //       const typeA = a.customType || a.type;
+          //       const typeB = b.customType || b.type;
+          //       const sortIndexA = this.accountTypeOptions.findIndex(e => e.value == typeA);
+          //       const sortIndexB = this.accountTypeOptions.findIndex(e => e.value == typeB);
+          //       if (sortIndexA == sortIndexB) {
+          //         const namea = a.customName || a.name;
+          //         const nameb = b.customName || b.name;
+          //         return ('' + namea).localeCompare(nameb);
+          //       } else {
+          //         return sortIndexA - sortIndexB;
+          //       }
+          //     });
+          //   } else if (this.settings.accountsTable.sortOption == 'typenamedsc') {
+          //     results.sort((a, b) => {
+          //       const typeA = a.customType || a.type;
+          //       const typeB = b.customType || b.type;
+          //       const sortIndexA = this.accountTypeOptions.findIndex(e => e.value == typeA);
+          //       const sortIndexB = this.accountTypeOptions.findIndex(e => e.value == typeB);
+          //       if (sortIndexA == sortIndexB) {
+          //         const namea = a.customName || a.name;
+          //         const nameb = b.customName || b.name;
+          //         return ('' + nameb).localeCompare(namea);
+          //       } else {
+          //         return sortIndexB - sortIndexA;
+          //       }
+          //     });
+          //   } else if (this.settings.accountsTable.sortOption == 'nameasc') {
+          //     results.sort((a, b) => {
+          //       return ('' + a.name).localeCompare(b.name);
+          //     });
+          //   } else if (this.settings.accountsTable.sortOption == 'namedsc') {
+          //     results.sort((a, b) => {
+          //       return ('' + b.name).localeCompare(a.name);
+          //     });
+          //   } else if (this.settings.accountsTable.sortOption == 'addressasc') {
+          //     results.sort((a, b) => {
+          //       return ('' + a.address).localeCompare(b.address);
+          //     });
+          //   } else if (this.settings.accountsTable.sortOption == 'addressdsc') {
+          //     results.sort((a, b) => {
+          //       return ('' + b.address).localeCompare(a.address);
+          //     });
+          //   }
+            return results;
+          },
+          pagedFilteredSortedWallets() {
+            console.log(moment().format("HH:mm:ss") + " pagedFilteredSortedWallets - results[0..9]: " + JSON.stringify(this.filteredSortedWallets.slice(0, 10), null, 2));
+            return this.filteredSortedWallets.slice((this.settings.walletsTable.currentPage - 1) * this.settings.walletsTable.pageSize, this.settings.walletsTable.currentPage * this.settings.walletsTable.pageSize);
+          },
+
           accountsToSearch() {
             return this.settings.searchAttachedAccount ? [ this.coinbase ] : (this.settings.searchAccounts && this.settings.searchAccounts.split(/[, \t\n]+/).filter(name => name.match(/0x[0-9a-fA-F]{40}/)) || []);
           },
@@ -890,6 +1047,37 @@
 
         // --- METHODS ---
         methods: {
+
+          showNewWallet() {
+            console.log(moment().format("HH:mm:ss") + " showNewWallet");
+            this.$bvModal.show('modal-newwallet');
+          },
+
+          newWalletRecompute() {
+            console.log(moment().format("HH:mm:ss") + " newWalletRecompute: " + JSON.stringify(this.newWallet));
+            if (this.newWallet.address) {
+              try {
+                const address = ethers.utils.getAddress(this.newWallet.address);
+                this.newWallet.addressError = null;
+                console.log(moment().format("HH:mm:ss") + " newWalletRecompute - AFTER: " + JSON.stringify(this.newWallet));
+              } catch (e) {
+                console.log(moment().format("HH:mm:ss") + " newWalletRecompute - ERROR: " + e.message);
+                this.newWallet.addressError = e.message;
+              }
+            } else {
+              this.newWallet.addressError = null;
+            }
+          },
+
+          newWalletAdd() {
+            Vue.set(this.wallets, this.newWallet.address, {
+              name: this.newWallet.name,
+            });
+            localStorage.topSecretsOnlineWallets = JSON.stringify(this.wallets);
+            console.log(moment().format("HH:mm:ss") + " newWalletAdd - this.wallets: " + JSON.stringify(this.wallets, null, 2));
+            this.$bvModal.hide('modal-newwallet');
+          },
+
           approvalsRowSelected(item) {
             console.log(moment().format("HH:mm:ss") + " approvalsRowSelected: " + JSON.stringify(item));
             if (item && item.length > 0) {
@@ -1425,6 +1613,9 @@
           (async() => {
             await this.connectToWeb3();
           })();
+          if ('topSecretsOnlineWallets' in localStorage) {
+            this.wallets = JSON.parse(localStorage.topSecretsOnlineWallets);
+          }
           // if ('approvalToolChainId' in localStorage) {
           //   this.chainId = localStorage.approvalToolChainId;
           // }
