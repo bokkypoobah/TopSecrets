@@ -266,10 +266,10 @@
               <b-form-input type="text" size="sm" :readonly="address.mode != 'add'" id="address-address" v-model.trim="address.address" @change="newAddressRecompute();" style="max-width: 400px;"></b-form-input>
             </b-form-group>
 
-            <b-form-group v-if="address.mode == 'vieworupdate' && !address.privateKey" label="Private Key" label-for="address-privatekeypassword" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!address.passwordError" :invalid-feedback="address.passwordError" class="mx-0 my-1 p-0">
+            <b-form-group v-if="address.mode == 'vieworupdate' && !address.privateKey && ['walletfrommnemonic', 'walletfromprivatekey', 'walletfromkeystore'].includes(address.type)" label="Private Key" label-for="address-privatekeypassword" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!address.passwordError" :invalid-feedback="address.passwordError" class="mx-0 my-1 p-0">
               <b-form-input type="password" size="sm" id="address-privatekeypassword" v-model.trim="address.password" @change="addressPrivateKeyPasswordUpdate();" placeholder="Enter password" debounce="600" style="max-width: 300px;"></b-form-input>
             </b-form-group>
-            <b-form-group v-if="address.mode == 'vieworupdate' && address.privateKey" label="Private Key" label-for="address-privatekey" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+            <b-form-group v-if="address.mode == 'vieworupdate' && address.privateKey && ['walletfrommnemonic', 'walletfromprivatekey', 'walletfromkeystore'].includes(address.type)" label="Private Key" label-for="address-privatekey" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-form-input type="text" size="sm" readonly id="address-privatekey" v-model.trim="address.privateKey" style="max-width: 600px;"></b-form-input>
             </b-form-group>
 
@@ -794,7 +794,7 @@
           },
 
           filteredAddresses() {
-            console.log(moment().format("HH:mm:ss") + " filteredAddresses: " + JSON.stringify(this.addresses));
+            // console.log(moment().format("HH:mm:ss") + " filteredAddresses: " + JSON.stringify(this.addresses));
             // let results = this.forceRefresh % 2 == 0 ? [] : [];
             const results = [];
             for (const [address, data] of Object.entries(this.addresses)) {
@@ -857,7 +857,7 @@
             return results;
           },
           pagedFilteredSortedWallets() {
-            console.log(moment().format("HH:mm:ss") + " pagedFilteredSortedWallets - results[0..9]: " + JSON.stringify(this.filteredSortedAddresses.slice(0, 10), null, 2));
+            console.log(moment().format("HH:mm:ss") + " pagedFilteredSortedWallets - results[0..1]: " + JSON.stringify(this.filteredSortedAddresses.slice(0, 2), null, 2));
             return this.filteredSortedAddresses.slice((this.settings.addressesTable.currentPage - 1) * this.settings.addressesTable.pageSize, this.settings.addressesTable.currentPage * this.settings.addressesTable.pageSize);
           },
 
@@ -1118,10 +1118,8 @@
           },
 
           async addressPrivateKeyPasswordUpdate() {
-            console.log(moment().format("HH:mm:ss") + " addressPrivateKeyPasswordUpdate - this.address: " + JSON.stringify(this.address, null, 2));
             try {
               const wallet = await ethers.Wallet.fromEncryptedJsonSync(JSON.stringify(this.address.keystore), this.address.password);
-              console.log("wallet: " + JSON.stringify(wallet, null, 2));
               this.address.privateKey = wallet.privateKey;
               this.address.passwordError = null;
             } catch (e) {
@@ -1129,6 +1127,7 @@
               this.address.passwordError = e.message;
               this.address.privateKey = null;
             }
+            console.log(moment().format("HH:mm:ss") + " addressPrivateKeyPasswordUpdate AFTER - this.address: " + JSON.stringify(this.address, null, 2));
           },
 
           async addressUpdate() {
