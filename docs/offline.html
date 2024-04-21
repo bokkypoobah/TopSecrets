@@ -111,10 +111,10 @@
             <template #modal-title>
               New Wallet From Mnemonic Seed Phrase
             </template>
-            <b-form-group label="Phrase:" label-for="newwalletfrommnemonic-mnemonicphrase" label-size="sm" label-cols-sm="2" label-align-sm="right" :state="!newWalletFromMnemonic.phraseError" :invalid-feedback="newWalletFromMnemonic.phraseError" class="mx-0 my-2 p-0">
+            <b-form-group label="Phrase:" label-for="newwalletfrommnemonic-mnemonicphrase" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!newWalletFromMnemonic.phraseError" :invalid-feedback="newWalletFromMnemonic.phraseError" class="mx-0 my-2 p-0">
               <b-form-textarea size="sm" id="newwalletfrommnemonic-mnemonicphrase" v-model.trim="newWalletFromMnemonic.phrase" @change="newWalletFromMnemonicRecompute();" debounce="600" rows="3" placeholder="Type/paste your mnemnonic seed phrase here or click [Generate Random]" style="max-width: 800px;"></b-form-textarea>
             </b-form-group>
-            <b-form-group label="" label-for="newwalletfrommnemonic-generaterandom" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+            <b-form-group label="" label-for="newwalletfrommnemonic-generaterandom" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-input-group style="max-width: 300px;">
                 <b-form-select size="sm" v-model="newWalletFromMnemonic.randomBytesLength" :options="randomBytesLengthMnemonicWordsOptions"></b-form-select>
                 <b-input-group-append>
@@ -122,10 +122,10 @@
                 </b-input-group-append>
               </b-input-group>
             </b-form-group>
-            <b-form-group label="Passphrase:" label-for="newwalletfrommnemonic-mnemonicpassphrase" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
+            <b-form-group label="Passphrase:" label-for="newwalletfrommnemonic-mnemonicpassphrase" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-2 p-0">
               <b-form-input type="text" size="sm" id="newwalletfrommnemonic-mnemonicpassphrase" v-model.trim="newWalletFromMnemonic.passphrase" placeholder="Optional" debounce="600" style="max-width: 300px;"></b-form-input>
             </b-form-group>
-            <b-form-group label="Derivation Path:" label-for="newwalletfrommnemonic-derivationpath" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
+            <b-form-group label="Derivation Path:" label-for="newwalletfrommnemonic-derivationpath" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-2 p-0">
               <b-form-select size="sm" id="newwalletfrommnemonic-derivationpath" v-model.trim="newWalletFromMnemonic.derivationPath" :options="derivationPathOptions" style="max-width: 300px;" v-b-popover.hover.bottom="'Derivation Path'"></b-form-select>
             </b-form-group>
             <div class="d-flex flex-wrap m-0 p-0">
@@ -167,20 +167,28 @@
             <template #modal-title>
               Add New Wallet From Mnemonic Seed Phrase
             </template>
-            <b-form-group v-if="newWalletFromMnemonic.selectedItem" label="Path:" label-for="newwalletfrommnemonic-add-path" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+            <b-form-group v-if="newWalletFromMnemonic.selectedItem" label="Path:" label-for="newwalletfrommnemonic-add-path" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-form-input type="text" size="sm" readonly id="newwalletfrommnemonic-add-path" :value="newWalletFromMnemonic.selectedItem.path" style="max-width: 400px;"></b-form-input>
             </b-form-group>
-            <b-form-group v-if="newWalletFromMnemonic.selectedItem" label="ETH Address:" label-for="newwalletfrommnemonic-add-address" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+            <b-form-group v-if="newWalletFromMnemonic.selectedItem" label="ETH Address:" label-for="newwalletfrommnemonic-add-address" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-form-input type="text" size="sm" readonly id="newwalletfrommnemonic-add-address" :value="newWalletFromMnemonic.selectedItem.address" style="max-width: 400px;"></b-form-input>
             </b-form-group>
-            <b-form-group v-if="newWalletFromMnemonic.selectedItem" label="Private Key:" label-for="newwalletfrommnemonic-add-privatekey" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+            <b-form-group v-if="newWalletFromMnemonic.selectedItem" label="Private Key:" label-for="newwalletfrommnemonic-add-privatekey" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-form-input type="text" size="sm" readonly id="newwalletfrommnemonic-add-privatekey" v-model="newWalletFromMnemonic.selectedItem.privateKey" style="max-width: 600px;"></b-form-input>
             </b-form-group>
-            <b-form-group label="Name:" label-for="newwalletfrommnemonic-add-name" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+            <b-form-group label="Name:" label-for="newwalletfrommnemonic-add-name" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-form-input type="text" size="sm" id="newwalletfrommnemonic-add-name" v-model.trim="newWalletFromMnemonic.name" debounce="600" placeholder="Optional" style="max-width: 300px;"></b-form-input>
             </b-form-group>
-            <b-form-group label="" label-for="newwalletfrommnemonic-add-add" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-              <b-button size="sm" :disabled="!newWalletFromMnemonic.selectedItem || !newWalletFromMnemonic.selectedItem.address" id="newwalletfrommnemonic-add-add" @click="newWalletFromMnemonicAdd()" variant="primary">Add</b-button>
+
+            <b-form-group label="Password:" label-for="newwalletfrommnemonic-password" label-size="sm" label-cols-sm="3" label-align-sm="right" description="Password to encrypt this wallet within this dapp" class="mx-0 my-1 p-0">
+              <b-form-input type="password" size="sm" id="newwalletfrommnemonic-password" v-model.trim="newWalletFromMnemonic.password" style="max-width: 300px;"></b-form-input>
+            </b-form-group>
+            <b-form-group label="Confirm Password:" label-for="newwalletfrommnemonic-confirmpassword" label-size="sm" label-cols-sm="3" label-align-sm="right" description="Confirm password above" class="mx-0 my-1 p-0">
+              <b-form-input type="password" size="sm" id="newwalletfrommnemonic-confirmpassword" v-model.trim="newWalletFromMnemonic.confirmPassword" style="max-width: 300px;"></b-form-input>
+            </b-form-group>
+
+            <b-form-group label="" label-for="newwalletfrommnemonic-add-add" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-button size="sm" :disabled="!newWalletFromMnemonic.selectedItem || !newWalletFromMnemonic.selectedItem.address || !newWalletFromMnemonic.password || (newWalletFromMnemonic.password != newWalletFromMnemonic.confirmPassword)" id="newwalletfrommnemonic-add-add" @click="newWalletFromMnemonicAdd()" variant="primary">Add</b-button>
             </b-form-group>
           </b-modal>
 
@@ -217,25 +225,25 @@
             <template #modal-title>
               New Wallet From JSON/UTC Keystore Private Key
             </template>
-            <b-form-group label="Keystore File:" label-for="newwalletfromkeystore-keystorefile" label-size="sm" label-cols-sm="2" label-align-sm="right" :description="'Select encrypted keystore (JSON/UTC) file from your local computer'" class="mx-0 my-1 p-0">
+            <b-form-group label="Keystore File:" label-for="newwalletfromkeystore-keystorefile" label-size="sm" label-cols-sm="3" label-align-sm="right" :description="'Select encrypted keystore (JSON/UTC) file from your local computer'" class="mx-0 my-1 p-0">
               <b-form-file size="sm" id="newwalletfromkeystore-keystorefile" v-model="newWalletFromKeystore.keystoreFile" @change="newWalletFromKeystoreFileChange($event.target.name, $event.target.files)"></b-form-file>
             </b-form-group>
-            <b-form-group label="Password:" label-for="newwalletfromkeystore-keystorefilepassword" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+            <b-form-group label="Password:" label-for="newwalletfromkeystore-keystorefilepassword" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-form-input type="password" autocomplete="current-password" size="sm" id="newwalletfromkeystore-keystorefilepassword" v-model="newWalletFromKeystore.keystoreFilePassword" class="w-50"></b-form-input>
             </b-form-group>
-            <b-form-group label="" label-for="newwalletfromkeystore-load" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+            <b-form-group label="" label-for="newwalletfromkeystore-load" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-button size="sm" :disabled="!newWalletFromKeystore.keystoreFile" id="newwalletfromkeystore-load" @click="newWalletFromKeystoreLoad()" variant="primary">Load</b-button>
             </b-form-group>
-            <b-form-group label="Private Key:" label-for="newwalletfromkeystore-privatekey" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+            <b-form-group label="Private Key:" label-for="newwalletfromkeystore-privatekey" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-form-input type="text" size="sm" readonly id="newwalletfromkeystore-privatekey" v-model="newWalletFromKeystore.privateKey" style="max-width: 600px;"></b-form-input>
             </b-form-group>
-            <b-form-group label="ETH Address:" label-for="newwalletfromkeystore-address" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+            <b-form-group label="Address:" label-for="newwalletfromkeystore-address" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-form-input type="text" size="sm" readonly id="newwalletfromkeystore-address" :value="newWalletFromKeystore.address" style="max-width: 400px;"></b-form-input>
             </b-form-group>
-            <b-form-group label="Name:" label-for="newwalletfromkeystore-name" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+            <b-form-group label="Name:" label-for="newwalletfromkeystore-name" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-form-input type="text" size="sm" id="newwalletfromkeystore-name" v-model.trim="newWalletFromKeystore.name" placeholder="Optional" style="max-width: 300px;"></b-form-input>
             </b-form-group>
-            <b-form-group label="" label-for="newwalletfromkeystore-add" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+            <b-form-group label="" label-for="newwalletfromkeystore-add" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-button size="sm" :disabled="!newWalletFromKeystore.address" id="newwalletfromkeystore-add" @click="newWalletFromKeystoreAdd()" variant="primary">Add</b-button>
             </b-form-group>
           </b-modal>
@@ -243,7 +251,7 @@
           <!-- :MODALADDRESS -->
           <b-modal id="modal-address" hide-footer size="lg">
             <template #modal-title>
-              {{ address.mode == 'add' ? 'New' : 'Update'}} Address
+              {{ address.mode == 'add' ? 'New' : ''}} Address
             </template>
             <b-form-group label="Type:" label-for="address-type" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-form-select size="sm" :disabled="['walletfrommnemonic', 'walletfromprivatekey'].includes(address.type)" id="address-type" v-model="address.type" :options="addressTypeOptions"></b-form-select>
@@ -548,6 +556,8 @@
             name: null,
             // path: "m/44'/60'/0'/0/0", // null,
             // locale: null,
+            password: null,
+            confirmPassword: null,
           },
 
           newWalletFromPrivateKey: {
@@ -566,6 +576,8 @@
             privateKey: null,
             address: null,
             name: null,
+            password: null,
+            confirmPassword: null,
           },
 
           address: {
@@ -632,6 +644,7 @@
           addressTypeOptions: [
             { value: 'walletfrommnemonic', text: 'Wallet From Mnemonic', disabled: true },
             { value: 'walletfromprivatekey', text: 'Wallet From Private Key', disabled: true },
+            { value: 'walletfromkeystore', text: 'Wallet From JSON/UTC Keystore', disabled: true },
             { value: 'address', text: 'Address' },
             { value: 'erc20', text: 'ERC-20 Token Contract' },
             { value: 'erc721', text: 'ERC-721 Token Contract' },
@@ -950,15 +963,16 @@
             console.log(moment().format("HH:mm:ss") + " newWalletFromMnemonicAddressesRowSelected - this.newWalletFromMnemonic: " + JSON.stringify(this.newWalletFromMnemonic, null, 2));
           },
 
-          newWalletFromMnemonicAdd() {
+          async newWalletFromMnemonicAdd() {
             console.log(moment().format("HH:mm:ss") + " newWalletFromMnemonicAdd - this.newWalletFromMnemonic: " + JSON.stringify(this.newWalletFromMnemonic, null, 2));
+            const wallet = new ethers.Wallet(this.newWalletFromMnemonic.selectedItem.privateKey);
+            const encryptedText = await wallet.encrypt(this.newWalletFromMnemonic.password);
+            const keystore = JSON.parse(encryptedText);
+            keystore.filename = "UTC--" + moment.utc().format("YYYY-MM-DDTHH-mm-ss") + ".0Z--" + this.newWalletFromMnemonic.selectedItem.address.slice(2).toLowerCase();
             Vue.set(this.addresses, this.newWalletFromMnemonic.selectedItem.address, {
-              type: "mnemonic",
+              type: "walletfrommnemonic",
               name: this.newWalletFromMnemonic.name,
-              privateKey: this.newWalletFromMnemonic.selectedItem.privateKey,
-              phrase: this.newWalletFromMnemonic.phrase,
-              passphrase: this.newWalletFromMnemonic.passphrase,
-              path: this.newWalletFromMnemonic.selectedItem.path,
+              keystore,
             });
             localStorage.topSecretsOfflineAddresses = JSON.stringify(this.addresses);
             console.log(moment().format("HH:mm:ss") + " newWalletFromMnemonicAdd - this.addresses: " + JSON.stringify(this.addresses, null, 2));
@@ -1003,12 +1017,10 @@
           },
 
           async newWalletFromPrivateKeyAdd() {
-            const filename = "UTC--" + moment.utc().format("YYYY-MM-DDTHH-mm-ss") + ".0Z--" + this.newWalletFromPrivateKey.address.slice(2).toLowerCase();
             const wallet = new ethers.Wallet(this.newWalletFromPrivateKey.privateKey);
             const encryptedText = await wallet.encrypt(this.newWalletFromPrivateKey.password);
             const keystore = JSON.parse(encryptedText);
             keystore.filename = "UTC--" + moment.utc().format("YYYY-MM-DDTHH-mm-ss") + ".0Z--" + this.newWalletFromPrivateKey.address.slice(2).toLowerCase();
-            // console.log(moment().format("HH:mm:ss") + " newWalletFromPrivateKeyAdd - keystore: " + JSON.stringify(keystore));
             Vue.set(this.addresses, this.newWalletFromPrivateKey.address, {
               type: "walletfromprivatekey",
               name: this.newWalletFromPrivateKey.name,
