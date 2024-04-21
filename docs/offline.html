@@ -259,19 +259,27 @@
             <template #modal-title>
               {{ address.mode == 'add' ? 'New' : ''}} Address
             </template>
-            <b-form-group label="Type:" label-for="address-type" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+            <b-form-group label="Type:" label-for="address-type" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-form-select size="sm" :disabled="['walletfrommnemonic', 'walletfromprivatekey', 'walletfromkeystore'].includes(address.type)" id="address-type" v-model="address.type" :options="addressTypeOptions" style="max-width: 300px;"></b-form-select>
             </b-form-group>
-            <b-form-group label="Address:" label-for="address-address" label-size="sm" label-cols-sm="2" label-align-sm="right" :state="!address.addressError" :invalid-feedback="address.addressError" class="mx-0 my-1 p-0">
+            <b-form-group label="Address:" label-for="address-address" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!address.addressError" :invalid-feedback="address.addressError" class="mx-0 my-1 p-0">
               <b-form-input type="text" size="sm" :readonly="address.mode != 'add'" id="address-address" v-model.trim="address.address" @change="newAddressRecompute();" style="max-width: 400px;"></b-form-input>
             </b-form-group>
-            <b-form-group label="Name:" label-for="address-name" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+
+            <b-form-group v-if="address.mode == 'vieworupdate' && !address.privateKey" label="Private Key" label-for="address-privatekeypassword" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!address.passwordError" :invalid-feedback="address.passwordError" class="mx-0 my-1 p-0">
+              <b-form-input type="password" size="sm" id="address-privatekeypassword" v-model.trim="address.password" @change="addressPrivateKeyPasswordUpdate();" placeholder="Enter password" debounce="600" style="max-width: 300px;"></b-form-input>
+            </b-form-group>
+            <b-form-group v-if="address.mode == 'vieworupdate' && address.privateKey" label="Private Key" label-for="address-privatekey" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-form-input type="text" size="sm" readonly id="address-privatekey" v-model.trim="address.privateKey" style="max-width: 600px;"></b-form-input>
+            </b-form-group>
+
+            <b-form-group label="Name:" label-for="address-name" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-form-input type="text" size="sm" id="address-name" v-model.trim="address.name" placeholder="Optional" style="max-width: 300px;"></b-form-input>
             </b-form-group>
-            <b-form-group v-if="address.mode == 'add'" label="" label-for="address-add" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+            <b-form-group v-if="address.mode == 'add'" label="" label-for="address-add" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-button size="sm" :disabled="!address.address" id="address-add" @click="addressAdd()" variant="primary">Add</b-button>
             </b-form-group>
-            <b-form-group v-if="address.mode == 'vieworupdate'" label="" label-for="address-update" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+            <b-form-group v-if="address.mode == 'vieworupdate'" label="" label-for="address-update" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-button size="sm" :disabled="!address.address" id="address-update" @click="addressUpdate()" variant="primary">Update</b-button>
             </b-form-group>
           </b-modal>
@@ -597,6 +605,7 @@
             name: null,
             keystore: null,
             password: null,
+            passwordError: null,
             privateKey: null,
           },
 
@@ -1106,6 +1115,20 @@
             localStorage.topSecretsOfflineAddresses = JSON.stringify(this.addresses);
             console.log(moment().format("HH:mm:ss") + " addressAdd - this.addresses: " + JSON.stringify(this.addresses, null, 2));
             this.$bvModal.hide('modal-address');
+          },
+
+          async addressPrivateKeyPasswordUpdate() {
+            console.log(moment().format("HH:mm:ss") + " addressPrivateKeyPasswordUpdate - this.address: " + JSON.stringify(this.address, null, 2));
+            try {
+              const wallet = await ethers.Wallet.fromEncryptedJsonSync(JSON.stringify(this.address.keystore), this.address.password);
+              console.log("wallet: " + JSON.stringify(wallet, null, 2));
+              this.address.privateKey = wallet.privateKey;
+              this.address.passwordError = null;
+            } catch (e) {
+              console.log(moment().format("HH:mm:ss") + " addressPrivateKeyPasswordUpdate - keystorefile ERROR: " + e.message);
+              this.address.passwordError = e.message;
+              this.address.privateKey = null;
+            }
           },
 
           async addressUpdate() {
