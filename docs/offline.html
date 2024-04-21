@@ -243,8 +243,14 @@
             <b-form-group label="Name:" label-for="newwalletfromkeystore-name" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-form-input type="text" size="sm" id="newwalletfromkeystore-name" v-model.trim="newWalletFromKeystore.name" placeholder="Optional" style="max-width: 300px;"></b-form-input>
             </b-form-group>
+            <b-form-group label="Password:" label-for="newwalletfromkeystore-password" label-size="sm" label-cols-sm="3" label-align-sm="right" description="Password to encrypt this wallet within this dapp" class="mx-0 my-1 p-0">
+              <b-form-input type="password" size="sm" id="newwalletfromkeystore-password" v-model.trim="newWalletFromKeystore.password" style="max-width: 300px;"></b-form-input>
+            </b-form-group>
+            <b-form-group label="Confirm Password:" label-for="newwalletfromkeystore-confirmpassword" label-size="sm" label-cols-sm="3" label-align-sm="right" description="Confirm password above" class="mx-0 my-1 p-0">
+              <b-form-input type="password" size="sm" id="newwalletfromkeystore-confirmpassword" v-model.trim="newWalletFromKeystore.confirmPassword" style="max-width: 300px;"></b-form-input>
+            </b-form-group>
             <b-form-group label="" label-for="newwalletfromkeystore-add" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-              <b-button size="sm" :disabled="!newWalletFromKeystore.address" id="newwalletfromkeystore-add" @click="newWalletFromKeystoreAdd()" variant="primary">Add</b-button>
+              <b-button size="sm" :disabled="!newWalletFromKeystore.address || !newWalletFromKeystore.password || (newWalletFromKeystore.password != newWalletFromKeystore.confirmPassword)" id="newwalletfromkeystore-add" @click="newWalletFromKeystoreAdd()" variant="primary">Add</b-button>
             </b-form-group>
           </b-modal>
 
@@ -1056,11 +1062,15 @@
             }
           },
 
-          newWalletFromKeystoreAdd() {
+          async newWalletFromKeystoreAdd() {
+            const wallet = new ethers.Wallet(this.newWalletFromKeystore.privateKey);
+            const encryptedText = await wallet.encrypt(this.newWalletFromKeystore.password);
+            const keystore = JSON.parse(encryptedText);
+            keystore.filename = "UTC--" + moment.utc().format("YYYY-MM-DDTHH-mm-ss") + ".0Z--" + this.newWalletFromKeystore.address.slice(2).toLowerCase();
             Vue.set(this.addresses, this.newWalletFromKeystore.address, {
-              type: "keystore",
+              type: "walletfromkeystore",
               name: this.newWalletFromKeystore.name,
-              privateKey: this.newWalletFromKeystore.privateKey,
+              keystore,
             });
             localStorage.topSecretsOfflineAddresses = JSON.stringify(this.addresses);
             console.log(moment().format("HH:mm:ss") + " newWalletFromKeystoreAdd - this.addresses: " + JSON.stringify(this.addresses, null, 2));
