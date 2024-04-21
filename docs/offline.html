@@ -138,7 +138,7 @@
                 <b-form-select size="sm" v-model="newWalletFromMnemonic.pageSize" :options="indexPageSizeOptions" v-b-popover.hover.bottom="'Page Size'"></b-form-select>
               </div>
             </div>
-            <b-table ref="newWalletFromMnemonicAddressesTable" small fixed striped responsive hover selectable select-mode="single" @row-selected='newWalletFromMnemonicAddressesRowSelected':fields="newWalletFromMnemonicAddressesFields" :items="newWalletFromMnemonicAddresses" show-empty empty-html="Enter information above" head-variant="light" class="mx-0 my-1">
+            <b-table ref="newWalletFromMnemonicAddressesTable" small fixed striped responsive hover selectable select-mode="single" @row-selected='newWalletFromMnemonicAddressesRowSelected' :fields="newWalletFromMnemonicAddressesFields" :items="newWalletFromMnemonicAddresses" show-empty empty-html="Enter information above" head-variant="light" class="mx-0 my-1">
               <template #cell(index)="data">
                 <font size="-1">
                   {{ data.item.index }}
@@ -234,6 +234,34 @@
             </b-form-group>
           </b-modal>
 
+          <!-- :MODALADDRESS -->
+          <b-modal id="modal-address" hide-footer size="lg">
+            <template #modal-title>
+              New Address
+            </template>
+            <b-form-group label="Keystore File:" label-for="newwalletfromkeystore-keystorefile" label-size="sm" label-cols-sm="2" label-align-sm="right" :description="'Select encrypted keystore (JSON/UTC) file from your local computer'" class="mx-0 my-1 p-0">
+              <b-form-file size="sm" id="newwalletfromkeystore-keystorefile" v-model="newWalletFromKeystore.keystoreFile" @change="newWalletFromKeystoreFileChange($event.target.name, $event.target.files)"></b-form-file>
+            </b-form-group>
+            <b-form-group label="Password:" label-for="newwalletfromkeystore-keystorefilepassword" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-form-input type="password" autocomplete="current-password" size="sm" id="newwalletfromkeystore-keystorefilepassword" v-model="newWalletFromKeystore.keystoreFilePassword" class="w-50"></b-form-input>
+            </b-form-group>
+            <b-form-group label="" label-for="newwalletfromkeystore-load" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-button size="sm" :disabled="!newWalletFromKeystore.keystoreFile" id="newwalletfromkeystore-load" @click="newWalletFromKeystoreLoad()" variant="primary">Load</b-button>
+            </b-form-group>
+            <b-form-group label="Private Key:" label-for="newwalletfromkeystore-privatekey" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-form-input type="text" size="sm" readonly id="newwalletfromkeystore-privatekey" v-model="newWalletFromKeystore.privateKey" style="max-width: 600px;"></b-form-input>
+            </b-form-group>
+            <b-form-group label="ETH Address:" label-for="newwalletfromkeystore-address" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-form-input type="text" size="sm" readonly id="newwalletfromkeystore-address" :value="newWalletFromKeystore.address" style="max-width: 400px;"></b-form-input>
+            </b-form-group>
+            <b-form-group label="Name:" label-for="newwalletfromkeystore-name" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-form-input type="text" size="sm" id="newwalletfromkeystore-name" v-model.trim="newWalletFromKeystore.name" placeholder="Optional" style="max-width: 300px;"></b-form-input>
+            </b-form-group>
+            <b-form-group label="" label-for="newwalletfromkeystore-add" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-button size="sm" :disabled="!newWalletFromKeystore.address" id="newwalletfromkeystore-add" @click="newWalletFromKeystoreAdd()" variant="primary">Add</b-button>
+            </b-form-group>
+          </b-modal>
+
           <!-- :ADDRESSES -->
           <b-card v-if="settings.tabIndex == 0" class="m-0 p-0 border-0" body-class="m-1 p-0">
             <div class="d-flex flex-wrap m-0 p-0">
@@ -247,6 +275,7 @@
                   <b-dropdown-item @click="showNewWalletFromMnemonic">New Wallet From Mnemonic</b-dropdown-item>
                   <b-dropdown-item @click="showNewWalletFromPrivateKey">New Wallet From Private Key</b-dropdown-item>
                   <b-dropdown-item @click="showNewWalletFromKeystore">New Wallet From JSON/UTC Keystore Private Key</b-dropdown-item>
+                  <b-dropdown-item @click="showAddressNew">New Address</b-dropdown-item>
                 </b-dropdown>
               </div>
               <div class="mt-0 flex-grow-1">
@@ -261,7 +290,7 @@
                 <b-form-select size="sm" v-model="settings.addressesTable.pageSize" :options="pageSizes" v-b-popover.hover.bottom="'Yeah. Page size'"></b-form-select>
               </div>
             </div>
-            <b-table small fixed striped responsive hover :fields="addressesFields" :items="pagedFilteredSortedWallets" show-empty empty-html="Add new wallets" head-variant="light" class="mx-0 my-1">
+            <b-table small fixed striped responsive hover selectable select-mode="single" @row-selected='addressesRowSelected' :fields="addressesFields" :items="pagedFilteredSortedWallets" show-empty empty-html="Add new wallets" head-variant="light" class="mx-0 my-1">
               <template #cell(number)="data">
                 <font size="-1">
                   {{ parseInt(data.index) + ((settings.addressesTable.currentPage - 1) * settings.addressesTable.pageSize) + 1 }}
@@ -390,7 +419,7 @@
                         <b-form-select size="sm" v-model="wallet.indexCount" :options="indexPageSizeOptions" @change="generateDerivedAddresses();"></b-form-select>
                       </div>
                     </div>
-                    <b-table ref="addressesTable" small fixed striped responsive hover selectable select-mode="single" @row-selected='addressesRowSelected':fields="generatedAddressesFields" :items="generatedAddresses" show-empty empty-html="Enter information above" head-variant="light" class="mx-0 my-1">
+                    <b-table ref="addressesTable" small fixed striped responsive hover selectable select-mode="single" @row-selected='generatedAddressesRowSelected':fields="generatedAddressesFields" :items="generatedAddresses" show-empty empty-html="Enter information above" head-variant="light" class="mx-0 my-1">
                       <template #cell(index)="data">
                         <font size="-1">
                           {{ data.item.index }}
@@ -537,6 +566,12 @@
             name: null,
           },
 
+          address: {
+            address: null,
+            addressError: null,
+            type: null,
+          },
+
           signMessage: {
             wallet: null,
             message: null,
@@ -569,7 +604,7 @@
           forceRefresh: 0,
 
           settings: {
-            tabIndex: 1,
+            tabIndex: 0,
             addressesTable: {
               filter: null,
               currentPage: 1,
@@ -589,6 +624,15 @@
           tabs: [
             { name: 'mnemonic', text: 'Mnemonic Seed Phrase' },
             { name: 'privatekey', text: 'Private Key' },
+          ],
+
+          addressTypeOptions: [
+            { value: 'walletfrommnemonic', text: 'Wallet From Mnemonic' },
+            { value: 'walletfromprivatekey', text: 'Wallet From Private Key' },
+            { value: 'erc20', text: 'ERC-20 Token Contract' },
+            { value: 'erc721', text: 'ERC-721 Token Contract' },
+            { value: 'contract', text: 'Contract' },
+            { value: 'address', text: 'Address' },
           ],
 
           walletTypeOptions: [
@@ -800,6 +844,18 @@
           addressesRowSelected(item) {
             console.log(moment().format("HH:mm:ss") + " addressesRowSelected: " + JSON.stringify(item));
             if (item && item.length > 0) {
+              this.address.address = item[0].address;
+              this.address.addressError = null;
+            } else {
+              this.address.address = null;
+              this.address.addressError = null;
+            }
+            this.$bvModal.show('modal-address');            
+          },
+
+          generatedAddressesRowSelected(item) {
+            console.log(moment().format("HH:mm:ss") + " generatedAddressesRowSelected: " + JSON.stringify(item));
+            if (item && item.length > 0) {
               this.selectedAddress = item[0];
             } else {
               this.selectedAddress = null;
@@ -830,6 +886,11 @@
           showNewWalletFromKeystore() {
             console.log(moment().format("HH:mm:ss") + " showNewWalletFromKeystore");
             this.$bvModal.show('modal-newwalletfromkeystore');
+          },
+          showAddressNew() {
+            console.log(moment().format("HH:mm:ss") + " showAddressNew");
+            // TODO: Reset address data
+            this.$bvModal.show('modal-address');
           },
 
           newWalletFromMnemonicGenerateRandom() {
