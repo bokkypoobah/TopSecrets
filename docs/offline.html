@@ -260,7 +260,7 @@
               {{ address.mode == 'add' ? 'New' : ''}} Address
             </template>
             <b-form-group label="Type:" label-for="address-type" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-              <b-form-select size="sm" :disabled="['walletfrommnemonic', 'walletfromprivatekey'].includes(address.type)" id="address-type" v-model="address.type" :options="addressTypeOptions" style="max-width: 300px;"></b-form-select>
+              <b-form-select size="sm" :disabled="['walletfrommnemonic', 'walletfromprivatekey', 'walletfromkeystore'].includes(address.type)" id="address-type" v-model="address.type" :options="addressTypeOptions" style="max-width: 300px;"></b-form-select>
             </b-form-group>
             <b-form-group label="Address:" label-for="address-address" label-size="sm" label-cols-sm="2" label-align-sm="right" :state="!address.addressError" :invalid-feedback="address.addressError" class="mx-0 my-1 p-0">
               <b-form-input type="text" size="sm" :readonly="address.mode != 'add'" id="address-address" v-model.trim="address.address" @change="newAddressRecompute();" style="max-width: 400px;"></b-form-input>
@@ -288,7 +288,7 @@
                   </template>
                   <b-dropdown-item @click="showNewWalletFromMnemonic">New Wallet From Mnemonic</b-dropdown-item>
                   <b-dropdown-item @click="showNewWalletFromPrivateKey">New Wallet From Private Key</b-dropdown-item>
-                  <b-dropdown-item @click="showNewWalletFromKeystore">New Wallet From JSON/UTC Keystore Private Key</b-dropdown-item>
+                  <b-dropdown-item @click="showNewWalletFromKeystore">New Wallet From Keystore</b-dropdown-item>
                   <b-dropdown-item @click="showAddressNew">New Address</b-dropdown-item>
                 </b-dropdown>
               </div>
@@ -594,6 +594,10 @@
             type: null,
             address: null,
             addressError: null,
+            name: null,
+            keystore: null,
+            password: null,
+            privateKey: null,
           },
 
           signMessage: {
@@ -653,17 +657,11 @@
           addressTypeOptions: [
             { value: 'walletfrommnemonic', text: 'Wallet From Mnemonic', disabled: true },
             { value: 'walletfromprivatekey', text: 'Wallet From Private Key', disabled: true },
-            { value: 'walletfromkeystore', text: 'Wallet From JSON/UTC Keystore', disabled: true },
+            { value: 'walletfromkeystore', text: 'Wallet From Keystore', disabled: true },
             { value: 'address', text: 'Address' },
             { value: 'erc20', text: 'ERC-20 Token Contract' },
             { value: 'erc721', text: 'ERC-721 Token Contract' },
             { value: 'contract', text: 'Contract' },
-          ],
-
-          walletTypeOptions: [
-            { value: 'mnemonic', text: 'Mnemonic Seed Phrase' },
-            { value: 'keystorefile', text: 'JSON/UTC Keystore File' },
-            { value: 'privatekey', text: 'Private Key' },
           ],
 
           randomBytesLengthMnemonicWordsOptions: [
@@ -794,7 +792,7 @@
               results.push({
                 address,
                 type: data.type,
-                privateKey: data.privateKey,
+                keystore: data.keystore,
                 name: data.name,
               });
             }
@@ -874,6 +872,9 @@
               this.address.address = item[0].address;
               this.address.addressError = null;
               this.address.name = item[0].name;
+              this.address.keystore = item[0].keystore;
+              this.address.password = null;
+              this.address.privateKey = null;
               console.log(moment().format("HH:mm:ss") + " addressesRowSelected - this.address: " + JSON.stringify(this.address));
               this.$refs.addressesTable.clearSelected();
             }
