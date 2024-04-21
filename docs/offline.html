@@ -260,7 +260,7 @@
               {{ address.mode == 'add' ? 'New' : ''}} Address
             </template>
             <b-form-group label="Type:" label-for="address-type" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-              <b-form-select size="sm" :disabled="['walletfrommnemonic', 'walletfromprivatekey'].includes(address.type)" id="address-type" v-model="address.type" :options="addressTypeOptions"></b-form-select>
+              <b-form-select size="sm" :disabled="['walletfrommnemonic', 'walletfromprivatekey'].includes(address.type)" id="address-type" v-model="address.type" :options="addressTypeOptions" style="max-width: 300px;"></b-form-select>
             </b-form-group>
             <b-form-group label="Address:" label-for="address-address" label-size="sm" label-cols-sm="2" label-align-sm="right" :state="!address.addressError" :invalid-feedback="address.addressError" class="mx-0 my-1 p-0">
               <b-form-input type="text" size="sm" :readonly="address.mode != 'add'" id="address-address" v-model.trim="address.address" @change="newAddressRecompute();" style="max-width: 400px;"></b-form-input>
@@ -309,6 +309,9 @@
                 <font size="-1">
                   {{ parseInt(data.index) + ((settings.addressesTable.currentPage - 1) * settings.addressesTable.pageSize) + 1 }}
                 </font>
+              </template>
+              <template #cell(type)="data">
+                <b-badge pill variant="transparent" class="px-0">{{ addressTypeOptions.filter(e => e.value == data.item.type)[0].text }}</b-badge>
               </template>
             </b-table>
           </b-card>
