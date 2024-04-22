@@ -112,7 +112,7 @@
                     <div class="mt-0 flex-grow-1">
                     </div>
                     <div class="mt-1 pr-1">
-                      <b-dropdown size="sm" variant="link" v-b-popover.hover.bottom="'New Address'">
+                      <b-dropdown size="sm" :disabled="!generatedAddresses.length" variant="link" v-b-popover.hover.bottom="'New Address'">
                         <template #button-content>
                           <b-icon-file-earmark-spreadsheet shift-v="+1" font-scale="1.2"></b-icon-file-earmark-spreadsheet>
                         </template>
@@ -444,6 +444,27 @@
 
           download(withPrivateKeys) {
             console.log(moment().format("HH:mm:ss") + " download - withPrivateKeys: " + withPrivateKeys);
+            const rows = [];
+            if (withPrivateKeys) {
+              rows.push(["Index", "Path", "Address", "PrivateKey"]);
+            } else {
+              rows.push(["Index", "Path", "Address"]);
+            }
+            for (let i = 0; i < this.generatedAddresses.length; i++) {
+              const a = this.generatedAddresses[i];
+              if (withPrivateKeys) {
+                rows.push([a.index, a.path, a.address, a.privateKey]);
+              } else {
+                rows.push([a.index, a.path, a.address]);
+              }
+            }
+            let csvContent = "data:text/tsv;charset=utf-8," + rows.map(e => e.join("\t")).join("\n");
+            var encodedUri = encodeURI(csvContent);
+            var link = document.createElement("a");
+            link.setAttribute("href", encodedUri.replaceAll('#', '%23'));
+            link.setAttribute("download", "topsecrets_wallettool_download-" + moment().format("YYYY-MM-DD-HH-mm-ss") + ".tsv");
+            document.body.appendChild(link); // Required for FF
+            link.click(); // This will download the data with the specified file name
           },
 
           async testIt() {
