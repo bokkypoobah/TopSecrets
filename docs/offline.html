@@ -320,15 +320,21 @@
           <!-- :MESSAGES -->
           <b-card v-if="settings.tabIndex == 4" class="m-0 p-0 border-0" body-class="m-1 p-0">
             <!-- :SIGNMESSAGE -->
-            <b-card sub-title="Sign Message" bg-variant="light" class="p-0 m-1" style="max-width: 800px;">
+            <b-card sub-title="Sign Message" bg-variant="light" class="m-1 p-0" style="max-width: 1000px;">
               <b-form-group label="Wallet:" label-for="signmessage-wallet" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
                 <b-form-select size="sm" id="signmessage-wallet" v-model="signMessage.wallet" :options="addressesOptions" v-b-popover.hover.bottom="'Select Wallet'"></b-form-select>
               </b-form-group>
               <b-form-group label="Message:" label-for="signmessage-message" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
                 <b-form-textarea size="sm" id="signmessage-message" v-model.trim="signMessage.message" rows="3" placeholder="Type/paste your message here, then click [Sign]" style="max-width: 800px;"></b-form-textarea>
               </b-form-group>
-              <b-form-group label="" label-for="signmessage-sign" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-                <b-button size="sm" :disabled="!signMessage.wallet || !signMessage.message" id="signmessage-sign" @click="signMessageSign()" variant="primary">Sign</b-button>
+              <b-form-group label="" label-for="signmessage-sign" label-size="sm" label-cols-sm="2" label-align-sm="right" :state="!signMessage.passwordError" :invalid-feedback="signMessage.passwordError" class="mx-0 my-1 p-0">
+
+                <b-input-group style="max-width: 300px;">
+                  <b-form-input type="password" size="sm" v-model.trim="signMessage.password" placeholder="Wallet password"></b-form-input>
+                  <b-input-group-append>
+                    <b-button size="sm" :disabled="!signMessage.wallet || !signMessage.message || !signMessage.password" id="signmessage-sign" @click="signMessageSign()" variant="primary">Sign</b-button>
+                  </b-input-group-append>
+                </b-input-group>
               </b-form-group>
               <b-form-group label="Signature:" label-for="signmessage-signature" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
                 <b-form-textarea size="sm" readonly id="signmessage-signature" v-model.trim="signMessage.signature" rows="3" placeholder="Click [Sign]" style="max-width: 800px;"></b-form-textarea>
@@ -336,7 +342,7 @@
             </b-card>
 
             <!-- :CHECKMESSAGE -->
-            <b-card sub-title="Check Message" bg-variant="light" class="p-0 m-1" style="max-width: 800px;">
+            <b-card sub-title="Check Message" bg-variant="light" class="m-1 mt-3 p-0" style="max-width: 1000px;">
               <b-form-group label="Message:" label-for="checkmessage-message" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
                 <b-form-textarea size="sm" id="checkmessage-message" v-model="checkMessage.message" rows="3" placeholder="Type/paste your message here, then click [Sign]" style="max-width: 800px;"></b-form-textarea>
               </b-form-group>
@@ -435,6 +441,8 @@
             wallet: null,
             message: null,
             signature: null,
+            password: null,
+            passwordError: null,
           },
 
           checkMessage: {
@@ -941,23 +949,19 @@
             console.log(moment().format("HH:mm:ss") + " signMessageSign - this.signMessage: " + JSON.stringify(this.signMessage, null, 2));
             const walletInfo = this.addresses[this.signMessage.wallet];
             // console.log(moment().format("HH:mm:ss") + " signMessageSign - walletInfo: " + JSON.stringify(walletInfo, null, 2));
-            const wallet = new ethers.Wallet(walletInfo.privateKey);
-            // console.log(moment().format("HH:mm:ss") + " signMessageSign - wallet: " + JSON.stringify(wallet, null, 2));
-            const signature = await wallet.signMessage(this.signMessage.message);
-            // console.log(moment().format("HH:mm:ss") + " signMessageSign - signature: " + JSON.stringify(signature, null, 2));
-            Vue.set(this.signMessage, 'signature', signature);
-            // let result = null;
-            // try {
-            //   console.log(moment().format("HH:mm:ss") + " checkMessageRecoveredAddress - message: " + this.signMessage.message);
-            //   let pubKey = ethers.utils.recoverPublicKey(ethers.utils.arrayify(ethers.utils.hashMessage(this.signMessage.message)), signature);
-            //   result = ethers.utils.computeAddress(pubKey);
-            //   console.log(moment().format("HH:mm:ss") + " checkMessageRecoveredAddress - result: " + result);
-            // } catch (e) {
-            //   console.log(moment().format("HH:mm:ss") + " checkMessageRecoveredAddress ERROR: " + e.message);
-            // }
+            try {
+              const wallet = await ethers.Wallet.fromEncryptedJsonSync(JSON.stringify(walletInfo.keystore), this.signMessage.password);
+              // console.log(moment().format("HH:mm:ss") + " signMessageSign - wallet: " + JSON.stringify(wallet, null, 2));
+              const signature = await wallet.signMessage(this.signMessage.message);
+              // console.log(moment().format("HH:mm:ss") + " signMessageSign - signature: " + JSON.stringify(signature, null, 2));
+              Vue.set(this.signMessage, 'signature', signature);
+              this.signMessage.passwordError = null;
+            } catch (e) {
+              console.log(moment().format("HH:mm:ss") + " signMessageSign - keystorefile ERROR: " + e.message);
+              Vue.set(this.signMessage, 'signature', null);
+              this.signMessage.passwordError = e.message;
+            }
           },
-
-          // Older stuff below
 
           async testIt() {
             console.log(moment().format("HH:mm:ss") + " testIt");
