@@ -93,19 +93,19 @@
                 <b-form-select size="sm" v-model="newWalletFromMnemonic.pageSize" :options="indexPageSizeOptions" v-b-popover.hover.bottom="'Page Size'"></b-form-select>
               </div>
             </div>
-            <b-table ref="newWalletFromMnemonicAddressesTable" small fixed striped responsive hover selectable select-mode="single" @row-selected='newWalletFromMnemonicAddressesRowSelected' :fields="newWalletFromMnemonicAddressesFields" :items="newWalletFromMnemonicAddresses" show-empty empty-html="Enter information above" head-variant="light" class="mx-0 my-1">
-              <template #cell(index)="data">
-                <font size="-1">
+            <font size="-1">
+              <b-table ref="newWalletFromMnemonicAddressesTable" small fixed striped responsive hover selectable select-mode="single" @row-selected='newWalletFromMnemonicAddressesRowSelected' :fields="newWalletFromMnemonicAddressesFields" :items="newWalletFromMnemonicAddresses" show-empty empty-html="Enter information above" head-variant="light" class="mx-0 my-1">
+                <template #cell(index)="data">
                   {{ data.item.index }}
-                </font>
-              </template>
-              <template #cell(path)="data">
-                {{ data.item.path }}
-              </template>
-              <template #cell(address)="data">
-                {{ data.item.address }}
-              </template>
-            </b-table>
+                </template>
+                <template #cell(path)="data">
+                  {{ data.item.path }}
+                </template>
+                <template #cell(address)="data">
+                  {{ data.item.address }}
+                </template>
+              </b-table>
+            </font>
           </b-modal>
 
           <!-- :MODALNEWWALLETFROMMNEMONICADD -->
@@ -512,7 +512,7 @@
           // BIP44 Standard (e.g. MetaMask, Trezor)
           derivationPathOptions: [
             { value: "m/44'/60'/0'/0/{index}", text: "BIP-44 m/44'/60'/0'/0/{index}" },
-            { value: "m/44'/60'/0'/0/{index}", text: "Legacy (MEW/MyCrypto) m/44'/60'/0'/0/{index}" }, // TODO: Check difference in MM settings with Ledger
+            // { value: "m/44'/60'/0'/0/{index}", text: "Legacy (MEW/MyCrypto) m/44'/60'/0'/0/{index}" }, // TODO: Check difference in MM settings with Ledger
             { value: "m/44'/60'/0'/{index}/0", text: "Test-1 m/44'/60'/0'/{index}/0" },
             { value: "m/44'/60'/0'/0/{index}/0", text: "Test-2 m/44'/60'/0'/0/{index}/0" },
           ],

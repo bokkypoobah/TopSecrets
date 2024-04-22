@@ -121,28 +121,22 @@
                       <b-form-select size="sm" v-model="wallet.pageSize" :options="indexPageSizeOptions" @change="generateDerivedAddresses();"></b-form-select>
                     </div>
                   </div>
-                  <b-table ref="addressesTable" small fixed striped responsive hover selectable select-mode="single" @row-selected='generatedAddressesRowSelected':fields="generatedAddressesFields" :items="generatedAddresses" show-empty empty-html="Enter information above" head-variant="light" class="mx-0 my-1">
-                    <template #cell(index)="data">
-                      <font size="-1">
+                  <font size="-1">
+                    <b-table ref="addressesTable" small fixed striped responsive hover selectable select-mode="single" @row-selected='generatedAddressesRowSelected':fields="generatedAddressesFields" :items="generatedAddresses" show-empty empty-html="Enter information above" head-variant="light" class="mx-0 my-1">
+                      <template #cell(index)="data">
                         {{ data.item.index }}
-                      </font>
-                    </template>
-                    <template #cell(path)="data">
-                      <!-- <font size="-1"> -->
+                      </template>
+                      <template #cell(path)="data">
                         {{ data.item.path }}
-                      <!-- </font> -->
-                    </template>
-                    <template #cell(address)="data">
-                      <!-- <font size="-1"> -->
+                      </template>
+                      <template #cell(address)="data">
                         {{ data.item.address }}
-                      <!-- </font> -->
-                    </template>
-                    <template #cell(privateKey)="data">
-                      <!-- <font size="-1"> -->
+                      </template>
+                      <template #cell(privateKey)="data">
                         {{ data.item.privateKey }}
-                      <!-- </font> -->
-                    </template>
-                  </b-table>
+                      </template>
+                    </b-table>
+                  </font>
                 </b-card>
                 <b-form-group v-if="wallet.tab == 1" label="Private Key:" label-for="wallet-privatekey" label-size="sm" label-cols-sm="2" label-align-sm="right" :state="!wallet.privateKeyError" :invalid-feedback="wallet.privateKeyError" class="mx-0 my-2 p-0">
                   <b-form-input type="text" size="sm" id="wallet-privatekey" v-model="wallet.privateKey" @change="recomputeFromPrivateKey();" placeholder="Type/paste your private key here, click [Generate New] or [Load From Keystore]" class="w-75"></b-form-input>
@@ -243,7 +237,7 @@
           // BIP44 Standard (e.g. MetaMask, Trezor)
           derivationPathOptions: [
             { value: "m/44'/60'/0'/0/{index}", text: "BIP-44 m/44'/60'/0'/0/{index}" },
-            { value: "m/44'/60'/0'/0/{index}", text: "Legacy (MEW/MyCrypto) m/44'/60'/0'/0/{index}" }, // TODO: Check difference in MM settings with Ledger
+            // { value: "m/44'/60'/0'/0/{index}", text: "Legacy (MEW/MyCrypto) m/44'/60'/0'/0/{index}" }, // TODO: Check difference in MM settings with Ledger
             { value: "m/44'/60'/0'/{index}/0", text: "Test-1 m/44'/60'/0'/{index}/0" },
             { value: "m/44'/60'/0'/0/{index}/0", text: "Test-2 m/44'/60'/0'/0/{index}/0" },
           ],
