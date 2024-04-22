@@ -483,32 +483,6 @@
 
           async testIt() {
             console.log(moment().format("HH:mm:ss") + " testIt");
-            const privateKey = "{myprivatekey}";
-            const wallet = new ethers.Wallet(privateKey);
-            const WEENUSADDRESS = "0x7439E9Bb6D8a84dd3A23fe621A30F95403F87fB9";
-            const interface = new ethers.utils.Interface(ERC20ABI);
-            const contractWithoutProvider = new ethers.Contract(WEENUSADDRESS, interface, wallet);
-            const unsignedTx = await contractWithoutProvider.populateTransaction.transfer(wallet.address, 1);
-            console.log("unsignedTx: " + JSON.stringify(unsignedTx, null, 2));
-            console.log("address: " + wallet.address);
-            const tx = {
-              from: wallet.address,
-              to: "0x7439E9Bb6D8a84dd3A23fe621A30F95403F87fB9",
-              gasLimit: 50000,
-              // gasPrice: 1000000,
-              type: 2,
-              maxFeePerGas: 1234000,
-              maxPriorityFeePerGas: 1234000,
-              value: 0,
-              data: unsignedTx.data,
-              nonce: 36,
-              chainId: 11155111,
-            };
-            console.log("tx: " + JSON.stringify(tx));
-            const signedTx = await wallet.signTransaction(tx);
-            console.log("signedTx: " + signedTx);
-            const decoded = ethers.utils.parseTransaction(signedTx);
-            console.log("decoded: " + JSON.stringify(decoded, null, 2));
           },
 
           saveSettings() {
