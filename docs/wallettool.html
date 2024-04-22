@@ -112,7 +112,15 @@
                     <div class="mt-0 flex-grow-1">
                     </div>
                     <div class="mt-1 pr-1">
-                      <font size="-1">Start:</font>
+                      <b-dropdown size="sm" variant="link" v-b-popover.hover.bottom="'New Address'">
+                        <template #button-content>
+                          <b-icon-file-earmark-spreadsheet shift-v="+1" font-scale="1.2"></b-icon-file-earmark-spreadsheet>
+                        </template>
+                        <b-dropdown-item @click="download(false);">Download Addresses</b-dropdown-item>
+                        <b-dropdown-item @click="download(true);">Download Addresses With Private Keys</b-dropdown-item>
+                      </b-dropdown>
+                    </div>
+                    <div class="mt-0 flex-grow-1">
                     </div>
                     <div class="mt-0 pr-1">
                       <b-form-spinbutton size="sm" v-model="wallet.page" min="0" @change="generateDerivedAddresses();" inline v-b-popover.hover.bottom="'Page'"></b-form-spinbutton>
@@ -432,6 +440,10 @@
               console.log(moment().format("HH:mm:ss") + " keystoreFileContent: " + t.wallet.keystoreFileContent);
             };
             await reader.readAsText(fileList[0]);
+          },
+
+          download(withPrivateKeys) {
+            console.log(moment().format("HH:mm:ss") + " download - withPrivateKeys: " + withPrivateKeys);
           },
 
           async testIt() {
