@@ -68,13 +68,16 @@
             <template #modal-title>
               {{ address.mode == 'add' ? 'New' : ''}} Address
             </template>
+            <b-form-group label="Type:" label-for="address-type" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-form-select size="sm" id="address-type" v-model="address.type" :options="addressTypeOptions" style="max-width: 300px;"></b-form-select>
+            </b-form-group>
             <!-- <b-form-group label="Private Key:" label-for="newwalletfromprivatekey-privatekey" label-size="sm" label-cols-sm="2" label-align-sm="right" :state="!newWalletFromPrivateKey.privateKeyError" :invalid-feedback="newWalletFromPrivateKey.privateKeyError" class="mx-0 my-1 p-0">
               <b-form-input type="text" size="sm" id="newwalletfromprivatekey-privatekey" v-model="newWalletFromPrivateKey.privateKey" @change="newWalletFromPrivateKeyRecompute();" placeholder="Type/paste your private key here or click [Generate New]" style="max-width: 600px;"></b-form-input>
             </b-form-group> -->
             <!-- <b-form-group label="" label-for="newwalletfromprivatekey-generaterandom" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-button size="sm" id="newwalletfromprivatekey-generaterandom" @click="newWalletFromPrivateKeyGenerateRandom()" variant="primary">Generate Random</b-button>
             </b-form-group> -->
-            <b-form-group label="ETH Address:" label-for="address-address" label-size="sm" label-cols-sm="2" label-align-sm="right" :state="!address.addressError" :invalid-feedback="address.addressError" class="mx-0 my-1 p-0">
+            <b-form-group label="Address:" label-for="address-address" label-size="sm" label-cols-sm="2" label-align-sm="right" :state="!address.addressError" :invalid-feedback="address.addressError" class="mx-0 my-1 p-0">
               <b-form-input type="text" size="sm" id="address-address" v-model.trim="address.address" @change="newWalletRecompute();" placeholder="Type/paste your ETH address here" style="max-width: 400px;"></b-form-input>
             </b-form-group>
             <b-form-group label="Name:" label-for="address-name" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
@@ -613,6 +616,7 @@
 
           address: {
             mode: null,
+            type: null,
             address: null,
             addressError: null,
             name: null,
@@ -685,6 +689,16 @@
             tokenId: null, // ERC-721 Approval
             approved: false, // ERC-721 & ERC-1155 ApprovalForAll
           },
+
+          addressTypeOptions: [
+            { value: 'walletfrommnemonic', text: 'Wallet From Mnemonic' },
+            { value: 'walletfromprivatekey', text: 'Wallet From Private Key' },
+            { value: 'walletfromkeystore', text: 'Wallet From Keystore' },
+            { value: 'address', text: 'Address' },
+            { value: 'erc20', text: 'ERC-20 Token Contract' },
+            { value: 'erc721', text: 'ERC-721 Token Contract' },
+            { value: 'contract', text: 'Contract' },
+          ],
 
           txTypeOptions: [
             { value: null, text: '(Select)' },
@@ -1158,6 +1172,7 @@
 
           showNewAddress() {
             console.log(moment().format("HH:mm:ss") + " showNewAddress");
+            this.address.type = 'address';
             this.address.mode = 'add';
             this.address.address = null;
             this.address.name = null;
@@ -1168,7 +1183,7 @@
             console.log(moment().format("HH:mm:ss") + " addressesRowSelected: " + JSON.stringify(item));
             if (item && item.length > 0) {
               this.address.mode = 'vieworupdate';
-            //   this.address.type = item[0].type;
+              this.address.type = item[0].type;
               this.address.address = item[0].address;
             //   this.address.addressError = null;
               this.address.name = item[0].name;
@@ -1199,6 +1214,7 @@
 
           addressAdd() {
             Vue.set(this.addresses, this.address.address, {
+              type: this.address.type,
               name: this.address.name,
             });
             localStorage.topSecretsOnlineAddresses = JSON.stringify(this.addresses);
