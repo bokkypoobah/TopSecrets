@@ -452,9 +452,6 @@
             signature: null,
           },
 
-          generatedAddresses: [],
-          selectedAddress: null,
-
           connected: false,
           chainId: null,
           coinbase: null,
@@ -545,13 +542,6 @@
             { key: 'path', label: 'Path', sortable: false, thStyle: 'width: 30%;', thClass: 'text-left', tdClass: 'text-left' },
             { key: 'address', label: 'Address', sortable: false, thStyle: 'width: 60%;', thClass: 'text-left', tdClass: 'text-left' },
             // { key: 'privateKey', label: 'Private Key', sortable: false, thStyle: 'width: 30%;', thClass: 'text-left', tdClass: 'text-left' },
-          ],
-
-          generatedAddressesFields: [
-            { key: 'index', label: '#', sortable: false, thStyle: 'width: 5%;', tdClass: 'text-truncate' },
-            { key: 'path', label: 'Path', sortable: false, thStyle: 'width: 10%;', thClass: 'text-left', tdClass: 'text-left' },
-            { key: 'address', label: 'Address', sortable: false, thStyle: 'width: 35%;', thClass: 'text-left', tdClass: 'text-left' },
-            { key: 'privateKey', label: 'Private Key', sortable: false, thStyle: 'width: 50%;', thClass: 'text-left', tdClass: 'text-left' },
           ],
 
           addressesFields: [
@@ -710,15 +700,6 @@
               this.$refs.addressesTable.clearSelected();
             }
             this.$bvModal.show('modal-address');
-          },
-
-          generatedAddressesRowSelected(item) {
-            console.log(moment().format("HH:mm:ss") + " generatedAddressesRowSelected: " + JSON.stringify(item));
-            if (item && item.length > 0) {
-              this.selectedAddress = item[0];
-            } else {
-              this.selectedAddress = null;
-            }
           },
 
           showNewWalletFromMnemonic() {
