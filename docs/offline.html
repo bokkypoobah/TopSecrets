@@ -46,8 +46,6 @@
             <b-nav-item size="sm" @click="settings.tabIndex = 2; saveSettings();" :active="settings.tabIndex == 2" active-class="active" v-b-popover.hover="'ERC-20'">ERC-20</b-nav-item>
             <b-nav-item size="sm" @click="settings.tabIndex = 3; saveSettings();" :active="settings.tabIndex == 3" active-class="active" v-b-popover.hover="'ERC-721'">ERC-721</b-nav-item>
             <b-nav-item size="sm" @click="settings.tabIndex = 4; saveSettings();" :active="settings.tabIndex == 4" active-class="active" v-b-popover.hover="'Sign and check messages'">Messages</b-nav-item>
-            <!-- <b-nav-item size="sm" @click="settings.tabIndex = 5; saveSettings();" :active="settings.tabIndex == 5" active-class="active" v-b-popover.hover="'Explore Mnemonic and Private Key Wallets'">Wallet Tool</b-nav-item> -->
-            <!-- <b-nav-item size="sm" @click="settings.tabIndex = 2; saveSettings();" :active="settings.tabIndex == 2" active-class="active" v-b-popover.hover="'Accounts'">Accounts</b-nav-item> -->
             <!-- <b-avatar v-if="coinbase && coinbase != nameOrAddress(coinbase)" rounded variant="light" size="3.0rem" :src="'https://metadata.ens.domains/mainnet/avatar/' + nameOrAddress(coinbase, 100)" v-b-popover.hover="'Your ENS avatar if set'"></b-avatar> -->
             <!-- <b-button size="sm" variant="outline-primary" class="ml-1" @click="connectToWeb3(); processNewBlock(0);" v-b-popover.hover.bottom="'Click to update wallet'">{{ coinbase ? nameOrAddress(coinbase, 16) : 'Connect' }}</b-button> -->
           </b-navbar-nav>
@@ -757,15 +755,6 @@
             }
           },
 
-          showLoadPrivateKeyFromKeystoreModal() {
-            console.log(moment().format("HH:mm:ss") + " showLoadPrivateKeyFromKeystoreModal");
-            this.$bvModal.show('modal-loadprivatekeyfromkeystore');
-          },
-          showSavePrivateKeyToKeystoreModal() {
-            console.log(moment().format("HH:mm:ss") + " showSavePrivateKeyToKeystoreModal");
-            this.$bvModal.show('modal-saveprivatekeytokeystore');
-          },
-
           showNewWalletFromMnemonic() {
             console.log(moment().format("HH:mm:ss") + " showNewWalletFromMnemonic");
             this.$bvModal.show('modal-newwalletfrommnemonic');
@@ -1034,177 +1023,6 @@
 
           // Older stuff below
 
-          generateDerivedAddresses() {
-            console.log(moment().format("HH:mm:ss") + " generateDerivedAddresses - this.wallet: " + JSON.stringify(this.wallet, null, 2));
-            const results = [];
-            if (this.wallet.type == 'mnemonic' && this.wallet.mnemonic.phrase) {
-              try {
-                const node = ethers.utils.HDNode.fromMnemonic(this.wallet.mnemonic.phrase, this.wallet.mnemonic.passphrase);
-                // for (let index = this.wallet.page; index < (parseInt(this.wallet.page) + this.wallet.pageSize); index++) {
-                for (let i = 0; i < this.wallet.pageSize; i++) {
-                  const index = parseInt(i) + (this.wallet.page * this.wallet.pageSize);
-                  console.log("index: " + index);
-                  let path = this.wallet.derivationPath.replace(/{index}/, index);
-                  const w = node.derivePath(path);
-                  results.push({
-                    index,
-                    path,
-                    privateKey: w.privateKey,
-                    address: w.address,
-                    publicKey: w.publicKey,
-                    compressedPublicKey: ethers.utils.computePublicKey(w.publicKey, true),
-                  });
-                }
-              } catch (e) {
-                console.log(moment().format("HH:mm:ss") + " generateDerivedAddresses ERROR: " + e.message);
-                this.wallet.mnemonic.phraseError = e.message;
-              }
-            }
-            Vue.set(this, 'generatedAddresses', results);
-            // console.log(moment().format("HH:mm:ss") + " generateDerivedAddresses - this.generatedAddresses: " + JSON.stringify(this.generatedAddresses, null, 2));
-          },
-
-          generateRandomMnemonic() {
-            console.log(moment().format("HH:mm:ss") + " generateRandomMnemonic - this.wallet.randomBytesLength: " + this.wallet.randomBytesLength);
-            try {
-              const randomBytes = ethers.utils.randomBytes(this.wallet.randomBytesLength);
-              this.wallet.mnemonic.phrase = ethers.utils.entropyToMnemonic(randomBytes);
-              this.wallet.mnemonic.phraseError = null;
-              this.generateDerivedAddresses();
-            } catch (e) {
-              console.log(moment().format("HH:mm:ss") + " generateRandomMnemonic ERROR: " + e.message);
-              this.wallet.mnemonic.phrase = null;
-              this.wallet.mnemonic.phraseError = e.message;
-              this.generatedAddresses = [];
-            }
-            this.$bvModal.hide('modal-generatemnemonic');
-          },
-
-          // async recomputeFromMnemonic() {
-          //   console.log(moment().format("HH:mm:ss") + " recomputeFromMnemonic: " + JSON.stringify(this.wallet));
-          //   if (this.wallet.tab == 0) {
-          //     console.log(moment().format("HH:mm:ss") + " recomputeFromMnemonic - mnemonics: " + JSON.stringify(this.wallet));
-          //     try {
-          //       const wallet = new ethers.Wallet.fromMnemonic(this.wallet.mnemonic.phrase);
-          //       this.wallet.mnemonic.phraseError = null;
-          //       this.wallet.address = wallet.address;
-          //       this.wallet.publicKey = wallet.publicKey;
-          //       this.wallet.compressedPublicKey = ethers.utils.computePublicKey(wallet.publicKey, true);
-          //     } catch (e) {
-          //       console.log(moment().format("HH:mm:ss") + " recomputeFromMnemonic - mnemonics ERROR: " + e.message);
-          //       this.wallet.mnemonic.phraseError = e.message;
-          //       this.wallet.address = null;
-          //       this.wallet.publicKey = null;
-          //       this.wallet.compressedPublicKey = null;
-          //     }
-          //   }
-          // },
-
-          generateRandomPrivateKey() {
-            console.log(moment().format("HH:mm:ss") + " generateRandomPrivateKey");
-            try {
-              const randomBytes = ethers.utils.randomBytes(16);
-              // this.wallet.mnemonic.phrase = ethers.utils.entropyToMnemonic(randomBytes);
-              // const node = ethers.utils.HDNode.fromMnemonic(this.wallet.mnemonic.phrase);
-              const phrase = ethers.utils.entropyToMnemonic(randomBytes);
-              const node = ethers.utils.HDNode.fromMnemonic(phrase);
-              console.log(moment().format("HH:mm:ss") + " generateRandomPrivateKey - node: " + JSON.stringify(node, null, 2));
-              const defaultPath = "m/44'/60'/0'/0/0";
-              const wallet = node.derivePath(defaultPath);
-              this.wallet.type = 'keystore';
-              this.wallet.wallet = wallet;
-              this.wallet.privateKey = wallet.privateKey;
-              this.wallet.privateKeyError = null;
-              this.wallet.address = wallet.address;
-              this.wallet.publicKey = wallet.publicKey;
-              this.wallet.compressedPublicKey = ethers.utils.computePublicKey(wallet.publicKey, true);
-              console.log(moment().format("HH:mm:ss") + " generateRandomPrivateKey - this.wallet: " + JSON.stringify(this.wallet, null, 2));
-            } catch (e) {
-              console.log(moment().format("HH:mm:ss") + " generateRandomPrivateKey ERROR: " + e.message);
-            }
-          },
-
-          async recomputeFromPrivateKey() {
-            console.log(moment().format("HH:mm:ss") + " recomputeFromPrivateKey: " + JSON.stringify(this.wallet));
-            if (this.wallet.tab == 1) {
-              console.log(moment().format("HH:mm:ss") + " recomputeFromPrivateKey - privatekey: " + JSON.stringify(this.wallet));
-              if (this.wallet.privateKey) {
-                try {
-                  const wallet = new ethers.Wallet(this.wallet.privateKey);
-                  this.wallet.privateKeyError = null;
-                  this.wallet.address = wallet.address;
-                  this.wallet.publicKey = wallet.publicKey;
-                  this.wallet.compressedPublicKey = ethers.utils.computePublicKey(wallet.publicKey, true);
-                } catch (e) {
-                  console.log(moment().format("HH:mm:ss") + " recomputeFromPrivateKey - privatekey ERROR: " + e.message);
-                  this.wallet.privateKeyError = e.message;
-                  this.wallet.address = null;
-                  this.wallet.publicKey = null;
-                  this.wallet.compressedPublicKey = null;
-                }
-              } else {
-                this.wallet.privateKeyError = null;
-                this.wallet.address = null;
-                this.wallet.publicKey = null;
-                this.wallet.compressedPublicKey = null;
-              }
-            }
-          },
-
-          async loadPrivateKeyFromKeystore() {
-            console.log(moment().format("HH:mm:ss") + " loadPrivateKeyFromKeystore");
-            try {
-              console.log(moment().format("HH:mm:ss") + " loadPrivateKeyFromKeystore - this.wallet.keystoreFileContent: " + this.wallet.keystoreFileContent);
-              console.log(moment().format("HH:mm:ss") + " loadPrivateKeyFromKeystore - this.wallet.keystoreFilePassword: " + this.wallet.keystoreFilePassword);
-              const wallet = await ethers.Wallet.fromEncryptedJsonSync(this.wallet.keystoreFileContent, this.wallet.keystoreFilePassword);
-              this.wallet.type = 'keystore';
-              this.wallet.wallet = wallet;
-              this.wallet.privateKey = wallet.privateKey;
-              this.wallet.privateKeyError = null;
-              this.wallet.address = wallet.address;
-              this.wallet.publicKey = wallet.publicKey;
-              this.wallet.compressedPublicKey = ethers.utils.computePublicKey(wallet.publicKey, true);
-            } catch (e) {
-              console.log(moment().format("HH:mm:ss") + " loadPrivateKeyFromKeystore - keystorefile ERROR: " + e.message);
-            }
-            this.$bvModal.hide('modal-loadprivatekeyfromkeystore');
-          },
-
-          async savePrivateKeyToKeystore() {
-            console.log(moment().format("HH:mm:ss") + " savePrivateKeyToKeystore - this.wallet.privateKey: " + JSON.stringify(this.wallet.privateKey));
-            const filename = "UTC--" + moment.utc().format("YYYY-MM-DDTHH-mm-ss") + ".0Z--" + this.wallet.address.slice(2).toLowerCase();
-            console.log("filename: " + filename);
-            const wallet = new ethers.Wallet(this.wallet.privateKey);
-            const encrypted = await wallet.encrypt(this.wallet.keystoreFilePassword);
-            console.log(moment().format("HH:mm:ss") + " savePrivateKeyToKeystore - encrypted: " + encrypted);
-            const encryptedObject = JSON.parse(encrypted);
-            // const filename = encryptedObject && encryptedObject['x-ethers'] && encryptedObject['x-ethers'].gethFilename || "UTC--error-getting-filename";
-            console.log("filename: " + filename);
-            console.log(moment().format("HH:mm:ss") + " savePrivateKeyToKeystore - JSON.stringify(JSON.parse(encrypted), null, 2): " + JSON.stringify(JSON.parse(encrypted), null, 2));
-            let jsonContent = "data:text/json;charset=utf-8," + encrypted;
-            console.log(moment().format("HH:mm:ss") + " savePrivateKeyToKeystore - jsonContent: " + jsonContent);
-            var encodedUri = encodeURI(jsonContent);
-            var link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", filename);
-            document.body.appendChild(link); // Required for FF
-            link.click(); // This will download the data with the specified file name
-            this.$bvModal.hide('modal-saveprivatekeytokeystore');
-          },
-
-          async keystoreFileChange(fileName, fileList) {
-            console.log(moment().format("HH:mm:ss") + " keystoreFileChange: " + JSON.stringify(fileName));
-            const reader = new FileReader();
-            this.wallet.keystoreFileContent = {};
-            const t = this;
-            reader.onload = function (event) {
-              const data = event.target.result;
-              t.wallet.keystoreFileContent = data;
-              console.log(moment().format("HH:mm:ss") + " keystoreFileContent: " + t.wallet.keystoreFileContent);
-            };
-            await reader.readAsText(fileList[0]);
-          },
-
           async testIt() {
             console.log(moment().format("HH:mm:ss") + " testIt");
             const privateKey = "{myprivatekey}";
@@ -1260,108 +1078,9 @@
             console.log("sig: " + sig);
           },
 
-          // async processData(provider) {
-          //   console.log(moment().format("HH:mm:ss") + " processData BEGIN");
-          //   const accounts = this.accounts;
-          //   const events = this.events[this.chainId] || {};
-          //   for (const blockNumber of Object.keys(events).sort((a, b) => { return a - b })) {
-          //     const blockNumberData = events[blockNumber];
-          //     for (const logIndex of Object.keys(blockNumberData).sort((a, b) => { return a - b })) {
-          //       const eventData = events[blockNumber][logIndex];
-          //       const contract = eventData.contract;
-          //       const account = accounts[this.chainId] && accounts[this.chainId][contract] || null;
-          //       // console.log(event.blockNumber + "." + event.txIndex + "." + event.logIndex + " " + JSON.stringify(event) + " " + JSON.stringify(account));
-          //       if (account) {
-          //         const type = account.customType || account.type;
-          //         if (type == "erc20") {
-          //           if (!('approvals' in account)) {
-          //             account.approvals = {};
-          //           }
-          //           if (!(eventData.owner in account.approvals)) {
-          //             account.approvals[eventData.owner] = {};
-          //           }
-          //           account.approvals[eventData.owner][eventData.spender] = eventData.value;
-          //         } else if (type == "erc721") {
-          //           if (eventData.eventName == "Approval") {
-          //             if (!('approvals' in account)) {
-          //               account.approvals = {};
-          //             }
-          //             if (!(eventData.owner in account.approvals)) {
-          //               account.approvals[eventData.owner] = {};
-          //             }
-          //             account.approvals[eventData.owner][eventData.value] = eventData.spender;
-          //           } else if (eventData.eventName == "ApprovalForAll") {
-          //             if (!('approvalsForAll' in account)) {
-          //               account.approvalsForAll = {};
-          //             }
-          //             if (!(eventData.owner in account.approvalsForAll)) {
-          //               account.approvalsForAll[eventData.owner] = {};
-          //             }
-          //             account.approvalsForAll[eventData.owner][eventData.spender] = eventData.value;
-          //           }
-          //         } else if (type == "erc1155") {
-          //           if (!('approvalsForAll' in account)) {
-          //             account.approvalsForAll = {};
-          //           }
-          //           if (!(eventData.owner in account.approvalsForAll)) {
-          //             account.approvalsForAll[eventData.owner] = {};
-          //           }
-          //           account.approvalsForAll[eventData.owner][eventData.spender] = eventData.value;
-          //         }
-          //         Vue.set(this.accounts[this.chainId], contract, account);
-          //       } else {
-          //         console.log(moment().format("HH:mm:ss") + " processData - account: " + contract + " not found");
-          //       }
-          //     }
-          //   }
-          //   // Get current ERC-20 allowances as these amounts are reduced by `transferFrom(...)` calls
-          //   this.sync.total = 0;
-          //   for (const [account, accountData] of Object.entries(accounts[this.chainId])) {
-          //     const type = accountData.customType || accountData.type;
-          //     if (type == "erc20") {
-          //       for (const owner of this.accountsToSearch) {
-          //         const approvals = 'approvals' in accountData && accountData.approvals && accountData.approvals[owner] || {};
-          //         for (const [spender, approved] of Object.entries(approvals)) {
-          //           this.sync.total++;
-          //         }
-          //       }
-          //     }
-          //   }
-          //   this.sync.completed = 0;
-          //   this.sync.section = 'Latest ERC-20 Allowances';
-          //   for (const [account, accountData] of Object.entries(accounts[this.chainId])) {
-          //     const type = accountData.customType || accountData.type;
-          //     if (type == "erc20" && !this.sync.halt) {
-          //       for (const owner of this.accountsToSearch) {
-          //         const approvals = 'approvals' in accountData && accountData.approvals && accountData.approvals[owner] || {};
-          //         for (const [spender, approved] of Object.entries(approvals)) {
-          //           const erc20Contract = new ethers.Contract(account, ERC20ABI, provider);
-          //           const newValue = await erc20Contract.allowance(owner, spender);
-          //           accountData.approvals[owner][spender] = newValue.toString();
-          //           Vue.set(this.accounts[this.chainId], account, accountData);
-          //           this.sync.completed++;
-          //         }
-          //       }
-          //     }
-          //   }
-          //   if (!this.sync.halt) {
-          //     localStorage.approvalAccounts = JSON.stringify(accounts);
-          //     Vue.set(this, 'accounts', accounts);
-          //   }
-          //   this.forceRefresh++; // UI refresh workaround
-          //   console.log(moment().format("HH:mm:ss") + " processData END");
-          // },
-
           saveSettings() {
             localStorage.approvalToolSettings = JSON.stringify(this.settings);
           },
-          // async processNewBlock(blockNumber) {
-          //   console.log(moment().format("HH:mm:ss") + " processNewBlock[" + this.chainId + "] #" + this.commify0(blockNumber) + ", latest #" + this.commify0(this.blockNumber) + " @ " + moment.unix(this.timestamp).format("YYYY-MM-DD HH:mm:ss") + " " + moment.unix(this.timestamp).fromNow());
-          // },
-          // async halt() {
-          //   this.sync.halt = true;
-          //   console.log(moment().format("HH:mm:ss") + " halt()");
-          // },
           commify0(n) {
             if (n != null) {
               return Number(n).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
@@ -1392,89 +1111,9 @@
           //   }
           //   return null;
           // },
-          // formatTimeDiff(unixtime) {
-          //   if (!unixtime) {
-          //     return "";
-          //   } else {
-          //     return moment.unix(unixtime).fromNow();
-          //   }
-          // },
-          // nameOrAddress(address, length = 0) {
-          //   let result = null;
-          //   const accounts = this.accounts[this.chainId] || {};
-          //   if (address in accounts) {
-          //     result = accounts[address].customName || accounts[address].name || address;
-          //   } else {
-          //     result = address;
-          //   }
-          //   if (result && length > 0) {
-          //     result = result.substring(0, length);
-          //   }
-          //   return result;
-          // },
-          // addressDescription(address) {
-          //   const accounts = this.accounts[this.chainId] || {};
-          //   if (address in accounts) {
-          //     result = "address=" + address;
-          //     for (let key of ['type', 'customType', 'symbol', 'name', 'customName', 'decimals', 'customDecimals', 'source']) {
-          //       if (key in accounts[address] && accounts[address][key]) {
-          //         result = result + "; " + key + "=" + accounts[address][key];
-          //       }
-          //     }
-          //   } else {
-          //     result = address;
-          //   }
-          //   return result;
-          // },
           copyToClipboard(str) {
             navigator.clipboard.writeText(str);
           },
-          // async connectToWeb3() {
-          //   if (!window.ethereum) {
-          //     this.connected = false;
-          //   } else {
-          //     try {
-          //       const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-          //       this.connected = window.ethereum.isConnected();
-          //     } catch (e) {
-          //       console.log("window.ethereum.request error: " + e.message);
-          //       this.connected = false;
-          //     }
-          //   }
-          //   if (!this.connected) {
-          //     alert("Please use the https://metamask.io addon with Firefox, Chromium, Opera or Chrome, or any other other web3 browser, for web3 data retrieval. And refresh!");
-          //   } else {
-          //     const t = this;
-          //     function handleChainChanged(_chainId) {
-          //       t.chainId = _chainId;
-          //       console.log(moment().format("HH:mm:ss") + " connectToWeb3 - handleChainChanged - this.chainId: " + t.chainId);
-          //       alert('Ethereum chain has changed - reloading this page.')
-          //       window.location.reload();
-          //     }
-          //     window.ethereum.on('chainChanged', handleChainChanged);
-          //     const provider = new ethers.providers.Web3Provider(window.ethereum);
-          //     async function handleAccountsChanged(accounts) {
-          //       const signer = provider.getSigner();
-          //       t.coinbase = await signer.getAddress();
-          //       console.log(moment().format("HH:mm:ss") + " connectToWeb3 - handleAccountsChanged: " + t.coinbase);
-          //     }
-          //     window.ethereum.on('accountsChanged', handleAccountsChanged);
-          //     async function handleNewBlock(blockNumber) {
-          //       if (!t.blockNumber || blockNumber > t.blockNumber) {
-          //         const block = await provider.getBlock("latest");
-          //         t.blockNumber = block.number;
-          //         t.timestamp = block.timestamp;
-          //         await t.processNewBlock(blockNumber);
-          //       }
-          //     }
-          //     provider.on("block", handleNewBlock);
-          //     const signer = provider.getSigner();
-          //     this.coinbase = await signer.getAddress();
-          //     const network = await provider.getNetwork();
-          //     this.chainId = network.chainId;
-          //     console.log(moment().format("HH:mm:ss") + " connectToWeb3[" + this.chainId + "]");
-          //   }
-          // },
         },
 
         // --- MOUNTED ---
@@ -1482,25 +1121,6 @@
           if ('topSecretsOfflineAddresses' in localStorage) {
             this.addresses = JSON.parse(localStorage.topSecretsOfflineAddresses);
           }
-
-          // (async() => {
-          //   await this.connectToWeb3();
-          // })();
-          // if ('approvalToolChainId' in localStorage) {
-          //   this.chainId = localStorage.approvalToolChainId;
-          // }
-          // if ('approvalToolCoinbase' in localStorage) {
-          //   this.coinbase = localStorage.approvalToolCoinbase;
-          // }
-          // if ('approvalToolSettings' in localStorage) {
-          //   const tempSettings = JSON.parse(localStorage.approvalToolSettings);
-          //   if ('version' in tempSettings && tempSettings.version == this.settings.version) {
-          //     this.settings = tempSettings;
-          //     if (this.settings.approvalsTable.currentPage > 1) {
-          //       this.settings.approvalsTable.currentPage = 1;
-          //     }
-          //   }
-          // }
         },
       })
     </script>
