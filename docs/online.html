@@ -664,7 +664,7 @@
               from: null,
               to: null,
               amount: null,
-              amountUnit: "ethers",
+              amountUnit: "ether",
               // data: null,
               // nonce: null,
               // signature: null,
@@ -733,7 +733,7 @@
           ],
 
           unitOptions: [
-            { value: "ethers", text: 'Ethers' },
+            { value: "ether", text: 'Ether' },
             { value: "gwei", text: 'Gwei' },
             { value: "wei", text: 'Wei' },
           ],
@@ -1281,10 +1281,32 @@
           },
 
           async prepareEthTxRefresh() {
-            console.log(moment().format("HH:mm:ss") + " prepareEthTxRefresh: " + JSON.stringify(this.prepareEthTx, null, 2));
+            console.log(moment().format("HH:mm:ss") + " prepareEthTxRefresh: " + JSON.stringify(this.settings.prepareEthTx, null, 2));
             const provider = new ethers.providers.Web3Provider(window.ethereum);
             if (this.settings.prepareEthTx.from) {
               this.settings.prepareEthTx.transactionCount = await provider.getTransactionCount(this.settings.prepareEthTx.from);
+
+              const signer = new ethers.VoidSigner(this.settings.prepareEthTx.from, provider);
+              // console.log(moment().format("HH:mm:ss") + " prepareEthTxRefresh - signer: " + JSON.stringify(signer, null, 2));
+              console.table(signer);
+              const tx = {
+                from: this.settings.prepareEthTx.from,
+                to: this.settings.prepareEthTx.to,
+                // gasLimit: 50000,
+                // gasPrice: 1000000,
+                type: 2,
+                maxFeePerGas: 1234000,
+                maxPriorityFeePerGas: 1234000,
+                value: 1,
+                data: null,
+                nonce: this.settings.prepareEthTx.transactionCount,
+                chainId: this.chainId,
+              };
+              const estimatedGas = await signer.estimateGas(tx);
+              console.log(moment().format("HH:mm:ss") + " prepareEthTxRefresh - estimatedGas: " + estimatedGas.toString());
+
+
+
             } else {
               this.settings.prepareEthTx.transactionCount = null;
             }
