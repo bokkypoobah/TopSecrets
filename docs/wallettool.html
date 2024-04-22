@@ -49,11 +49,6 @@
           <b-alert size="sm" dismissible variant="warning" show class="m-1 mb-0 my-0">
             Warning: This is experimental unaudited work-in-progress software. This dapp is meant for use on permanently offline computers.
           </b-alert>
-          <b-card v-if="false" class="m-2 p-1" header-class="warningheader" header="Welcome" v-if="!coinbase">
-            <b-card-text>
-              Please install the MetaMask extension and connect to the Ethereum Mainnet or an EVM compatible chain. Then refresh this page, and click the [Connect] button on the top right.
-            </b-card-text>
-          </b-card>
 
           <!-- :MODALLOADPRIVATEKEYFROMKEYSTORE -->
           <b-modal id="modal-loadprivatekeyfromkeystore" hide-footer size="lg">
@@ -176,22 +171,6 @@
 
         <b-card no-header body-class="m-0 p-0" class="m-0 p-0 border-0">
           <div class="d-flex flex-wrap m-0 p-0">
-            <div class="ml-0 mt-1 pl-1">
-              <font v-if="false && connected" size="-2">
-                <!-- <b-link v-if="coinbase" :href="'https://etherscan.io/address/' + coinbase" v-b-popover.hover.bottom="'Coinbase'" target="_blank">
-                  {{ coinbase.substring(0, 10) }}
-                </b-link> -->
-                <b-link v-if="chainId" :href="'https://etherscan.io/'" v-b-popover.hover.bottom="'Network'" target="_blank">
-                  {{ chainId == '1' ? 'Mainnet' : 'Unsupported' }}
-                </b-link>
-                <b-link v-if="blockNumber" :href="'https://etherscan.io/block/' + blockNumber" v-b-popover.hover.bottom="'Latest block'" target="_blank">
-                  {{ '#' + commify0(blockNumber) }}
-                </b-link>
-                <b-link v-if="blockNumber" :href="'https://etherscan.io/block/' + blockNumber" v-b-popover.hover.bottom="formatTimestamp(timestamp)" target="_blank">
-                  {{ formatTimeDiff(timestamp) }}
-                </b-link>
-              </font>
-            </div>
             <div class="mt-0 flex-grow-1">
             </div>
             <div class="mt-0 pl-1 pr-1">
@@ -237,28 +216,13 @@
             publicKey: null,
             compressedPublicKey: null,
             address: null,
-
-            hiddenUsername: null, // For HTML accessibility
           },
 
           generatedAddresses: [],
           selectedAddress: null,
 
-          connected: false,
-          chainId: null,
-          coinbase: null,
-          blockNumber: null,
-          timestamp: null,
-          forceRefresh: 0,
-
           settings: {
             tabIndex: 0,
-            addressesTable: {
-              filter: null,
-              currentPage: 1,
-              pageSize: 10,
-              sortOption: 'addressasc',
-            },
             version: 12,
           },
 
@@ -266,7 +230,6 @@
             { name: 'mnemonic', text: 'Mnemonic Seed Phrase' },
             { name: 'privatekey', text: 'Private Key' },
           ],
-
           randomBytesLengthMnemonicWordsOptions: [
             { value: 16, text: '12 Words' },
             { value: 20, text: '15 Words' },
@@ -274,7 +237,6 @@
             { value: 28, text: '21 Words' },
             { value: 32, text: '24 Words' },
           ],
-
           // MM HW Paths
           // Ledger Live
           // Legacy (MEW/MyCrypto)
@@ -285,7 +247,6 @@
             { value: "m/44'/60'/0'/{index}/0", text: "Test-1 m/44'/60'/0'/{index}/0" },
             { value: "m/44'/60'/0'/0/{index}/0", text: "Test-2 m/44'/60'/0'/0/{index}/0" },
           ],
-
           indexPageSizeOptions: [
             { value: 1, text: '1' },
             { value: 5, text: '5' },
@@ -293,14 +254,12 @@
             { value: 50, text: '50' },
             { value: 100, text: '100' },
           ],
-
           generatedAddressesFields: [
             { key: 'index', label: '#', sortable: false, thStyle: 'width: 5%;', tdClass: 'text-truncate' },
             { key: 'path', label: 'Path', sortable: false, thStyle: 'width: 10%;', thClass: 'text-left', tdClass: 'text-left' },
             { key: 'address', label: 'Address', sortable: false, thStyle: 'width: 35%;', thClass: 'text-left', tdClass: 'text-left' },
             { key: 'privateKey', label: 'Private Key', sortable: false, thStyle: 'width: 50%;', thClass: 'text-left', tdClass: 'text-left' },
           ],
-
         },
 
         // --- COMPUTED ---
@@ -335,7 +294,7 @@
           generateDerivedAddresses() {
             console.log(moment().format("HH:mm:ss") + " generateDerivedAddresses - this.wallet: " + JSON.stringify(this.wallet, null, 2));
             const results = [];
-            if (this.wallet.type == 'mnemonic' && this.wallet.mnemonic.phrase) {
+            if (this.wallet.tab == 0 && this.wallet.mnemonic.phrase) {
               try {
                 const node = ethers.utils.HDNode.fromMnemonic(this.wallet.mnemonic.phrase, this.wallet.mnemonic.passphrase);
                 for (let i = 0; i < this.wallet.pageSize; i++) {
