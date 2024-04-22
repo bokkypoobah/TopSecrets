@@ -241,75 +241,6 @@
             hiddenUsername: null, // For HTML accessibility
           },
 
-          newWalletFromMnemonic: {
-            phrase: null,
-            randomBytesLength: 16, // 12 words
-            phraseError: null,
-            passphrase: null,
-            derivationPath: "m/44'/60'/0'/0/{index}",
-            page: 0,
-            pageSize: 10,
-            selectedItem: null,
-            name: null,
-            // path: "m/44'/60'/0'/0/0", // null,
-            // locale: null,
-            password: null,
-            confirmPassword: null,
-          },
-
-          newWalletFromPrivateKey: {
-            privateKey: null,
-            privateKeyError: null,
-            address: null,
-            name: null,
-            password: null,
-            confirmPassword: null,
-          },
-
-          newWalletFromKeystore: {
-            keystoreFile: null,
-            keystoreFilePassword: null,
-            keystoreFileContent: null,
-            privateKey: null,
-            address: null,
-            name: null,
-            password: null,
-            confirmPassword: null,
-          },
-
-          address: {
-            mode: 'vieworupdate', // TODO: 'add' or 'vieworupdate'
-            type: null,
-            address: null,
-            addressError: null,
-            name: null,
-            keystore: null,
-            password: null,
-            passwordError: null,
-            privateKey: null,
-          },
-
-          signMessage: {
-            wallet: null,
-            message: null,
-            signature: null,
-          },
-
-          checkMessage: {
-            message: null,
-            signature: null,
-          },
-
-          signEthTx: {
-            from: null,
-            to: null,
-            amount: null,
-            amountUnit: "ethers",
-            data: null,
-            nonce: null,
-            signature: null,
-          },
-
           generatedAddresses: [],
           selectedAddress: null,
 
@@ -330,27 +261,10 @@
             },
             version: 12,
           },
-          addresses: {},
-          // sync: {
-          //   section: null,
-          //   total: null,
-          //   completed: null,
-          //   halt: false,
-          // },
 
           tabs: [
             { name: 'mnemonic', text: 'Mnemonic Seed Phrase' },
             { name: 'privatekey', text: 'Private Key' },
-          ],
-
-          addressTypeOptions: [
-            { value: 'walletfrommnemonic', text: 'Wallet From Mnemonic', disabled: true },
-            { value: 'walletfromprivatekey', text: 'Wallet From Private Key', disabled: true },
-            { value: 'walletfromkeystore', text: 'Wallet From Keystore', disabled: true },
-            { value: 'address', text: 'Address' },
-            { value: 'erc20', text: 'ERC-20 Token Contract' },
-            { value: 'erc721', text: 'ERC-721 Token Contract' },
-            { value: 'contract', text: 'Contract' },
           ],
 
           randomBytesLengthMnemonicWordsOptions: [
@@ -359,12 +273,6 @@
             { value: 24, text: '18 Words' },
             { value: 28, text: '21 Words' },
             { value: 32, text: '24 Words' },
-          ],
-
-          unitOptions: [
-            { value: "ethers", text: 'Ethers' },
-            { value: "gwei", text: 'Gwei' },
-            { value: "wei", text: 'Wei' },
           ],
 
           // MM HW Paths
@@ -386,25 +294,6 @@
             { value: 100, text: '100' },
           ],
 
-          pageSizes: [
-            { value: 5, text: '5' },
-            { value: 10, text: '10' },
-            { value: 25, text: '25' },
-            { value: 50, text: '50' },
-            { value: 100, text: '100' },
-            { value: 500, text: '500' },
-            { value: 1000, text: '1k' },
-            { value: 2500, text: '2.5k' },
-            { value: 10000, text: '10k' },
-          ],
-
-          newWalletFromMnemonicAddressesFields: [
-            { key: 'index', label: '#', sortable: false, thStyle: 'width: 10%;', tdClass: 'text-truncate' },
-            { key: 'path', label: 'Path', sortable: false, thStyle: 'width: 30%;', thClass: 'text-left', tdClass: 'text-left' },
-            { key: 'address', label: 'Address', sortable: false, thStyle: 'width: 60%;', thClass: 'text-left', tdClass: 'text-left' },
-            // { key: 'privateKey', label: 'Private Key', sortable: false, thStyle: 'width: 30%;', thClass: 'text-left', tdClass: 'text-left' },
-          ],
-
           generatedAddressesFields: [
             { key: 'index', label: '#', sortable: false, thStyle: 'width: 5%;', tdClass: 'text-truncate' },
             { key: 'path', label: 'Path', sortable: false, thStyle: 'width: 10%;', thClass: 'text-left', tdClass: 'text-left' },
@@ -412,70 +301,12 @@
             { key: 'privateKey', label: 'Private Key', sortable: false, thStyle: 'width: 50%;', thClass: 'text-left', tdClass: 'text-left' },
           ],
 
-          addressesFields: [
-            { key: 'number', label: '#', sortable: false, thStyle: 'width: 5%;', tdClass: 'text-truncate' },
-            { key: 'type', label: 'Type', sortable: false, thStyle: 'width: 15%;', thClass: 'text-left', tdClass: 'text-left' },
-            { key: 'address', label: 'Address', sortable: false, thStyle: 'width: 40%;', thClass: 'text-left', tdClass: 'text-truncate' },
-            { key: 'name', label: 'Name', sortable: false, thStyle: 'width: 40%;', thClass: 'text-left', tdClass: 'text-truncate' },
-          ],
-
         },
 
         // --- COMPUTED ---
         computed: {
-
-          addressesOptions() {
-            const results = [];
-            results.push({ value: null, text: "(Select)" });
-            for (const [address, data] of Object.entries(this.addresses)) {
-              results.push({ value: address, text: address + (data.name ? (" " + data.name) : "") });
-            }
-            return results;
-          },
-
-          checkMessageRecoveredAddress() {
-            let result = null;
-            if (this.checkMessage.message && this.checkMessage.signature) {
-              try {
-                console.log(moment().format("HH:mm:ss") + " checkMessageRecoveredAddress - message: " + this.checkMessage.message);
-                let pubKey = ethers.utils.recoverPublicKey(ethers.utils.arrayify(ethers.utils.hashMessage(this.checkMessage.message)), this.checkMessage.signature);
-                result = ethers.utils.computeAddress(pubKey);
-              } catch (e) {
-                console.log(moment().format("HH:mm:ss") + " checkMessageRecoveredAddress ERROR: " + e.message);
-              }
-            }
-            return result;
-          },
-
-          newWalletFromMnemonicAddresses() {
-            const results = [];
-            if (this.newWalletFromMnemonic.phrase) {
-              try {
-                const node = ethers.utils.HDNode.fromMnemonic(this.newWalletFromMnemonic.phrase, this.newWalletFromMnemonic.passphrase);
-                for (let i = 0; i < this.newWalletFromMnemonic.pageSize; i++) {
-                  const index = parseInt(i) + (this.newWalletFromMnemonic.page * this.newWalletFromMnemonic.pageSize);
-                  let path = this.newWalletFromMnemonic.derivationPath.replace(/{index}/, index);
-                  console.log("index: " + index + " => " + path);
-                  const w = node.derivePath(path);
-                  results.push({
-                    index,
-                    path,
-                    privateKey: w.privateKey,
-                    address: w.address,
-                    // publicKey: w.publicKey,
-                    // compressedPublicKey: ethers.utils.computePublicKey(w.publicKey, true),
-                  });
-                }
-              } catch (e) {
-                console.log(moment().format("HH:mm:ss") + " newWalletFromMnemonicAddresses ERROR: " + e.message);
-              }
-            }
-            return results;
-          },
-
           filteredAddresses() {
             // console.log(moment().format("HH:mm:ss") + " filteredAddresses: " + JSON.stringify(this.addresses));
-            // let results = this.forceRefresh % 2 == 0 ? [] : [];
             const results = [];
             for (const [address, data] of Object.entries(this.addresses)) {
               results.push({
@@ -489,51 +320,6 @@
           },
           filteredSortedAddresses() {
             let results = this.filteredAddresses;
-          //   if (this.settings.accountsTable.sortOption == 'typenameasc') {
-          //     results.sort((a, b) => {
-          //       const typeA = a.customType || a.type;
-          //       const typeB = b.customType || b.type;
-          //       const sortIndexA = this.accountTypeOptions.findIndex(e => e.value == typeA);
-          //       const sortIndexB = this.accountTypeOptions.findIndex(e => e.value == typeB);
-          //       if (sortIndexA == sortIndexB) {
-          //         const namea = a.customName || a.name;
-          //         const nameb = b.customName || b.name;
-          //         return ('' + namea).localeCompare(nameb);
-          //       } else {
-          //         return sortIndexA - sortIndexB;
-          //       }
-          //     });
-          //   } else if (this.settings.accountsTable.sortOption == 'typenamedsc') {
-          //     results.sort((a, b) => {
-          //       const typeA = a.customType || a.type;
-          //       const typeB = b.customType || b.type;
-          //       const sortIndexA = this.accountTypeOptions.findIndex(e => e.value == typeA);
-          //       const sortIndexB = this.accountTypeOptions.findIndex(e => e.value == typeB);
-          //       if (sortIndexA == sortIndexB) {
-          //         const namea = a.customName || a.name;
-          //         const nameb = b.customName || b.name;
-          //         return ('' + nameb).localeCompare(namea);
-          //       } else {
-          //         return sortIndexB - sortIndexA;
-          //       }
-          //     });
-          //   } else if (this.settings.accountsTable.sortOption == 'nameasc') {
-          //     results.sort((a, b) => {
-          //       return ('' + a.name).localeCompare(b.name);
-          //     });
-          //   } else if (this.settings.accountsTable.sortOption == 'namedsc') {
-          //     results.sort((a, b) => {
-          //       return ('' + b.name).localeCompare(a.name);
-          //     });
-          //   } else if (this.settings.accountsTable.sortOption == 'addressasc') {
-          //     results.sort((a, b) => {
-          //       return ('' + a.address).localeCompare(b.address);
-          //     });
-          //   } else if (this.settings.accountsTable.sortOption == 'addressdsc') {
-          //     results.sort((a, b) => {
-          //       return ('' + b.address).localeCompare(a.address);
-          //     });
-          //   }
             return results;
           },
           pagedFilteredSortedWallets() {
@@ -551,23 +337,6 @@
 
           updateURL(where) {
             console.log(moment().format("HH:mm:ss") + " TODO updateURL: " + where);
-          },
-
-          addressesRowSelected(item) {
-            console.log(moment().format("HH:mm:ss") + " addressesRowSelected: " + JSON.stringify(item));
-            if (item && item.length > 0) {
-              this.address.mode = 'vieworupdate';
-              this.address.type = item[0].type;
-              this.address.address = item[0].address;
-              this.address.addressError = null;
-              this.address.name = item[0].name;
-              this.address.keystore = item[0].keystore;
-              this.address.password = null;
-              this.address.privateKey = null;
-              console.log(moment().format("HH:mm:ss") + " addressesRowSelected - this.address: " + JSON.stringify(this.address));
-              this.$refs.addressesTable.clearSelected();
-            }
-            this.$bvModal.show('modal-address');
           },
 
           generatedAddressesRowSelected(item) {
@@ -588,18 +357,14 @@
             this.$bvModal.show('modal-saveprivatekeytokeystore');
           },
 
-          // Older stuff below
-
           generateDerivedAddresses() {
             console.log(moment().format("HH:mm:ss") + " generateDerivedAddresses - this.wallet: " + JSON.stringify(this.wallet, null, 2));
             const results = [];
             if (this.wallet.type == 'mnemonic' && this.wallet.mnemonic.phrase) {
               try {
                 const node = ethers.utils.HDNode.fromMnemonic(this.wallet.mnemonic.phrase, this.wallet.mnemonic.passphrase);
-                // for (let index = this.wallet.page; index < (parseInt(this.wallet.page) + this.wallet.pageSize); index++) {
                 for (let i = 0; i < this.wallet.pageSize; i++) {
                   const index = parseInt(i) + (this.wallet.page * this.wallet.pageSize);
-                  console.log("index: " + index);
                   let path = this.wallet.derivationPath.replace(/{index}/, index);
                   const w = node.derivePath(path);
                   results.push({
@@ -635,26 +400,6 @@
             }
             this.$bvModal.hide('modal-generatemnemonic');
           },
-
-          // async recomputeFromMnemonic() {
-          //   console.log(moment().format("HH:mm:ss") + " recomputeFromMnemonic: " + JSON.stringify(this.wallet));
-          //   if (this.wallet.tab == 0) {
-          //     console.log(moment().format("HH:mm:ss") + " recomputeFromMnemonic - mnemonics: " + JSON.stringify(this.wallet));
-          //     try {
-          //       const wallet = new ethers.Wallet.fromMnemonic(this.wallet.mnemonic.phrase);
-          //       this.wallet.mnemonic.phraseError = null;
-          //       this.wallet.address = wallet.address;
-          //       this.wallet.publicKey = wallet.publicKey;
-          //       this.wallet.compressedPublicKey = ethers.utils.computePublicKey(wallet.publicKey, true);
-          //     } catch (e) {
-          //       console.log(moment().format("HH:mm:ss") + " recomputeFromMnemonic - mnemonics ERROR: " + e.message);
-          //       this.wallet.mnemonic.phraseError = e.message;
-          //       this.wallet.address = null;
-          //       this.wallet.publicKey = null;
-          //       this.wallet.compressedPublicKey = null;
-          //     }
-          //   }
-          // },
 
           generateRandomPrivateKey() {
             console.log(moment().format("HH:mm:ss") + " generateRandomPrivateKey");
@@ -791,271 +536,24 @@
             console.log("decoded: " + JSON.stringify(decoded, null, 2));
           },
 
-          async testItOld() {
-            console.log(moment().format("HH:mm:ss") + " testIt");
-            const privateKey = "{myprivatekey}";
-            const wallet = new ethers.Wallet(privateKey);
-            console.log("address: " + wallet.address);
-            const tx = {
-              from: wallet.address,
-              to: "0x7439E9Bb6D8a84dd3A23fe621A30F95403F87fB9",
-              gasLimit: 50000,
-              // gasPrice: 1000000,
-              type: 2,
-              maxFeePerGas: 1234000,
-              maxPriorityFeePerGas: 1234000,
-              value: 0,
-              data: "",
-              nonce: 35,
-              chainId: 11155111,
-            };
-            console.log("tx: " + JSON.stringify(tx));
-            // const populatedTx = await wallet.populateTransaction(tx);
-            // console.log("populatedTx: " + populatedTx);
-            const sig = await wallet.signTransaction(tx);
-            console.log("sig: " + sig);
-          },
-
-          // async processData(provider) {
-          //   console.log(moment().format("HH:mm:ss") + " processData BEGIN");
-          //   const accounts = this.accounts;
-          //   const events = this.events[this.chainId] || {};
-          //   for (const blockNumber of Object.keys(events).sort((a, b) => { return a - b })) {
-          //     const blockNumberData = events[blockNumber];
-          //     for (const logIndex of Object.keys(blockNumberData).sort((a, b) => { return a - b })) {
-          //       const eventData = events[blockNumber][logIndex];
-          //       const contract = eventData.contract;
-          //       const account = accounts[this.chainId] && accounts[this.chainId][contract] || null;
-          //       // console.log(event.blockNumber + "." + event.txIndex + "." + event.logIndex + " " + JSON.stringify(event) + " " + JSON.stringify(account));
-          //       if (account) {
-          //         const type = account.customType || account.type;
-          //         if (type == "erc20") {
-          //           if (!('approvals' in account)) {
-          //             account.approvals = {};
-          //           }
-          //           if (!(eventData.owner in account.approvals)) {
-          //             account.approvals[eventData.owner] = {};
-          //           }
-          //           account.approvals[eventData.owner][eventData.spender] = eventData.value;
-          //         } else if (type == "erc721") {
-          //           if (eventData.eventName == "Approval") {
-          //             if (!('approvals' in account)) {
-          //               account.approvals = {};
-          //             }
-          //             if (!(eventData.owner in account.approvals)) {
-          //               account.approvals[eventData.owner] = {};
-          //             }
-          //             account.approvals[eventData.owner][eventData.value] = eventData.spender;
-          //           } else if (eventData.eventName == "ApprovalForAll") {
-          //             if (!('approvalsForAll' in account)) {
-          //               account.approvalsForAll = {};
-          //             }
-          //             if (!(eventData.owner in account.approvalsForAll)) {
-          //               account.approvalsForAll[eventData.owner] = {};
-          //             }
-          //             account.approvalsForAll[eventData.owner][eventData.spender] = eventData.value;
-          //           }
-          //         } else if (type == "erc1155") {
-          //           if (!('approvalsForAll' in account)) {
-          //             account.approvalsForAll = {};
-          //           }
-          //           if (!(eventData.owner in account.approvalsForAll)) {
-          //             account.approvalsForAll[eventData.owner] = {};
-          //           }
-          //           account.approvalsForAll[eventData.owner][eventData.spender] = eventData.value;
-          //         }
-          //         Vue.set(this.accounts[this.chainId], contract, account);
-          //       } else {
-          //         console.log(moment().format("HH:mm:ss") + " processData - account: " + contract + " not found");
-          //       }
-          //     }
-          //   }
-          //   // Get current ERC-20 allowances as these amounts are reduced by `transferFrom(...)` calls
-          //   this.sync.total = 0;
-          //   for (const [account, accountData] of Object.entries(accounts[this.chainId])) {
-          //     const type = accountData.customType || accountData.type;
-          //     if (type == "erc20") {
-          //       for (const owner of this.accountsToSearch) {
-          //         const approvals = 'approvals' in accountData && accountData.approvals && accountData.approvals[owner] || {};
-          //         for (const [spender, approved] of Object.entries(approvals)) {
-          //           this.sync.total++;
-          //         }
-          //       }
-          //     }
-          //   }
-          //   this.sync.completed = 0;
-          //   this.sync.section = 'Latest ERC-20 Allowances';
-          //   for (const [account, accountData] of Object.entries(accounts[this.chainId])) {
-          //     const type = accountData.customType || accountData.type;
-          //     if (type == "erc20" && !this.sync.halt) {
-          //       for (const owner of this.accountsToSearch) {
-          //         const approvals = 'approvals' in accountData && accountData.approvals && accountData.approvals[owner] || {};
-          //         for (const [spender, approved] of Object.entries(approvals)) {
-          //           const erc20Contract = new ethers.Contract(account, ERC20ABI, provider);
-          //           const newValue = await erc20Contract.allowance(owner, spender);
-          //           accountData.approvals[owner][spender] = newValue.toString();
-          //           Vue.set(this.accounts[this.chainId], account, accountData);
-          //           this.sync.completed++;
-          //         }
-          //       }
-          //     }
-          //   }
-          //   if (!this.sync.halt) {
-          //     localStorage.approvalAccounts = JSON.stringify(accounts);
-          //     Vue.set(this, 'accounts', accounts);
-          //   }
-          //   this.forceRefresh++; // UI refresh workaround
-          //   console.log(moment().format("HH:mm:ss") + " processData END");
-          // },
-
           saveSettings() {
-            localStorage.approvalToolSettings = JSON.stringify(this.settings);
+            // localStorage.approvalToolSettings = JSON.stringify(this.settings);
           },
-          // async processNewBlock(blockNumber) {
-          //   console.log(moment().format("HH:mm:ss") + " processNewBlock[" + this.chainId + "] #" + this.commify0(blockNumber) + ", latest #" + this.commify0(this.blockNumber) + " @ " + moment.unix(this.timestamp).format("YYYY-MM-DD HH:mm:ss") + " " + moment.unix(this.timestamp).fromNow());
-          // },
-          // async halt() {
-          //   this.sync.halt = true;
-          //   console.log(moment().format("HH:mm:ss") + " halt()");
-          // },
           commify0(n) {
             if (n != null) {
               return Number(n).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
             }
             return null;
           },
-          // formatETH(e, precision = 9) {
-          //   try {
-          //     if (precision == 0) {
-          //       return e ? ethers.utils.formatEther(e) : null;
-          //     } else {
-          //       return e ? parseFloat(ethers.utils.formatEther(e)).toFixed(precision) : null;
-          //     }
-          //   } catch (err) {
-          //   }
-          //   return e.toFixed(precision);
-          // },
-          // formatDecimals(e, decimals = 18) {
-          //   return e ? ethers.utils.formatUnits(e, decimals) : null;
-          // },
-          // formatTimestamp(ts) {
-          //   if (ts != null) {
-          //     if (this.settings.reportingDateTime == 1) {
-          //       return moment.unix(ts).utc().format("YYYY-MM-DD HH:mm:ss");
-          //     } else {
-          //       return moment.unix(ts).format("YYYY-MM-DD HH:mm:ss");
-          //     }
-          //   }
-          //   return null;
-          // },
-          // formatTimeDiff(unixtime) {
-          //   if (!unixtime) {
-          //     return "";
-          //   } else {
-          //     return moment.unix(unixtime).fromNow();
-          //   }
-          // },
-          // nameOrAddress(address, length = 0) {
-          //   let result = null;
-          //   const accounts = this.accounts[this.chainId] || {};
-          //   if (address in accounts) {
-          //     result = accounts[address].customName || accounts[address].name || address;
-          //   } else {
-          //     result = address;
-          //   }
-          //   if (result && length > 0) {
-          //     result = result.substring(0, length);
-          //   }
-          //   return result;
-          // },
-          // addressDescription(address) {
-          //   const accounts = this.accounts[this.chainId] || {};
-          //   if (address in accounts) {
-          //     result = "address=" + address;
-          //     for (let key of ['type', 'customType', 'symbol', 'name', 'customName', 'decimals', 'customDecimals', 'source']) {
-          //       if (key in accounts[address] && accounts[address][key]) {
-          //         result = result + "; " + key + "=" + accounts[address][key];
-          //       }
-          //     }
-          //   } else {
-          //     result = address;
-          //   }
-          //   return result;
-          // },
           copyToClipboard(str) {
             navigator.clipboard.writeText(str);
           },
-          // async connectToWeb3() {
-          //   if (!window.ethereum) {
-          //     this.connected = false;
-          //   } else {
-          //     try {
-          //       const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-          //       this.connected = window.ethereum.isConnected();
-          //     } catch (e) {
-          //       console.log("window.ethereum.request error: " + e.message);
-          //       this.connected = false;
-          //     }
-          //   }
-          //   if (!this.connected) {
-          //     alert("Please use the https://metamask.io addon with Firefox, Chromium, Opera or Chrome, or any other other web3 browser, for web3 data retrieval. And refresh!");
-          //   } else {
-          //     const t = this;
-          //     function handleChainChanged(_chainId) {
-          //       t.chainId = _chainId;
-          //       console.log(moment().format("HH:mm:ss") + " connectToWeb3 - handleChainChanged - this.chainId: " + t.chainId);
-          //       alert('Ethereum chain has changed - reloading this page.')
-          //       window.location.reload();
-          //     }
-          //     window.ethereum.on('chainChanged', handleChainChanged);
-          //     const provider = new ethers.providers.Web3Provider(window.ethereum);
-          //     async function handleAccountsChanged(accounts) {
-          //       const signer = provider.getSigner();
-          //       t.coinbase = await signer.getAddress();
-          //       console.log(moment().format("HH:mm:ss") + " connectToWeb3 - handleAccountsChanged: " + t.coinbase);
-          //     }
-          //     window.ethereum.on('accountsChanged', handleAccountsChanged);
-          //     async function handleNewBlock(blockNumber) {
-          //       if (!t.blockNumber || blockNumber > t.blockNumber) {
-          //         const block = await provider.getBlock("latest");
-          //         t.blockNumber = block.number;
-          //         t.timestamp = block.timestamp;
-          //         await t.processNewBlock(blockNumber);
-          //       }
-          //     }
-          //     provider.on("block", handleNewBlock);
-          //     const signer = provider.getSigner();
-          //     this.coinbase = await signer.getAddress();
-          //     const network = await provider.getNetwork();
-          //     this.chainId = network.chainId;
-          //     console.log(moment().format("HH:mm:ss") + " connectToWeb3[" + this.chainId + "]");
-          //   }
-          // },
         },
 
         // --- MOUNTED ---
         mounted() {
-          if ('topSecretsOfflineAddresses' in localStorage) {
-            this.addresses = JSON.parse(localStorage.topSecretsOfflineAddresses);
-          }
-
-          // (async() => {
-          //   await this.connectToWeb3();
-          // })();
-          // if ('approvalToolChainId' in localStorage) {
-          //   this.chainId = localStorage.approvalToolChainId;
-          // }
-          // if ('approvalToolCoinbase' in localStorage) {
-          //   this.coinbase = localStorage.approvalToolCoinbase;
-          // }
-          // if ('approvalToolSettings' in localStorage) {
-          //   const tempSettings = JSON.parse(localStorage.approvalToolSettings);
-          //   if ('version' in tempSettings && tempSettings.version == this.settings.version) {
-          //     this.settings = tempSettings;
-          //     if (this.settings.approvalsTable.currentPage > 1) {
-          //       this.settings.approvalsTable.currentPage = 1;
-          //     }
-          //   }
+          // if ('topSecretsOfflineAddresses' in localStorage) {
+          //   this.addresses = JSON.parse(localStorage.topSecretsOfflineAddresses);
           // }
         },
       })
