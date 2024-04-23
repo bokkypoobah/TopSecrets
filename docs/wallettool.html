@@ -73,7 +73,7 @@
                   <b-form-input type="password" size="sm" id="address-confirmpassword" v-model.trim="address.confirmPassword" placeholder="Confirm password" style="max-width: 300px;"></b-form-input>
                 </div>
                 <div class="mt-0 pr-1">
-                  <b-button size="sm" :disabled="!address.password || (address.password != address.confirmPassword)" id="address-add-add" @click="saveMnemonicPrivateKeyToKeystore()" variant="primary">Save To Keystore</b-button>
+                  <b-button size="sm" :disabled="address.saving || !address.password || (address.password != address.confirmPassword)" id="address-add-add" @click="saveMnemonicPrivateKeyToKeystore()" variant="primary">{{ address.saving ? 'Saving To Keystore' : 'Save To Keystore' }}</b-button>
                 </div>
               </div>
             </b-form-group>
@@ -100,11 +100,14 @@
             <template #modal-title>
               Save Private Key To JSON/UTC Keystore
             </template>
-            <b-form-group label="Keystore File Password:" label-for="modal-saveprivatekeytokeystore-password" label-size="sm" label-cols-sm="5" label-align-sm="right" class="mx-0 my-1 p-0">
-              <b-form-input type="password" autocomplete="current-password" size="sm" id="modal-saveprivatekeytokeystore-password" v-model="wallet.keystoreFilePassword"></b-form-input>
+            <b-form-group label="Keystore Password:" label-for="modal-saveprivatekeytokeystore-password" label-size="sm" label-cols-sm="5" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-form-input type="password" autocomplete="current-password" size="sm" id="modal-saveprivatekeytokeystore-password" v-model="wallet.keystoreFilePassword" placeholder="Password"></b-form-input>
             </b-form-group>
-            <b-form-group label="" label-for="modal-saveprivatekeytokeystore-save" label-size="sm" label-cols-sm="5" label-align-sm="right" description="The encryption process may take up to half a minute" class="mx-0 my-1 p-0">
-              <b-button size="sm" :disabled="!wallet.keystoreFilePassword" id="modal-saveprivatekeytokeystore-save" @click="savePrivateKeyToKeystore()" variant="primary">Save</b-button>
+            <b-form-group label="Confirm:" label-for="modal-saveprivatekeytokeystore-confirmpassword" label-size="sm" label-cols-sm="5" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-form-input type="password" autocomplete="current-password" size="sm" id="modal-saveprivatekeytokeystore-confirmpassword" v-model="wallet.keystoreFileConfirmPassword" placeholder="Confirm"></b-form-input>
+            </b-form-group>
+            <b-form-group label="" label-for="modal-saveprivatekeytokeystore-save" label-size="sm" label-cols-sm="5" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-button size="sm" :disabled="wallet.keystoreFileSaving || !wallet.keystoreFilePassword || (wallet.keystoreFilePassword != wallet.keystoreFileConfirmPassword)" id="modal-saveprivatekeytokeystore-save" @click="savePrivateKeyToKeystore()" variant="primary">{{ wallet.keystoreFileSaving ? "Saving" : "Save"}}</b-button>
             </b-form-group>
           </b-modal>
 
@@ -247,7 +250,9 @@
 
             keystoreFile: null,
             keystoreFilePassword: null,
+            keystoreFileConfirmPassword: null,
             keystoreFileContent: null,
+            keystoreFileSaving: null,
 
             privateKey: null,
             privateKeyError: null,
@@ -268,6 +273,7 @@
             address: null,
             password: null,
             confirmPassword: null,
+            saving: null,
           },
 
           settings: {
@@ -472,6 +478,7 @@
 
           async savePrivateKeyToKeystore() {
             console.log(moment().format("HH:mm:ss") + " savePrivateKeyToKeystore - this.wallet.privateKey: " + JSON.stringify(this.wallet.privateKey));
+            this.wallet.keystoreFileSaving = true;
             const filename = "UTC--" + moment.utc().format("YYYY-MM-DDTHH-mm-ss") + ".0Z--" + this.wallet.address.slice(2).toLowerCase();
             console.log("filename: " + filename);
             const wallet = new ethers.Wallet(this.wallet.privateKey);
@@ -490,6 +497,7 @@
             document.body.appendChild(link); // Required for FF
             link.click(); // This will download the data with the specified file name
             this.$bvModal.hide('modal-saveprivatekeytokeystore');
+            this.wallet.keystoreFileSaving = null;
           },
 
           async keystoreFileChange(fileName, fileList) {
@@ -507,6 +515,7 @@
 
           async saveMnemonicPrivateKeyToKeystore() {
             console.log(moment().format("HH:mm:ss") + " saveMnemonicPrivateKeyToKeystore - this.address: " + JSON.stringify(this.address));
+            this.address.saving = true;
             const filename = "UTC--" + moment.utc().format("YYYY-MM-DDTHH-mm-ss") + ".0Z--" + this.address.address.slice(2).toLowerCase();
             console.log("filename: " + filename);
             const wallet = new ethers.Wallet(this.address.privateKey);
@@ -525,6 +534,7 @@
             document.body.appendChild(link); // Required for FF
             link.click(); // This will download the data with the specified file name
             this.$bvModal.hide('modal-saveprivatekeytokeystore');
+            this.address.saving = null;
           },
 
           download(withPrivateKeys) {
