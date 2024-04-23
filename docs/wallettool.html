@@ -73,7 +73,7 @@
                   <b-form-input type="password" size="sm" id="address-confirmpassword" v-model.trim="address.confirmPassword" placeholder="Confirm password" style="max-width: 300px;"></b-form-input>
                 </div>
                 <div class="mt-0 pr-1">
-                  <b-button size="sm" :disabled="address.saving || !address.password || (address.password != address.confirmPassword)" id="address-add-add" @click="saveMnemonicPrivateKeyToKeystore()" variant="primary">{{ address.saving ? 'Saving To Keystore' : 'Save To Keystore' }}</b-button>
+                  <b-button size="sm" :disabled="address.saving || !address.password || (address.password != address.confirmPassword)" id="address-add-add" @click="saveMnemonicPrivateKeyToKeystore()" variant="primary">{{ address.saving ? 'Saving To Keystore ' : 'Save To Keystore' }}<b-spinner v-if="address.saving" small variant="light" label="Spinning"></b-spinner></b-button>
                 </div>
               </div>
             </b-form-group>
@@ -107,7 +107,7 @@
               <b-form-input type="password" autocomplete="current-password" size="sm" id="modal-saveprivatekeytokeystore-confirmpassword" v-model="wallet.keystoreFileConfirmPassword" placeholder="Confirm"></b-form-input>
             </b-form-group>
             <b-form-group label="" label-for="modal-saveprivatekeytokeystore-save" label-size="sm" label-cols-sm="5" label-align-sm="right" class="mx-0 my-1 p-0">
-              <b-button size="sm" :disabled="wallet.keystoreFileSaving || !wallet.keystoreFilePassword || (wallet.keystoreFilePassword != wallet.keystoreFileConfirmPassword)" id="modal-saveprivatekeytokeystore-save" @click="savePrivateKeyToKeystore()" variant="primary">{{ wallet.keystoreFileSaving ? "Saving" : "Save"}}</b-button>
+              <b-button size="sm" :disabled="wallet.keystoreFileSaving || !wallet.keystoreFilePassword || (wallet.keystoreFilePassword != wallet.keystoreFileConfirmPassword)" id="modal-saveprivatekeytokeystore-save" @click="savePrivateKeyToKeystore()" variant="primary">{{ wallet.keystoreFileSaving ? "Saving " : "Save"}}<b-spinner v-if="wallet.keystoreFileSaving" small variant="light" label="Spinning"></b-spinner></b-button>
             </b-form-group>
           </b-modal>
 
