@@ -289,32 +289,47 @@
           <!-- :ETH -->
           <b-card v-if="settings.tabIndex == 1" class="m-0 p-0 border-0" body-class="m-1 p-0">
             <!-- :SIGNETHTX -->
-            <b-card sub-title="Sign ETH Transaction Offline" bg-variant="light" class="p-0 m-1" style="max-width: 800px;">
-              <b-form-group label="Type:" label-for="signethtx-txtype" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-                <b-form-select size="sm" id="signethtx-txtype" v-model="settings.signEthTx.txType" :options="txTypeOptions" @change="saveSettings();" style="max-width: 300px;"></b-form-select>
+            <b-card sub-title="Sign ETH Transaction Offline" bg-variant="light" class="p-0 m-1" style="max-width: 900px;">
+              <b-form-group label-cols-lg="2" label="Input" label-size="md" label-class="font-weight-bold pt-0" class="mb-0 mt-3">
+                <b-form-group label="Type:" label-for="signethtx-txtype" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-form-select size="sm" id="signethtx-txtype" v-model="settings.signEthTx.txType" :options="txTypeOptions" @change="saveSettings();" style="max-width: 300px;"></b-form-select>
+                </b-form-group>
+                <b-form-group label="From:" label-for="signethtx-from" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-form-select size="sm" id="signethtx-from" v-model="settings.signEthTx.from" :options="addressesOptions" @change="saveSettings();" v-b-popover.hover.bottom="'Select Wallet'"></b-form-select>
+                </b-form-group>
+                <b-form-group label="To:" label-for="signethtx-to" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-form-select size="sm" id="signethtx-to" v-model="settings.signEthTx.to" :options="addressesOptions" @change="saveSettings();" v-b-popover.hover.bottom="'Select Address'"></b-form-select>
+                </b-form-group>
+                <b-form-group label="Amount:" label-for="signethtx-amount" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <div class="d-flex flex-wrap m-0 p-0">
+                    <div class="mt-0 pr-1">
+                      <b-form-input type="text" size="sm" id="signethtx-amount" v-model.trim="settings.signEthTx.amount" @change="saveSettings();"></b-form-input>
+                    </div>
+                    <div class="mt-0 pr-1">
+                      <b-form-select size="sm" v-model="settings.signEthTx.amountUnit" :options="unitOptions" @change="saveSettings();"></b-form-select>
+                    </div>
+                  </div>
+                </b-form-group>
               </b-form-group>
-              <b-form-group label="From:" label-for="signethtx-from" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-                <b-form-select size="sm" id="signethtx-from" v-model="settings.signEthTx.from" :options="addressesOptions" @change="saveSettings();" v-b-popover.hover.bottom="'Select Wallet'"></b-form-select>
+              <b-form-group label-cols-lg="2" label="Network Parameters" label-size="md" label-class="font-weight-bold pt-0" class="mb-0 mt-2">
+                <b-form-group label="Chain:" label-for="signethtx-chain" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-form-input type="text" size="sm" id="signethtx-chain" v-model.trim="settings.signEthTx.chainId" @change="saveSettings();" style="max-width: 150px;"></b-form-input>
+                </b-form-group>
+                <b-form-group label="Nonce:" label-for="signethtx-nonce" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-form-input type="text" size="sm" id="signethtx-nonce" v-model.trim="settings.signEthTx.nonce" @change="saveSettings();" style="max-width: 150px;"></b-form-input>
+                </b-form-group>
+                <b-form-group label="Gas Limit:" label-for="simulateethtx-gaslimit" label-size="sm" label-cols-sm="3" label-align-sm="right" description="Set this to 10% above the Estimated Gas from the Offline page" class="mx-0 my-1 p-0">
+                  <b-form-input type="text" size="sm" id="simulateethtx-gaslimit" v-model.trim="settings.signEthTx.gasLimit" @change="saveSettings();" style="max-width: 150px;"></b-form-input>
+                </b-form-group>
               </b-form-group>
-              <!-- <b-form-group label="To:" label-for="signethtx-to" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-                <b-form-input type="text" size="sm" id="signethtx-to" v-model.trim="signEthTx.to" placeholder="Optional for contract deployment" style="max-width: 500px;"></b-form-input>
-              </b-form-group> -->
-              <!-- <b-form-group label="Amount:" label-for="signethtx-amount" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-                <b-input-group style="max-width: 300px;">
-                  <b-form-input type="text" size="sm" id="signethtx-amount" v-model.trim="signEthTx.amount" style="max-width: 200px;"></b-form-input>
-                  <b-input-group-append>
-                    <b-form-select size="sm" v-model="signEthTx.amountUnit" :options="unitOptions"></b-form-select>
-                  </b-input-group-append>
-                </b-input-group>
-              </b-form-group> -->
-              <!-- <b-form-group label="Data:" label-for="signethtx-data" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+              <!-- <b-form-group label="Data:" label-for="signethtx-data" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                 <b-form-textarea size="sm" id="signethtx-data" v-model="signEthTx.data" rows="3" placeholder="Optional, 0x{hex}" style="max-width: 800px;"></b-form-textarea>
               </b-form-group> -->
-              <!-- <b-form-group label="Nonce:" label-for="signethtx-nonce" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+              <!-- <b-form-group label="Nonce:" label-for="signethtx-nonce" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                 <b-form-input type="text" size="sm" id="signethtx-nonce" v-model.trim="signEthTx.nonce" placeholder="Latest unused" style="max-width: 150px;"></b-form-input>
               </b-form-group> -->
             </b-card>
-            <!-- <b-form-group label="Test:" label-for="wallet-testit" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+            <!-- <b-form-group label="Test:" label-for="wallet-testit" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-button size="sm" id="wallet-testit" @click="testIt()" variant="warning">Test</b-button>
             </b-form-group> -->
           </b-card>
@@ -483,8 +498,19 @@
               amount: null,
               amountUnit: "ether",
               data: null,
+              chainId: null,
               nonce: null,
+              gasLimit: null,
+              lastBaseFeePerGas: null,
+              maxFeePerGas: null,
+              maxPriorityFeePerGas: null,
+              gasPrice: null,
+              lastBaseFeePerGasUnit: "gwei",
+              maxFeePerGasUnit: "gwei",
+              maxPriorityFeePerGasUnit: "gwei",
+              gasPriceUnit: "gwei",
               signature: null,
+              error: null,
             },
 
             addressesTable: {

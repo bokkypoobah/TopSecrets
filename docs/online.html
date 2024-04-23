@@ -230,7 +230,7 @@
                         <b-form-input type="text" size="sm" id="simulateethtx-amount" v-model.trim="settings.simulateEthTx.amount" @change="saveSettings(); simulateEthTxSimulate();"></b-form-input>
                       </div>
                       <div class="mt-0 pr-1">
-                        <b-form-select size="sm" v-model="settings.simulateEthTx.amountUnit" :options="unitOptions" @change="saveSettings(); simulateEthTxSimulate();" style="max-width: 200px;"></b-form-select>
+                        <b-form-select size="sm" v-model="settings.simulateEthTx.amountUnit" :options="unitOptions" @change="saveSettings(); simulateEthTxSimulate();"></b-form-select>
                       </div>
                     </div>
                   </b-form-group>
@@ -238,7 +238,7 @@
                     <b-button size="sm" id="simulateethtx-simulate" @click="simulateEthTxSimulate()" variant="primary">Simulate</b-button>
                   </b-form-group>
                 </b-form-group>
-                <b-form-group label-cols-lg="2" label="Network" label-size="md" label-class="font-weight-bold pt-0" class="mb-0">
+                <b-form-group label-cols-lg="2" label="Network Parameters" label-size="md" label-class="font-weight-bold pt-0" class="mb-0 mt-2">
                   <b-form-group label="Chain:" label-for="simulateethtx-chain" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <b-form-input type="text" size="sm" readonly id="simulateethtx-chain" v-model.trim="settings.simulateEthTx.chainId" style="max-width: 150px;"></b-form-input>
                   </b-form-group>
