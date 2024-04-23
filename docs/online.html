@@ -227,10 +227,10 @@
                   <b-form-group label="Amount:" label-for="prepareethtx-amount" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <div class="d-flex flex-wrap m-0 p-0">
                       <div class="mt-0 pr-1">
-                        <b-form-input type="text" size="sm" id="prepareethtx-amount" v-model.trim="settings.prepareEthTx.amount" @change="saveSettings"></b-form-input>
+                        <b-form-input type="text" size="sm" id="prepareethtx-amount" v-model.trim="settings.prepareEthTx.amount" @change="saveSettings(); prepareEthTxSimulate();"></b-form-input>
                       </div>
                       <div class="mt-0 pr-1">
-                        <b-form-select size="sm" v-model="settings.prepareEthTx.amountUnit" :options="unitOptions" @change="saveSettings" style="max-width: 200px;"></b-form-select>
+                        <b-form-select size="sm" v-model="settings.prepareEthTx.amountUnit" :options="unitOptions" @change="saveSettings(); prepareEthTxSimulate();" style="max-width: 200px;"></b-form-select>
                       </div>
                     </div>
                   </b-form-group>
@@ -1331,6 +1331,7 @@
               } catch (e) {
                 console.log(moment().format("HH:mm:ss") + " prepareEthTxSimulate ERROR: " + e.message);
                 this.settings.prepareEthTx.error = e.message;
+                this.settings.prepareEthTx.estimatedGas = null;
               }
               const feeData = await provider.getFeeData();
               // this.settings.prepareEthTx.lastBaseFeePerGas = ethers.utils.formatUnits(feeData.lastBaseFeePerGas.toString(), this.settings.prepareEthTx.lastBaseFeePerGasUnit);
@@ -1345,6 +1346,7 @@
               this.settings.prepareEthTx.nonce = null;
             }
             console.log(moment().format("HH:mm:ss") + " prepareEthTxSimulate - AFTER: " + JSON.stringify(this.settings.prepareEthTx, null, 2));
+            this.saveSettings();
           },
 
 
