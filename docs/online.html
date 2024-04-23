@@ -212,7 +212,7 @@
           <!-- :ETH -->
           <b-card v-if="settings.tabIndex == 1" class="m-0 p-0 border-0" body-class="m-1 p-0">
             <b-card-group deck class="m-0 p-0">
-              <!-- :PREPAREETHTX -->
+              <!-- :SIMULATEETHTX -->
               <b-card sub-title="Simulate ETH Transaction for Offline Signing" bg-variant="light" class="p-0 m-1" style="max-width: 900px;">
                 <b-form-group label-cols-lg="2" label="Input" label-size="md" label-class="font-weight-bold pt-0" class="mb-0 mt-3">
                   <b-form-group label="Type:" label-for="simulateethtx-txtype" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
@@ -238,7 +238,6 @@
                     <b-button size="sm" id="simulateethtx-simulate" @click="simulateEthTxSimulate()" variant="primary">Simulate</b-button>
                   </b-form-group>
                 </b-form-group>
-
                 <b-form-group label-cols-lg="2" label="Network" label-size="md" label-class="font-weight-bold pt-0" class="mb-0">
                   <b-form-group label="Chain:" label-for="simulateethtx-chain" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <b-form-input type="text" size="sm" readonly id="simulateethtx-chain" v-model.trim="settings.simulateEthTx.chainId" style="max-width: 150px;"></b-form-input>

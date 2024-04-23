@@ -141,7 +141,7 @@
                   <b-form-input type="password" size="sm" id="newwalletfrommnemonic-confirmpassword" v-model.trim="newWalletFromMnemonic.confirmPassword" placeholder="Confirm password" style="max-width: 300px;"></b-form-input>
                 </div>
                 <div class="mt-0 pr-1">
-                  <b-button size="sm" :disabled="!newWalletFromMnemonic.selectedItem || !newWalletFromMnemonic.selectedItem.address || !newWalletFromMnemonic.password || (newWalletFromMnemonic.password != newWalletFromMnemonic.confirmPassword)" id="newwalletfrommnemonic-add-add" @click="newWalletFromMnemonicAdd()" variant="primary">Add</b-button>
+                  <b-button size="sm" :disabled="newWalletFromMnemonic.adding || !newWalletFromMnemonic.selectedItem || !newWalletFromMnemonic.selectedItem.address || !newWalletFromMnemonic.password || (newWalletFromMnemonic.password != newWalletFromMnemonic.confirmPassword)" id="newwalletfrommnemonic-add-add" @click="newWalletFromMnemonicAdd()" variant="primary">{{ newWalletFromMnemonic.adding ? "Adding" : "Add" }}</b-button>
                 </div>
               </div>
             </b-form-group>
@@ -289,7 +289,7 @@
           <!-- :ETH -->
           <b-card v-if="settings.tabIndex == 1" class="m-0 p-0 border-0" body-class="m-1 p-0">
             <!-- :SIGNETHTX -->
-            <b-card sub-title="Sign ETH Transaction" bg-variant="light" class="p-0 m-1" style="max-width: 800px;">
+            <b-card sub-title="Sign ETH Transaction Offline" bg-variant="light" class="p-0 m-1" style="max-width: 800px;">
               <b-form-group label="From:" label-for="signethtx-from" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
                 <b-form-select size="sm" id="signethtx-from" v-model="signEthTx.from" :options="addressesOptions" v-b-popover.hover.bottom="'Select Wallet'"></b-form-select>
               </b-form-group>
@@ -423,6 +423,7 @@
             // locale: null,
             password: null,
             confirmPassword: null,
+            adding: null,
           },
 
           newWalletFromPrivateKey: {
@@ -803,6 +804,7 @@
 
           async newWalletFromMnemonicAdd() {
             console.log(moment().format("HH:mm:ss") + " newWalletFromMnemonicAdd - this.newWalletFromMnemonic: " + JSON.stringify(this.newWalletFromMnemonic, null, 2));
+            this.newWalletFromMnemonic.adding = true;
             const wallet = new ethers.Wallet(this.newWalletFromMnemonic.selectedItem.privateKey);
             const encryptedText = await wallet.encrypt(this.newWalletFromMnemonic.password);
             const keystore = JSON.parse(encryptedText);
@@ -815,6 +817,7 @@
             localStorage.topSecretsOfflineAddresses = JSON.stringify(this.addresses);
             console.log(moment().format("HH:mm:ss") + " newWalletFromMnemonicAdd - this.addresses: " + JSON.stringify(this.addresses, null, 2));
             this.$bvModal.hide('modal-newwalletfrommnemonic-add');
+            this.newWalletFromMnemonic.adding = null;
           },
 
           newWalletFromPrivateKeyGenerateRandom() {
