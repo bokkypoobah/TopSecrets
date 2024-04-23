@@ -88,21 +88,27 @@
               </b-tabs>
               <b-card-text class="m-0 p-2">
                 <b-form-group v-if="wallet.tab == 0" label="Phrase:" label-for="wallet-mnemonicphrase" label-size="sm" label-cols-sm="2" label-align-sm="right" :state="!wallet.mnemonic.phraseError" :invalid-feedback="wallet.mnemonic.phraseError" class="mx-0 my-2 p-0">
-                  <b-form-textarea size="sm" id="wallet-mnemonicphrase" v-model="wallet.mnemonic.phrase" @change="generateDerivedAddresses();" rows="3" placeholder="Type/paste your mnemnonic seed phrase here or click [Generate New]" style="max-width: 800px;"></b-form-textarea>
+                  <b-form-textarea size="sm" id="wallet-mnemonicphrase" v-model="wallet.mnemonic.phrase" @change="generateDerivedAddresses();" rows="3" placeholder="Type/paste your mnemnonic seed phrase here or click [Generate Random]" style="max-width: 800px;"></b-form-textarea>
                 </b-form-group>
                 <b-form-group v-if="wallet.tab == 0" label="" label-for="wallet-generaterandom" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-                  <b-input-group style="max-width: 300px;">
-                    <b-form-select size="sm" v-model="wallet.randomBytesLength" :options="randomBytesLengthMnemonicWordsOptions"></b-form-select>
-                    <b-input-group-append>
+                  <div class="d-flex flex-wrap m-0 p-0">
+                    <div class="mt-0 pl-1">
+                      <b-form-select size="sm" v-model="wallet.randomBytesLength" :options="randomBytesLengthMnemonicWordsOptions"></b-form-select>
+                    </div>
+                    <div class="mt-0 pl-1">
                       <b-button size="sm" id="wallet-generaterandom" @click="generateRandomMnemonic()" variant="primary">Generate Random</b-button>
-                    </b-input-group-append>
-                  </b-input-group>
+                    </div>
+                  </div>
                 </b-form-group>
                 <b-form-group v-if="wallet.tab == 0" label="Passphrase:" label-for="wallet-mnemonicpassphrase" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
-                  <b-form-input type="password" size="sm" id="wallet-mnemonicpassphrase" v-model="wallet.mnemonic.passphrase" @change="generateDerivedAddresses();" placeholder="Optional" style="max-width: 300px;"></b-form-input>
-                </b-form-group>
-                <b-form-group v-if="wallet.tab == 0" label="" label-for="wallet-mnemonicpassphraseconfirm" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
-                  <b-form-input type="password" size="sm" id="wallet-mnemonicpassphraseconfirm" v-model="wallet.mnemonic.confirmPassphrase" @change="generateDerivedAddresses();" placeholder="Confirm passphrase" style="max-width: 300px;"></b-form-input>
+                  <div class="d-flex flex-wrap m-0 p-0">
+                    <div class="mt-0 pl-1">
+                      <b-form-input type="password" size="sm" id="wallet-mnemonicpassphrase" v-model="wallet.mnemonic.passphrase" @change="generateDerivedAddresses();" placeholder="Optional" style="max-width: 300px;"></b-form-input>
+                    </div>
+                    <div class="mt-0 pl-1">
+                      <b-form-input type="password" size="sm" id="wallet-mnemonicpassphraseconfirm" v-model="wallet.mnemonic.confirmPassphrase" @change="generateDerivedAddresses();" placeholder="Confirm" style="max-width: 300px;"></b-form-input>
+                    </div>
+                  </div>
                 </b-form-group>
                 <b-card v-if="wallet.tab == 0" class="m-0 mt-2 p-0 border-0" body-class="m-1 p-0">
                   <div class="d-flex flex-wrap m-0 p-0">
