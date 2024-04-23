@@ -1304,7 +1304,7 @@
             console.log(moment().format("HH:mm:ss") + " prepareEthTxSimulate: " + JSON.stringify(this.settings.prepareEthTx, null, 2));
             const provider = new ethers.providers.Web3Provider(window.ethereum);
             if (this.settings.prepareEthTx.from) {
-              this.settings.prepareEthTx.chainId = this.chainId;
+              this.settings.prepareEthTx.chainId = this.chainId.toString();
               this.settings.prepareEthTx.nonce = await provider.getTransactionCount(this.settings.prepareEthTx.from);
 
               const signer = new ethers.VoidSigner(this.settings.prepareEthTx.from, provider);
