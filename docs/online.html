@@ -215,14 +215,14 @@
               <!-- :SIMULATEETHTX -->
               <b-card sub-title="Simulate ETH Transaction for Offline Signing" bg-variant="light" class="p-0 m-1" style="max-width: 900px;">
                 <b-form-group label-cols-lg="2" label="Input" label-size="md" label-class="font-weight-bold pt-0" class="mb-0 mt-3">
-                  <b-form-group label="Type:" label-for="simulateethtx-txtype" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <b-form-select size="sm" id="simulateethtx-txtype" v-model="settings.simulateEthTx.txType" :options="txTypeOptions" @change="saveSettings" style="max-width: 300px;"></b-form-select>
+                  <b-form-group label="Action:" label-for="simulateethtx-action" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <b-form-select size="sm" id="simulateethtx-action" v-model="settings.simulateEthTx.action" :options="actionOptions" @change="saveSettings" style="max-width: 300px;"></b-form-select>
                   </b-form-group>
                   <b-form-group label="From:" label-for="simulateethtx-from" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <b-form-select size="sm" id="simulateethtx-from" v-model="settings.simulateEthTx.from" :options="walletOptions" @change="saveSettings(); simulateEthTxSimulate();" v-b-popover.hover.bottom="'Select Wallet'"></b-form-select>
+                    <b-form-select size="sm" id="simulateethtx-from" v-model="settings.simulateEthTx.from" :options="walletsOptions" @change="saveSettings(); simulateEthTxSimulate();" v-b-popover.hover.bottom="'Select Wallet'"></b-form-select>
                   </b-form-group>
                   <b-form-group label="To:" label-for="simulateethtx-to" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <b-form-select size="sm" id="simulateethtx-to" v-model="settings.simulateEthTx.to" :options="walletOptions" @change="saveSettings(); simulateEthTxSimulate();" v-b-popover.hover.bottom="'Select Wallet'"></b-form-select>
+                    <b-form-select size="sm" id="simulateethtx-to" v-model="settings.simulateEthTx.to" :options="addressesOptions" @change="saveSettings(); simulateEthTxSimulate();" v-b-popover.hover.bottom="'Select Wallet'"></b-form-select>
                   </b-form-group>
                   <b-form-group label="Amount:" label-for="simulateethtx-amount" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <div class="d-flex flex-wrap m-0 p-0">
@@ -666,7 +666,7 @@
             },
 
             simulateEthTx: {
-              txType: null,
+              action: null,
               from: null,
               to: null,
               amount: null,
@@ -743,7 +743,7 @@
             { value: 'contract', text: 'Contract' },
           ],
 
-          txTypeOptions: [
+          actionOptions: [
             { value: null, text: '(Select)' },
             { value: 'simpleethtransfer', text: 'Simple ETH Transfer' }, // TODO: Type 2
             { value: 'sweepwallet', text: 'Sweep ETH To New Wallet', disabled: true }, // TODO: Type 1 with amount = balance - gasLimit * gasPrice
@@ -872,9 +872,20 @@
         // --- COMPUTED ---
         computed: {
 
-          walletOptions() {
+          walletsOptions() {
             const results = [];
-            results.push({ value: null, text: "(Select)" });
+            results.push({ value: null, text: "(Select Wallet)" });
+            for (const [address, data] of Object.entries(this.addresses)) {
+              if (data.type.substring(0, 6) == "wallet") {
+                results.push({ value: address, text: address + (data.name ? (" " + data.name) : "") });
+              }
+            }
+            return results;
+          },
+
+          addressesOptions() {
+            const results = [];
+            results.push({ value: null, text: "(Select Address)" });
             for (const [address, data] of Object.entries(this.addresses)) {
               results.push({ value: address, text: address + (data.name ? (" " + data.name) : "") });
             }
