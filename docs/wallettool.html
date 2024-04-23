@@ -50,6 +50,35 @@
             Warning: This is experimental unaudited work-in-progress software. This dapp is meant for use on permanently offline computers.
           </b-alert>
 
+          <!-- :MODALADDRESS -->
+          <b-modal id="modal-address" hide-footer size="lg">
+            <template #modal-title>
+              Address
+            </template>
+            <b-form-group label="Path:" label-for="address-path" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-form-input type="text" size="sm" readonly id="address-path" v-model.trim="address.path" style="max-width: 400px;"></b-form-input>
+            </b-form-group>
+            <b-form-group label="Address:" label-for="address-address" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-form-input type="text" size="sm" readonly id="address-address" v-model.trim="address.address" style="max-width: 400px;"></b-form-input>
+            </b-form-group>
+            <b-form-group label="Private Key" label-for="address-privatekey" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-form-input type="text" size="sm" readonly id="address-privatekey" v-model.trim="address.privateKey" style="max-width: 600px;"></b-form-input>
+            </b-form-group>
+            <b-form-group label="" label-for="address-password" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+              <div class="d-flex flex-wrap m-0 p-0">
+                <div class="mt-0 pr-1">
+                  <b-form-input type="password" size="sm" id="address-password" v-model.trim="address.password" placeholder="Password" style="max-width: 300px;"></b-form-input>
+                </div>
+                <div class="mt-0 pr-1">
+                  <b-form-input type="password" size="sm" id="address-confirmpassword" v-model.trim="address.confirmPassword" placeholder="Confirm password" style="max-width: 300px;"></b-form-input>
+                </div>
+                <div class="mt-0 pr-1">
+                  <b-button size="sm" :disabled="!address.password || (address.password != address.confirmPassword)" id="address-add-add" @click="saveMnemonicPrivateKeyToKeystore()" variant="primary">Save To Keystore</b-button>
+                </div>
+              </div>
+            </b-form-group>
+          </b-modal>
+
           <!-- :MODALLOADPRIVATEKEYFROMKEYSTORE -->
           <b-modal id="modal-loadprivatekeyfromkeystore" hide-footer size="lg">
             <template #modal-title>
@@ -139,7 +168,7 @@
                     </div>
                   </div>
                   <font size="-1">
-                    <b-table ref="addressesTable" small fixed striped responsive hover selectable select-mode="single" @row-selected='generatedAddressesRowSelected':fields="generatedAddressesFields" :items="generatedAddresses" show-empty empty-html="Enter information above" head-variant="light" class="mx-0 my-1">
+                    <b-table ref="addressesTable" small fixed striped responsive hover selectable select-mode="single" @row-selected='addressesRowSelected':fields="generatedAddressesFields" :items="generatedAddresses" show-empty empty-html="Enter information above" head-variant="light" class="mx-0 my-1">
                       <template #cell(index)="data">
                         {{ data.item.index }}
                       </template>
@@ -163,7 +192,7 @@
                   <b-button size="sm" @click="showLoadPrivateKeyFromKeystoreModal()" variant="primary">Load From Keystore</b-button>
                   <b-button size="sm" :disabled="!wallet.privateKey || !!wallet.privateKeyError" @click="showSavePrivateKeyToKeystoreModal()" variant="primary">Save To Keystore</b-button>
                 </b-form-group>
-                <b-form-group v-if="wallet.tab == 1" label="ETH Address:" label-for="output-address" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-3 p-0">
+                <b-form-group v-if="wallet.tab == 1" label="Address:" label-for="output-address" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-3 p-0">
                   <b-form-input type="text" size="sm" readonly id="output-address" :value="wallet.address" class="w-50"></b-form-input>
                 </b-form-group>
                 <b-form-group v-if="false && wallet.tab == 0" label="Debug Addresses:" label-for="debug-addresses-textarea" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 mt-3 p-0">
@@ -233,6 +262,14 @@
           generatedAddresses: [],
           selectedAddress: null,
 
+          address: {
+            path: null,
+            privateKey: null,
+            address: null,
+            password: null,
+            confirmPassword: null,
+          },
+
           settings: {
             tabIndex: 0,
             version: 12,
@@ -285,13 +322,29 @@
             console.log(moment().format("HH:mm:ss") + " TODO updateURL: " + where);
           },
 
-          generatedAddressesRowSelected(item) {
-            console.log(moment().format("HH:mm:ss") + " generatedAddressesRowSelected: " + JSON.stringify(item));
+          addressesRowSelected(item) {
+            console.log(moment().format("HH:mm:ss") + " addressesRowSelected: " + JSON.stringify(item));
             if (item && item.length > 0) {
-              this.selectedAddress = item[0];
-            } else {
-              this.selectedAddress = null;
+              this.address.path = item[0].path;
+              this.address.address = item[0].address;
+              this.address.privateKey = item[0].privateKey;
+              this.address.password = null;
+              this.address.confirmPassword = null;
             }
+            console.log(moment().format("HH:mm:ss") + " addressesRowSelected - this.address: " + JSON.stringify(this.address, null, 2));
+            // if (item && item.length > 0) {
+            //   this.address.mode = 'vieworupdate';
+            //   this.address.type = item[0].type;
+            //   this.address.address = item[0].address;
+            //   this.address.addressError = null;
+            //   this.address.name = item[0].name;
+            //   this.address.keystore = item[0].keystore;
+            //   this.address.password = null;
+            //   this.address.privateKey = null;
+            //   console.log(moment().format("HH:mm:ss") + " addressesRowSelected - this.address: " + JSON.stringify(this.address));
+            //   this.$refs.addressesTable.clearSelected();
+            // }
+            this.$bvModal.show('modal-address');
           },
 
           showLoadPrivateKeyFromKeystoreModal() {
@@ -450,6 +503,28 @@
               console.log(moment().format("HH:mm:ss") + " keystoreFileContent: " + t.wallet.keystoreFileContent);
             };
             await reader.readAsText(fileList[0]);
+          },
+
+          async saveMnemonicPrivateKeyToKeystore() {
+            console.log(moment().format("HH:mm:ss") + " saveMnemonicPrivateKeyToKeystore - this.address: " + JSON.stringify(this.address));
+            const filename = "UTC--" + moment.utc().format("YYYY-MM-DDTHH-mm-ss") + ".0Z--" + this.address.address.slice(2).toLowerCase();
+            console.log("filename: " + filename);
+            const wallet = new ethers.Wallet(this.address.privateKey);
+            const encrypted = await wallet.encrypt(this.address.password);
+            console.log(moment().format("HH:mm:ss") + " saveMnemonicPrivateKeyToKeystore - encrypted: " + encrypted);
+            const encryptedObject = JSON.parse(encrypted);
+            // // const filename = encryptedObject && encryptedObject['x-ethers'] && encryptedObject['x-ethers'].gethFilename || "UTC--error-getting-filename";
+            // console.log("filename: " + filename);
+            console.log(moment().format("HH:mm:ss") + " saveMnemonicPrivateKeyToKeystore - JSON.stringify(JSON.parse(encrypted), null, 2): " + JSON.stringify(JSON.parse(encrypted), null, 2));
+            let jsonContent = "data:text/json;charset=utf-8," + encrypted;
+            console.log(moment().format("HH:mm:ss") + " saveMnemonicPrivateKeyToKeystore - jsonContent: " + jsonContent);
+            var encodedUri = encodeURI(jsonContent);
+            var link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", filename);
+            document.body.appendChild(link); // Required for FF
+            link.click(); // This will download the data with the specified file name
+            this.$bvModal.hide('modal-saveprivatekeytokeystore');
           },
 
           download(withPrivateKeys) {

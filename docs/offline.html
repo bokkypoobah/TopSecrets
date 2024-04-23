@@ -116,7 +116,7 @@
             <b-form-group v-if="newWalletFromMnemonic.selectedItem" label="Path:" label-for="newwalletfrommnemonic-add-path" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-form-input type="text" size="sm" readonly id="newwalletfrommnemonic-add-path" :value="newWalletFromMnemonic.selectedItem.path" style="max-width: 400px;"></b-form-input>
             </b-form-group>
-            <b-form-group v-if="newWalletFromMnemonic.selectedItem" label="ETH Address:" label-for="newwalletfrommnemonic-add-address" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+            <b-form-group v-if="newWalletFromMnemonic.selectedItem" label="Address:" label-for="newwalletfrommnemonic-add-address" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-form-input type="text" size="sm" readonly id="newwalletfrommnemonic-add-address" :value="newWalletFromMnemonic.selectedItem.address" style="max-width: 400px;"></b-form-input>
             </b-form-group>
             <b-form-group v-if="newWalletFromMnemonic.selectedItem" label="Private Key:" label-for="newwalletfrommnemonic-add-privatekey" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
@@ -151,7 +151,7 @@
             <b-form-group label="" label-for="newwalletfromprivatekey-generaterandom" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-button size="sm" id="newwalletfromprivatekey-generaterandom" @click="newWalletFromPrivateKeyGenerateRandom()" variant="primary">Generate Random</b-button>
             </b-form-group>
-            <b-form-group label="ETH Address:" label-for="newwalletfromprivatekey-address" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+            <b-form-group label="Address:" label-for="newwalletfromprivatekey-address" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-form-input type="text" size="sm" readonly id="newwalletfromprivatekey-address" :value="newWalletFromPrivateKey.address" style="max-width: 400px;"></b-form-input>
             </b-form-group>
             <b-form-group label="Name:" label-for="newwalletfromprivatekey-name" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
