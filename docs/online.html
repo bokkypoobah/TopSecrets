@@ -214,82 +214,113 @@
             <b-card-group deck class="m-0 p-0">
               <!-- :PREPAREETHTX -->
               <b-card sub-title="Prepare ETH Transaction" bg-variant="light" class="p-0 m-1" style="max-width: 900px;">
-
-                <b-form-group label="Type:" label-for="prepareethtx-txtype" label-size="sm" label-cols-sm="4" label-align-sm="right" class="mx-0 my-1 p-0">
-                  <b-form-select size="sm" id="prepareethtx-txtype" v-model="settings.prepareEthTx.txType" :options="txTypeOptions" @change="saveSettings" style="max-width: 300px;"></b-form-select>
-                </b-form-group>
-
-                <b-form-group label="From:" label-for="prepareethtx-from" label-size="sm" label-cols-sm="4" label-align-sm="right" class="mx-0 my-1 p-0">
-                  <b-form-select size="sm" id="prepareethtx-from" v-model="settings.prepareEthTx.from" :options="walletOptions" @change="saveSettings(); prepareEthTxRefresh();" v-b-popover.hover.bottom="'Select Wallet'"></b-form-select>
-                </b-form-group>
-
-                <b-form-group label="To:" label-for="prepareethtx-to" label-size="sm" label-cols-sm="4" label-align-sm="right" class="mx-0 my-1 p-0">
-                  <b-form-select size="sm" id="prepareethtx-to" v-model="settings.prepareEthTx.to" :options="walletOptions" @change="saveSettings(); prepareEthTxRefresh();" v-b-popover.hover.bottom="'Select Wallet'"></b-form-select>
-                </b-form-group>
-
-                <b-form-group label="Amount:" label-for="prepareethtx-amount" label-size="sm" label-cols-sm="4" label-align-sm="right" class="mx-0 my-1 p-0">
-                  <div class="d-flex flex-wrap m-0 p-0">
-                    <div class="mt-0 pr-1">
-                      <b-form-input type="text" size="sm" id="prepareethtx-amount" v-model.trim="settings.prepareEthTx.amount" @change="saveSettings"></b-form-input>
+                <b-form-group label-cols-lg="2" label="Input" label-size="md" label-class="font-weight-bold pt-0" class="mb-0">
+                  <b-form-group label="Type:" label-for="prepareethtx-txtype" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <b-form-select size="sm" id="prepareethtx-txtype" v-model="settings.prepareEthTx.txType" :options="txTypeOptions" @change="saveSettings" style="max-width: 300px;"></b-form-select>
+                  </b-form-group>
+                  <b-form-group label="From:" label-for="prepareethtx-from" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <b-form-select size="sm" id="prepareethtx-from" v-model="settings.prepareEthTx.from" :options="walletOptions" @change="saveSettings(); prepareEthTxRefresh();" v-b-popover.hover.bottom="'Select Wallet'"></b-form-select>
+                  </b-form-group>
+                  <b-form-group label="To:" label-for="prepareethtx-to" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <b-form-select size="sm" id="prepareethtx-to" v-model="settings.prepareEthTx.to" :options="walletOptions" @change="saveSettings(); prepareEthTxRefresh();" v-b-popover.hover.bottom="'Select Wallet'"></b-form-select>
+                  </b-form-group>
+                  <b-form-group label="Amount:" label-for="prepareethtx-amount" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <div class="d-flex flex-wrap m-0 p-0">
+                      <div class="mt-0 pr-1">
+                        <b-form-input type="text" size="sm" id="prepareethtx-amount" v-model.trim="settings.prepareEthTx.amount" @change="saveSettings"></b-form-input>
+                      </div>
+                      <div class="mt-0 pr-1">
+                        <b-form-select size="sm" v-model="settings.prepareEthTx.amountUnit" :options="unitOptions" @change="saveSettings" style="max-width: 200px;"></b-form-select>
+                      </div>
                     </div>
-                    <div class="mt-0 pr-1">
-                      <b-form-select size="sm" v-model="settings.prepareEthTx.amountUnit" :options="unitOptions" @change="saveSettings" style="max-width: 200px;"></b-form-select>
+                  </b-form-group>
+                  <b-form-group label="" label-for="prepareethtx-refresh" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <b-button size="sm" id="prepareethtx-refresh" @click="prepareEthTxRefresh()" variant="primary">Refresh</b-button>
+                  </b-form-group>
+                </b-form-group>
+
+                <b-form-group label-cols-lg="2" label="Network Details" label-size="md" label-class="font-weight-bold pt-0" class="mb-0">
+                  <b-form-group label="Chain:" label-for="prepareethtx-chain" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <b-form-input type="text" size="sm" readonly id="prepareethtx-chain" v-model.trim="settings.prepareEthTx.chainId" style="max-width: 150px;"></b-form-input>
+                  </b-form-group>
+                  <b-form-group label="Nonce:" label-for="prepareethtx-nonce" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <b-form-input type="text" size="sm" readonly id="prepareethtx-nonce" v-model.trim="settings.prepareEthTx.nonce" style="max-width: 150px;"></b-form-input>
+                  </b-form-group>
+                  <b-form-group label="Estimated Gas:" label-for="prepareethtx-estimatedgas" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <b-form-input type="text" size="sm" readonly id="prepareethtx-estimatedgas" v-model.trim="settings.prepareEthTx.estimatedGas" style="max-width: 150px;"></b-form-input>
+                  </b-form-group>
+                  <b-form-group label="lastBaseFeePerGas:" label-for="prepareethtx-lastbasefeepergas" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <div class="d-flex flex-wrap m-0 p-0">
+                      <div class="mt-0 pr-1">
+                        <b-form-input type="text" size="sm" readonly id="prepareethtx-lastbasefeepergas" :value="formatUnits(settings.prepareEthTx.lastBaseFeePerGas, settings.prepareEthTx.lastBaseFeePerGasUnit)"></b-form-input>
+                      </div>
+                      <div class="mt-0 pr-1">
+                        <b-form-select size="sm" v-model="settings.prepareEthTx.lastBaseFeePerGasUnit" :options="unitOptions" @change="saveSettings(); prepareEthTxRefresh();" style="max-width: 300px;"></b-form-select>
+                      </div>
                     </div>
-                  </div>
-                  <!-- <b-input-group style="max-width: 300px;">
-                    <b-form-input type="text" size="sm" id="prepareethtx-amount" v-model.trim="settings.prepareEthTx.amount" style="max-width: 200px;"></b-form-input>
-                    <b-input-group-append>
-                      <b-form-select size="sm" v-model="settings.prepareEthTx.amountUnit" :options="unitOptions" style="max-width: 200px;"></b-form-select>
-                    </b-input-group-append>
-                  </b-input-group> -->
+                  </b-form-group>
+                  <b-form-group label="maxFeePerGas:" label-for="prepareethtx-maxfeepergas" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <div class="d-flex flex-wrap m-0 p-0">
+                      <div class="mt-0 pr-1">
+                        <b-form-input type="text" size="sm" readonly id="prepareethtx-maxfeepergas" :value="formatUnits(settings.prepareEthTx.maxFeePerGas, settings.prepareEthTx.maxFeePerGasUnit)"></b-form-input>
+                      </div>
+                      <div class="mt-0 pr-1">
+                        <b-form-select size="sm" v-model="settings.prepareEthTx.maxFeePerGasUnit" :options="unitOptions" @change="saveSettings(); prepareEthTxRefresh();" style="max-width: 300px;"></b-form-select>
+                      </div>
+                    </div>
+                  </b-form-group>
+                  <b-form-group label="maxPriorityFeePerGas:" label-for="prepareethtx-maxpriorityfeepergas" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <div class="d-flex flex-wrap m-0 p-0">
+                      <div class="mt-0 pr-1">
+                        <b-form-input type="text" size="sm" readonly id="prepareethtx-maxpriorityfeepergas" :value="formatUnits(settings.prepareEthTx.maxPriorityFeePerGas, settings.prepareEthTx.maxPriorityFeePerGasUnit)"></b-form-input>
+                      </div>
+                      <div class="mt-0 pr-1">
+                        <b-form-select size="sm" v-model="settings.prepareEthTx.maxPriorityFeePerGasUnit" :options="unitOptions" @change="saveSettings(); prepareEthTxRefresh();" style="max-width: 300px;"></b-form-select>
+                      </div>
+                    </div>
+                  </b-form-group>
+                  <b-form-group label="gasPrice:" label-for="prepareethtx-gasprice" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <div class="d-flex flex-wrap m-0 p-0">
+                      <div class="mt-0 pr-1">
+                        <b-form-input type="text" size="sm" readonly id="prepareethtx-gasprice" :value="formatUnits(settings.prepareEthTx.gasPrice, settings.prepareEthTx.gasPriceUnit)"></b-form-input>
+                      </div>
+                      <div class="mt-0 pr-1">
+                        <b-form-select size="sm" v-model="settings.prepareEthTx.gasPriceUnit" :options="unitOptions" @change="saveSettings(); prepareEthTxRefresh();" style="max-width: 300px;"></b-form-select>
+                      </div>
+                    </div>
+                  </b-form-group>
+
+                  <!-- <b-form-group label="lastBaseFeePerGas (gwei):" label-for="prepareethtx-lastbasefeepergas" label-size="sm" label-cols-sm="4" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <b-form-input type="text" size="sm" readonly id="prepareethtx-lastbasefeepergas" :value="formatGas(feeData.lastBaseFeePerGas)" style="max-width: 150px;"></b-form-input>
+                  </b-form-group> -->
+                  <!-- <b-form-group label="maxFeePerGas (gwei):" label-for="prepareethtx-maxfeepergas" label-size="sm" label-cols-sm="4" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <b-form-input type="text" size="sm" readonly id="prepareethtx-maxfeepergas" :value="formatGas(feeData.maxFeePerGas)" style="max-width: 150px;"></b-form-input>
+                  </b-form-group> -->
+                  <!-- <b-form-group label="maxPriorityFeePerGas (gwei):" label-for="prepareethtx-maxpriorityfeepergas" label-size="sm" label-cols-sm="4" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <b-form-input type="text" size="sm" readonly id="prepareethtx-maxpriorityfeepergas" :value="formatGas(feeData.maxPriorityFeePerGas)" style="max-width: 150px;"></b-form-input>
+                  </b-form-group> -->
+                  <!-- <b-form-group label="gasPrice (gwei):" label-for="prepareethtx-gasprice" label-size="sm" label-cols-sm="4" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <b-form-input type="text" size="sm" readonly id="prepareethtx-gasprice" :value="formatGas(feeData.gasPrice)" style="max-width: 150px;"></b-form-input>
+                  </b-form-group> -->
+
+                  <!-- <b-form-group label="To:" label-for="signethtx-to" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <b-form-input type="text" size="sm" id="signethtx-to" v-model.trim="signEthTx.to" placeholder="Optional for contract deployment" style="max-width: 500px;"></b-form-input>
+                  </b-form-group> -->
+                  <!-- <b-form-group label="Amount:" label-for="signethtx-amount" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <b-input-group style="max-width: 300px;">
+                      <b-form-input type="text" size="sm" id="signethtx-amount" v-model.trim="signEthTx.amount" style="max-width: 200px;"></b-form-input>
+                      <b-input-group-append>
+                        <b-form-select size="sm" v-model="signEthTx.amountUnit" :options="unitOptions"></b-form-select>
+                      </b-input-group-append>
+                    </b-input-group>
+                  </b-form-group> -->
+                  <!-- <b-form-group label="Data:" label-for="signethtx-data" label-size="sm" label-cols-sm="2" label-align-sm="right" :state="!wallet.mnemonic.phraseError" :invalid-feedback="wallet.mnemonic.phraseError" class="mx-0 my-1 p-0">
+                    <b-form-textarea size="sm" id="signethtx-data" v-model="signEthTx.data" rows="3" placeholder="Optional, 0x{hex}" style="max-width: 800px;"></b-form-textarea>
+                  </b-form-group> -->
+                  <!-- <b-form-group label="Nonce:" label-for="signethtx-nonce" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <b-form-input type="text" size="sm" id="signethtx-nonce" v-model.trim="signEthTx.nonce" placeholder="Latest unused" style="max-width: 150px;"></b-form-input>
+                  </b-form-group> -->
                 </b-form-group>
-
-                <b-form-group label="" label-for="prepareethtx-refresh" label-size="sm" label-cols-sm="4" label-align-sm="right" class="mx-0 my-1 p-0">
-                  <b-button size="sm" id="prepareethtx-refresh" @click="prepareEthTxRefresh()" variant="primary">Refresh</b-button>
-                </b-form-group>
-
-                <b-form-group label="Chain:" label-for="prepareethtx-chain" label-size="sm" label-cols-sm="4" label-align-sm="right" description="ChainId" class="mx-0 my-1 p-0">
-                  <b-form-input type="text" size="sm" readonly id="prepareethtx-chain" v-model.trim="settings.prepareEthTx.chainId" style="max-width: 150px;"></b-form-input>
-                </b-form-group>
-
-                <b-form-group label="Estimated Gas:" label-for="prepareethtx-estimatedgas" label-size="sm" label-cols-sm="4" label-align-sm="right" description="Use a Gas Limit of this amount + 10% rounded up" class="mx-0 my-1 p-0">
-                  <b-form-input type="text" size="sm" readonly id="prepareethtx-estimatedgas" v-model.trim="settings.prepareEthTx.estimatedGas" style="max-width: 150px;"></b-form-input>
-                </b-form-group>
-
-                <b-form-group label="Transaction Count:" label-for="prepareethtx-transactioncount" label-size="sm" label-cols-sm="4" label-align-sm="right" description="This is the nonce for your next transaction" class="mx-0 my-1 p-0">
-                  <b-form-input type="text" size="sm" readonly id="prepareethtx-transactioncount" v-model.trim="settings.prepareEthTx.transactionCount" style="max-width: 150px;"></b-form-input>
-                </b-form-group>
-
-                <!-- <b-form-group label="lastBaseFeePerGas (gwei):" label-for="prepareethtx-lastbasefeepergas" label-size="sm" label-cols-sm="4" label-align-sm="right" class="mx-0 my-1 p-0">
-                  <b-form-input type="text" size="sm" readonly id="prepareethtx-lastbasefeepergas" :value="formatGas(feeData.lastBaseFeePerGas)" style="max-width: 150px;"></b-form-input>
-                </b-form-group> -->
-                <!-- <b-form-group label="maxFeePerGas (gwei):" label-for="prepareethtx-maxfeepergas" label-size="sm" label-cols-sm="4" label-align-sm="right" class="mx-0 my-1 p-0">
-                  <b-form-input type="text" size="sm" readonly id="prepareethtx-maxfeepergas" :value="formatGas(feeData.maxFeePerGas)" style="max-width: 150px;"></b-form-input>
-                </b-form-group> -->
-                <!-- <b-form-group label="maxPriorityFeePerGas (gwei):" label-for="prepareethtx-maxpriorityfeepergas" label-size="sm" label-cols-sm="4" label-align-sm="right" class="mx-0 my-1 p-0">
-                  <b-form-input type="text" size="sm" readonly id="prepareethtx-maxpriorityfeepergas" :value="formatGas(feeData.maxPriorityFeePerGas)" style="max-width: 150px;"></b-form-input>
-                </b-form-group> -->
-                <!-- <b-form-group label="gasPrice (gwei):" label-for="prepareethtx-gasprice" label-size="sm" label-cols-sm="4" label-align-sm="right" class="mx-0 my-1 p-0">
-                  <b-form-input type="text" size="sm" readonly id="prepareethtx-gasprice" :value="formatGas(feeData.gasPrice)" style="max-width: 150px;"></b-form-input>
-                </b-form-group> -->
-
-                <!-- <b-form-group label="To:" label-for="signethtx-to" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-                  <b-form-input type="text" size="sm" id="signethtx-to" v-model.trim="signEthTx.to" placeholder="Optional for contract deployment" style="max-width: 500px;"></b-form-input>
-                </b-form-group> -->
-                <!-- <b-form-group label="Amount:" label-for="signethtx-amount" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-                  <b-input-group style="max-width: 300px;">
-                    <b-form-input type="text" size="sm" id="signethtx-amount" v-model.trim="signEthTx.amount" style="max-width: 200px;"></b-form-input>
-                    <b-input-group-append>
-                      <b-form-select size="sm" v-model="signEthTx.amountUnit" :options="unitOptions"></b-form-select>
-                    </b-input-group-append>
-                  </b-input-group>
-                </b-form-group> -->
-                <!-- <b-form-group label="Data:" label-for="signethtx-data" label-size="sm" label-cols-sm="2" label-align-sm="right" :state="!wallet.mnemonic.phraseError" :invalid-feedback="wallet.mnemonic.phraseError" class="mx-0 my-1 p-0">
-                  <b-form-textarea size="sm" id="signethtx-data" v-model="signEthTx.data" rows="3" placeholder="Optional, 0x{hex}" style="max-width: 800px;"></b-form-textarea>
-                </b-form-group> -->
-                <!-- <b-form-group label="Nonce:" label-for="signethtx-nonce" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-                  <b-form-input type="text" size="sm" id="signethtx-nonce" v-model.trim="signEthTx.nonce" placeholder="Latest unused" style="max-width: 150px;"></b-form-input>
-                </b-form-group> -->
               </b-card>
               <!-- :Gas -->
               <b-card sub-title="Gas (gwei)" bg-variant="light" class="p-0 m-1" style="max-width: 400px;">
@@ -673,11 +704,18 @@
               amount: null,
               amountUnit: "ether",
               // data: null,
-              // nonce: null,
               // signature: null,
               chainId: null,
+              nonce: null,
               estimatedGas: null,
-              transactionCount: null,
+              lastBaseFeePerGas: null,
+              maxFeePerGas: null,
+              maxPriorityFeePerGas: null,
+              gasPrice: null,
+              lastBaseFeePerGasUnit: "gwei",
+              maxFeePerGasUnit: "gwei",
+              maxPriorityFeePerGasUnit: "gwei",
+              gasPriceUnit: "gwei",
             },
 
             showInfo: false,
@@ -1297,7 +1335,7 @@
             const provider = new ethers.providers.Web3Provider(window.ethereum);
             if (this.settings.prepareEthTx.from) {
               this.settings.prepareEthTx.chainId = this.chainId;
-              this.settings.prepareEthTx.transactionCount = await provider.getTransactionCount(this.settings.prepareEthTx.from);
+              this.settings.prepareEthTx.nonce = await provider.getTransactionCount(this.settings.prepareEthTx.from);
 
               const signer = new ethers.VoidSigner(this.settings.prepareEthTx.from, provider);
               // console.log(moment().format("HH:mm:ss") + " prepareEthTxRefresh - signer: " + JSON.stringify(signer, null, 2));
@@ -1312,21 +1350,24 @@
                 // maxPriorityFeePerGas: 1234000,
                 value: ethers.utils.parseUnits(this.settings.prepareEthTx.amount, this.settings.prepareEthTx.amountUnit).toString(),
                 data: null,
-                // nonce: this.settings.prepareEthTx.transactionCount,
+                // nonce: this.settings.prepareEthTx.nonce,
                 // chainId: this.chainId,
               };
               console.log(moment().format("HH:mm:ss") + " prepareEthTxRefresh - tx: " + JSON.stringify(tx, null, 2));
               this.settings.prepareEthTx.estimatedGas = (await signer.estimateGas(tx)).toString();
               console.log(moment().format("HH:mm:ss") + " prepareEthTxRefresh - estimatedGas: " + this.settings.prepareEthTx.estimatedGas.toString());
-
+              const feeData = await provider.getFeeData();
+              // this.settings.prepareEthTx.lastBaseFeePerGas = ethers.utils.formatUnits(feeData.lastBaseFeePerGas.toString(), this.settings.prepareEthTx.lastBaseFeePerGasUnit);
+              // this.settings.prepareEthTx.maxFeePerGas = ethers.utils.formatUnits(feeData.maxFeePerGas.toString(), this.settings.prepareEthTx.maxFeePerGasUnit);
+              // this.settings.prepareEthTx.maxPriorityFeePerGas = ethers.utils.formatUnits(feeData.maxPriorityFeePerGas.toString(), this.settings.prepareEthTx.maxPriorityFeePerGasUnit);
+              // this.settings.prepareEthTx.gasPrice = ethers.utils.formatUnits(feeData.gasPrice.toString(), this.settings.prepareEthTx.gasPriceUnit);
+              this.settings.prepareEthTx.lastBaseFeePerGas = feeData.lastBaseFeePerGas.toString();
+              this.settings.prepareEthTx.maxFeePerGas = feeData.maxFeePerGas.toString();
+              this.settings.prepareEthTx.maxPriorityFeePerGas = feeData.maxPriorityFeePerGas.toString();
+              this.settings.prepareEthTx.gasPrice = feeData.gasPrice.toString();
             } else {
-              this.settings.prepareEthTx.transactionCount = null;
+              this.settings.prepareEthTx.nonce = null;
             }
-            const feeData = await provider.getFeeData();
-            this.feeData.lastBaseFeePerGas = feeData.lastBaseFeePerGas.toString();
-            this.feeData.maxFeePerGas = feeData.maxFeePerGas.toString();
-            this.feeData.maxPriorityFeePerGas = feeData.maxPriorityFeePerGas.toString();
-            this.feeData.gasPrice = feeData.gasPrice.toString();
             console.log(moment().format("HH:mm:ss") + " prepareEthTxRefresh - AFTER: " + JSON.stringify(this.settings.prepareEthTx, null, 2));
           },
 
@@ -1767,6 +1808,12 @@
                 return e ? parseFloat(ethers.utils.formatEther(e)).toFixed(precision) : null;
               }
             } catch (err) {
+            }
+            return e.toFixed(precision);
+          },
+          formatUnits(e, u) {
+            if (e) {
+              return ethers.utils.formatUnits(e, u);
             }
             return e.toFixed(precision);
           },
