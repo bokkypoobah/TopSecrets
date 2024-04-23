@@ -289,41 +289,10 @@
                       </div>
                     </div>
                   </b-form-group>
-
-                  <!-- <b-form-group label="lastBaseFeePerGas (gwei):" label-for="prepareethtx-lastbasefeepergas" label-size="sm" label-cols-sm="4" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <b-form-input type="text" size="sm" readonly id="prepareethtx-lastbasefeepergas" :value="formatGas(feeData.lastBaseFeePerGas)" style="max-width: 150px;"></b-form-input>
-                  </b-form-group> -->
-                  <!-- <b-form-group label="maxFeePerGas (gwei):" label-for="prepareethtx-maxfeepergas" label-size="sm" label-cols-sm="4" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <b-form-input type="text" size="sm" readonly id="prepareethtx-maxfeepergas" :value="formatGas(feeData.maxFeePerGas)" style="max-width: 150px;"></b-form-input>
-                  </b-form-group> -->
-                  <!-- <b-form-group label="maxPriorityFeePerGas (gwei):" label-for="prepareethtx-maxpriorityfeepergas" label-size="sm" label-cols-sm="4" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <b-form-input type="text" size="sm" readonly id="prepareethtx-maxpriorityfeepergas" :value="formatGas(feeData.maxPriorityFeePerGas)" style="max-width: 150px;"></b-form-input>
-                  </b-form-group> -->
-                  <!-- <b-form-group label="gasPrice (gwei):" label-for="prepareethtx-gasprice" label-size="sm" label-cols-sm="4" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <b-form-input type="text" size="sm" readonly id="prepareethtx-gasprice" :value="formatGas(feeData.gasPrice)" style="max-width: 150px;"></b-form-input>
-                  </b-form-group> -->
-
-                  <!-- <b-form-group label="To:" label-for="signethtx-to" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <b-form-input type="text" size="sm" id="signethtx-to" v-model.trim="signEthTx.to" placeholder="Optional for contract deployment" style="max-width: 500px;"></b-form-input>
-                  </b-form-group> -->
-                  <!-- <b-form-group label="Amount:" label-for="signethtx-amount" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <b-input-group style="max-width: 300px;">
-                      <b-form-input type="text" size="sm" id="signethtx-amount" v-model.trim="signEthTx.amount" style="max-width: 200px;"></b-form-input>
-                      <b-input-group-append>
-                        <b-form-select size="sm" v-model="signEthTx.amountUnit" :options="unitOptions"></b-form-select>
-                      </b-input-group-append>
-                    </b-input-group>
-                  </b-form-group> -->
-                  <!-- <b-form-group label="Data:" label-for="signethtx-data" label-size="sm" label-cols-sm="2" label-align-sm="right" :state="!wallet.mnemonic.phraseError" :invalid-feedback="wallet.mnemonic.phraseError" class="mx-0 my-1 p-0">
-                    <b-form-textarea size="sm" id="signethtx-data" v-model="signEthTx.data" rows="3" placeholder="Optional, 0x{hex}" style="max-width: 800px;"></b-form-textarea>
-                  </b-form-group> -->
-                  <!-- <b-form-group label="Nonce:" label-for="signethtx-nonce" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <b-form-input type="text" size="sm" id="signethtx-nonce" v-model.trim="signEthTx.nonce" placeholder="Latest unused" style="max-width: 150px;"></b-form-input>
-                  </b-form-group> -->
                 </b-form-group>
               </b-card>
               <!-- :Gas -->
-              <b-card sub-title="Gas (gwei)" bg-variant="light" class="p-0 m-1" style="max-width: 400px;">
+              <b-card sub-title="Latest Gas (gwei)" bg-variant="light" class="p-0 m-1" style="max-width: 400px;">
                 <b-form-group label="lastBaseFeePerGas:" label-for="gas-lastbasefeepergas" label-size="sm" label-cols-sm="6" label-align-sm="right" class="mx-0 my-1 p-0">
                   <b-form-input type="text" size="sm" readonly id="gas-lastbasefeepergas" :value="formatGas(feeData.lastBaseFeePerGas)" style="max-width: 150px;"></b-form-input>
                 </b-form-group>
