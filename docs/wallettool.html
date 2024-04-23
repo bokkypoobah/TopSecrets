@@ -99,7 +99,10 @@
                   </b-input-group>
                 </b-form-group>
                 <b-form-group v-if="wallet.tab == 0" label="Passphrase:" label-for="wallet-mnemonicpassphrase" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
-                  <b-form-input type="text" size="sm" id="wallet-mnemonicpassphrase" v-model="wallet.mnemonic.passphrase" @change="generateDerivedAddresses();" placeholder="Optional" style="max-width: 300px;"></b-form-input>
+                  <b-form-input type="password" size="sm" id="wallet-mnemonicpassphrase" v-model="wallet.mnemonic.passphrase" @change="generateDerivedAddresses();" placeholder="Optional" style="max-width: 300px;"></b-form-input>
+                </b-form-group>
+                <b-form-group v-if="wallet.tab == 0" label="" label-for="wallet-mnemonicpassphraseconfirm" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-2 p-0">
+                  <b-form-input type="password" size="sm" id="wallet-mnemonicpassphraseconfirm" v-model="wallet.mnemonic.confirmPassphrase" @change="generateDerivedAddresses();" placeholder="Confirm passphrase" style="max-width: 300px;"></b-form-input>
                 </b-form-group>
                 <b-card v-if="wallet.tab == 0" class="m-0 mt-2 p-0 border-0" body-class="m-1 p-0">
                   <div class="d-flex flex-wrap m-0 p-0">
@@ -198,6 +201,7 @@
               phrase: null,
               phraseError: null,
               passphrase: null,
+              confirmPassphrase: null,
               path: "m/44'/60'/0'/0/0", // null,
               locale: null,
             },
@@ -296,7 +300,7 @@
           generateDerivedAddresses() {
             console.log(moment().format("HH:mm:ss") + " generateDerivedAddresses - this.wallet: " + JSON.stringify(this.wallet, null, 2));
             const results = [];
-            if (this.wallet.tab == 0 && this.wallet.mnemonic.phrase) {
+            if (this.wallet.tab == 0 && this.wallet.mnemonic.phrase && (this.wallet.mnemonic.passphrase == this.wallet.mnemonic.confirmPassphrase)) {
               try {
                 const node = ethers.utils.HDNode.fromMnemonic(this.wallet.mnemonic.phrase, this.wallet.mnemonic.passphrase);
                 for (let i = 0; i < this.wallet.pageSize; i++) {

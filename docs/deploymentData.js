@@ -17,3 +17,8 @@ ERC1155ABI = [{"inputs":[{"internalType":"contract ENS","name":"_ens","type":"ad
 
 const CHAINID_MAINNET = 1;
 const CHAINID_SEPOLIA = 11155111;
+
+const CHAINS = {
+  1: "Mainnet",
+  11155111: "Sepolia",
+};

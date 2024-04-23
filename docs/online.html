@@ -236,14 +236,24 @@
                       <b-form-select size="sm" v-model="settings.prepareEthTx.amountUnit" :options="unitOptions" @change="saveSettings" style="max-width: 200px;"></b-form-select>
                     </div>
                   </div>
+                  <!-- <b-input-group style="max-width: 300px;">
+                    <b-form-input type="text" size="sm" id="prepareethtx-amount" v-model.trim="settings.prepareEthTx.amount" style="max-width: 200px;"></b-form-input>
+                    <b-input-group-append>
+                      <b-form-select size="sm" v-model="settings.prepareEthTx.amountUnit" :options="unitOptions" style="max-width: 200px;"></b-form-select>
+                    </b-input-group-append>
+                  </b-input-group> -->
+                </b-form-group>
 
+                <b-form-group label="" label-for="prepareethtx-refresh" label-size="sm" label-cols-sm="4" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-button size="sm" id="prepareethtx-refresh" @click="prepareEthTxRefresh()" variant="primary">Refresh</b-button>
+                </b-form-group>
 
-                  <!-- <b-input-group style="max-width: 300px;"> -->
-                    <!-- <b-form-input type="text" size="sm" id="prepareethtx-amount" v-model.trim="settings.prepareEthTx.amount" style="max-width: 200px;"></b-form-input> -->
-                    <!-- <b-input-group-append> -->
-                      <!-- <b-form-select size="sm" v-model="settings.prepareEthTx.amountUnit" :options="unitOptions" style="max-width: 200px;"></b-form-select> -->
-                    <!-- </b-input-group-append> -->
-                  <!-- </b-input-group> -->
+                <b-form-group label="Chain:" label-for="prepareethtx-chain" label-size="sm" label-cols-sm="4" label-align-sm="right" description="ChainId" class="mx-0 my-1 p-0">
+                  <b-form-input type="text" size="sm" readonly id="prepareethtx-chain" v-model.trim="settings.prepareEthTx.chainId" style="max-width: 150px;"></b-form-input>
+                </b-form-group>
+
+                <b-form-group label="Estimated Gas:" label-for="prepareethtx-estimatedgas" label-size="sm" label-cols-sm="4" label-align-sm="right" description="Use a Gas Limit of this amount + 10% rounded up" class="mx-0 my-1 p-0">
+                  <b-form-input type="text" size="sm" readonly id="prepareethtx-estimatedgas" v-model.trim="settings.prepareEthTx.estimatedGas" style="max-width: 150px;"></b-form-input>
                 </b-form-group>
 
                 <b-form-group label="Transaction Count:" label-for="prepareethtx-transactioncount" label-size="sm" label-cols-sm="4" label-align-sm="right" description="This is the nonce for your next transaction" class="mx-0 my-1 p-0">
@@ -280,9 +290,6 @@
                 <!-- <b-form-group label="Nonce:" label-for="signethtx-nonce" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
                   <b-form-input type="text" size="sm" id="signethtx-nonce" v-model.trim="signEthTx.nonce" placeholder="Latest unused" style="max-width: 150px;"></b-form-input>
                 </b-form-group> -->
-                <b-form-group label="" label-for="prepareethtx-refresh" label-size="sm" label-cols-sm="4" label-align-sm="right" class="mx-0 my-1 p-0">
-                  <b-button size="sm" id="prepareethtx-refresh" @click="prepareEthTxRefresh()" variant="primary">Refresh</b-button>
-                </b-form-group>
               </b-card>
               <!-- :Gas -->
               <b-card sub-title="Gas (gwei)" bg-variant="light" class="p-0 m-1" style="max-width: 400px;">
@@ -668,6 +675,8 @@
               // data: null,
               // nonce: null,
               // signature: null,
+              chainId: null,
+              estimatedGas: null,
               transactionCount: null,
             },
 
@@ -1284,6 +1293,7 @@
             console.log(moment().format("HH:mm:ss") + " prepareEthTxRefresh: " + JSON.stringify(this.settings.prepareEthTx, null, 2));
             const provider = new ethers.providers.Web3Provider(window.ethereum);
             if (this.settings.prepareEthTx.from) {
+              this.settings.prepareEthTx.chainId = this.chainId;
               this.settings.prepareEthTx.transactionCount = await provider.getTransactionCount(this.settings.prepareEthTx.from);
 
               const signer = new ethers.VoidSigner(this.settings.prepareEthTx.from, provider);
@@ -1294,18 +1304,17 @@
                 to: this.settings.prepareEthTx.to,
                 // gasLimit: 50000,
                 // gasPrice: 1000000,
-                type: 2,
-                maxFeePerGas: 1234000,
-                maxPriorityFeePerGas: 1234000,
-                value: 1,
+                // type: 2,
+                // maxFeePerGas: 1234000,
+                // maxPriorityFeePerGas: 1234000,
+                value: ethers.utils.parseUnits(this.settings.prepareEthTx.amount, this.settings.prepareEthTx.amountUnit).toString(),
                 data: null,
-                nonce: this.settings.prepareEthTx.transactionCount,
-                chainId: this.chainId,
+                // nonce: this.settings.prepareEthTx.transactionCount,
+                // chainId: this.chainId,
               };
-              const estimatedGas = await signer.estimateGas(tx);
-              console.log(moment().format("HH:mm:ss") + " prepareEthTxRefresh - estimatedGas: " + estimatedGas.toString());
-
-
+              console.log(moment().format("HH:mm:ss") + " prepareEthTxRefresh - tx: " + JSON.stringify(tx, null, 2));
+              this.settings.prepareEthTx.estimatedGas = (await signer.estimateGas(tx)).toString();
+              console.log(moment().format("HH:mm:ss") + " prepareEthTxRefresh - estimatedGas: " + this.settings.prepareEthTx.estimatedGas.toString());
 
             } else {
               this.settings.prepareEthTx.transactionCount = null;
