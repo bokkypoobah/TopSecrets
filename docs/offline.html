@@ -141,7 +141,7 @@
                   <b-form-input type="password" size="sm" id="newwalletfrommnemonic-confirmpassword" v-model.trim="newWalletFromMnemonic.confirmPassword" placeholder="Confirm password" style="max-width: 300px;"></b-form-input>
                 </div>
                 <div class="mt-0 pr-1">
-                  <b-button size="sm" :disabled="newWalletFromMnemonic.adding || !newWalletFromMnemonic.selectedItem || !newWalletFromMnemonic.selectedItem.address || !newWalletFromMnemonic.password || (newWalletFromMnemonic.password != newWalletFromMnemonic.confirmPassword)" id="newwalletfrommnemonic-add-add" @click="newWalletFromMnemonicAdd()" variant="primary">{{ newWalletFromMnemonic.adding ? "Adding" : "Add" }}</b-button>
+                  <b-button size="sm" :disabled="newWalletFromMnemonic.adding || !newWalletFromMnemonic.selectedItem || !newWalletFromMnemonic.selectedItem.address || !newWalletFromMnemonic.password || (newWalletFromMnemonic.password != newWalletFromMnemonic.confirmPassword)" id="newwalletfrommnemonic-add-add" @click="newWalletFromMnemonicAdd()" variant="primary">{{ newWalletFromMnemonic.adding ? "Adding " : "Add" }}<b-spinner v-if="newWalletFromMnemonic.adding" small variant="light" label="Spinning"></b-spinner></b-button>
                 </div>
               </div>
             </b-form-group>
@@ -173,7 +173,7 @@
                   <b-form-input type="password" size="sm" id="newwalletfromprivatekey-confirmpassword" v-model.trim="newWalletFromPrivateKey.confirmPassword" placeholder="Confirm password" style="max-width: 300px;"></b-form-input>
                 </div>
                 <div class="mt-0 pr-1">
-                  <b-button size="sm" :disabled="newWalletFromPrivateKey.adding || !newWalletFromPrivateKey.address || !newWalletFromPrivateKey.password || (newWalletFromPrivateKey.password != newWalletFromPrivateKey.confirmPassword)" id="newwalletfromprivatekey-add" @click="newWalletFromPrivateKeyAdd()" variant="primary">{{ newWalletFromPrivateKey.adding ? "Adding" : "Add" }}</b-button>
+                  <b-button size="sm" :disabled="newWalletFromPrivateKey.adding || !newWalletFromPrivateKey.address || !newWalletFromPrivateKey.password || (newWalletFromPrivateKey.password != newWalletFromPrivateKey.confirmPassword)" id="newwalletfromprivatekey-add" @click="newWalletFromPrivateKeyAdd()" variant="primary">{{ newWalletFromPrivateKey.adding ? "Adding " : "Add" }}<b-spinner v-if="newWalletFromPrivateKey.adding" small variant="light" label="Spinning"></b-spinner></b-button>
                 </div>
               </div>
             </b-form-group>
@@ -211,7 +211,7 @@
                   <b-form-input type="password" size="sm" id="newwalletfromkeystore-confirmpassword" v-model.trim="newWalletFromKeystore.confirmPassword" placeholder="Confirm password" style="max-width: 300px;"></b-form-input>
                 </div>
                 <div class="mt-0 pr-1">
-                  <b-button size="sm" :disabled="newWalletFromKeystore.adding || !newWalletFromKeystore.address || !newWalletFromKeystore.password || (newWalletFromKeystore.password != newWalletFromKeystore.confirmPassword)" id="newwalletfromkeystore-add" @click="newWalletFromKeystoreAdd()" variant="primary">{{ newWalletFromKeystore.adding ? "Adding" : "Add" }}</b-button>
+                  <b-button size="sm" :disabled="newWalletFromKeystore.adding || !newWalletFromKeystore.address || !newWalletFromKeystore.password || (newWalletFromKeystore.password != newWalletFromKeystore.confirmPassword)" id="newwalletfromkeystore-add" @click="newWalletFromKeystoreAdd()" variant="primary">{{ newWalletFromKeystore.adding ? "Adding " : "Add" }}<b-spinner v-if="newWalletFromKeystore.adding" small variant="light" label="Spinning"></b-spinner></b-button>
                 </div>
               </div>
             </b-form-group>
