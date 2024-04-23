@@ -501,12 +501,6 @@
             version: 12,
           },
           addresses: {},
-          // sync: {
-          //   section: null,
-          //   total: null,
-          //   completed: null,
-          //   halt: false,
-          // },
 
           tabs: [
             { name: 'mnemonic', text: 'Mnemonic Seed Phrase' },
@@ -1056,7 +1050,7 @@
           },
 
           saveSettings() {
-            localStorage.approvalToolSettings = JSON.stringify(this.settings);
+            localStorage.topSecretsOfflineSettings = JSON.stringify(this.settings);
           },
           commify0(n) {
             if (n != null) {
@@ -1097,6 +1091,15 @@
         mounted() {
           if ('topSecretsOfflineAddresses' in localStorage) {
             this.addresses = JSON.parse(localStorage.topSecretsOfflineAddresses);
+          }
+          if ('topSecretsOfflineSettings' in localStorage) {
+            const tempSettings = JSON.parse(localStorage.topSecretsOfflineSettings);
+            if ('version' in tempSettings && tempSettings.version == this.settings.version) {
+              this.settings = tempSettings;
+              // if (this.settings.addressesTable.currentPage > 1) {
+              //   this.settings.addressesTable.currentPage = 1;
+              // }
+            }
           }
         },
       })
