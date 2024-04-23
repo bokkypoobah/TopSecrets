@@ -125,14 +125,18 @@
             <b-form-group label="Name:" label-for="newwalletfrommnemonic-add-name" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-form-input type="text" size="sm" id="newwalletfrommnemonic-add-name" v-model.trim="newWalletFromMnemonic.name" debounce="600" placeholder="Optional" style="max-width: 300px;"></b-form-input>
             </b-form-group>
-            <b-form-group label="Password:" label-for="newwalletfrommnemonic-password" label-size="sm" label-cols-sm="3" label-align-sm="right" description="Password to encrypt this wallet within this dapp" class="mx-0 my-1 p-0">
-              <b-form-input type="password" size="sm" id="newwalletfrommnemonic-password" v-model.trim="newWalletFromMnemonic.password" style="max-width: 300px;"></b-form-input>
-            </b-form-group>
-            <b-form-group label="Confirm Password:" label-for="newwalletfrommnemonic-confirmpassword" label-size="sm" label-cols-sm="3" label-align-sm="right" description="Confirm password above" class="mx-0 my-1 p-0">
-              <b-form-input type="password" size="sm" id="newwalletfrommnemonic-confirmpassword" v-model.trim="newWalletFromMnemonic.confirmPassword" style="max-width: 300px;"></b-form-input>
-            </b-form-group>
-            <b-form-group label="" label-for="newwalletfrommnemonic-add-add" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-              <b-button size="sm" :disabled="!newWalletFromMnemonic.selectedItem || !newWalletFromMnemonic.selectedItem.address || !newWalletFromMnemonic.password || (newWalletFromMnemonic.password != newWalletFromMnemonic.confirmPassword)" id="newwalletfrommnemonic-add-add" @click="newWalletFromMnemonicAdd()" variant="primary">Add</b-button>
+            <b-form-group label="" label-for="newwalletfrommnemonic-password" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+              <div class="d-flex flex-wrap m-0 p-0">
+                <div class="mt-0 pr-1">
+                  <b-form-input type="password" size="sm" id="newwalletfrommnemonic-password" v-model.trim="newWalletFromMnemonic.password" placeholder="Password" style="max-width: 300px;"></b-form-input>
+                </div>
+                <div class="mt-0 pr-1">
+                  <b-form-input type="password" size="sm" id="newwalletfrommnemonic-confirmpassword" v-model.trim="newWalletFromMnemonic.confirmPassword" placeholder="Confirm password" style="max-width: 300px;"></b-form-input>
+                </div>
+                <div class="mt-0 pr-1">
+                  <b-button size="sm" :disabled="!newWalletFromMnemonic.selectedItem || !newWalletFromMnemonic.selectedItem.address || !newWalletFromMnemonic.password || (newWalletFromMnemonic.password != newWalletFromMnemonic.confirmPassword)" id="newwalletfrommnemonic-add-add" @click="newWalletFromMnemonicAdd()" variant="primary">Add</b-button>
+                </div>
+              </div>
             </b-form-group>
           </b-modal>
 
@@ -153,14 +157,18 @@
             <b-form-group label="Name:" label-for="newwalletfromprivatekey-name" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-form-input type="text" size="sm" id="newwalletfromprivatekey-name" v-model.trim="newWalletFromPrivateKey.name" placeholder="Optional" style="max-width: 300px;"></b-form-input>
             </b-form-group>
-            <b-form-group label="Password:" label-for="newwalletfromprivatekey-password" label-size="sm" label-cols-sm="3" label-align-sm="right" description="Password to encrypt this wallet within this dapp" class="mx-0 my-1 p-0">
-              <b-form-input type="password" size="sm" id="newwalletfromprivatekey-password" v-model.trim="newWalletFromPrivateKey.password" style="max-width: 300px;"></b-form-input>
-            </b-form-group>
-            <b-form-group label="Confirm Password:" label-for="newwalletfromprivatekey-confirmpassword" label-size="sm" label-cols-sm="3" label-align-sm="right" description="Confirm password above" class="mx-0 my-1 p-0">
-              <b-form-input type="password" size="sm" id="newwalletfromprivatekey-confirmpassword" v-model.trim="newWalletFromPrivateKey.confirmPassword" style="max-width: 300px;"></b-form-input>
-            </b-form-group>
-            <b-form-group label="" label-for="newwalletfromprivatekey-add" label-size="sm" label-cols-sm="3" label-align-sm="right" description="The encryption process may take up to half a minute" class="mx-0 my-1 p-0">
-              <b-button size="sm" :disabled="!newWalletFromPrivateKey.address || !newWalletFromPrivateKey.password || (newWalletFromPrivateKey.password != newWalletFromPrivateKey.confirmPassword)" id="newwalletfromprivatekey-add" @click="newWalletFromPrivateKeyAdd()" variant="primary">Add</b-button>
+            <b-form-group label="" label-for="newwalletfromprivatekey-password" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+              <div class="d-flex flex-wrap m-0 p-0">
+                <div class="mt-0 pr-1">
+                  <b-form-input type="password" size="sm" id="newwalletfromprivatekey-password" v-model.trim="newWalletFromPrivateKey.password" placeholder="Password" style="max-width: 300px;"></b-form-input>
+                </div>
+                <div class="mt-0 pr-1">
+                  <b-form-input type="password" size="sm" id="newwalletfromprivatekey-confirmpassword" v-model.trim="newWalletFromPrivateKey.confirmPassword" placeholder="Confirm password" style="max-width: 300px;"></b-form-input>
+                </div>
+                <div class="mt-0 pr-1">
+                  <b-button size="sm" :disabled="!newWalletFromPrivateKey.address || !newWalletFromPrivateKey.password || (newWalletFromPrivateKey.password != newWalletFromPrivateKey.confirmPassword)" id="newwalletfromprivatekey-add" @click="newWalletFromPrivateKeyAdd()" variant="primary">Add</b-button>
+                </div>
+              </div>
             </b-form-group>
           </b-modal>
 
@@ -187,14 +195,18 @@
             <b-form-group label="Name:" label-for="newwalletfromkeystore-name" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-form-input type="text" size="sm" id="newwalletfromkeystore-name" v-model.trim="newWalletFromKeystore.name" placeholder="Optional" style="max-width: 300px;"></b-form-input>
             </b-form-group>
-            <b-form-group label="Password:" label-for="newwalletfromkeystore-password" label-size="sm" label-cols-sm="3" label-align-sm="right" description="Password to encrypt this wallet within this dapp" class="mx-0 my-1 p-0">
-              <b-form-input type="password" size="sm" id="newwalletfromkeystore-password" v-model.trim="newWalletFromKeystore.password" style="max-width: 300px;"></b-form-input>
-            </b-form-group>
-            <b-form-group label="Confirm Password:" label-for="newwalletfromkeystore-confirmpassword" label-size="sm" label-cols-sm="3" label-align-sm="right" description="Confirm password above" class="mx-0 my-1 p-0">
-              <b-form-input type="password" size="sm" id="newwalletfromkeystore-confirmpassword" v-model.trim="newWalletFromKeystore.confirmPassword" style="max-width: 300px;"></b-form-input>
-            </b-form-group>
-            <b-form-group label="" label-for="newwalletfromkeystore-add" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-              <b-button size="sm" :disabled="!newWalletFromKeystore.address || !newWalletFromKeystore.password || (newWalletFromKeystore.password != newWalletFromKeystore.confirmPassword)" id="newwalletfromkeystore-add" @click="newWalletFromKeystoreAdd()" variant="primary">Add</b-button>
+            <b-form-group label="" label-for="newwalletfromkeystore-password" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+              <div class="d-flex flex-wrap m-0 p-0">
+                <div class="mt-0 pr-1">
+                  <b-form-input type="password" size="sm" id="newwalletfromkeystore-password" v-model.trim="newWalletFromKeystore.password" placeholder="Password" style="max-width: 300px;"></b-form-input>
+                </div>
+                <div class="mt-0 pr-1">
+                  <b-form-input type="password" size="sm" id="newwalletfromkeystore-confirmpassword" v-model.trim="newWalletFromKeystore.confirmPassword" placeholder="Confirm password" style="max-width: 300px;"></b-form-input>
+                </div>
+                <div class="mt-0 pr-1">
+                  <b-button size="sm" :disabled="!newWalletFromKeystore.address || !newWalletFromKeystore.password || (newWalletFromKeystore.password != newWalletFromKeystore.confirmPassword)" id="newwalletfromkeystore-add" @click="newWalletFromKeystoreAdd()" variant="primary">Add</b-button>
+                </div>
+              </div>
             </b-form-group>
           </b-modal>
 
