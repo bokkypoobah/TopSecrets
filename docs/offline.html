@@ -173,7 +173,7 @@
                   <b-form-input type="password" size="sm" id="newwalletfromprivatekey-confirmpassword" v-model.trim="newWalletFromPrivateKey.confirmPassword" placeholder="Confirm password" style="max-width: 300px;"></b-form-input>
                 </div>
                 <div class="mt-0 pr-1">
-                  <b-button size="sm" :disabled="!newWalletFromPrivateKey.address || !newWalletFromPrivateKey.password || (newWalletFromPrivateKey.password != newWalletFromPrivateKey.confirmPassword)" id="newwalletfromprivatekey-add" @click="newWalletFromPrivateKeyAdd()" variant="primary">Add</b-button>
+                  <b-button size="sm" :disabled="newWalletFromPrivateKey.adding || !newWalletFromPrivateKey.address || !newWalletFromPrivateKey.password || (newWalletFromPrivateKey.password != newWalletFromPrivateKey.confirmPassword)" id="newwalletfromprivatekey-add" @click="newWalletFromPrivateKeyAdd()" variant="primary">{{ newWalletFromPrivateKey.adding ? "Adding" : "Add" }}</b-button>
                 </div>
               </div>
             </b-form-group>
@@ -211,7 +211,7 @@
                   <b-form-input type="password" size="sm" id="newwalletfromkeystore-confirmpassword" v-model.trim="newWalletFromKeystore.confirmPassword" placeholder="Confirm password" style="max-width: 300px;"></b-form-input>
                 </div>
                 <div class="mt-0 pr-1">
-                  <b-button size="sm" :disabled="!newWalletFromKeystore.address || !newWalletFromKeystore.password || (newWalletFromKeystore.password != newWalletFromKeystore.confirmPassword)" id="newwalletfromkeystore-add" @click="newWalletFromKeystoreAdd()" variant="primary">Add</b-button>
+                  <b-button size="sm" :disabled="newWalletFromKeystore.adding || !newWalletFromKeystore.address || !newWalletFromKeystore.password || (newWalletFromKeystore.password != newWalletFromKeystore.confirmPassword)" id="newwalletfromkeystore-add" @click="newWalletFromKeystoreAdd()" variant="primary">{{ newWalletFromKeystore.adding ? "Adding" : "Add" }}</b-button>
                 </div>
               </div>
             </b-form-group>
@@ -433,6 +433,7 @@
             name: null,
             password: null,
             confirmPassword: null,
+            adding: null,
           },
 
           newWalletFromKeystore: {
@@ -444,6 +445,7 @@
             name: null,
             password: null,
             confirmPassword: null,
+            adding: null,
           },
 
           address: {
@@ -858,6 +860,7 @@
           },
 
           async newWalletFromPrivateKeyAdd() {
+            this.newWalletFromPrivateKey.adding = true;
             const wallet = new ethers.Wallet(this.newWalletFromPrivateKey.privateKey);
             const encryptedText = await wallet.encrypt(this.newWalletFromPrivateKey.password);
             const keystore = JSON.parse(encryptedText);
@@ -870,6 +873,7 @@
             localStorage.topSecretsOfflineAddresses = JSON.stringify(this.addresses);
             console.log(moment().format("HH:mm:ss") + " newWalletFromPrivateKeyAdd - this.addresses: " + JSON.stringify(this.addresses, null, 2));
             this.$bvModal.hide('modal-newwalletfromprivatekey');
+            this.newWalletFromPrivateKey.adding = null;
           },
 
           async newWalletFromKeystoreFileChange(fileName, fileList) {
@@ -898,6 +902,7 @@
           },
 
           async newWalletFromKeystoreAdd() {
+            this.newWalletFromKeystore.adding = true;
             const wallet = new ethers.Wallet(this.newWalletFromKeystore.privateKey);
             const encryptedText = await wallet.encrypt(this.newWalletFromKeystore.password);
             const keystore = JSON.parse(encryptedText);
@@ -910,6 +915,7 @@
             localStorage.topSecretsOfflineAddresses = JSON.stringify(this.addresses);
             console.log(moment().format("HH:mm:ss") + " newWalletFromKeystoreAdd - this.addresses: " + JSON.stringify(this.addresses, null, 2));
             this.$bvModal.hide('modal-newwalletfromkeystore');
+            this.newWalletFromKeystore.adding = null;
           },
 
           newAddressRecompute() {
