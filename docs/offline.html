@@ -528,6 +528,14 @@
             { value: 32, text: '24 Words' },
           ],
 
+          txTypeOptions: [
+            { value: null, text: '(Select)' },
+            { value: 'simpleethtransfer', text: 'Simple ETH Transfer' }, // TODO: Type 2
+            { value: 'sweepwallet', text: 'Sweep ETH To New Wallet', disabled: true }, // TODO: Type 1 with amount = balance - gasLimit * gasPrice
+            { value: 'deploycontract', text: 'Deploy Contract', disabled: true }, // TODO: `to` null; data with code
+            { value: 'writemessage', text: 'Write Message', disabled: true }, // TODO: `to` to own account, or destination; data with message
+          ],
+
           unitOptions: [
             { value: "ether", text: 'Ether' },
             { value: "gwei", text: 'Gwei' },
