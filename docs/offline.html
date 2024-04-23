@@ -77,8 +77,15 @@
                 </b-input-group-append>
               </b-input-group>
             </b-form-group>
-            <b-form-group label="Passphrase:" label-for="newwalletfrommnemonic-mnemonicpassphrase" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-2 p-0">
-              <b-form-input type="text" size="sm" id="newwalletfrommnemonic-mnemonicpassphrase" v-model.trim="newWalletFromMnemonic.passphrase" placeholder="Optional" debounce="600" style="max-width: 300px;"></b-form-input>
+            <b-form-group label="Passphrase:" label-for="newwalletfrommnemonic-passphrase" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-2 p-0">
+              <div class="d-flex flex-wrap m-0 p-0">
+                <div class="mt-0 pl-1">
+                  <b-form-input type="password" size="sm" id="newwalletfrommnemonic-passphrase" v-model.trim="newWalletFromMnemonic.passphrase" placeholder="Optional" debounce="600" style="max-width: 300px;"></b-form-input>
+                </div>
+                <div class="mt-0 pl-1">
+                  <b-form-input type="password" size="sm" id="newwalletfrommnemonic-confirmpassphrase" v-model.trim="newWalletFromMnemonic.confirmPassphrase" placeholder="Confirm" debounce="600" style="max-width: 300px;"></b-form-input>
+                </div>
+              </div>
             </b-form-group>
             <b-form-group label="Derivation Path:" label-for="newwalletfrommnemonic-derivationpath" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-2 p-0">
               <b-form-select size="sm" id="newwalletfrommnemonic-derivationpath" v-model.trim="newWalletFromMnemonic.derivationPath" :options="derivationPathOptions" style="max-width: 300px;" v-b-popover.hover.bottom="'Derivation Path'"></b-form-select>
@@ -406,6 +413,7 @@
             randomBytesLength: 16, // 12 words
             phraseError: null,
             passphrase: null,
+            confirmPassphrase: null,
             derivationPath: "m/44'/60'/0'/0/{index}",
             page: 0,
             pageSize: 10,
@@ -601,7 +609,7 @@
 
           newWalletFromMnemonicAddresses() {
             const results = [];
-            if (this.newWalletFromMnemonic.phrase) {
+            if (this.newWalletFromMnemonic.phrase && (this.newWalletFromMnemonic.passphrase == this.newWalletFromMnemonic.confirmPassphrase)) {
               try {
                 const node = ethers.utils.HDNode.fromMnemonic(this.newWalletFromMnemonic.phrase, this.newWalletFromMnemonic.passphrase);
                 for (let i = 0; i < this.newWalletFromMnemonic.pageSize; i++) {
