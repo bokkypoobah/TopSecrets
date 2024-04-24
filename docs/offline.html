@@ -314,7 +314,7 @@
               </b-form-group>
               <b-form-group label-cols-lg="2" label="Network Parameters" label-size="md" label-class="font-weight-bold pt-0" class="mb-0 mt-2">
                 <b-form-group label="Chain:" label-for="signethtx-chain" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                  <b-form-input type="text" size="sm" id="signethtx-chain" v-model.trim="settings.signEthTx.chainId" @change="saveSettings();" style="max-width: 150px;"></b-form-input>
+                  <b-form-select size="sm" id="signethtx-chain" v-model="settings.signEthTx.chainId" :options="chainsOptions" @change="saveSettings();" style="max-width: 200px;"></b-form-select>
                 </b-form-group>
                 <b-form-group label="Nonce:" label-for="signethtx-nonce" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                   <b-form-input type="text" size="sm" id="signethtx-nonce" v-model.trim="settings.signEthTx.nonce" @change="saveSettings();" style="max-width: 150px;"></b-form-input>
@@ -663,6 +663,15 @@
 
         // --- COMPUTED ---
         computed: {
+
+          chainsOptions() {
+            const results = [];
+            results.push({ value: null, text: "(Select Chain)" });
+            for (const [chainId, data] of Object.entries(this.chains)) {
+              results.push({ value: chainId, text: chainId + (data.name ? (": " + data.name) : "") });
+            }
+            return results;
+          },
 
           walletsOptions() {
             const results = [];
