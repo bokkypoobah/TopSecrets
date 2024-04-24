@@ -366,6 +366,9 @@
                     </div>
                   </div>
                 </b-form-group>
+                <b-form-group label="Signed Transaction:" label-for="signethtx-signedtx" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!settings.signEthTx.error" :invalid-feedback="settings.signEthTx.error" class="mx-0 my-2 p-0">
+                  <b-form-textarea size="sm" readonly id="signethtx-signedtx" :value="settings.signEthTx.signedTx" rows="5" placeholder="Enter password and click [Sign] above" style="max-width: 800px;"></b-form-textarea>
+                </b-form-group>
               </b-form-group>
             </b-card>
             <!-- <b-form-group label="Test:" label-for="wallet-testit" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
@@ -1119,11 +1122,13 @@
               console.log("signedTx: " + this.settings.signEthTx.signedTx);
               this.settings.signEthTx.decodedSignedTx = ethers.utils.parseTransaction(this.settings.signEthTx.signedTx);
               console.log("decoded: " + JSON.stringify(this.settings.signEthTx.decodedSignedTx, null, 2));
-
             } catch (e) {
               console.log(moment().format("HH:mm:ss") + " signEthTx - keystorefile ERROR: " + e.message);
               this.settings.signEthTx.error = e.message;
+              this.settings.signEthTx.signedTx = null;
+              this.settings.signEthTx.decodedSignedTx = null;
             }
+            this.saveSettings();
           },
 
           async signMessageSign() {
