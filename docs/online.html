@@ -241,7 +241,7 @@
                     <b-button size="sm" id="simulateethtx-simulate" @click="simulateEthTxSimulate()" variant="primary">Refresh</b-button>
                   </b-form-group>
                   <b-form-group label="Chain:" label-for="simulateethtx-chain" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <b-form-input type="text" size="sm" readonly id="simulateethtx-chain" v-model.trim="settings.simulateEthTx.chainId" style="max-width: 150px;"></b-form-input>
+                    <b-form-select size="sm" disabled id="simulateethtx-chain" v-model="settings.simulateEthTx.chainId" :options="chainsOptions" @change="saveSettings();" style="max-width: 200px;"></b-form-select>
                   </b-form-group>
                   <b-form-group label="Nonce:" label-for="simulateethtx-nonce" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <b-form-input type="text" size="sm" readonly id="simulateethtx-nonce" v-model.trim="settings.simulateEthTx.nonce" style="max-width: 150px;"></b-form-input>
@@ -311,7 +311,7 @@
                   <b-form-input type="text" size="sm" readonly id="compareethtx-data" :value="settings.compareEthTx.data"></b-form-input>
                 </b-form-group>
                 <b-form-group label="Chain:" label-for="compareethtx-chainid" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="settings.compareEthTx.chainId == settings.simulateEthTx.chainId" invalid-feedback="Different" class="mx-0 my-1 p-0">
-                  <b-form-input type="text" size="sm" readonly id="compareethtx-chainid" :value="settings.compareEthTx.chainId" style="max-width: 150px;"></b-form-input>
+                  <b-form-select size="sm" disabled id="compareethtx-chainid" v-model="settings.compareEthTx.chainId" :options="chainsOptions" style="max-width: 200px;"></b-form-select>
                 </b-form-group>
                 <b-form-group label="Nonce:" label-for="compareethtx-nonce" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="settings.compareEthTx.nonce == settings.simulateEthTx.nonce" invalid-feedback="Different" class="mx-0 my-1 p-0">
                   <b-form-input type="text" size="sm" readonly id="compareethtx-nonce" :value="settings.compareEthTx.nonce" style="max-width: 150px;"></b-form-input>
@@ -943,6 +943,15 @@
 
         // --- COMPUTED ---
         computed: {
+
+          chainsOptions() {
+            const results = [];
+            results.push({ value: null, text: "(Select Chain)" });
+            for (const [chainId, data] of Object.entries(this.chains)) {
+              results.push({ value: chainId, text: chainId + (data.name ? (": " + data.name) : "") });
+            }
+            return results;
+          },
 
           walletsOptions() {
             const results = [];
