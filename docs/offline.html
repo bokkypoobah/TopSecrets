@@ -366,9 +366,6 @@
                     </div>
                   </div>
                 </b-form-group>
-                <!-- <b-form-group v-if="false" label="Sign:" label-for="signethtx-sign" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                  <b-button size="sm" id="signethtx-sign" @click="testIt()" variant="warning">Test</b-button>
-                </b-form-group> -->
               </b-form-group>
             </b-card>
             <!-- <b-form-group label="Test:" label-for="wallet-testit" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
@@ -552,7 +549,8 @@
               maxFeePerGasUnit: "gwei",
               maxPriorityFeePerGasUnit: "gwei",
               gasPriceUnit: "gwei",
-              signature: null,
+              signedTx: null,
+              decodedSignedTx: null,
               error: null,
             },
 
@@ -562,7 +560,7 @@
               pageSize: 10,
               sortOption: 'addressasc',
             },
-            version: 14,
+            version: 15,
           },
           addresses: {},
 
@@ -1093,7 +1091,39 @@
 
           async signEthTx() {
             console.log(moment().format("HH:mm:ss") + " signEthTx - this.settings.signEthTx: " + JSON.stringify(this.settings.signEthTx, null, 2));
+            const walletInfo = this.addresses[this.settings.signEthTx.from];
+            console.log(moment().format("HH:mm:ss") + " signEthTx - walletInfo: " + JSON.stringify(walletInfo, null, 2));
+            console.log(moment().format("HH:mm:ss") + " signEthTx - this.addresses: " + JSON.stringify(this.addresses, null, 2));
+            try {
+              const wallet = await ethers.Wallet.fromEncryptedJsonSync(JSON.stringify(walletInfo.keystore), this.signEthTxPassword);
+              console.table(wallet);
+              this.settings.signEthTx.error = null;
+              const tx = {
+                from: this.settings.signEthTx.from,
+                to: this.settings.signEthTx.to,
+                value: ethers.utils.parseUnits(this.settings.signEthTx.amount, this.settings.signEthTx.amountUnit).toString(),
+                data: null,
+                chainId: this.settings.signEthTx.chainId,
+                nonce: this.settings.signEthTx.nonce,
+                gasLimit: this.settings.signEthTx.gasLimit,
+                type: this.settings.signEthTx.transactionType,
+              };
+              if (this.settings.signEthTx.transactionType == 0) {
+                tx.gasPrice = ethers.utils.parseUnits(this.settings.signEthTx.gasPrice, this.settings.signEthTx.gasPriceUnit).toString();
+              } else if (this.settings.signEthTx.transactionType == 2) {
+                tx.maxFeePerGas = ethers.utils.parseUnits(this.settings.signEthTx.maxFeePerGas, this.settings.signEthTx.maxFeePerGasUnit).toString();
+                tx.maxPriorityFeePerGas = ethers.utils.parseUnits(this.settings.signEthTx.maxPriorityFeePerGas, this.settings.signEthTx.maxPriorityFeePerGasUnit).toString();
+              }
+              console.log("tx: " + JSON.stringify(tx, null, 2));
+              this.settings.signEthTx.signedTx = await wallet.signTransaction(tx);
+              console.log("signedTx: " + this.settings.signEthTx.signedTx);
+              this.settings.signEthTx.decodedSignedTx = ethers.utils.parseTransaction(this.settings.signEthTx.signedTx);
+              console.log("decoded: " + JSON.stringify(this.settings.signEthTx.decodedSignedTx, null, 2));
 
+            } catch (e) {
+              console.log(moment().format("HH:mm:ss") + " signEthTx - keystorefile ERROR: " + e.message);
+              this.settings.signEthTx.error = e.message;
+            }
           },
 
           async signMessageSign() {
