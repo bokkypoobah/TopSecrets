@@ -293,7 +293,41 @@
 
               <!-- :COMPAREETHTX -->
               <b-card sub-title="Compare Simulated vs Signed Transaction" bg-variant="light" class="p-0 m-1" style="max-width: 900px;">
-
+                <b-form-group label="Signed Transaction:" label-for="compareethtx-signedtx" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!settings.compareEthTx.error" :invalid-feedback="settings.compareEthTx.error" class="mx-0 my-2 p-0">
+                  <b-form-textarea size="sm" id="compareethtx-signedtx" v-model.trim="settings.compareEthTx.signedTx" rows="5" @change="saveSettings(); compareEthTxCompare();" placeholder="Paste signed transaction here" style="max-width: 800px;"></b-form-textarea>
+                </b-form-group>
+                <b-form-group label-cols-lg="2" label="Comparison" label-size="md" label-class="font-weight-bold pt-0" class="mb-0 mt-2">
+                  <b-form-group label="From:" label-for="compareethtx-from" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <b-form-input type="text" size="sm" readonly id="compareethtx-from" :value="settings.compareEthTx.from"></b-form-input>
+                  </b-form-group>
+                  <b-form-group label="To:" label-for="compareethtx-to" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <b-form-input type="text" size="sm" readonly id="compareethtx-to" :value="settings.compareEthTx.to"></b-form-input>
+                  </b-form-group>
+                  <b-form-group label="Amount:" label-for="compareethtx-amount" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <b-form-input type="text" size="sm" readonly id="compareethtx-amount" :value="formatUnits(settings.compareEthTx.amount, settings.simulateEthTx.amountUnit)"></b-form-input>
+                  </b-form-group>
+                  <b-form-group label="Data:" label-for="compareethtx-data" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <b-form-input type="text" size="sm" readonly id="compareethtx-data" :value="settings.compareEthTx.data"></b-form-input>
+                  </b-form-group>
+                  <b-form-group label="Chain:" label-for="compareethtx-chainid" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <b-form-input type="text" size="sm" readonly id="compareethtx-chainid" :value="settings.compareEthTx.chainId"></b-form-input>
+                  </b-form-group>
+                  <b-form-group label="Nonce:" label-for="compareethtx-nonce" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <b-form-input type="text" size="sm" readonly id="compareethtx-nonce" :value="settings.compareEthTx.nonce"></b-form-input>
+                  </b-form-group>
+                  <b-form-group label="Type:" label-for="compareethtx-type" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <b-form-input type="text" size="sm" readonly id="compareethtx-type" :value="settings.compareEthTx.type"></b-form-input>
+                  </b-form-group>
+                  <b-form-group v-if="settings.compareEthTx.type == 0" label="Gas Price:" label-for="compareethtx-gasprice" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <b-form-input type="text" size="sm" readonly id="compareethtx-gasprice" :value="settings.compareEthTx.gasPrice"></b-form-input>
+                  </b-form-group>
+                  <b-form-group v-if="settings.compareEthTx.type == 2" label="Max Base Fee:" label-for="compareethtx-maxbasefee" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <b-form-input type="text" size="sm" readonly id="compareethtx-maxbasefee" :value="formatUnits(settings.compareEthTx.maxFeePerGas, settings.simulateEthTx.maxFeePerGasUnit)"></b-form-input>
+                  </b-form-group>
+                  <b-form-group v-if="settings.compareEthTx.type == 2" label="Priority Fee:" label-for="compareethtx-priorityfee" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <b-form-input type="text" size="sm" readonly id="compareethtx-priorityfee" :value="formatUnits(settings.compareEthTx.maxPriorityFeePerGas, settings.simulateEthTx.maxPriorityFeePerGasUnit)"></b-form-input>
+                  </b-form-group>
+                </b-form-group>
               </b-card>
 
               <!-- :Gas -->
@@ -697,6 +731,18 @@
             compareEthTx: {
               signedTx: null,
               decodedSignedTx: null,
+              error: null,
+              from: null,
+              to: null,
+              amount: null,
+              data: null,
+              chainId: null,
+              nonce: null,
+              gasLimit: null,
+              type: null,
+              gasPrice: null,
+              maxFeePerGas: null,
+              maxPriorityFeePerGas: null,
             },
 
             showInfo: false,
@@ -723,7 +769,7 @@
               pageSize: 100,
               sortOption: 'typenameasc',
             },
-            version: 2,
+            version: 3,
           },
           sync: {
             section: null,
@@ -1374,6 +1420,36 @@
             this.saveSettings();
           },
 
+          compareEthTxCompare() {
+            console.log(moment().format("HH:mm:ss") + " compareEthTxCompare - this.settings.compareEthTx: " + JSON.stringify(this.settings.compareEthTx, null, 2));
+            if (this.settings.compareEthTx.signedTx) {
+              try {
+                this.settings.compareEthTx.decodedSignedTx = ethers.utils.parseTransaction(this.settings.compareEthTx.signedTx);
+                console.log("decoded: " + JSON.stringify(this.settings.compareEthTx.decodedSignedTx, null, 2));
+                console.log("this.settings.simulateEthTx.from: " + this.settings.simulateEthTx.from);
+                console.log("this.settings.compareEthTx.decodedSignedTx.from: " + this.settings.compareEthTx.decodedSignedTx.from);
+                this.settings.compareEthTx.error = null;
+                this.settings.compareEthTx.from = this.settings.compareEthTx.decodedSignedTx.from;
+                this.settings.compareEthTx.to = this.settings.compareEthTx.decodedSignedTx.to;
+                this.settings.compareEthTx.amount = this.settings.compareEthTx.decodedSignedTx.value.toString();
+                this.settings.compareEthTx.data = this.settings.compareEthTx.decodedSignedTx.data == "0x" ? null : this.settings.compareEthTx.decodedSignedTx.data;
+                this.settings.compareEthTx.chainId = parseInt(this.settings.compareEthTx.decodedSignedTx.chainId || 0);
+                this.settings.compareEthTx.nonce = parseInt(this.settings.compareEthTx.decodedSignedTx.nonce);
+                this.settings.compareEthTx.gasLimit = parseInt(this.settings.compareEthTx.decodedSignedTx.gasLimit);
+                this.settings.compareEthTx.type = parseInt(this.settings.compareEthTx.decodedSignedTx.type);
+                this.settings.compareEthTx.gasPrice = this.settings.compareEthTx.decodedSignedTx.type == 0 ? this.settings.compareEthTx.decodedSignedTx.gasPrice.toString() : null;
+                this.settings.compareEthTx.maxFeePerGas = this.settings.compareEthTx.decodedSignedTx.type == 2 ? this.settings.compareEthTx.decodedSignedTx.maxFeePerGas.toString() : null;
+                this.settings.compareEthTx.maxPriorityFeePerGas = this.settings.compareEthTx.decodedSignedTx.type == 2 ? this.settings.compareEthTx.decodedSignedTx.maxPriorityFeePerGas.toString() : null;
+                console.log(moment().format("HH:mm:ss") + " compareEthTxCompare - this.settings.compareEthTx AFTER: " + JSON.stringify(this.settings.compareEthTx, null, 2));
+              } catch (e) {
+                console.log(moment().format("HH:mm:ss") + " compareEthTxCompare ERROR: " + e.message);
+                this.settings.compareEthTx.error = e.message;
+              }
+            } else {
+              this.settings.compareEthTx.error = null;
+            }
+            this.saveSettings();
+          },
 
           approvalsRowSelected(item) {
             console.log(moment().format("HH:mm:ss") + " approvalsRowSelected: " + JSON.stringify(item));
