@@ -20,6 +20,7 @@
     <script src="js/ethers-5.7.umd.min.js" type="application/javascript"></script>
     <script src="js/moment.min.js"></script>
     <script src="globals.js"></script>
+    <script src="chains.js"></script>
     <script src="deploymentData.js"></script>
 
     <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
@@ -655,7 +656,7 @@
                   {{ coinbase.substring(0, 10) }}
                 </b-link> -->
                 <b-link v-if="chainId" :href="'https://etherscan.io/'" v-b-popover.hover.bottom="'Network'" target="_blank">
-                  {{ chainId == '1' ? 'Mainnet' : 'Unsupported' }}
+                  {{ chains[chainId] && chains[chainId].name || ('ChainId: ' + chainId) }}
                 </b-link>
                 <b-link v-if="blockNumber" :href="'https://etherscan.io/block/' + blockNumber" v-b-popover.hover.bottom="'Latest block'" target="_blank">
                   {{ '#' + commify0(blockNumber) }}
@@ -786,6 +787,7 @@
 
           addresses: {},
 
+          chains: {},
           events: {},
           accounts: {},
           blockTimestamps: {},
@@ -2059,6 +2061,12 @@
 
         // --- MOUNTED ---
         mounted() {
+          for (const [chainId, name] of Object.entries(CHAINS)) {
+            if (!(chainId in this.chains)) {
+              Vue.set(this.chains, chainId, name);
+            }
+          }
+          // console.log("this.chains: " + JSON.stringify(this.chains, null, 2));
           (async() => {
             await this.connectToWeb3();
           })();
