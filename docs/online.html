@@ -213,7 +213,7 @@
           <b-card v-if="settings.tabIndex == 1" class="m-0 p-0 border-0" body-class="m-1 p-0">
             <b-card-group deck class="m-0 p-0">
               <!-- :SIMULATEETHTX -->
-              <b-card sub-title="Simulate ETH Transaction for Offline Signing" bg-variant="light" class="p-0 m-1" style="max-width: 900px;">
+              <b-card sub-title="Simulate ETH Transaction For Offline Signing" bg-variant="light" class="p-0 m-1" style="max-width: 900px;">
                 <b-form-group label-cols-lg="2" label="Input" label-size="md" label-class="font-weight-bold pt-0" class="mb-0 mt-3">
                   <b-form-group label="Action:" label-for="simulateethtx-action" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <b-form-select size="sm" id="simulateethtx-action" v-model="settings.simulateEthTx.action" :options="actionOptions" @change="saveSettings(); simulateEthTxSimulate();" style="max-width: 300px;"></b-form-select>
@@ -292,41 +292,43 @@
               </b-card>
 
               <!-- :COMPAREETHTX -->
-              <b-card sub-title="Compare Simulated vs Signed Transaction" bg-variant="light" class="p-0 m-1" style="max-width: 900px;">
+              <b-card sub-title="Check Offline Signed Transaction And Submission" bg-variant="light" class="p-0 m-1" style="max-width: 900px;">
                 <b-form-group label="Signed Transaction:" label-for="compareethtx-signedtx" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!settings.compareEthTx.error" :invalid-feedback="settings.compareEthTx.error" class="mx-0 my-2 p-0">
                   <b-form-textarea size="sm" id="compareethtx-signedtx" v-model.trim="settings.compareEthTx.signedTx" rows="5" @change="saveSettings(); compareEthTxCompare();" placeholder="Paste signed transaction here" style="max-width: 800px;"></b-form-textarea>
                 </b-form-group>
-                <b-form-group label-cols-lg="2" label="Comparison" label-size="md" label-class="font-weight-bold pt-0" class="mb-0 mt-2">
-                  <b-form-group label="From:" label-for="compareethtx-from" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <b-form-input type="text" size="sm" readonly id="compareethtx-from" :value="settings.compareEthTx.from"></b-form-input>
-                  </b-form-group>
-                  <b-form-group label="To:" label-for="compareethtx-to" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <b-form-input type="text" size="sm" readonly id="compareethtx-to" :value="settings.compareEthTx.to"></b-form-input>
-                  </b-form-group>
-                  <b-form-group label="Amount:" label-for="compareethtx-amount" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <b-form-input type="text" size="sm" readonly id="compareethtx-amount" :value="formatUnits(settings.compareEthTx.amount, settings.simulateEthTx.amountUnit)"></b-form-input>
-                  </b-form-group>
-                  <b-form-group label="Data:" label-for="compareethtx-data" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <b-form-input type="text" size="sm" readonly id="compareethtx-data" :value="settings.compareEthTx.data"></b-form-input>
-                  </b-form-group>
-                  <b-form-group label="Chain:" label-for="compareethtx-chainid" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <b-form-input type="text" size="sm" readonly id="compareethtx-chainid" :value="settings.compareEthTx.chainId"></b-form-input>
-                  </b-form-group>
-                  <b-form-group label="Nonce:" label-for="compareethtx-nonce" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <b-form-input type="text" size="sm" readonly id="compareethtx-nonce" :value="settings.compareEthTx.nonce"></b-form-input>
-                  </b-form-group>
-                  <b-form-group label="Type:" label-for="compareethtx-type" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <b-form-input type="text" size="sm" readonly id="compareethtx-type" :value="settings.compareEthTx.type"></b-form-input>
-                  </b-form-group>
-                  <b-form-group v-if="settings.compareEthTx.type == 0" label="Gas Price:" label-for="compareethtx-gasprice" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <b-form-input type="text" size="sm" readonly id="compareethtx-gasprice" :value="settings.compareEthTx.gasPrice"></b-form-input>
-                  </b-form-group>
-                  <b-form-group v-if="settings.compareEthTx.type == 2" label="Max Base Fee:" label-for="compareethtx-maxbasefee" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <b-form-input type="text" size="sm" readonly id="compareethtx-maxbasefee" :value="formatUnits(settings.compareEthTx.maxFeePerGas, settings.simulateEthTx.maxFeePerGasUnit)"></b-form-input>
-                  </b-form-group>
-                  <b-form-group v-if="settings.compareEthTx.type == 2" label="Priority Fee:" label-for="compareethtx-priorityfee" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <b-form-input type="text" size="sm" readonly id="compareethtx-priorityfee" :value="formatUnits(settings.compareEthTx.maxPriorityFeePerGas, settings.simulateEthTx.maxPriorityFeePerGasUnit)"></b-form-input>
-                  </b-form-group>
+                <b-form-group label="From:" label-for="compareethtx-from" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="settings.simulateEthTx.from == settings.compareEthTx.from" invalid-feedback="Different" class="mx-0 my-1 p-0">
+                  <b-form-input type="text" size="sm" readonly id="compareethtx-from" :value="settings.compareEthTx.from"></b-form-input>
+                </b-form-group>
+                <b-form-group label="To:" label-for="compareethtx-to" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="settings.simulateEthTx.to == settings.compareEthTx.to" invalid-feedback="Different" class="mx-0 my-1 p-0">
+                  <b-form-input type="text" size="sm" readonly id="compareethtx-to" :value="settings.compareEthTx.to"></b-form-input>
+                </b-form-group>
+                <b-form-group label="Amount:" label-for="compareethtx-amount" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="settings.simulateEthTx.amount == formatUnits(settings.compareEthTx.amount, settings.simulateEthTx.amountUnit)" invalid-feedback="Different" class="mx-0 my-1 p-0">
+                  <b-form-input type="text" size="sm" readonly id="compareethtx-amount" :value="formatUnits(settings.compareEthTx.amount, settings.simulateEthTx.amountUnit)" style="max-width: 150px;"></b-form-input>
+                </b-form-group>
+                <!-- TODO: Check for differences below -->
+                <b-form-group label="Data:" label-for="compareethtx-data" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-form-input type="text" size="sm" readonly id="compareethtx-data" :value="settings.compareEthTx.data"></b-form-input>
+                </b-form-group>
+                <b-form-group label="Chain:" label-for="compareethtx-chainid" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-form-input type="text" size="sm" readonly id="compareethtx-chainid" :value="settings.compareEthTx.chainId" style="max-width: 150px;"></b-form-input>
+                </b-form-group>
+                <b-form-group label="Nonce:" label-for="compareethtx-nonce" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-form-input type="text" size="sm" readonly id="compareethtx-nonce" :value="settings.compareEthTx.nonce" style="max-width: 150px;"></b-form-input>
+                </b-form-group>
+                <b-form-group label="Type:" label-for="compareethtx-type" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-form-input type="text" size="sm" readonly id="compareethtx-type" :value="settings.compareEthTx.type" style="max-width: 150px;"></b-form-input>
+                </b-form-group>
+                <b-form-group v-if="settings.compareEthTx.type == 0" label="Gas Price:" label-for="compareethtx-gasprice" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-form-input type="text" size="sm" readonly id="compareethtx-gasprice" :value="formatUnits(settings.compareEthTx.gasPrice, settings.simulateEthTx.gasPriceUnit)" style="max-width: 150px;"></b-form-input>
+                </b-form-group>
+                <b-form-group v-if="settings.compareEthTx.type == 2" label="Max Base Fee:" label-for="compareethtx-maxbasefee" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-form-input type="text" size="sm" readonly id="compareethtx-maxbasefee" :value="formatUnits(settings.compareEthTx.maxFeePerGas, settings.simulateEthTx.maxFeePerGasUnit)" style="max-width: 150px;"></b-form-input>
+                </b-form-group>
+                <b-form-group v-if="settings.compareEthTx.type == 2" label="Priority Fee:" label-for="compareethtx-priorityfee" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-form-input type="text" size="sm" readonly id="compareethtx-priorityfee" :value="formatUnits(settings.compareEthTx.maxPriorityFeePerGas, settings.simulateEthTx.maxPriorityFeePerGasUnit)" style="max-width: 150px;"></b-form-input>
+                </b-form-group>
+                <b-form-group label="" label-for="compareethtx-simulate" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!settings.simulateEthTx.error" :invalid-feedback="settings.simulateEthTx.error" class="mx-0 my-1 p-0">
+                  <b-button size="sm" id="compareethtx-simulate" @click="simulateEthTxSimulate()" variant="primary">Refresh</b-button>
                 </b-form-group>
               </b-card>
 
