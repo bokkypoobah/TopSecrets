@@ -1111,7 +1111,6 @@
             console.log(moment().format("HH:mm:ss") + " signEthTx - this.addresses: " + JSON.stringify(this.addresses, null, 2));
             try {
               const wallet = await ethers.Wallet.fromEncryptedJsonSync(JSON.stringify(walletInfo.keystore), this.signEthTxPassword);
-              console.table(wallet);
               this.settings.signEthTx.error = null;
               const tx = {
                 from: this.settings.signEthTx.from,
@@ -1133,9 +1132,9 @@
               this.settings.signEthTx.signedTx = await wallet.signTransaction(tx);
               console.log("signedTx: " + this.settings.signEthTx.signedTx);
               this.settings.signEthTx.decodedSignedTx = ethers.utils.parseTransaction(this.settings.signEthTx.signedTx);
-              console.log("decoded: " + JSON.stringify(this.settings.signEthTx.decodedSignedTx, null, 2));
+              console.log("decoded: " + JSON.stringify(this.settings.signEthTx.decodedSignedTx, txDataReplacer, 2));
             } catch (e) {
-              console.log(moment().format("HH:mm:ss") + " signEthTx - keystorefile ERROR: " + e.message);
+              console.log(moment().format("HH:mm:ss") + " signEthTx - signTransaction ERROR: " + e.message);
               this.settings.signEthTx.error = e.message;
               this.settings.signEthTx.signedTx = null;
               this.settings.signEthTx.decodedSignedTx = null;
