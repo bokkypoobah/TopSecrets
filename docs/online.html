@@ -290,8 +290,14 @@
                   </b-form-group>
                 </b-form-group>
               </b-card>
+
+              <!-- :COMPAREETHTX -->
+              <b-card sub-title="Compare Simulated vs Signed Transaction" bg-variant="light" class="p-0 m-1" style="max-width: 900px;">
+
+              </b-card>
+
               <!-- :Gas -->
-              <b-card sub-title="Latest Gas (gwei)" bg-variant="light" class="p-0 m-1" style="max-width: 400px;">
+              <b-card v-if="false" sub-title="Latest Gas (gwei)" bg-variant="light" class="p-0 m-1" style="max-width: 400px;">
                 <b-form-group label="Last Base Fee Per Gas:" label-for="gas-lastbasefeepergas" label-size="sm" label-cols-sm="6" label-align-sm="right" class="mx-0 my-1 p-0">
                   <b-form-input type="text" size="sm" readonly id="gas-lastbasefeepergas" :value="formatGas(feeData.lastBaseFeePerGas)" style="max-width: 150px;"></b-form-input>
                 </b-form-group>
@@ -305,6 +311,7 @@
                   <b-form-input type="text" size="sm" readonly id="gas-gasprice" :value="formatGas(feeData.gasPrice)" style="max-width: 150px;"></b-form-input>
                 </b-form-group>
               </b-card>
+
             </b-card-group>
           </b-card>
 
@@ -687,6 +694,11 @@
               error: null,
             },
 
+            compareEthTx: {
+              signedTx: null,
+              decodedSignedTx: null,
+            },
+
             showInfo: false,
             reportingDateTime: 0,
             searchAttachedAccount: true,
@@ -711,7 +723,7 @@
               pageSize: 100,
               sortOption: 'typenameasc',
             },
-            version: 0,
+            version: 2,
           },
           sync: {
             section: null,
