@@ -216,7 +216,7 @@
               <b-card sub-title="Simulate ETH Transaction for Offline Signing" bg-variant="light" class="p-0 m-1" style="max-width: 900px;">
                 <b-form-group label-cols-lg="2" label="Input" label-size="md" label-class="font-weight-bold pt-0" class="mb-0 mt-3">
                   <b-form-group label="Action:" label-for="simulateethtx-action" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <b-form-select size="sm" id="simulateethtx-action" v-model="settings.simulateEthTx.action" :options="actionOptions" @change="saveSettings" style="max-width: 300px;"></b-form-select>
+                    <b-form-select size="sm" id="simulateethtx-action" v-model="settings.simulateEthTx.action" :options="actionOptions" @change="saveSettings(); simulateEthTxSimulate();" style="max-width: 300px;"></b-form-select>
                   </b-form-group>
                   <b-form-group label="From:" label-for="simulateethtx-from" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <b-form-select size="sm" id="simulateethtx-from" v-model="settings.simulateEthTx.from" :options="walletsOptions" @change="saveSettings(); simulateEthTxSimulate();" v-b-popover.hover.bottom="'Select Wallet'"></b-form-select>
@@ -234,11 +234,11 @@
                       </div>
                     </div>
                   </b-form-group>
-                  <b-form-group label="" label-for="simulateethtx-simulate" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!settings.simulateEthTx.error" :invalid-feedback="settings.simulateEthTx.error" class="mx-0 my-1 p-0">
-                    <b-button size="sm" id="simulateethtx-simulate" @click="simulateEthTxSimulate()" variant="primary">Simulate</b-button>
-                  </b-form-group>
                 </b-form-group>
                 <b-form-group label-cols-lg="2" label="Network Parameters" label-size="md" label-class="font-weight-bold pt-0" class="mb-0 mt-2">
+                  <b-form-group label="" label-for="simulateethtx-simulate" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!settings.simulateEthTx.error" :invalid-feedback="settings.simulateEthTx.error" class="mx-0 my-1 p-0">
+                    <b-button size="sm" id="simulateethtx-simulate" @click="simulateEthTxSimulate()" variant="primary">Refresh</b-button>
+                  </b-form-group>
                   <b-form-group label="Chain:" label-for="simulateethtx-chain" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <b-form-input type="text" size="sm" readonly id="simulateethtx-chain" v-model.trim="settings.simulateEthTx.chainId" style="max-width: 150px;"></b-form-input>
                   </b-form-group>
@@ -258,7 +258,7 @@
                       </div>
                     </div>
                   </b-form-group>
-                  <b-form-group label="Last Base Fee Per Gas:" label-for="simulateethtx-lastbasefeepergas" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-form-group label="Last Base Fee:" label-for="simulateethtx-lastbasefeepergas" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <div class="d-flex flex-wrap m-0 p-0">
                       <div class="mt-0 pr-1">
                         <b-form-input type="text" size="sm" readonly id="simulateethtx-lastbasefeepergas" :value="formatUnits(settings.simulateEthTx.lastBaseFeePerGas, settings.simulateEthTx.lastBaseFeePerGasUnit)"></b-form-input>
@@ -268,7 +268,7 @@
                       </div>
                     </div>
                   </b-form-group>
-                  <b-form-group label="Max Fee Per Gas:" label-for="simulateethtx-maxfeepergas" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-form-group label="Max Base Fee:" label-for="simulateethtx-maxfeepergas" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <div class="d-flex flex-wrap m-0 p-0">
                       <div class="mt-0 pr-1">
                         <b-form-input type="text" size="sm" readonly id="simulateethtx-maxfeepergas" :value="formatUnits(settings.simulateEthTx.maxFeePerGas, settings.simulateEthTx.maxFeePerGasUnit)"></b-form-input>
@@ -278,7 +278,7 @@
                       </div>
                     </div>
                   </b-form-group>
-                  <b-form-group label="Max Priority Fee Per Gas:" label-for="simulateethtx-maxpriorityfeepergas" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-form-group label="Priority Fee:" label-for="simulateethtx-maxpriorityfeepergas" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <div class="d-flex flex-wrap m-0 p-0">
                       <div class="mt-0 pr-1">
                         <b-form-input type="text" size="sm" readonly id="simulateethtx-maxpriorityfeepergas" :value="formatUnits(settings.simulateEthTx.maxPriorityFeePerGas, settings.simulateEthTx.maxPriorityFeePerGasUnit)"></b-form-input>
@@ -1334,10 +1334,7 @@
             if (this.settings.simulateEthTx.from) {
               this.settings.simulateEthTx.chainId = parseInt(this.chainId.toString());
               this.settings.simulateEthTx.nonce = await provider.getTransactionCount(this.settings.simulateEthTx.from);
-
               const signer = new ethers.VoidSigner(this.settings.simulateEthTx.from, provider);
-              // console.log(moment().format("HH:mm:ss") + " simulateEthTxSimulate - signer: " + JSON.stringify(signer, null, 2));
-              console.table(signer);
               const tx = {
                 from: this.settings.simulateEthTx.from,
                 to: this.settings.simulateEthTx.to,

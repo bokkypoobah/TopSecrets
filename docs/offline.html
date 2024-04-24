@@ -334,7 +334,7 @@
                     </div>
                   </div>
                 </b-form-group>
-                <b-form-group v-if="settings.signEthTx.transactionType == 2" label="Max Fee Per Gas:" label-for="signethtx-maxfeepergas" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                <b-form-group v-if="settings.signEthTx.transactionType == 2" label="Max Base Fee:" label-for="signethtx-maxfeepergas" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                   <div class="d-flex flex-wrap m-0 p-0">
                     <div class="mt-0 pr-1">
                       <b-form-input type="text" size="sm" id="signethtx-maxfeepergas" v-model.trim="settings.signEthTx.maxFeePerGas" @change="saveSettings();"></b-form-input>
@@ -344,7 +344,7 @@
                     </div>
                   </div>
                 </b-form-group>
-                <b-form-group v-if="settings.signEthTx.transactionType == 2" label="Max Priority Fee Per Gas:" label-for="signethtx-maxpriorityfeepergas" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                <b-form-group v-if="settings.signEthTx.transactionType == 2" label="Priority Fee:" label-for="signethtx-maxpriorityfeepergas" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                   <div class="d-flex flex-wrap m-0 p-0">
                     <div class="mt-0 pr-1">
                       <b-form-input type="text" size="sm" id="signethtx-maxpriorityfeepergas" v-model.trim="settings.signEthTx.maxPriorityFeePerGas" @change="saveSettings();"></b-form-input>
