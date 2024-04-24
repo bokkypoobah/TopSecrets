@@ -1132,7 +1132,7 @@
               this.settings.signEthTx.signedTx = await wallet.signTransaction(tx);
               console.log("signedTx: " + this.settings.signEthTx.signedTx);
               this.settings.signEthTx.decodedSignedTx = ethers.utils.parseTransaction(this.settings.signEthTx.signedTx);
-              console.log("decoded: " + JSON.stringify(this.settings.signEthTx.decodedSignedTx, txDataReplacer, 2));
+              console.log("decoded: " + JSON.stringify(this.settings.signEthTx.decodedSignedTx, bigNumberReplacer, 2));
             } catch (e) {
               console.log(moment().format("HH:mm:ss") + " signEthTx - signTransaction ERROR: " + e.message);
               this.settings.signEthTx.error = e.message;

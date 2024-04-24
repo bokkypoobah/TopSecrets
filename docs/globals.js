@@ -8,7 +8,7 @@ function handleErrors(response) {
   return response;
 }
 
-const txDataReplacer = (key, value) =>
-  ['maxPriorityFeePerGas', 'maxFeePerGas', 'gasLimit', 'gasPrice', 'value'].includes(key) && value
+const bigNumberReplacer = (key, value) =>
+  value && typeof value === "object" && value.type == "BigNumber"
       ? ethers.BigNumber.from(value).toString()
       : value;
