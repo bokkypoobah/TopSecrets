@@ -666,7 +666,7 @@
             results.push({ value: null, text: "(Select Wallet)" });
             for (const [address, data] of Object.entries(this.addresses)) {
               if (data.type.substring(0, 6) == "wallet") {
-                results.push({ value: address, text: address + (data.name ? (" " + data.name) : "") });
+                results.push({ value: address, text: address + (data.name ? (": " + data.name) : "") });
               }
             }
             return results;
@@ -676,7 +676,7 @@
             const results = [];
             results.push({ value: null, text: "(Select Address)" });
             for (const [address, data] of Object.entries(this.addresses)) {
-              results.push({ value: address, text: address + (data.name ? (" " + data.name) : "") });
+              results.push({ value: address, text: address + (data.name ? (": " + data.name) : "") });
             }
             return results;
           },

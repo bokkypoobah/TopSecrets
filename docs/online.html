@@ -292,7 +292,7 @@
               </b-card>
 
               <!-- :COMPAREETHTX -->
-              <b-card sub-title="Check Offline Signed Transaction And Submission" bg-variant="light" class="p-0 m-1" style="max-width: 900px;">
+              <b-card sub-title="Check And Submit Offline Signed Transaction" bg-variant="light" class="p-0 m-1" style="max-width: 900px;">
                 <b-form-group label="Signed Transaction:" label-for="compareethtx-signedtx" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!settings.compareEthTx.error" :invalid-feedback="settings.compareEthTx.error" class="mx-0 my-2 p-0">
                   <b-form-textarea size="sm" id="compareethtx-signedtx" v-model.trim="settings.compareEthTx.signedTx" rows="5" @change="saveSettings(); compareEthTxCompare();" placeholder="Paste signed transaction here" style="max-width: 800px;"></b-form-textarea>
                 </b-form-group>
@@ -309,11 +309,14 @@
                 <b-form-group label="Data:" label-for="compareethtx-data" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                   <b-form-input type="text" size="sm" readonly id="compareethtx-data" :value="settings.compareEthTx.data"></b-form-input>
                 </b-form-group>
-                <b-form-group label="Chain:" label-for="compareethtx-chainid" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                <b-form-group label="Chain:" label-for="compareethtx-chainid" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="settings.compareEthTx.chainId == settings.simulateEthTx.chainId" invalid-feedback="Different" class="mx-0 my-1 p-0">
                   <b-form-input type="text" size="sm" readonly id="compareethtx-chainid" :value="settings.compareEthTx.chainId" style="max-width: 150px;"></b-form-input>
                 </b-form-group>
-                <b-form-group label="Nonce:" label-for="compareethtx-nonce" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                <b-form-group label="Nonce:" label-for="compareethtx-nonce" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="settings.compareEthTx.nonce == settings.simulateEthTx.nonce" invalid-feedback="Different" class="mx-0 my-1 p-0">
                   <b-form-input type="text" size="sm" readonly id="compareethtx-nonce" :value="settings.compareEthTx.nonce" style="max-width: 150px;"></b-form-input>
+                </b-form-group>
+                <b-form-group label="Gas Limit:" label-for="compareethtx-gaslimit" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="settings.compareEthTx.gasLimit >= settings.simulateEthTx.estimatedGas" invalid-feedback="Gas Limit < Estimated Gas" class="mx-0 my-1 p-0">
+                  <b-form-input type="text" size="sm" readonly id="compareethtx-gaslimit" :value="settings.compareEthTx.gasLimit" style="max-width: 150px;"></b-form-input>
                 </b-form-group>
                 <b-form-group label="Type:" label-for="compareethtx-type" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                   <b-form-input type="text" size="sm" readonly id="compareethtx-type" :value="settings.compareEthTx.type" style="max-width: 150px;"></b-form-input>
@@ -328,7 +331,8 @@
                   <b-form-input type="text" size="sm" readonly id="compareethtx-priorityfee" :value="formatUnits(settings.compareEthTx.maxPriorityFeePerGas, settings.simulateEthTx.maxPriorityFeePerGasUnit)" style="max-width: 150px;"></b-form-input>
                 </b-form-group>
                 <b-form-group label="" label-for="compareethtx-simulate" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!settings.simulateEthTx.error" :invalid-feedback="settings.simulateEthTx.error" class="mx-0 my-1 p-0">
-                  <b-button size="sm" id="compareethtx-simulate" @click="simulateEthTxSimulate()" variant="primary">Refresh</b-button>
+                  <b-button size="sm" id="compareethtx-simulate" @click="compareEthTxSimulate()" variant="primary">Check</b-button>
+                  <b-button size="sm" @click="compareEthTxSend()" variant="warning">Send</b-button>
                 </b-form-group>
               </b-card>
 
@@ -943,7 +947,7 @@
             results.push({ value: null, text: "(Select Wallet)" });
             for (const [address, data] of Object.entries(this.addresses)) {
               if (data.type.substring(0, 6) == "wallet") {
-                results.push({ value: address, text: address + (data.name ? (" " + data.name) : "") });
+                results.push({ value: address, text: address + (data.name ? (": " + data.name) : "") });
               }
             }
             return results;
@@ -953,7 +957,7 @@
             const results = [];
             results.push({ value: null, text: "(Select Address)" });
             for (const [address, data] of Object.entries(this.addresses)) {
-              results.push({ value: address, text: address + (data.name ? (" " + data.name) : "") });
+              results.push({ value: address, text: address + (data.name ? (": " + data.name) : "") });
             }
             return results;
           },
@@ -1451,6 +1455,56 @@
               this.settings.compareEthTx.error = null;
             }
             this.saveSettings();
+          },
+
+          async compareEthTxSimulate() {
+            console.log(moment().format("HH:mm:ss") + " compareEthTxSimulate - this.settings.compareEthTx: " + JSON.stringify(this.settings.compareEthTx, null, 2));
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            if (this.settings.compareEthTx.decodedSignedTx) {
+              const signer = new ethers.VoidSigner(this.settings.compareEthTx.decodedSignedTx.from, provider);
+              console.table(signer);
+              console.log(moment().format("HH:mm:ss") + " compareEthTxSimulate - this.settings.compareEthTx.decodedSignedTx: " + JSON.stringify(this.settings.compareEthTx.decodedSignedTx, null, 2));
+              const tx = this.settings.compareEthTx.decodedSignedTx;
+              delete tx.hash;
+              delete tx.v;
+              delete tx.r;
+              delete tx.s;
+              console.log(moment().format("HH:mm:ss") + " compareEthTxSimulate - tx: " + JSON.stringify(tx, null, 2));
+              try {
+                const estimatedGas = (await signer.estimateGas(tx)).toString();
+                console.log(moment().format("HH:mm:ss") + " compareEthTxSimulate - estimatedGas: " + estimatedGas.toString());
+                // this.settings.simulateEthTx.error = null;
+              } catch (e) {
+                console.log(moment().format("HH:mm:ss") + " compareEthTxSimulate ERROR: " + e.message);
+                // this.settings.simulateEthTx.error = e.message;
+                // this.settings.simulateEthTx.estimatedGas = null;
+              }
+            }
+          },
+
+          async compareEthTxSend() {
+            console.log(moment().format("HH:mm:ss") + " compareEthTxSend - this.settings.compareEthTx: " + JSON.stringify(this.settings.compareEthTx, null, 2));
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            if (this.settings.compareEthTx.signedTx) {
+              // const signer = new ethers.VoidSigner(this.settings.compareEthTx.decodedSignedTx.from, provider);
+              // console.table(signer);
+              // console.log(moment().format("HH:mm:ss") + " compareEthTxSend - this.settings.compareEthTx.decodedSignedTx: " + JSON.stringify(this.settings.compareEthTx.decodedSignedTx, null, 2));
+              // const tx = this.settings.compareEthTx.decodedSignedTx;
+              // delete tx.hash;
+              // delete tx.v;
+              // delete tx.r;
+              // delete tx.s;
+              // console.log(moment().format("HH:mm:ss") + " compareEthTxSend - tx: " + JSON.stringify(tx, null, 2));
+              try {
+                const txHash = await provider.sendTransaction(this.settings.compareEthTx.signedTx);
+                console.log(moment().format("HH:mm:ss") + " compareEthTxSend - txHash: " + JSON.stringify(txHash, null, 2));
+                // this.settings.simulateEthTx.error = null;
+              } catch (e) {
+                console.log(moment().format("HH:mm:ss") + " compareEthTxSend ERROR: " + e.message);
+                // this.settings.simulateEthTx.error = e.message;
+                // this.settings.simulateEthTx.estimatedGas = null;
+              }
+            }
           },
 
           approvalsRowSelected(item) {
