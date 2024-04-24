@@ -1924,7 +1924,7 @@
           },
 
           saveSettings() {
-            console.log(moment().format("HH:mm:ss") + " saveSettings: " + JSON.stringify(this.settings, null, 2));
+            console.log(moment().format("HH:mm:ss") + " saveSettings: " + JSON.stringify(this.settings, bigNumberReplacer, 2));
             localStorage.topSecretsOnlineSettings = JSON.stringify(this.settings);
           },
           async processNewBlock(blockNumber) {
