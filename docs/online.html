@@ -2028,7 +2028,7 @@
             } else {
               const t = this;
               function handleChainChanged(_chainId) {
-                t.chainId = _chainId;
+                t.chainId = parseInt(_chainId);
                 console.log(moment().format("HH:mm:ss") + " connectToWeb3 - handleChainChanged - this.chainId: " + t.chainId);
                 alert('Ethereum chain has changed - reload this page if necessary.')
                 // window.location.reload();
@@ -2053,7 +2053,7 @@
               const signer = provider.getSigner();
               this.coinbase = await signer.getAddress();
               const network = await provider.getNetwork();
-              this.chainId = network.chainId;
+              this.chainId = parseInt(network.chainId);
               console.log(moment().format("HH:mm:ss") + " connectToWeb3[" + this.chainId + "]");
             }
           },

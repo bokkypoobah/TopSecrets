@@ -15,6 +15,10 @@ const CHAINS = {
     name: "Arbitrum One",
     explorer: "https://arbiscan.io/",
   },
+  59141: {
+    name: "Linea Testnet",
+    explorer: "https://sepolia.lineascan.build/",
+  },
   59144: {
     name: "Linea",
     explorer: "https://lineascan.build/",
