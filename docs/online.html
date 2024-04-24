@@ -248,6 +248,16 @@
                   <b-form-group label="Estimated Gas:" label-for="simulateethtx-estimatedgas" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <b-form-input type="text" size="sm" readonly id="simulateethtx-estimatedgas" v-model.trim="settings.simulateEthTx.estimatedGas" style="max-width: 150px;"></b-form-input>
                   </b-form-group>
+                  <b-form-group label="Gas Price:" label-for="simulateethtx-gasprice" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <div class="d-flex flex-wrap m-0 p-0">
+                      <div class="mt-0 pr-1">
+                        <b-form-input type="text" size="sm" readonly id="simulateethtx-gasprice" :value="formatUnits(settings.simulateEthTx.gasPrice, settings.simulateEthTx.gasPriceUnit)"></b-form-input>
+                      </div>
+                      <div class="mt-0 pr-1">
+                        <b-form-select size="sm" v-model="settings.simulateEthTx.gasPriceUnit" :options="unitOptions" @change="saveSettings(); simulateEthTxSimulate();" style="max-width: 300px;"></b-form-select>
+                      </div>
+                    </div>
+                  </b-form-group>
                   <b-form-group label="Last Base Fee Per Gas:" label-for="simulateethtx-lastbasefeepergas" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <div class="d-flex flex-wrap m-0 p-0">
                       <div class="mt-0 pr-1">
@@ -275,16 +285,6 @@
                       </div>
                       <div class="mt-0 pr-1">
                         <b-form-select size="sm" v-model="settings.simulateEthTx.maxPriorityFeePerGasUnit" :options="unitOptions" @change="saveSettings(); simulateEthTxSimulate();" style="max-width: 300px;"></b-form-select>
-                      </div>
-                    </div>
-                  </b-form-group>
-                  <b-form-group label="Gas Price:" label-for="simulateethtx-gasprice" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <div class="d-flex flex-wrap m-0 p-0">
-                      <div class="mt-0 pr-1">
-                        <b-form-input type="text" size="sm" readonly id="simulateethtx-gasprice" :value="formatUnits(settings.simulateEthTx.gasPrice, settings.simulateEthTx.gasPriceUnit)"></b-form-input>
-                      </div>
-                      <div class="mt-0 pr-1">
-                        <b-form-select size="sm" v-model="settings.simulateEthTx.gasPriceUnit" :options="unitOptions" @change="saveSettings(); simulateEthTxSimulate();" style="max-width: 300px;"></b-form-select>
                       </div>
                     </div>
                   </b-form-group>
@@ -639,10 +639,10 @@
           blockNumber: null,
           timestamp: null,
           feeData: {
+            gasPrice: null,
             lastBaseFeePerGas: null,
             maxFeePerGas: null,
             maxPriorityFeePerGas: null,
-            gasPrice: null,
           },
 
           forceRefresh: 0,
@@ -676,14 +676,14 @@
               chainId: null,
               nonce: null,
               estimatedGas: null,
+              gasPrice: null,
               lastBaseFeePerGas: null,
               maxFeePerGas: null,
               maxPriorityFeePerGas: null,
-              gasPrice: null,
+              gasPriceUnit: "gwei",
               lastBaseFeePerGasUnit: "gwei",
               maxFeePerGasUnit: "gwei",
               maxPriorityFeePerGasUnit: "gwei",
-              gasPriceUnit: "gwei",
               error: null,
             },
 

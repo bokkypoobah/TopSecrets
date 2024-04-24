@@ -355,6 +355,21 @@
                   </div>
                 </b-form-group>
               </b-form-group>
+              <b-form-group label-cols-lg="2" label="Signed Transaction" label-size="md" label-class="font-weight-bold pt-0" class="mb-0 mt-2">
+                <b-form-group label="" label-for="signethtx-sign" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!signEthTxDataCheck" :invalid-feedback="signEthTxDataCheck" class="mx-0 my-1 p-0">
+                  <div class="d-flex flex-wrap m-0 p-0">
+                    <div class="mt-0 pr-1">
+                      <b-form-input type="password" size="sm" v-model.trim="signEthTxPassword" placeholder="From Wallet password"></b-form-input>
+                    </div>
+                    <div class="mt-0 pr-1">
+                      <b-button size="sm" :disabled="!!signEthTxDataCheck || !signEthTxPassword" id="signmessage-sign" @click="signEthTx()" variant="primary">Sign</b-button>
+                    </div>
+                  </div>
+                </b-form-group>
+                <!-- <b-form-group v-if="false" label="Sign:" label-for="signethtx-sign" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-button size="sm" id="signethtx-sign" @click="testIt()" variant="warning">Test</b-button>
+                </b-form-group> -->
+              </b-form-group>
             </b-card>
             <!-- <b-form-group label="Test:" label-for="wallet-testit" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-button size="sm" id="wallet-testit" @click="testIt()" variant="warning">Test</b-button>
@@ -382,7 +397,6 @@
                 <b-form-textarea size="sm" id="signmessage-message" v-model.trim="signMessage.message" rows="3" placeholder="Type/paste your message here, then click [Sign]" style="max-width: 800px;"></b-form-textarea>
               </b-form-group>
               <b-form-group label="" label-for="signmessage-sign" label-size="sm" label-cols-sm="2" label-align-sm="right" :state="!signMessage.passwordError" :invalid-feedback="signMessage.passwordError" class="mx-0 my-1 p-0">
-
                 <b-input-group style="max-width: 300px;">
                   <b-form-input type="password" size="sm" v-model.trim="signMessage.password" placeholder="Wallet password"></b-form-input>
                   <b-input-group-append>
@@ -443,6 +457,9 @@
         el: '#app',
         // --- DATA ---
         data: {
+
+          signEthTxPassword: null,
+
           newWalletFromMnemonic: {
             phrase: null,
             randomBytesLength: 16, // 12 words
@@ -529,9 +546,9 @@
               nonce: null,
               gasLimit: null,
               transactionType: 2,
+              gasPrice: null,
               maxFeePerGas: null,
               maxPriorityFeePerGas: null,
-              gasPrice: null,
               maxFeePerGasUnit: "gwei",
               maxPriorityFeePerGasUnit: "gwei",
               gasPriceUnit: "gwei",
@@ -545,7 +562,7 @@
               pageSize: 10,
               sortOption: 'addressasc',
             },
-            version: 13,
+            version: 14,
           },
           addresses: {},
 
@@ -771,9 +788,42 @@
             return this.filteredSortedAddresses.slice((this.settings.addressesTable.currentPage - 1) * this.settings.addressesTable.pageSize, this.settings.addressesTable.currentPage * this.settings.addressesTable.pageSize);
           },
 
-          accountsToSearch() {
-            return this.settings.searchAttachedAccount ? [ this.coinbase ] : (this.settings.searchAccounts && this.settings.searchAccounts.split(/[, \t\n]+/).filter(name => name.match(/0x[0-9a-fA-F]{40}/)) || []);
+          signEthTxDataCheck() {
+            let error = null;
+            console.log(moment().format("HH:mm:ss") + " signEthTxDataCheck");
+            if (!this.settings.signEthTx.action) {
+              error = "Select Action";
+            }
+            if (!error && !this.settings.signEthTx.from) {
+              error = "Select From Wallet";
+            }
+            if (!error && !this.settings.signEthTx.to) {
+              error = "Select To Address";
+            }
+            if (!error && !this.settings.signEthTx.amount) {
+              error = "Enter Amount";
+            }
+            if (!error && !this.settings.signEthTx.chainId) {
+              error = "Enter Chain";
+            }
+            if (!error && !this.settings.signEthTx.nonce) {
+              error = "Enter Nonce";
+            }
+            if (!error && !this.settings.signEthTx.gasLimit) {
+              error = "Enter Gas Limit";
+            }
+            if (!error && (this.settings.signEthTx.transactionType == 0 && !this.settings.signEthTx.gasPrice)) {
+              error = "Enter Gas Price";
+            }
+            if (!error && this.settings.signEthTx.transactionType == 2 && !this.settings.signEthTx.maxFeePerGas) {
+              error = "Enter Max Fee Per Gas";
+            }
+            if (!error && this.settings.signEthTx.transactionType == 2 && !this.settings.signEthTx.maxPriorityFeePerGas) {
+              error = "Enter Priority Max Fee Per Gas";
+            }
+            return error;
           },
+
         },
 
         // --- METHODS ---
@@ -1039,6 +1089,11 @@
               })
               .catch(err => {
               });
+          },
+
+          async signEthTx() {
+            console.log(moment().format("HH:mm:ss") + " signEthTx - this.settings.signEthTx: " + JSON.stringify(this.settings.signEthTx, null, 2));
+
           },
 
           async signMessageSign() {
