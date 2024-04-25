@@ -84,6 +84,12 @@
             <b-form-group label="Name:" label-for="address-name" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-form-input type="text" size="sm" id="address-name" v-model.trim="address.name" placeholder="Optional" style="max-width: 300px;"></b-form-input>
             </b-form-group>
+            <b-form-group v-if="['erc20', 'erc721'].includes(address.type)" label="Symbol:" label-for="address-symbol" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-form-input type="text" size="sm" id="address-symbol" v-model.trim="address.symbol" placeholder="For token contracts" style="max-width: 300px;"></b-form-input>
+            </b-form-group>
+            <b-form-group v-if="address.type == 'erc20'" label="Decimals:" label-for="address-decimals" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-form-input type="text" size="sm" id="address-decimals" v-model.trim="address.decimals" placeholder="For ERC-20 token contracts" style="max-width: 300px;"></b-form-input>
+            </b-form-group>
             <b-form-group v-if="address.mode == 'add'" label="" label-for="address-add" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-button size="sm" :disabled="!address.address" id="address-add" @click="addressAdd()" variant="primary">Add</b-button>
             </b-form-group>
@@ -704,6 +710,9 @@
             address: null,
             addressError: null,
             name: null,
+            symbol: null,
+            decimals: null,
+            chains: [],
           },
 
           settings: {
