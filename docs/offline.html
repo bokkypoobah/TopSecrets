@@ -295,14 +295,14 @@
                 <b-form-group label="Action:" label-for="signethtx-action" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                   <b-form-select size="sm" id="signethtx-action" v-model="settings.signEthTx.action" :options="actionOptions" @change="saveSettings();" style="max-width: 300px;"></b-form-select>
                 </b-form-group>
+                <b-form-group v-if="settings.signEthTx.action && settings.signEthTx.action.substring(0, 3) == 'erc'" label="Token:" label-for="signethtx-token" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-form-select size="sm" id="signethtx-to" v-model="settings.signEthTx.token" :options="tokensOptions" @change="saveSettings();" v-b-popover.hover.bottom="'Select Token'"></b-form-select>
+                </b-form-group>
                 <b-form-group label="From:" label-for="signethtx-from" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                   <b-form-select size="sm" id="signethtx-from" v-model="settings.signEthTx.from" :options="walletsOptions" @change="saveSettings();" v-b-popover.hover.bottom="'Select Wallet'"></b-form-select>
                 </b-form-group>
                 <b-form-group label="To:" label-for="signethtx-to" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                   <b-form-select size="sm" id="signethtx-to" v-model="settings.signEthTx.to" :options="addressesOptions" @change="saveSettings();" v-b-popover.hover.bottom="'Select Address'"></b-form-select>
-                </b-form-group>
-                <b-form-group v-if="settings.signEthTx.action && settings.signEthTx.action.substring(0, 3) == 'erc'" label="Token:" label-for="signethtx-token" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                  <b-form-select size="sm" id="signethtx-to" v-model="settings.signEthTx.token" :options="tokensOptions" @change="saveSettings();" v-b-popover.hover.bottom="'Select Token'"></b-form-select>
                 </b-form-group>
                 <b-form-group label="Amount:" label-for="signethtx-amount" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                   <div class="d-flex flex-wrap m-0 p-0">
@@ -600,8 +600,8 @@
           actionOptions: [
             { value: null, text: '(Select)' },
             { value: 'ethtransfer', text: 'Transfer Ethers' },
-            { value: 'erc20transfer', text: 'Transfer ERC-20 Tokens', disabled: true },
-            { value: 'erc721safetransferfrom', text: 'Transfer ERC-721 Tokens', disabled: true },
+            { value: 'erc20transfer', text: 'Transfer ERC-20 Tokens' },
+            { value: 'erc721safetransferfrom', text: 'Transfer ERC-721 Tokens' },
             // { value: 'sweepwallet', text: 'Sweep ETH To New Wallet', disabled: true }, // TODO: Type 1 with amount = balance - gasLimit * gasPrice
             // { value: 'deploycontract', text: 'Deploy Contract', disabled: true }, // TODO: `to` null; data with code
             // { value: 'writemessage', text: 'Write Message', disabled: true }, // TODO: `to` to own account, or destination; data with message

@@ -219,14 +219,14 @@
                   <b-form-group label="Action:" label-for="simulateethtx-action" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <b-form-select size="sm" id="simulateethtx-action" v-model="settings.prepare.action" :options="actionOptions" @change="saveSettings(); prepareSimulate();" style="max-width: 300px;"></b-form-select>
                   </b-form-group>
+                  <b-form-group v-if="settings.prepare.action && settings.prepare.action.substring(0, 3) == 'erc'" label="Token:" label-for="simulateethtx-token" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <b-form-select size="sm" id="simulateethtx-token" v-model="settings.prepare.token" :options="tokensOptions" @change="saveSettings(); prepareSimulate();" v-b-popover.hover.bottom="'Select Token'"></b-form-select>
+                  </b-form-group>
                   <b-form-group label="From:" label-for="simulateethtx-from" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <b-form-select size="sm" id="simulateethtx-from" v-model="settings.prepare.from" :options="walletsOptions" @change="saveSettings(); prepareSimulate();" v-b-popover.hover.bottom="'Select Wallet'"></b-form-select>
                   </b-form-group>
                   <b-form-group label="To:" label-for="simulateethtx-to" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <b-form-select size="sm" id="simulateethtx-to" v-model="settings.prepare.to" :options="addressesOptions" @change="saveSettings(); prepareSimulate();" v-b-popover.hover.bottom="'Select Address'"></b-form-select>
-                  </b-form-group>
-                  <b-form-group v-if="settings.prepare.action && settings.prepare.action.substring(0, 3) == 'erc'" label="Token:" label-for="simulateethtx-token" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <b-form-select size="sm" id="simulateethtx-token" v-model="settings.prepare.token" :options="tokensOptions" @change="saveSettings(); prepareSimulate();" v-b-popover.hover.bottom="'Select Token'"></b-form-select>
                   </b-form-group>
                   <b-form-group label="Amount:" label-for="simulateethtx-amount" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <div class="d-flex flex-wrap m-0 p-0">
@@ -817,8 +817,8 @@
           actionOptions: [
             { value: null, text: '(Select)' },
             { value: 'ethtransfer', text: 'Transfer Ethers' },
-            { value: 'erc20transfer', text: 'Transfer ERC-20 Tokens', disabled: true },
-            { value: 'erc721safetransferfrom', text: 'Transfer ERC-721 Tokens', disabled: true },
+            { value: 'erc20transfer', text: 'Transfer ERC-20 Tokens' },
+            { value: 'erc721safetransferfrom', text: 'Transfer ERC-721 Tokens' },
             // { value: 'sweepwallet', text: 'Sweep ETH To New Wallet', disabled: true }, // TODO: Type 1 with amount = balance - gasLimit * gasPrice
             // { value: 'deploycontract', text: 'Deploy Contract', disabled: true }, // TODO: `to` null; data with code
             // { value: 'writemessage', text: 'Write Message', disabled: true }, // TODO: `to` to own account, or destination; data with message
