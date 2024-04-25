@@ -301,6 +301,9 @@
                 <b-form-group label="To:" label-for="signethtx-to" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                   <b-form-select size="sm" id="signethtx-to" v-model="settings.signEthTx.to" :options="addressesOptions" @change="saveSettings();" v-b-popover.hover.bottom="'Select Address'"></b-form-select>
                 </b-form-group>
+                <b-form-group v-if="settings.signEthTx.action && settings.signEthTx.action.substring(0, 3) == 'erc'" label="Token:" label-for="signethtx-token" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-form-select size="sm" id="signethtx-to" v-model="settings.signEthTx.token" :options="tokensOptions" @change="saveSettings();" v-b-popover.hover.bottom="'Select Token'"></b-form-select>
+                </b-form-group>
                 <b-form-group label="Amount:" label-for="signethtx-amount" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                   <div class="d-flex flex-wrap m-0 p-0">
                     <div class="mt-0 pr-1">
@@ -542,6 +545,7 @@
               action: null,
               from: null,
               to: null,
+              token: null,
               amount: null,
               amountUnit: "ether",
               data: null,
@@ -566,7 +570,7 @@
               pageSize: 10,
               sortOption: 'addressasc',
             },
-            version: 15,
+            version: 0,
           },
           addresses: {},
 
@@ -683,6 +687,17 @@
             results.push({ value: null, text: "(Select Wallet)" });
             for (const [address, data] of Object.entries(this.addresses)) {
               if (data.type.substring(0, 6) == "wallet") {
+                results.push({ value: address, text: address + (data.name ? (": " + data.name) : "") });
+              }
+            }
+            return results;
+          },
+
+          tokensOptions() {
+            const results = [];
+            results.push({ value: null, text: "(Select Token)" });
+            for (const [address, data] of Object.entries(this.addresses)) {
+              if (data.type.substring(0, 3) == "erc") {
                 results.push({ value: address, text: address + (data.name ? (": " + data.name) : "") });
               }
             }
@@ -1118,7 +1133,7 @@
               const wallet = await ethers.Wallet.fromEncryptedJsonSync(JSON.stringify(walletInfo.keystore), this.signEthTxPassword);
               this.settings.signEthTx.error = null;
               const tx = {
-                from: this.settings.signEthTx.from,
+                // from: this.settings.signEthTx.from,
                 to: this.settings.signEthTx.to,
                 value: ethers.BigNumber.from(ethers.utils.parseUnits(this.settings.signEthTx.amount, this.settings.signEthTx.amountUnit).toString()),
                 data: null,
