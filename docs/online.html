@@ -43,7 +43,7 @@
           </b-navbar-brand>
           <b-navbar-nav class="ml-auto">
             <b-nav-item size="sm" @click="settings.tabIndex = 0; saveSettings();" :active="settings.tabIndex == 0" active-class="active" v-b-popover.hover="'Maintain Addresses'">Addresses</b-nav-item>
-            <b-nav-item size="sm" @click="settings.tabIndex = 1; saveSettings();" :active="settings.tabIndex == 1" active-class="active" v-b-popover.hover="'Prepare and submit ETH transactions'">ETH</b-nav-item>
+            <b-nav-item size="sm" @click="settings.tabIndex = 1; saveSettings();" :active="settings.tabIndex == 1" active-class="active" v-b-popover.hover="'Prepare transaction for signing and submit signed transaction'">Transaction</b-nav-item>
             <!-- <b-nav-item size="sm" @click="settings.tabIndex = 1; saveSettings();" :active="settings.tabIndex == 1" active-class="active" v-b-popover.hover="'Events'">Events</b-nav-item> -->
             <!-- <b-nav-item size="sm" @click="settings.tabIndex = 2; saveSettings();" :active="settings.tabIndex == 2" active-class="active" v-b-popover.hover="'Accounts'">Accounts</b-nav-item> -->
             <b-avatar v-if="coinbase && coinbase != nameOrAddress(coinbase)" rounded variant="light" size="3.0rem" :src="'https://metadata.ens.domains/mainnet/avatar/' + nameOrAddress(coinbase, 100)" v-b-popover.hover="'Your ENS avatar if set'"></b-avatar>
@@ -214,7 +214,7 @@
           <b-card v-if="settings.tabIndex == 1" class="m-0 p-0 border-0" body-class="m-1 p-0">
             <b-card-group deck class="m-0 p-0">
               <!-- :SIMULATEETHTX -->
-              <b-card sub-title="Simulate ETH Transaction For Offline Signing" bg-variant="light" class="p-0 m-1" style="max-width: 900px;">
+              <b-card sub-title="Prepare Transaction" bg-variant="light" class="p-0 m-1" style="max-width: 900px;">
                 <b-form-group label-cols-lg="2" label="Input" label-size="md" label-class="font-weight-bold pt-0" class="mb-0 mt-3">
                   <b-form-group label="Action:" label-for="simulateethtx-action" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <b-form-select size="sm" id="simulateethtx-action" v-model="settings.simulateEthTx.action" :options="actionOptions" @change="saveSettings(); simulateEthTxSimulate();" style="max-width: 300px;"></b-form-select>
@@ -293,7 +293,7 @@
               </b-card>
 
               <!-- :COMPAREETHTX -->
-              <b-card sub-title="Check And Submit Offline Signed Transaction" bg-variant="light" class="p-0 m-1" style="max-width: 900px;">
+              <b-card sub-title="Submit Transaction" bg-variant="light" class="p-0 m-1" style="max-width: 900px;">
                 <b-form-group label="Signed Transaction:" label-for="compareethtx-signedtx" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!settings.compareEthTx.error" :invalid-feedback="settings.compareEthTx.error" class="mx-0 my-2 p-0">
                   <b-form-textarea size="sm" id="compareethtx-signedtx" v-model.trim="settings.compareEthTx.signedTx" rows="5" @change="saveSettings(); compareEthTxCompare();" placeholder="Paste signed transaction here" style="max-width: 800px;"></b-form-textarea>
                 </b-form-group>
@@ -811,10 +811,14 @@
 
           actionOptions: [
             { value: null, text: '(Select)' },
-            { value: 'simpleethtransfer', text: 'Simple ETH Transfer' }, // TODO: Type 2
-            { value: 'sweepwallet', text: 'Sweep ETH To New Wallet', disabled: true }, // TODO: Type 1 with amount = balance - gasLimit * gasPrice
-            { value: 'deploycontract', text: 'Deploy Contract', disabled: true }, // TODO: `to` null; data with code
-            { value: 'writemessage', text: 'Write Message', disabled: true }, // TODO: `to` to own account, or destination; data with message
+            { value: 'ethtransfer', text: 'Transfer Ethers' },
+            { value: 'erc20transfer', text: 'Transfer ERC-20 Tokens', disabled: true },
+            { value: 'erc721safetransferfrom', text: 'Transfer ERC-721 Tokens', disabled: true },
+            // { value: 'sweepwallet', text: 'Sweep ETH To New Wallet', disabled: true }, // TODO: Type 1 with amount = balance - gasLimit * gasPrice
+            // { value: 'deploycontract', text: 'Deploy Contract', disabled: true }, // TODO: `to` null; data with code
+            // { value: 'writemessage', text: 'Write Message', disabled: true }, // TODO: `to` to own account, or destination; data with message
+            // { value: 'erc20approve', text: 'ERC-20 approve', disabled: true },
+            // { value: 'erc721setapprovalforall', text: 'ERC-721 setApprovalForAll', disabled: true },
           ],
 
           unitOptions: [
