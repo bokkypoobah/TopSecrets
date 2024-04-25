@@ -612,6 +612,7 @@
           ],
 
           transactionTypeOptions: [
+            { value: null, text: 'null: Legacy', disabled: true },
             { value: 0, text: '0: Legacy' },
             { value: 1, text: '1: Access List', disabled: true },
             { value: 2, text: '2: EIP-1559' },
@@ -1124,11 +1125,11 @@
                 chainId: parseInt(this.settings.signEthTx.chainId),
                 nonce: ethers.BigNumber.from(this.settings.signEthTx.nonce),
                 gasLimit: ethers.BigNumber.from(this.settings.signEthTx.gasLimit),
-                type: this.settings.signEthTx.transactionType,
               };
               if (this.settings.signEthTx.transactionType == 0) {
                 tx.gasPrice = ethers.BigNumber.from(ethers.utils.parseUnits(this.settings.signEthTx.gasPrice, this.settings.signEthTx.gasPriceUnit).toString());
               } else if (this.settings.signEthTx.transactionType == 2) {
+                tx.type = parseInt(this.settings.signEthTx.transactionType);
                 tx.maxFeePerGas = ethers.utils.parseUnits(this.settings.signEthTx.maxFeePerGas, this.settings.signEthTx.maxFeePerGasUnit).toString();
                 tx.maxPriorityFeePerGas = ethers.utils.parseUnits(this.settings.signEthTx.maxPriorityFeePerGas, this.settings.signEthTx.maxPriorityFeePerGasUnit).toString();
               }

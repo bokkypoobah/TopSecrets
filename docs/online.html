@@ -320,9 +320,9 @@
                   <b-form-input type="text" size="sm" readonly id="compareethtx-gaslimit" :value="settings.compareEthTx.gasLimit" style="max-width: 150px;"></b-form-input>
                 </b-form-group>
                 <b-form-group label="Type:" label-for="compareethtx-type" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                  <b-form-input type="text" size="sm" readonly id="compareethtx-type" :value="settings.compareEthTx.type" style="max-width: 150px;"></b-form-input>
+                  <b-form-select size="sm" disabled id="compareethtx-type" v-model="settings.compareEthTx.type" :options="transactionTypeOptions" style="max-width: 150px;"></b-form-select>
                 </b-form-group>
-                <b-form-group v-if="settings.compareEthTx.type == 0" label="Gas Price:" label-for="compareethtx-gasprice" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                <b-form-group v-if="!settings.compareEthTx.type" label="Gas Price:" label-for="compareethtx-gasprice" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                   <b-form-input type="text" size="sm" readonly id="compareethtx-gasprice" :value="formatUnits(settings.compareEthTx.gasPrice, settings.simulateEthTx.gasPriceUnit)" style="max-width: 150px;"></b-form-input>
                 </b-form-group>
                 <b-form-group v-if="settings.compareEthTx.type == 2" label="Max Base Fee:" label-for="compareethtx-maxbasefee" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
@@ -828,6 +828,7 @@
           ],
 
           transactionTypeOptions: [
+            { value: null, text: 'null: Legacy', disabled: true },
             { value: 0, text: 'Type 0' },
             { value: 1, text: 'Type 1', disabled: true },
             { value: 2, text: 'Type 2' },
@@ -1457,8 +1458,8 @@
                 this.settings.compareEthTx.chainId = parseInt(this.settings.compareEthTx.decodedSignedTx.chainId || 0);
                 this.settings.compareEthTx.nonce = parseInt(this.settings.compareEthTx.decodedSignedTx.nonce);
                 this.settings.compareEthTx.gasLimit = parseInt(this.settings.compareEthTx.decodedSignedTx.gasLimit);
-                this.settings.compareEthTx.type = parseInt(this.settings.compareEthTx.decodedSignedTx.type);
-                this.settings.compareEthTx.gasPrice = this.settings.compareEthTx.decodedSignedTx.type == 0 ? this.settings.compareEthTx.decodedSignedTx.gasPrice.toString() : null;
+                this.settings.compareEthTx.type = this.settings.compareEthTx.decodedSignedTx.type && parseInt(this.settings.compareEthTx.decodedSignedTx.type) || null;
+                this.settings.compareEthTx.gasPrice = !this.settings.compareEthTx.decodedSignedTx.type ? this.settings.compareEthTx.decodedSignedTx.gasPrice.toString() : null;
                 this.settings.compareEthTx.maxFeePerGas = this.settings.compareEthTx.decodedSignedTx.type == 2 ? this.settings.compareEthTx.decodedSignedTx.maxFeePerGas.toString() : null;
                 this.settings.compareEthTx.maxPriorityFeePerGas = this.settings.compareEthTx.decodedSignedTx.type == 2 ? this.settings.compareEthTx.decodedSignedTx.maxPriorityFeePerGas.toString() : null;
                 console.log(moment().format("HH:mm:ss") + " compareEthTxCompare - this.settings.compareEthTx AFTER: " + JSON.stringify(this.settings.compareEthTx, null, 2));
