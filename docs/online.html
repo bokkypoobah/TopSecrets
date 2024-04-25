@@ -81,6 +81,9 @@
             <b-form-group label="Address:" label-for="address-address" label-size="sm" label-cols-sm="2" label-align-sm="right" :state="!address.addressError" :invalid-feedback="address.addressError" class="mx-0 my-1 p-0">
               <b-form-input type="text" size="sm" id="address-address" v-model.trim="address.address" @change="newWalletRecompute();" placeholder="Type/paste your ETH address here" style="max-width: 400px;"></b-form-input>
             </b-form-group>
+            <b-form-group v-if="['erc20', 'erc721'].includes(address.type)" label="" label-for="address-retrieve" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-button size="sm" id="address-retrieve" @click="addressRetrieveFromContract()" variant="primary">Retrieve From Contract</b-button>
+            </b-form-group>
             <b-form-group label="Name:" label-for="address-name" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-form-input type="text" size="sm" id="address-name" v-model.trim="address.name" placeholder="Optional" style="max-width: 300px;"></b-form-input>
             </b-form-group>
@@ -1013,6 +1016,8 @@
                 type: data.type,
                 privateKey: data.privateKey,
                 name: data.name,
+                symbol: data.symbol,
+                decimals: data.decimals,
               });
             }
             return results;
@@ -1347,9 +1352,9 @@
 
           showNewAddress() {
             console.log(moment().format("HH:mm:ss") + " showNewAddress");
-            this.address.type = 'address';
+            this.address.type = 'erc20', // TODO: 'address';
             this.address.mode = 'add';
-            this.address.address = null;
+            this.address.address = '0x93fCA4c6E2525C09c95269055B46f16b1459BF9d', // TODO: null;
             this.address.name = null;
             this.$bvModal.show('modal-address');
           },
@@ -1360,12 +1365,9 @@
               this.address.mode = 'vieworupdate';
               this.address.type = item[0].type;
               this.address.address = item[0].address;
-            //   this.address.addressError = null;
               this.address.name = item[0].name;
-            //   this.address.keystore = item[0].keystore;
-            //   this.address.password = null;
-            //   this.address.privateKey = null;
-            //   console.log(moment().format("HH:mm:ss") + " addressesRowSelected - this.address: " + JSON.stringify(this.address));
+              this.address.symbol = item[0].symbol;
+              this.address.decimals = item[0].decimals;
               this.$refs.addressesTable.clearSelected();
             }
             this.$bvModal.show('modal-address');
@@ -1387,10 +1389,39 @@
             }
           },
 
+          async addressRetrieveFromContract() {
+            console.log(moment().format("HH:mm:ss") + " addressRetrieveFromContract - this.address: " + JSON.stringify(this.address, null, 2));
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            if (this.address.type.substring(0, 3) == "erc") {
+              const erc721Contract = new ethers.Contract(this.address.address, ERC721ABI, provider);
+              try {
+                this.address.name = await erc721Contract.name();
+              } catch (e) {
+                console.log("addressRetrieveFromContract - erc721.name ERROR: " + e.message);
+              }
+              try {
+                this.address.symbol = await erc721Contract.symbol();
+              } catch (e) {
+                console.log("addressRetrieveFromContract - erc721.symbol ERROR: " + e.message);
+              }
+            }
+            if (this.address.type == "erc20") {
+              const erc20Contract = new ethers.Contract(this.address.address, ERC20ABI, provider);
+              try {
+                this.address.decimals = ethers.BigNumber.from(await erc20Contract.decimals()).toString();
+              } catch (e) {
+                console.log("addressRetrieveFromContract - erc20.decimals ERROR: " + e.message);
+              }
+            }
+            console.log(moment().format("HH:mm:ss") + " addressRetrieveFromContract - this.address AFTER: " + JSON.stringify(this.address, null, 2));
+          },
+
           addressAdd() {
             Vue.set(this.addresses, this.address.address, {
               type: this.address.type,
               name: this.address.name,
+              symbol: this.address.symbol,
+              decimals: this.address.decimals,
             });
             localStorage.topSecretsOnlineAddresses = JSON.stringify(this.addresses);
             console.log(moment().format("HH:mm:ss") + " addressAdd - this.addresses: " + JSON.stringify(this.addresses, null, 2));
@@ -1401,6 +1432,8 @@
             console.log(moment().format("HH:mm:ss") + " addressUpdate - this.address: " + JSON.stringify(this.address, null, 2));
             Vue.set(this.addresses[this.address.address], 'type', this.address.type);
             Vue.set(this.addresses[this.address.address], 'name', this.address.name);
+            Vue.set(this.addresses[this.address.address], 'symbol', this.address.symbol);
+            Vue.set(this.addresses[this.address.address], 'decimals', this.address.decimals);
             localStorage.topSecretsOnlineAddresses = JSON.stringify(this.addresses);
             console.log(moment().format("HH:mm:ss") + " addressUpdate - this.addresses: " + JSON.stringify(this.addresses, null, 2));
             this.$bvModal.hide('modal-address');
@@ -1412,7 +1445,7 @@
               .then(confirmed => {
                 if (confirmed) {
                   Vue.delete(this.addresses, this.address.address);
-                  localStorage.topSecretsOfflineAddresses = JSON.stringify(this.addresses);
+                  localStorage.topSecretsOnlineAddresses = JSON.stringify(this.addresses);
                   console.log(moment().format("HH:mm:ss") + " addressDelete - this.addresses: " + JSON.stringify(this.addresses, null, 2));
                   this.$bvModal.hide('modal-address');
                 }
