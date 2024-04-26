@@ -100,7 +100,7 @@
               <b-button size="sm" id="address-retrieve" @click="addressRetrieveFromContract()" variant="primary">Retrieve From Contract</b-button>
             </b-form-group>
             <b-form-group label="Chains:" label-for="address-chains" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-              <div style="overflow-y:scroll; max-height:200px" class="mt-1">
+              <div style="overflow-y:scroll; max-height:200px" class="mt-1 ml-2">
                 <b-form-checkbox-group size="sm" stacked id="address-chains" v-model="address.chains" :options="chainsOptions" switches></b-form-checkbox-group>
               </div>
             </b-form-group>
