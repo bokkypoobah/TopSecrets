@@ -765,12 +765,14 @@
               from: {
                 address: null,
                 ensName: null,
+                transactionCount: null,
                 balance: null,
                 tokens: null,
               },
               to: {
                 address: null,
                 ensName: null,
+                transactionCount: null,
                 balance: null,
                 tokens: null,
               },
@@ -834,7 +836,7 @@
               pageSize: 100,
               sortOption: 'typenameasc',
             },
-            version: 8,
+            version: 9,
           },
           sync: {
             section: null,
@@ -1447,7 +1449,7 @@
             const ensReverseRecordsContract = new ethers.Contract(ENSREVERSERECORDSADDRESS, ENSREVERSERECORDSABI, provider);
             try {
               const names = await ensReverseRecordsContract.getNames([this.address.address]);
-              this.address.ensName = names.length == 1 ? names[0] : null;
+              this.address.ensName = names.length == 1 && names[0] != "" ? names[0] : null;
               console.log(moment().format("HH:mm:ss") + " addressRetrieveENS - this.address.ensName: " + JSON.stringify(this.address.ensName, null, 2));
             } catch (e) {
               console.log("addressRetrieveENS - ensReverseRecordsContract.getNames ERROR: " + e.message);
@@ -1524,25 +1526,32 @@
           },
 
           async prepareSimulate() {
-            console.log(moment().format("HH:mm:ss") + " prepareSimulate: " + JSON.stringify(this.settings.prepare, null, 2));
+            console.log(moment().format("HH:mm:ss") + " prepareSimulate: " + JSON.stringify(this.settings.prepare, bigNumberReplacer, 2));
             const provider = new ethers.providers.Web3Provider(window.ethereum);
             this.settings.prepare.chainId = this.chainId;
-            if (this.settings.prepare.from) {
+            if (this.settings.prepare.from.address) {
+              this.settings.prepare.from.ensName = this.addresses[this.settings.prepare.from.address].ensName;
               try {
-                this.settings.prepare.nonce = await provider.getTransactionCount(this.settings.prepare.from);
+                this.settings.prepare.from.transactionCount = await provider.getTransactionCount(this.settings.prepare.from.address);
+                this.settings.prepare.nonce = this.settings.prepare.from.transactionCount;
               } catch (e) {
-                this.settings.prepare.nonce = null;
+                this.settings.prepare.from.transactionCount = null;
+                this.settings.prepare.nonce = null; // TODO: ?
               }
               try {
-                const fromBalance = await provider.getBalance(this.settings.prepare.from);
-                this.settings.prepare.fromDescription = "Balance " + ethers.utils.formatUnits(fromBalance, this.settings.prepare.amountUnit) + " " + this.unitOptions.filter(e => e.value == this.settings.prepare.amountUnit)[0].text;
+                this.settings.prepare.from.balance = await provider.getBalance(this.settings.prepare.from.address);
               } catch (e) {
               }
             }
-            if (this.settings.prepare.to) {
+            if (this.settings.prepare.to.address) {
+              this.settings.prepare.to.ensName = this.addresses[this.settings.prepare.to.address].ensName;
               try {
-                const toBalance = await provider.getBalance(this.settings.prepare.to);
-                this.settings.prepare.toDescription = "Balance " + ethers.utils.formatUnits(toBalance, this.settings.prepare.amountUnit) + " " + this.unitOptions.filter(e => e.value == this.settings.prepare.amountUnit)[0].text;
+                this.settings.prepare.to.transactionCount = await provider.getTransactionCount(this.settings.prepare.to.address);
+              } catch (e) {
+                this.settings.prepare.to.transactionCount = null;
+              }
+              try {
+                this.settings.prepare.to.balance = await provider.getBalance(this.settings.prepare.to.address);
               } catch (e) {
               }
             }
@@ -1562,7 +1571,7 @@
                 // nonce: this.settings.prepare.nonce,
                 // chainId: this.chainId,
               };
-              console.log(moment().format("HH:mm:ss") + " prepareSimulate - tx: " + JSON.stringify(tx, null, 2));
+              console.log(moment().format("HH:mm:ss") + " prepareSimulate - tx: " + JSON.stringify(tx, bigNumberReplacer, 2));
               try {
                 this.settings.prepare.estimatedGas = (await signer.estimateGas(tx)).toString();
                 console.log(moment().format("HH:mm:ss") + " prepareSimulate - estimatedGas: " + this.settings.prepare.estimatedGas.toString());
@@ -1582,7 +1591,7 @@
               this.settings.prepare.maxPriorityFeePerGas = feeData.maxPriorityFeePerGas.toString();
               this.settings.prepare.gasPrice = feeData.gasPrice.toString();
             }
-            console.log(moment().format("HH:mm:ss") + " prepareSimulate - AFTER: " + JSON.stringify(this.settings.prepare, null, 2));
+            console.log(moment().format("HH:mm:ss") + " prepareSimulate - AFTER: " + JSON.stringify(this.settings.prepare, bigNumberReplacer, 2));
             this.saveSettings();
           },
 
