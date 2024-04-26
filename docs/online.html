@@ -249,15 +249,17 @@
                   <!-- <b-form-group label="From:" label-for="simulateethtx-from" label-size="sm" label-cols-sm="3" label-align-sm="right" :description="settings.prepare.fromDescription" class="mx-0 my-1 p-0"> -->
                   <b-form-group label="From:" label-for="simulateethtx-from" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <template v-if="settings.prepare.from.address" slot="description">
-                      <!-- {{ settings.prepare }} <a href="blah">boldfas</a> -->
-                      Blah
+                      <b-badge button v-if="settings.prepare.from.ensName" variant="light" v-b-popover.hover="'ENS name'">{{ settings.prepare.from.ensName }}</b-badge>
+                      <b-link :href="explorer + '/address/' + settings.prepare.from.address" target="_blank" v-b-popover.hover="'ETH. View in explorer'"><font size="-2">{{ settings.prepare.from.balance && formatETH(settings.prepare.from.balance) || null }}</font></b-link>
+                      <b-badge button variant="light" v-b-popover.hover="'#transactions'">{{ settings.prepare.from.transactionCount }}</b-badge>
                     </template>
                     <b-form-select size="sm" :disabled="!settings.prepare.action" id="simulateethtx-from" v-model="settings.prepare.from.address" :options="walletsOptions" @change="saveSettings(); prepareSimulate();" v-b-popover.hover.bottom="'Select Wallet'"></b-form-select>
                   </b-form-group>
                   <b-form-group label="To:" label-for="simulateethtx-to" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <template v-if="settings.prepare.to.address" slot="description">
-                      <!-- {{ settings.prepare }} <a href="blah">boldfas</a> -->
-                      Blah
+                      <b-badge button v-if="settings.prepare.to.ensName" variant="light" v-b-popover.hover="'ENS name'">{{ settings.prepare.to.ensName }}</b-badge>
+                      <b-link :href="explorer + '/address/' + settings.prepare.to.address" target="_blank" v-b-popover.hover="'ETH. View in explorer'"><font size="-2">{{ settings.prepare.to.balance && formatETH(settings.prepare.to.balance) || null }}</font></b-link>
+                      <b-badge button variant="light" v-b-popover.hover="'#transactions'">{{ settings.prepare.to.transactionCount }}</b-badge>
                     </template>
                     <b-form-select size="sm" :disabled="!settings.prepare.action" id="simulateethtx-to" v-model="settings.prepare.to.address" :options="addressesOptions" @change="saveSettings(); prepareSimulate();" v-b-popover.hover.bottom="'Select Address'"></b-form-select>
                   </b-form-group>
@@ -1008,6 +1010,10 @@
         // --- COMPUTED ---
         computed: {
 
+          explorer() {
+            return this.chainId && this.chains[this.chainId] && this.chains[this.chainId].explorer;
+          },
+
           chainsOptions() {
             const results = [];
             for (const [chainId, data] of Object.entries(this.chains)) {
@@ -1025,7 +1031,7 @@
             results.push({ value: null, text: "(Select Wallet)" });
             for (const [address, data] of Object.entries(this.addresses)) {
               if (data.type == "wallet" && this.chainId && data.chains.includes(this.chainId.toString())) {
-                results.push({ value: address, text: address + (data.name ? (": " + data.name) : "") });
+                results.push({ value: address, text: (data.name ? (data.name + ": ") : "") + address.substring(0, 10) + '...' + address.slice(-8) });
               }
             }
             return results;
@@ -1036,7 +1042,7 @@
             results.push({ value: null, text: "(Select Token)" });
             for (const [address, data] of Object.entries(this.addresses)) {
               if (data.type.substring(0, 3) == "erc" && this.chainId && data.chains.includes(this.chainId.toString())) {
-                results.push({ value: address, text: address + (data.name ? (": " + data.name) : "") });
+                results.push({ value: address, text: (data.name ? (data.name + ": ") : "") + address.substring(0, 10) + '...' + address.slice(-8) });
               }
             }
             return results;
@@ -1047,7 +1053,7 @@
             results.push({ value: null, text: "(Select Address)" });
             for (const [address, data] of Object.entries(this.addresses)) {
               if (this.chainId && data.chains.includes(this.chainId.toString())) {
-                results.push({ value: address, text: address + (data.name ? (": " + data.name) : "") });
+                results.push({ value: address, text: (data.name ? (data.name + ": ") : "") + address.substring(0, 10) + '...' + address.slice(-8) });
               }
             }
             return results;
@@ -2104,7 +2110,7 @@
             }
             return null;
           },
-          formatETH(e, precision = 9) {
+          formatETH(e, precision = 0) {
             try {
               if (precision == 0) {
                 return e ? ethers.utils.formatEther(e) : null;
