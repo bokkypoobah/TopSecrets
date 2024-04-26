@@ -65,7 +65,7 @@
           </b-card>
 
           <!-- :MODALADDRESS -->
-          <b-modal id="modal-address" hide-footer size="lg">
+          <b-modal id="modal-address" hide-footer size="lg" body-bg-variant="light">
             <template #modal-title>
               {{ address.mode == 'add' ? 'New' : ''}} Address
             </template>
@@ -94,15 +94,15 @@
               <b-form-input type="text" size="sm" id="address-decimals" v-model.trim="address.decimals" placeholder="For ERC-20 token contracts" style="max-width: 300px;"></b-form-input>
             </b-form-group>
             <b-form-group label="Chains:" label-for="address-chains" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-              <div style="overflow-y:scroll; max-height:200px">
-                <b-form-checkbox-group size="sm" stacked id="address-chains" v-model="address.chains" :options="chainsOptions"></b-form-checkbox-group>
+              <div style="overflow-y:scroll; max-height:200px" class="mt-1">
+                <b-form-checkbox-group size="sm" stacked id="address-chains" v-model="address.chains" :options="chainsOptions" switches></b-form-checkbox-group>
               </div>
             </b-form-group>
             <b-form-group v-if="address.mode == 'add'" label="" label-for="address-add" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-              <b-button size="sm" :disabled="!address.address" id="address-add" @click="addressAdd()" variant="primary">Add</b-button>
+              <b-button size="sm" :disabled="!address.type || !address.address" id="address-add" @click="addressAdd()" variant="primary">Add</b-button>
             </b-form-group>
             <b-form-group v-if="address.mode == 'vieworupdate'" label="" label-for="address-update" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-              <b-button size="sm" :disabled="!address.address" id="address-update" @click="addressUpdate()" variant="primary">Update</b-button>
+              <b-button size="sm" :disabled="!address.type || !address.address" id="address-update" @click="addressUpdate()" variant="primary">Update</b-button>
               <b-button size="sm" :disabled="!address.address" @click="addressDelete()" variant="warning">Delete</b-button>
             </b-form-group>
           </b-modal>
@@ -233,22 +233,22 @@
                   <b-form-group label="Action:" label-for="simulateethtx-action" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <b-form-select size="sm" id="simulateethtx-action" v-model="settings.prepare.action" :options="actionOptions" @change="saveSettings(); prepareSimulate();" style="max-width: 300px;"></b-form-select>
                   </b-form-group>
-                  <b-form-group v-if="settings.prepare.action && settings.prepare.action.substring(0, 3) == 'erc'" label="Token:" label-for="simulateethtx-token" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <b-form-select size="sm" id="simulateethtx-token" v-model="settings.prepare.token" :options="tokensOptions" @change="saveSettings(); prepareSimulate();" v-b-popover.hover.bottom="'Select Token'"></b-form-select>
+                  <b-form-group v-if="settings.prepare.action && settings.prepare.action.substring(0, 3) == 'erc'" label="Token:" label-for="simulateethtx-token" label-size="sm" label-cols-sm="3" label-align-sm="right" :description="settings.prepare.tokenDescription" class="mx-0 my-1 p-0">
+                    <b-form-select size="sm" :disabled="!settings.prepare.action" id="simulateethtx-token" v-model="settings.prepare.token" :options="tokensOptions" @change="saveSettings(); prepareSimulate();" v-b-popover.hover.bottom="'Select Token'"></b-form-select>
                   </b-form-group>
-                  <b-form-group label="From:" label-for="simulateethtx-from" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <b-form-select size="sm" id="simulateethtx-from" v-model="settings.prepare.from" :options="walletsOptions" @change="saveSettings(); prepareSimulate();" v-b-popover.hover.bottom="'Select Wallet'"></b-form-select>
+                  <b-form-group label="From:" label-for="simulateethtx-from" label-size="sm" label-cols-sm="3" label-align-sm="right" :description="settings.prepare.fromDescription" class="mx-0 my-1 p-0">
+                    <b-form-select size="sm" :disabled="!settings.prepare.action" id="simulateethtx-from" v-model="settings.prepare.from" :options="walletsOptions" @change="saveSettings(); prepareSimulate();" v-b-popover.hover.bottom="'Select Wallet'"></b-form-select>
                   </b-form-group>
-                  <b-form-group label="To:" label-for="simulateethtx-to" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <b-form-select size="sm" id="simulateethtx-to" v-model="settings.prepare.to" :options="addressesOptions" @change="saveSettings(); prepareSimulate();" v-b-popover.hover.bottom="'Select Address'"></b-form-select>
+                  <b-form-group label="To:" label-for="simulateethtx-to" label-size="sm" label-cols-sm="3" label-align-sm="right" :description="settings.prepare.toDescription" class="mx-0 my-1 p-0">
+                    <b-form-select size="sm" :disabled="!settings.prepare.action" id="simulateethtx-to" v-model="settings.prepare.to" :options="addressesOptions" @change="saveSettings(); prepareSimulate();" v-b-popover.hover.bottom="'Select Address'"></b-form-select>
                   </b-form-group>
                   <b-form-group label="Amount:" label-for="simulateethtx-amount" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <div class="d-flex flex-wrap m-0 p-0">
                       <div class="mt-0 pr-1">
-                        <b-form-input type="text" size="sm" id="simulateethtx-amount" v-model.trim="settings.prepare.amount" @change="saveSettings(); prepareSimulate();"></b-form-input>
+                        <b-form-input type="text" size="sm" :disabled="!settings.prepare.action" id="simulateethtx-amount" v-model.trim="settings.prepare.amount" @change="saveSettings(); prepareSimulate();"></b-form-input>
                       </div>
                       <div class="mt-0 pr-1">
-                        <b-form-select size="sm" v-model="settings.prepare.amountUnit" :options="unitOptions" @change="saveSettings(); prepareSimulate();"></b-form-select>
+                        <b-form-select size="sm" :disabled="!settings.prepare.action" v-model="settings.prepare.amountUnit" :options="unitOptions" @change="saveSettings(); prepareSimulate();"></b-form-select>
                       </div>
                     </div>
                   </b-form-group>
@@ -735,9 +735,9 @@
 
             prepare: {
               action: null,
+              token: null,
               from: null,
               to: null,
-              token: null,
               amount: null,
               amountUnit: "ether",
               // data: null,
@@ -753,6 +753,9 @@
               lastBaseFeePerGasUnit: "gwei",
               maxFeePerGasUnit: "gwei",
               maxPriorityFeePerGasUnit: "gwei",
+              tokenDescription: null,
+              fromDescription: null,
+              toDescription: null,
               error: null,
             },
 
@@ -760,9 +763,9 @@
               signedTx: null,
               decodedSignedTx: null,
               error: null,
+              token: null,
               from: null,
               to: null,
-              token: null,
               amount: null,
               data: null,
               chainId: null,
@@ -798,7 +801,7 @@
               pageSize: 100,
               sortOption: 'typenameasc',
             },
-            version: 5,
+            version: 6,
           },
           sync: {
             section: null,
@@ -822,9 +825,8 @@
           },
 
           addressTypeOptions: [
-            { value: 'walletfrommnemonic', text: 'Wallet From Mnemonic' },
-            { value: 'walletfromprivatekey', text: 'Wallet From Private Key' },
-            { value: 'walletfromkeystore', text: 'Wallet From Keystore' },
+            { value: null, text: '(Select Type)' },
+            { value: 'wallet', text: 'My Wallet' },
             { value: 'address', text: 'Address' },
             { value: 'erc20', text: 'ERC-20 Token Contract' },
             { value: 'erc721', text: 'ERC-721 Token Contract' },
@@ -844,7 +846,7 @@
           ],
 
           unitOptions: [
-            { value: "ether", text: 'Ether' },
+            { value: "ether", text: 'ETH' },
             { value: "gwei", text: 'Gwei' },
             { value: "wei", text: 'Wei' },
           ],
@@ -974,7 +976,6 @@
           chainsOptions() {
             const results = [];
             for (const [chainId, data] of Object.entries(this.chains)) {
-              // results.push({ value: chainId, text: chainId + (data.name ? (": " + data.name) : "") });
               results.push({ value: chainId, text: data.name });
             }
             results.sort((a, b) => ('' + a.text).localeCompare(b.text));
@@ -988,7 +989,7 @@
             const results = [];
             results.push({ value: null, text: "(Select Wallet)" });
             for (const [address, data] of Object.entries(this.addresses)) {
-              if (data.type.substring(0, 6) == "wallet") {
+              if (data.type == "wallet" && this.chainId && data.chains.includes(this.chainId.toString())) {
                 results.push({ value: address, text: address + (data.name ? (": " + data.name) : "") });
               }
             }
@@ -999,7 +1000,7 @@
             const results = [];
             results.push({ value: null, text: "(Select Token)" });
             for (const [address, data] of Object.entries(this.addresses)) {
-              if (data.type.substring(0, 3) == "erc") {
+              if (data.type.substring(0, 3) == "erc" && this.chainId && data.chains.includes(this.chainId.toString())) {
                 results.push({ value: address, text: address + (data.name ? (": " + data.name) : "") });
               }
             }
@@ -1010,7 +1011,9 @@
             const results = [];
             results.push({ value: null, text: "(Select Address)" });
             for (const [address, data] of Object.entries(this.addresses)) {
-              results.push({ value: address, text: address + (data.name ? (": " + data.name) : "") });
+              if (this.chainId && data.chains.includes(this.chainId.toString())) {
+                results.push({ value: address, text: address + (data.name ? (": " + data.name) : "") });
+              }
             }
             return results;
           },
@@ -1362,11 +1365,13 @@
 
           showNewAddress() {
             console.log(moment().format("HH:mm:ss") + " showNewAddress");
-            this.address.type = 'erc20', // TODO: 'address';
+            this.address.type = null;
             this.address.mode = 'add';
-            this.address.address = '0x93fCA4c6E2525C09c95269055B46f16b1459BF9d', // TODO: null;
+            this.address.address = null;
             this.address.name = null;
-            this.address.chains = [ this.chainId ];
+            this.address.symbol = null;
+            this.address.decimals = null;
+            this.address.chains = [ parseInt(this.chainId).toString() ];
             this.$bvModal.show('modal-address');
           },
 
@@ -1471,9 +1476,28 @@
           async prepareSimulate() {
             console.log(moment().format("HH:mm:ss") + " prepareSimulate: " + JSON.stringify(this.settings.prepare, null, 2));
             const provider = new ethers.providers.Web3Provider(window.ethereum);
+            this.settings.prepare.chainId = this.chainId;
             if (this.settings.prepare.from) {
-              this.settings.prepare.chainId = parseInt(this.chainId.toString());
-              this.settings.prepare.nonce = await provider.getTransactionCount(this.settings.prepare.from);
+              try {
+                this.settings.prepare.nonce = await provider.getTransactionCount(this.settings.prepare.from);
+              } catch (e) {
+                this.settings.prepare.nonce = null;
+              }
+              try {
+                const fromBalance = await provider.getBalance(this.settings.prepare.from);
+                this.settings.prepare.fromDescription = "Balance " + ethers.utils.formatUnits(fromBalance, this.settings.prepare.amountUnit) + " " + this.unitOptions.filter(e => e.value == this.settings.prepare.amountUnit)[0].text;
+              } catch (e) {
+              }
+            }
+            if (this.settings.prepare.to) {
+              try {
+                const toBalance = await provider.getBalance(this.settings.prepare.to);
+                this.settings.prepare.toDescription = "Balance " + ethers.utils.formatUnits(toBalance, this.settings.prepare.amountUnit) + " " + this.unitOptions.filter(e => e.value == this.settings.prepare.amountUnit)[0].text;
+              } catch (e) {
+              }
+            }
+
+            if (this.settings.prepare.from && this.settings.prepare.to && this.settings.prepare.amount) {
               const signer = new ethers.VoidSigner(this.settings.prepare.from, provider);
               const tx = {
                 from: this.settings.prepare.from,
@@ -1507,8 +1531,6 @@
               this.settings.prepare.maxFeePerGas = feeData.maxFeePerGas.toString();
               this.settings.prepare.maxPriorityFeePerGas = feeData.maxPriorityFeePerGas.toString();
               this.settings.prepare.gasPrice = feeData.gasPrice.toString();
-            } else {
-              this.settings.prepare.nonce = null;
             }
             console.log(moment().format("HH:mm:ss") + " prepareSimulate - AFTER: " + JSON.stringify(this.settings.prepare, null, 2));
             this.saveSettings();
@@ -2001,7 +2023,7 @@
           },
 
           saveSettings() {
-            console.log(moment().format("HH:mm:ss") + " saveSettings: " + JSON.stringify(this.settings, bigNumberReplacer, 2));
+            // console.log(moment().format("HH:mm:ss") + " saveSettings: " + JSON.stringify(this.settings, bigNumberReplacer, 2));
             localStorage.topSecretsOnlineSettings = JSON.stringify(this.settings);
           },
           async processNewBlock(blockNumber) {
