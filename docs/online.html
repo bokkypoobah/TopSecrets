@@ -81,8 +81,11 @@
             <b-form-group label="Address:" label-for="address-address" label-size="sm" label-cols-sm="2" label-align-sm="right" :state="!address.addressError" :invalid-feedback="address.addressError" class="mx-0 my-1 p-0">
               <b-form-input type="text" size="sm" id="address-address" v-model.trim="address.address" @change="newWalletRecompute();" placeholder="Type/paste your ETH address here" style="max-width: 400px;"></b-form-input>
             </b-form-group>
-            <b-form-group v-if="['erc20', 'erc721'].includes(address.type)" label="" label-for="address-retrieve" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
-              <b-button size="sm" id="address-retrieve" @click="addressRetrieveFromContract()" variant="primary">Retrieve From Contract</b-button>
+            <b-form-group v-if="['wallet', 'address'].includes(address.type)" label="ENS Name:" label-for="address-ensname" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-form-input type="text" size="sm" readonly id="address-ensname" v-model.trim="address.ensName" style="max-width: 300px;"></b-form-input>
+            </b-form-group>
+            <b-form-group v-if="['wallet', 'address'].includes(address.type)" label="" label-for="address-retrieveens" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-button size="sm" :disabled="address.addressError || !address.address || chainId != 1" id="address-retrieveens" @click="addressRetrieveENS()" variant="primary">Retrieve ENS</b-button>
             </b-form-group>
             <b-form-group label="Name:" label-for="address-name" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-form-input type="text" size="sm" id="address-name" v-model.trim="address.name" placeholder="Optional" style="max-width: 300px;"></b-form-input>
@@ -92,6 +95,9 @@
             </b-form-group>
             <b-form-group v-if="address.type == 'erc20'" label="Decimals:" label-for="address-decimals" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-form-input type="text" size="sm" id="address-decimals" v-model.trim="address.decimals" placeholder="For ERC-20 token contracts" style="max-width: 300px;"></b-form-input>
+            </b-form-group>
+            <b-form-group v-if="['erc20', 'erc721'].includes(address.type)" label="" label-for="address-retrieve" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-button size="sm" id="address-retrieve" @click="addressRetrieveFromContract()" variant="primary">Retrieve From Contract</b-button>
             </b-form-group>
             <b-form-group label="Chains:" label-for="address-chains" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
               <div style="overflow-y:scroll; max-height:200px" class="mt-1">
@@ -233,14 +239,27 @@
                   <b-form-group label="Action:" label-for="simulateethtx-action" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <b-form-select size="sm" id="simulateethtx-action" v-model="settings.prepare.action" :options="actionOptions" @change="saveSettings(); prepareSimulate();" style="max-width: 300px;"></b-form-select>
                   </b-form-group>
-                  <b-form-group v-if="settings.prepare.action && settings.prepare.action.substring(0, 3) == 'erc'" label="Token:" label-for="simulateethtx-token" label-size="sm" label-cols-sm="3" label-align-sm="right" :description="settings.prepare.tokenDescription" class="mx-0 my-1 p-0">
-                    <b-form-select size="sm" :disabled="!settings.prepare.action" id="simulateethtx-token" v-model="settings.prepare.token" :options="tokensOptions" @change="saveSettings(); prepareSimulate();" v-b-popover.hover.bottom="'Select Token'"></b-form-select>
+                  <b-form-group v-if="settings.prepare.action && settings.prepare.action.substring(0, 3) == 'erc'" label="Token:" label-for="simulateethtx-token" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <template v-if="settings.prepare.token.address" slot="description">
+                      <!-- {{ settings.prepare }} <a href="blah">boldfas</a> -->
+                      Blah
+                    </template>
+                    <b-form-select size="sm" :disabled="!settings.prepare.action" id="simulateethtx-token" v-model="settings.prepare.token.address" :options="tokensOptions" @change="saveSettings(); prepareSimulate();" v-b-popover.hover.bottom="'Select Token'"></b-form-select>
                   </b-form-group>
-                  <b-form-group label="From:" label-for="simulateethtx-from" label-size="sm" label-cols-sm="3" label-align-sm="right" :description="settings.prepare.fromDescription" class="mx-0 my-1 p-0">
-                    <b-form-select size="sm" :disabled="!settings.prepare.action" id="simulateethtx-from" v-model="settings.prepare.from" :options="walletsOptions" @change="saveSettings(); prepareSimulate();" v-b-popover.hover.bottom="'Select Wallet'"></b-form-select>
+                  <!-- <b-form-group label="From:" label-for="simulateethtx-from" label-size="sm" label-cols-sm="3" label-align-sm="right" :description="settings.prepare.fromDescription" class="mx-0 my-1 p-0"> -->
+                  <b-form-group label="From:" label-for="simulateethtx-from" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <template v-if="settings.prepare.from.address" slot="description">
+                      <!-- {{ settings.prepare }} <a href="blah">boldfas</a> -->
+                      Blah
+                    </template>
+                    <b-form-select size="sm" :disabled="!settings.prepare.action" id="simulateethtx-from" v-model="settings.prepare.from.address" :options="walletsOptions" @change="saveSettings(); prepareSimulate();" v-b-popover.hover.bottom="'Select Wallet'"></b-form-select>
                   </b-form-group>
-                  <b-form-group label="To:" label-for="simulateethtx-to" label-size="sm" label-cols-sm="3" label-align-sm="right" :description="settings.prepare.toDescription" class="mx-0 my-1 p-0">
-                    <b-form-select size="sm" :disabled="!settings.prepare.action" id="simulateethtx-to" v-model="settings.prepare.to" :options="addressesOptions" @change="saveSettings(); prepareSimulate();" v-b-popover.hover.bottom="'Select Address'"></b-form-select>
+                  <b-form-group label="To:" label-for="simulateethtx-to" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <template v-if="settings.prepare.to.address" slot="description">
+                      <!-- {{ settings.prepare }} <a href="blah">boldfas</a> -->
+                      Blah
+                    </template>
+                    <b-form-select size="sm" :disabled="!settings.prepare.action" id="simulateethtx-to" v-model="settings.prepare.to.address" :options="addressesOptions" @change="saveSettings(); prepareSimulate();" v-b-popover.hover.bottom="'Select Address'"></b-form-select>
                   </b-form-group>
                   <b-form-group label="Amount:" label-for="simulateethtx-amount" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <div class="d-flex flex-wrap m-0 p-0">
@@ -717,6 +736,7 @@
             type: null,
             address: null,
             addressError: null,
+            ensName: null,
             name: null,
             symbol: null,
             decimals: null,
@@ -735,9 +755,25 @@
 
             prepare: {
               action: null,
-              token: null,
-              from: null,
-              to: null,
+              token: {
+                address: null,
+                name: null,
+                symbol: null,
+                decimals: null,
+                totalSupply: null,
+              },
+              from: {
+                address: null,
+                ensName: null,
+                balance: null,
+                tokens: null,
+              },
+              to: {
+                address: null,
+                ensName: null,
+                balance: null,
+                tokens: null,
+              },
               amount: null,
               amountUnit: "ether",
               // data: null,
@@ -753,9 +789,6 @@
               lastBaseFeePerGasUnit: "gwei",
               maxFeePerGasUnit: "gwei",
               maxPriorityFeePerGasUnit: "gwei",
-              tokenDescription: null,
-              fromDescription: null,
-              toDescription: null,
               error: null,
             },
 
@@ -801,7 +834,7 @@
               pageSize: 100,
               sortOption: 'typenameasc',
             },
-            version: 6,
+            version: 8,
           },
           sync: {
             section: null,
@@ -1026,7 +1059,7 @@
               results.push({
                 address,
                 type: data.type,
-                privateKey: data.privateKey,
+                ensName: data.ensName,
                 name: data.name,
                 symbol: data.symbol,
                 decimals: data.decimals,
@@ -1368,6 +1401,7 @@
             this.address.type = null;
             this.address.mode = 'add';
             this.address.address = null;
+            this.address.ensName = null;
             this.address.name = null;
             this.address.symbol = null;
             this.address.decimals = null;
@@ -1381,6 +1415,7 @@
               this.address.mode = 'vieworupdate';
               this.address.type = item[0].type;
               this.address.address = item[0].address;
+              this.address.ensName = item[0].ensName;
               this.address.name = item[0].name;
               this.address.symbol = item[0].symbol;
               this.address.decimals = item[0].decimals;
@@ -1403,6 +1438,19 @@
               }
             } else {
               this.address.addressError = null;
+            }
+          },
+
+          async addressRetrieveENS() {
+            console.log(moment().format("HH:mm:ss") + " addressRetrieveENS - this.address: " + JSON.stringify(this.address, null, 2));
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            const ensReverseRecordsContract = new ethers.Contract(ENSREVERSERECORDSADDRESS, ENSREVERSERECORDSABI, provider);
+            try {
+              const names = await ensReverseRecordsContract.getNames([this.address.address]);
+              this.address.ensName = names.length == 1 ? names[0] : null;
+              console.log(moment().format("HH:mm:ss") + " addressRetrieveENS - this.address.ensName: " + JSON.stringify(this.address.ensName, null, 2));
+            } catch (e) {
+              console.log("addressRetrieveENS - ensReverseRecordsContract.getNames ERROR: " + e.message);
             }
           },
 
@@ -1436,6 +1484,7 @@
           addressAdd() {
             Vue.set(this.addresses, this.address.address, {
               type: this.address.type,
+              ensName: this.address.ensName,
               name: this.address.name,
               symbol: this.address.symbol,
               decimals: this.address.decimals,
@@ -1449,6 +1498,7 @@
           addressUpdate() {
             console.log(moment().format("HH:mm:ss") + " addressUpdate - this.address: " + JSON.stringify(this.address, null, 2));
             Vue.set(this.addresses[this.address.address], 'type', this.address.type);
+            Vue.set(this.addresses[this.address.address], 'ensName', this.address.ensName);
             Vue.set(this.addresses[this.address.address], 'name', this.address.name);
             Vue.set(this.addresses[this.address.address], 'symbol', this.address.symbol);
             Vue.set(this.addresses[this.address.address], 'decimals', this.address.decimals);
@@ -2179,9 +2229,6 @@
           (async() => {
             await this.connectToWeb3();
           })();
-          if ('topSecretsOnlineAddresses' in localStorage) {
-            this.addresses = JSON.parse(localStorage.topSecretsOnlineAddresses);
-          }
           if ('topSecretsOnlineChainId' in localStorage) {
             this.chainId = localStorage.topSecretsOnlineChainId;
           }
@@ -2194,6 +2241,9 @@
               this.settings = tempSettings;
               if (this.settings.addressesTable.currentPage > 1) {
                 this.settings.addressesTable.currentPage = 1;
+              }
+              if ('topSecretsOnlineAddresses' in localStorage) {
+                this.addresses = JSON.parse(localStorage.topSecretsOnlineAddresses);
               }
             }
           }
