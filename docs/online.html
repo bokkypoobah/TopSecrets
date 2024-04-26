@@ -241,25 +241,33 @@
                   </b-form-group>
                   <b-form-group v-if="settings.prepare.action && settings.prepare.action.substring(0, 3) == 'erc'" label="Token:" label-for="simulateethtx-token" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <template v-if="settings.prepare.token.address" slot="description">
-                      <!-- {{ settings.prepare }} <a href="blah">boldfas</a> -->
-                      Blah
+                      <b-link v-if="settings.prepare.token.totalSupply && settings.prepare.token.decimals" :href="explorer + '/token/' + settings.prepare.token.address" target="_blank" v-b-popover.hover="'Total Supply. View in explorer'">
+                        <font size="-2">{{ formatUnits(settings.prepare.token.totalSupply, settings.prepare.token.decimals) }}</font>
+                      </b-link>
+                      <b-badge button v-if="settings.prepare.token.symbol" variant="muted" v-b-popover.hover="'symbol'">{{ settings.prepare.token.symbol }}</b-badge>
+                      <b-badge button v-if="settings.prepare.token.decimals" variant="muted" v-b-popover.hover="'decimals'">{{ settings.prepare.token.decimals }}</b-badge>
                     </template>
                     <b-form-select size="sm" :disabled="!settings.prepare.action" id="simulateethtx-token" v-model="settings.prepare.token.address" :options="tokensOptions" @change="saveSettings(); prepareSimulate();" v-b-popover.hover.bottom="'Select Token'"></b-form-select>
                   </b-form-group>
-                  <!-- <b-form-group label="From:" label-for="simulateethtx-from" label-size="sm" label-cols-sm="3" label-align-sm="right" :description="settings.prepare.fromDescription" class="mx-0 my-1 p-0"> -->
                   <b-form-group label="From:" label-for="simulateethtx-from" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <template v-if="settings.prepare.from.address" slot="description">
+                    <template v-if="settings.prepare.action && settings.prepare.from.address" slot="description">
+                      <b-link v-if="settings.prepare.action.substring(0, 3) == 'erc' && settings.prepare.from.tokens && settings.prepare.token.decimals" :href="explorer + '/token/' + settings.prepare.token.address + '?a=' + settings.prepare.from.address" target="_blank" v-b-popover.hover="settings.prepare.token.symbol + '. View in explorer'">
+                        <font size="-2">{{ formatUnits(settings.prepare.from.tokens, settings.prepare.token.decimals) }}</font>
+                      </b-link>
                       <b-link :href="explorer + '/address/' + settings.prepare.from.address" target="_blank" v-b-popover.hover="'ETH. View in explorer'"><font size="-2">{{ settings.prepare.from.balance && formatETH(settings.prepare.from.balance) || null }}</font></b-link>
-                      <b-badge button variant="light" v-b-popover.hover="'#transactions'">{{ settings.prepare.from.transactionCount }}</b-badge>
-                      <b-badge button v-if="settings.prepare.from.ensName" variant="light" v-b-popover.hover="'ENS name'">{{ settings.prepare.from.ensName }}</b-badge>
+                      <b-badge button variant="muted" v-b-popover.hover="'#transactions'">{{ settings.prepare.from.transactionCount }}</b-badge>
+                      <b-badge button v-if="settings.prepare.from.ensName" variant="muted" v-b-popover.hover="'ENS name'">{{ settings.prepare.from.ensName }}</b-badge>
                     </template>
                     <b-form-select size="sm" :disabled="!settings.prepare.action" id="simulateethtx-from" v-model="settings.prepare.from.address" :options="walletsOptions" @change="saveSettings(); prepareSimulate();" v-b-popover.hover.bottom="'Select Wallet'"></b-form-select>
                   </b-form-group>
                   <b-form-group label="To:" label-for="simulateethtx-to" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <template v-if="settings.prepare.to.address" slot="description">
+                    <template v-if="settings.prepare.action && settings.prepare.to.address" slot="description">
+                      <b-link v-if="settings.prepare.action.substring(0, 3) == 'erc' && settings.prepare.to.tokens && settings.prepare.token.decimals" :href="explorer + '/token/' + settings.prepare.token.address + '?a=' + settings.prepare.to.address" target="_blank" v-b-popover.hover="settings.prepare.token.symbol + '. View in explorer'">
+                        <font size="-2">{{ formatUnits(settings.prepare.to.tokens, settings.prepare.token.decimals) }}</font>
+                      </b-link>
                       <b-link :href="explorer + '/address/' + settings.prepare.to.address" target="_blank" v-b-popover.hover="'ETH. View in explorer'"><font size="-2">{{ settings.prepare.to.balance && formatETH(settings.prepare.to.balance) || null }}</font></b-link>
-                      <b-badge button variant="light" v-b-popover.hover="'#transactions'">{{ settings.prepare.to.transactionCount }}</b-badge>
-                      <b-badge button v-if="settings.prepare.to.ensName" variant="light" v-b-popover.hover="'ENS name'">{{ settings.prepare.to.ensName }}</b-badge>
+                      <b-badge button variant="muted" v-b-popover.hover="'#transactions'">{{ settings.prepare.to.transactionCount }}</b-badge>
+                      <b-badge button v-if="settings.prepare.to.ensName" variant="muted" v-b-popover.hover="'ENS name'">{{ settings.prepare.to.ensName }}</b-badge>
                     </template>
                     <b-form-select size="sm" :disabled="!settings.prepare.action" id="simulateethtx-to" v-model="settings.prepare.to.address" :options="addressesOptions" @change="saveSettings(); prepareSimulate();" v-b-popover.hover.bottom="'Select Address'"></b-form-select>
                   </b-form-group>
@@ -874,7 +882,7 @@
             { value: null, text: '(Select)' },
             { value: 'ethtransfer', text: 'Transfer Ethers' },
             { value: 'erc20transfer', text: 'Transfer ERC-20 Tokens' },
-            { value: 'erc721safetransferfrom', text: 'Transfer ERC-721 Tokens' },
+            { value: 'erc721safetransferfrom', text: 'Transfer ERC-721 Tokens', disabled: true },
             // { value: 'sweepwallet', text: 'Sweep ETH To New Wallet', disabled: true }, // TODO: Type 1 with amount = balance - gasLimit * gasPrice
             // { value: 'deploycontract', text: 'Deploy Contract', disabled: true }, // TODO: `to` null; data with code
             // { value: 'writemessage', text: 'Write Message', disabled: true }, // TODO: `to` to own account, or destination; data with message
@@ -1568,6 +1576,13 @@
                 this.settings.prepare.token.totalSupply = null;
                 // TODO: need to get ERC-721 tokenIds
               }
+            } else {
+              this.settings.prepare.token.name = null;
+              this.settings.prepare.token.symbol = null;
+              this.settings.prepare.token.decimals = null;
+              this.settings.prepare.token.totalSupply = null;
+              this.settings.prepare.from.tokens = null;
+              this.settings.prepare.to.tokens = null;
             }
             if (this.settings.prepare.from.address) {
               this.settings.prepare.from.ensName = this.addresses[this.settings.prepare.from.address].ensName;
@@ -1596,11 +1611,11 @@
               }
             }
 
-            if (this.settings.prepare.from && this.settings.prepare.to && this.settings.prepare.amount) {
-              const signer = new ethers.VoidSigner(this.settings.prepare.from, provider);
+            if (this.settings.prepare.from.address && this.settings.prepare.to.address && this.settings.prepare.amount) {
+              const signer = new ethers.VoidSigner(this.settings.prepare.from.address, provider);
               const tx = {
-                from: this.settings.prepare.from,
-                to: this.settings.prepare.to,
+                from: this.settings.prepare.from.address,
+                to: this.settings.prepare.to.address,
                 // gasLimit: 50000,
                 // gasPrice: 1000000,
                 // type: 2,
@@ -2147,7 +2162,7 @@
           formatETH(e, precision = 0) {
             try {
               if (precision == 0) {
-                return e ? ethers.utils.formatEther(e) : null;
+                return e ? ethers.utils.formatEther(e).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : null;
               } else {
                 return e ? parseFloat(ethers.utils.formatEther(e)).toFixed(precision) : null;
               }
@@ -2155,9 +2170,13 @@
             }
             return e.toFixed(precision);
           },
-          formatUnits(e, u) {
+          formatUnits(e, u, precision = 0) {
             if (e) {
-              return ethers.utils.formatUnits(e, u);
+              if (precision == 0) {
+                return ethers.utils.formatUnits(e, u).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+              } else {
+                return e ? parseFloat(ethers.utils.formatUnits(e, u)).toFixed(precision) : null;
+              }
             }
             return null;
           },
