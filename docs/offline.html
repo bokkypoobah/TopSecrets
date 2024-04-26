@@ -679,6 +679,7 @@
               // results.push({ value: chainId, text: chainId + (data.name ? (": " + data.name) : "") });
               results.push({ value: chainId, text: data.name });
             }
+            results.sort((a, b) => ('' + a.text).localeCompare(b.text));
             return results;
           },
           chainsOptionsWithSelect() {
@@ -693,6 +694,7 @@
                 results.push({ value: address, text: address + (data.name ? (": " + data.name) : "") });
               }
             }
+            results.sort();
             return results;
           },
 

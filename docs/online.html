@@ -977,6 +977,7 @@
               // results.push({ value: chainId, text: chainId + (data.name ? (": " + data.name) : "") });
               results.push({ value: chainId, text: data.name });
             }
+            results.sort((a, b) => ('' + a.text).localeCompare(b.text));
             return results;
           },
           chainsOptionsWithSelect() {
@@ -1026,6 +1027,7 @@
                 name: data.name,
                 symbol: data.symbol,
                 decimals: data.decimals,
+                chains: data.chains,
               });
             }
             return results;
@@ -1364,6 +1366,7 @@
             this.address.mode = 'add';
             this.address.address = '0x93fCA4c6E2525C09c95269055B46f16b1459BF9d', // TODO: null;
             this.address.name = null;
+            this.address.chains = [ this.chainId ];
             this.$bvModal.show('modal-address');
           },
 
@@ -1376,6 +1379,7 @@
               this.address.name = item[0].name;
               this.address.symbol = item[0].symbol;
               this.address.decimals = item[0].decimals;
+              this.address.chains = item[0].chains;
               this.$refs.addressesTable.clearSelected();
             }
             this.$bvModal.show('modal-address');
@@ -1430,6 +1434,7 @@
               name: this.address.name,
               symbol: this.address.symbol,
               decimals: this.address.decimals,
+              chains: this.address.chains,
             });
             localStorage.topSecretsOnlineAddresses = JSON.stringify(this.addresses);
             console.log(moment().format("HH:mm:ss") + " addressAdd - this.addresses: " + JSON.stringify(this.addresses, null, 2));
@@ -1442,6 +1447,7 @@
             Vue.set(this.addresses[this.address.address], 'name', this.address.name);
             Vue.set(this.addresses[this.address.address], 'symbol', this.address.symbol);
             Vue.set(this.addresses[this.address.address], 'decimals', this.address.decimals);
+            Vue.set(this.addresses[this.address.address], 'chains', this.address.chains);
             localStorage.topSecretsOnlineAddresses = JSON.stringify(this.addresses);
             console.log(moment().format("HH:mm:ss") + " addressUpdate - this.addresses: " + JSON.stringify(this.addresses, null, 2));
             this.$bvModal.hide('modal-address');

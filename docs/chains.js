@@ -28,7 +28,7 @@ const CHAINS = {
     explorer: "https://zora.superscan.network/",
   },
   11155111: {
-    name: "Sepolia Testnet",
+    name: "ETH Sepolia Testnet",
     explorer: "https://sepolia.etherscan.io/",
   },
 };
