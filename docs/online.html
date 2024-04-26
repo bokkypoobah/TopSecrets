@@ -93,6 +93,11 @@
             <b-form-group v-if="address.type == 'erc20'" label="Decimals:" label-for="address-decimals" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-form-input type="text" size="sm" id="address-decimals" v-model.trim="address.decimals" placeholder="For ERC-20 token contracts" style="max-width: 300px;"></b-form-input>
             </b-form-group>
+            <b-form-group label="Chains:" label-for="address-chains" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
+              <div style="overflow-y:scroll; max-height:200px">
+                <b-form-checkbox-group size="sm" stacked id="address-chains" v-model="address.chains" :options="chainsOptions"></b-form-checkbox-group>
+              </div>
+            </b-form-group>
             <b-form-group v-if="address.mode == 'add'" label="" label-for="address-add" label-size="sm" label-cols-sm="2" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-button size="sm" :disabled="!address.address" id="address-add" @click="addressAdd()" variant="primary">Add</b-button>
             </b-form-group>
@@ -968,11 +973,14 @@
 
           chainsOptions() {
             const results = [];
-            results.push({ value: null, text: "(Select Chain)" });
             for (const [chainId, data] of Object.entries(this.chains)) {
-              results.push({ value: chainId, text: chainId + (data.name ? (": " + data.name) : "") });
+              // results.push({ value: chainId, text: chainId + (data.name ? (": " + data.name) : "") });
+              results.push({ value: chainId, text: data.name });
             }
             return results;
+          },
+          chainsOptionsWithSelect() {
+            return [ { value: null, text: "(Select Chain)" }, ...this.chainsOptions ];
           },
 
           walletsOptions() {
