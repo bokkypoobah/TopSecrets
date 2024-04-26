@@ -12,3 +12,17 @@ const bigNumberReplacer = (key, value) =>
   value && typeof value === "object" && value.type == "BigNumber"
       ? ethers.BigNumber.from(value).toString()
       : value;
+
+function getError(e) {
+  let error = "";
+  if (e.reason) {
+    error = e.reason;
+  } else if (e.error && e.error.message) {
+    error = e.error.message;
+  } else if (e.data && e.data.message) {
+    error = e.data.message;
+  } else {
+    error = e.toString();
+  }
+  return error;
+}

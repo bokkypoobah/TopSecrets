@@ -1633,7 +1633,7 @@
                 this.settings.prepare.error = null;
               } catch (e) {
                 console.log(moment().format("HH:mm:ss") + " prepareSimulate ERROR: " + e.message);
-                this.settings.prepare.error = e.message.replace(/\[.*$/, "");
+                this.settings.prepare.error = getError(e);
                 this.settings.prepare.estimatedGas = null;
               }
               const feeData = await provider.getFeeData();
