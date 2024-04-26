@@ -1031,7 +1031,7 @@
             results.push({ value: null, text: "(Select Wallet)" });
             for (const [address, data] of Object.entries(this.addresses)) {
               if (data.type == "wallet" && this.chainId && data.chains.includes(this.chainId.toString())) {
-                results.push({ value: address, text: (data.name ? (data.name + ": ") : "") + address.substring(0, 10) + '...' + address.slice(-8) });
+                results.push({ value: address, text: (data.name ? (data.name + ": ") : "") + address.substring(0, 8) + '...' + address.slice(-6) });
               }
             }
             return results;
@@ -1042,7 +1042,7 @@
             results.push({ value: null, text: "(Select Token)" });
             for (const [address, data] of Object.entries(this.addresses)) {
               if (data.type.substring(0, 3) == "erc" && this.chainId && data.chains.includes(this.chainId.toString())) {
-                results.push({ value: address, text: (data.name ? (data.name + ": ") : "") + address.substring(0, 10) + '...' + address.slice(-8) });
+                results.push({ value: address, text: (data.name ? (data.name + ": ") : "") + address.substring(0, 8) + '...' + address.slice(-6) });
               }
             }
             return results;
@@ -1053,7 +1053,7 @@
             results.push({ value: null, text: "(Select Address)" });
             for (const [address, data] of Object.entries(this.addresses)) {
               if (this.chainId && data.chains.includes(this.chainId.toString())) {
-                results.push({ value: address, text: (data.name ? (data.name + ": ") : "") + address.substring(0, 10) + '...' + address.slice(-8) });
+                results.push({ value: address, text: (data.name ? (data.name + ": ") : "") + address.substring(0, 8) + '...' + address.slice(-6) });
               }
             }
             return results;
