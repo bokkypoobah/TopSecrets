@@ -249,17 +249,17 @@
                   <!-- <b-form-group label="From:" label-for="simulateethtx-from" label-size="sm" label-cols-sm="3" label-align-sm="right" :description="settings.prepare.fromDescription" class="mx-0 my-1 p-0"> -->
                   <b-form-group label="From:" label-for="simulateethtx-from" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <template v-if="settings.prepare.from.address" slot="description">
-                      <b-badge button v-if="settings.prepare.from.ensName" variant="light" v-b-popover.hover="'ENS name'">{{ settings.prepare.from.ensName }}</b-badge>
                       <b-link :href="explorer + '/address/' + settings.prepare.from.address" target="_blank" v-b-popover.hover="'ETH. View in explorer'"><font size="-2">{{ settings.prepare.from.balance && formatETH(settings.prepare.from.balance) || null }}</font></b-link>
                       <b-badge button variant="light" v-b-popover.hover="'#transactions'">{{ settings.prepare.from.transactionCount }}</b-badge>
+                      <b-badge button v-if="settings.prepare.from.ensName" variant="light" v-b-popover.hover="'ENS name'">{{ settings.prepare.from.ensName }}</b-badge>
                     </template>
                     <b-form-select size="sm" :disabled="!settings.prepare.action" id="simulateethtx-from" v-model="settings.prepare.from.address" :options="walletsOptions" @change="saveSettings(); prepareSimulate();" v-b-popover.hover.bottom="'Select Wallet'"></b-form-select>
                   </b-form-group>
                   <b-form-group label="To:" label-for="simulateethtx-to" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <template v-if="settings.prepare.to.address" slot="description">
-                      <b-badge button v-if="settings.prepare.to.ensName" variant="light" v-b-popover.hover="'ENS name'">{{ settings.prepare.to.ensName }}</b-badge>
                       <b-link :href="explorer + '/address/' + settings.prepare.to.address" target="_blank" v-b-popover.hover="'ETH. View in explorer'"><font size="-2">{{ settings.prepare.to.balance && formatETH(settings.prepare.to.balance) || null }}</font></b-link>
                       <b-badge button variant="light" v-b-popover.hover="'#transactions'">{{ settings.prepare.to.transactionCount }}</b-badge>
+                      <b-badge button v-if="settings.prepare.to.ensName" variant="light" v-b-popover.hover="'ENS name'">{{ settings.prepare.to.ensName }}</b-badge>
                     </template>
                     <b-form-select size="sm" :disabled="!settings.prepare.action" id="simulateethtx-to" v-model="settings.prepare.to.address" :options="addressesOptions" @change="saveSettings(); prepareSimulate();" v-b-popover.hover.bottom="'Select Address'"></b-form-select>
                   </b-form-group>
@@ -1535,6 +1535,40 @@
             console.log(moment().format("HH:mm:ss") + " prepareSimulate: " + JSON.stringify(this.settings.prepare, bigNumberReplacer, 2));
             const provider = new ethers.providers.Web3Provider(window.ethereum);
             this.settings.prepare.chainId = this.chainId;
+            if (this.settings.prepare.token.address) {
+              this.settings.prepare.token.name = this.addresses[this.settings.prepare.token.address].name;
+              this.settings.prepare.token.symbol = this.addresses[this.settings.prepare.token.address].symbol;
+              this.settings.prepare.token.decimals = this.addresses[this.settings.prepare.token.address].decimals;
+              const tokenType = this.addresses[this.settings.prepare.token.address].type;
+              if (tokenType == "erc20") {
+                const contract = new ethers.Contract(this.settings.prepare.token.address, ERC20ABI, provider);
+                try {
+                  this.settings.prepare.token.totalSupply = ethers.BigNumber.from(await contract.totalSupply()).toString();
+                } catch (e) {
+                  console.log("prepareSimulate - erc20.totalSupply ERROR: " + e.message);
+                  this.settings.prepare.token.totalSupply = null;
+                }
+                if (this.settings.prepare.from.address) {
+                  try {
+                    this.settings.prepare.from.tokens = ethers.BigNumber.from(await contract.balanceOf(this.settings.prepare.from.address)).toString();
+                  } catch (e) {
+                    console.log("prepareSimulate - erc20.balanceOf(from) ERROR: " + e.message);
+                    this.settings.prepare.from.tokens = null;
+                  }
+                }
+                if (this.settings.prepare.to.address) {
+                  try {
+                    this.settings.prepare.to.tokens = ethers.BigNumber.from(await contract.balanceOf(this.settings.prepare.to.address)).toString();
+                  } catch (e) {
+                    console.log("prepareSimulate - erc20.balanceOf(to) ERROR: " + e.message);
+                    this.settings.prepare.to.tokens = null;
+                  }
+                }
+              } else if (tokenType == "erc721") {
+                this.settings.prepare.token.totalSupply = null;
+                // TODO: need to get ERC-721 tokenIds
+              }
+            }
             if (this.settings.prepare.from.address) {
               this.settings.prepare.from.ensName = this.addresses[this.settings.prepare.from.address].ensName;
               try {
