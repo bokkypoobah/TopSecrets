@@ -271,13 +271,25 @@
                     </template>
                     <b-form-select size="sm" :disabled="!settings.prepare.action" id="prepare-to" v-model="settings.prepare.to.address" :options="addressesOptions" @change="saveSettings(); prepareSimulate();" v-b-popover.hover.bottom="'Select Address'"></b-form-select>
                   </b-form-group>
-                  <b-form-group label="Amount:" label-for="prepare-amount" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-form-group v-if="settings.prepare.action == 'ethtransfer'" label="Amount:" label-for="prepare-amount" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <div class="d-flex flex-wrap m-0 p-0">
                       <div class="mt-0 pr-1">
-                        <b-form-input type="text" size="sm" :disabled="!settings.prepare.action" id="prepare-amount" v-model.trim="settings.prepare.amount" @change="saveSettings(); prepareSimulate();"></b-form-input>
+                        <b-form-input type="text" size="sm" id="prepare-amount" v-model.trim="settings.prepare.amount" @change="saveSettings(); prepareSimulate();"></b-form-input>
                       </div>
                       <div class="mt-0 pr-1">
                         <b-form-select size="sm" :disabled="!settings.prepare.action" v-model="settings.prepare.amountUnit" :options="unitOptions" @change="saveSettings(); prepareSimulate();"></b-form-select>
+                      </div>
+                    </div>
+                  </b-form-group>
+                  <b-form-group v-if="settings.prepare.action == 'erc20transfer'" label="Tokens:" label-for="prepare-tokens" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <div class="d-flex flex-wrap m-0 p-0">
+                      <div class="mt-0 pr-1">
+                        <b-form-input type="text" size="sm" id="prepare-tokens" v-model.trim="settings.prepare.tokens" @change="saveSettings(); prepareSimulate();"></b-form-input>
+                      </div>
+                      <div class="mt-0 pr-1">
+                        <b-badge button v-if="settings.prepare.token.symbol" variant="muted" v-b-popover.hover="'symbol'">{{ settings.prepare.token.symbol }}</b-badge>
+                        <b-badge button v-if="settings.prepare.token.decimals" variant="muted" v-b-popover.hover="'decimals'">{{ settings.prepare.token.decimals }}</b-badge>
+                        <!-- <b-form-select size="sm" :disabled="!settings.prepare.action" v-model="settings.prepare.amountUnit" :options="unitOptions" @change="saveSettings(); prepareSimulate();"></b-form-select> -->
                       </div>
                     </div>
                   </b-form-group>
@@ -788,6 +800,8 @@
               },
               amount: null,
               amountUnit: "ether",
+              tokens: null,
+              // TODO: ERC-721 tokenIds: [],
               // data: null,
               // signature: null,
               chainId: null,
@@ -846,7 +860,7 @@
               pageSize: 100,
               sortOption: 'typenameasc',
             },
-            version: 9,
+            version: 10,
           },
           sync: {
             section: null,
