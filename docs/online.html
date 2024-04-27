@@ -1032,10 +1032,10 @@
               ", latest #" + this.commify0(this.blockNumber) +
               " @ " + moment.unix(this.timestamp).format("YYYY-MM-DD HH:mm:ss") +
               " " + moment.unix(this.timestamp).fromNow() +
-              "\n\tgasPrice: " + ethers.utils.formatUnits(this.feeData.gasPrice, "gwei") + " gwei " +
-              "\n\tlast to max Base + priority feePerGas: " + ethers.utils.formatUnits(this.feeData.lastBaseFeePerGas, "gwei") +
-              " to " + ethers.utils.formatUnits(this.feeData.maxFeePerGas, "gwei") + 
-              " + " + ethers.utils.formatUnits(this.feeData.maxPriorityFeePerGas, "gwei") + " gwei ");
+              ": " + ethers.utils.formatUnits(this.feeData.lastBaseFeePerGas, "gwei") +
+              " - " + ethers.utils.formatUnits(this.feeData.maxFeePerGas, "gwei") +
+              " + " + ethers.utils.formatUnits(this.feeData.maxPriorityFeePerGas, "gwei") +
+              "; " + ethers.utils.formatUnits(this.feeData.gasPrice, "gwei") + " gwei");
           },
           async halt() {
             this.sync.halt = true;
@@ -1130,8 +1130,10 @@
               function handleChainChanged(_chainId) {
                 t.chainId = parseInt(_chainId);
                 console.log(moment().format("HH:mm:ss") + " connectToWeb3 - handleChainChanged - this.chainId: " + t.chainId);
-                // alert('Ethereum chain has changed - reload this page if necessary.')
+                alert('Please reload this page as the chain has changed')
                 // window.location.reload();
+                // TODO: Block handling needs to be reset
+                // provider.on("block", handleNewBlock);
                 t.prepareSimulate();
               }
               window.ethereum.on('chainChanged', handleChainChanged);
@@ -1143,6 +1145,7 @@
               }
               window.ethereum.on('accountsChanged', handleAccountsChanged);
               async function handleNewBlock(blockNumber) {
+                console.log(moment().format("HH:mm:ss") + " connectToWeb3 - handleNewBlock - blockNumber: " + blockNumber);
                 if (!t.blockNumber || blockNumber > t.blockNumber) {
                   const block = await provider.getBlock("latest");
                   t.blockNumber = block.number;
