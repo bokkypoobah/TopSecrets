@@ -164,113 +164,113 @@
               <b-card sub-title="Prepare Transaction" bg-variant="light" class="p-0 m-1" style="max-width: 900px;">
                 <b-form-group label-cols-lg="2" label="Input" label-size="md" label-class="font-weight-bold pt-0" class="mb-0 mt-3">
                   <b-form-group label="Action:" label-for="prepare-action" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <b-form-select size="sm" id="prepare-action" v-model="settings.prepare.action" :options="actionOptions" @change="saveSettings(); prepareSimulate();" style="max-width: 300px;"></b-form-select>
+                    <b-form-select size="sm" id="prepare-action" v-model="prepare.action" :options="actionOptions" @change="saveSettings(); prepareSimulate();" style="max-width: 300px;"></b-form-select>
                   </b-form-group>
-                  <b-form-group v-if="settings.prepare.action && settings.prepare.action.substring(0, 3) == 'erc'" label="Token:" label-for="prepare-token" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <template v-if="settings.prepare.token.address" slot="description">
-                      <b-link v-if="settings.prepare.token.totalSupply && settings.prepare.token.decimals" :href="explorer + '/token/' + settings.prepare.token.address" target="_blank" v-b-popover.hover="'Total Supply. View in explorer'">
-                        <font size="-2">{{ formatUnits(settings.prepare.token.totalSupply, settings.prepare.token.decimals) }}</font>
+                  <b-form-group v-if="prepare.action && prepare.action.substring(0, 3) == 'erc'" label="Token:" label-for="prepare-token" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <template v-if="prepare.token.address" slot="description">
+                      <b-link v-if="prepare.token.totalSupply && prepare.token.decimals" :href="explorer + '/token/' + prepare.token.address" target="_blank" v-b-popover.hover="'Total Supply. View in explorer'">
+                        <font size="-2">{{ formatUnits(prepare.token.totalSupply, prepare.token.decimals) }}</font>
                       </b-link>
-                      <b-badge button v-if="settings.prepare.token.symbol" variant="muted" v-b-popover.hover="'symbol'">{{ settings.prepare.token.symbol }}</b-badge>
-                      <b-badge button v-if="settings.prepare.token.decimals" variant="muted" v-b-popover.hover="'decimals'">{{ settings.prepare.token.decimals }}</b-badge>
+                      <b-badge button v-if="prepare.token.symbol" variant="muted" v-b-popover.hover="'symbol'">{{ prepare.token.symbol }}</b-badge>
+                      <b-badge button v-if="prepare.token.decimals" variant="muted" v-b-popover.hover="'decimals'">{{ prepare.token.decimals }}</b-badge>
                     </template>
-                    <b-form-select size="sm" :disabled="!settings.prepare.action" id="prepare-token" v-model="settings.prepare.token.address" :options="tokensOptions" @change="saveSettings(); prepareSimulate();" v-b-popover.hover.bottom="'Select Token'"></b-form-select>
+                    <b-form-select size="sm" :disabled="!prepare.action" id="prepare-token" v-model="prepare.token.address" :options="tokensOptions" @change="saveSettings(); prepareSimulate();" v-b-popover.hover.bottom="'Select Token'"></b-form-select>
                   </b-form-group>
                   <b-form-group label="From:" label-for="prepare-from" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <template v-if="settings.prepare.action && settings.prepare.from.address" slot="description">
-                      <b-link v-if="settings.prepare.action.substring(0, 3) == 'erc' && settings.prepare.from.tokens && settings.prepare.token.decimals" :href="explorer + '/token/' + settings.prepare.token.address + '?a=' + settings.prepare.from.address" target="_blank" v-b-popover.hover="settings.prepare.token.symbol + '. View in explorer'">
-                        <font size="-2">{{ formatUnits(settings.prepare.from.tokens, settings.prepare.token.decimals) }}</font>
+                    <template v-if="prepare.action && prepare.from.address" slot="description">
+                      <b-link v-if="prepare.action.substring(0, 3) == 'erc' && prepare.from.tokens && prepare.token.decimals" :href="explorer + '/token/' + prepare.token.address + '?a=' + prepare.from.address" target="_blank" v-b-popover.hover="prepare.token.symbol + '. View in explorer'">
+                        <font size="-2">{{ formatUnits(prepare.from.tokens, prepare.token.decimals) }}</font>
                       </b-link>
-                      <b-link :href="explorer + '/address/' + settings.prepare.from.address" target="_blank" v-b-popover.hover="'ETH. View in explorer'"><font size="-2">{{ settings.prepare.from.balance && formatETH(settings.prepare.from.balance) || null }}</font></b-link>
-                      <b-badge button variant="muted" v-b-popover.hover="'#transactions'">{{ settings.prepare.from.transactionCount }}</b-badge>
-                      <b-badge button v-if="settings.prepare.from.ensName" variant="muted" v-b-popover.hover="'ENS name'">{{ settings.prepare.from.ensName }}</b-badge>
+                      <b-link :href="explorer + '/address/' + prepare.from.address" target="_blank" v-b-popover.hover="'ETH. View in explorer'"><font size="-2">{{ prepare.from.balance && formatETH(prepare.from.balance) || null }}</font></b-link>
+                      <b-badge button variant="muted" v-b-popover.hover="'#transactions'">{{ prepare.from.transactionCount }}</b-badge>
+                      <b-badge button v-if="prepare.from.ensName" variant="muted" v-b-popover.hover="'ENS name'">{{ prepare.from.ensName }}</b-badge>
                     </template>
-                    <b-form-select size="sm" :disabled="!settings.prepare.action" id="prepare-from" v-model="settings.prepare.from.address" :options="walletsOptions" @change="saveSettings(); prepareSimulate();" v-b-popover.hover.bottom="'Select Wallet'"></b-form-select>
+                    <b-form-select size="sm" :disabled="!prepare.action" id="prepare-from" v-model="prepare.from.address" :options="walletsOptions" @change="saveSettings(); prepareSimulate();" v-b-popover.hover.bottom="'Select Wallet'"></b-form-select>
                   </b-form-group>
                   <b-form-group label="To:" label-for="prepare-to" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <template v-if="settings.prepare.action && settings.prepare.to.address" slot="description">
-                      <b-link v-if="settings.prepare.action.substring(0, 3) == 'erc' && settings.prepare.to.tokens && settings.prepare.token.decimals" :href="explorer + '/token/' + settings.prepare.token.address + '?a=' + settings.prepare.to.address" target="_blank" v-b-popover.hover="settings.prepare.token.symbol + '. View in explorer'">
-                        <font size="-2">{{ formatUnits(settings.prepare.to.tokens, settings.prepare.token.decimals) }}</font>
+                    <template v-if="prepare.action && prepare.to.address" slot="description">
+                      <b-link v-if="prepare.action.substring(0, 3) == 'erc' && prepare.to.tokens && prepare.token.decimals" :href="explorer + '/token/' + prepare.token.address + '?a=' + prepare.to.address" target="_blank" v-b-popover.hover="prepare.token.symbol + '. View in explorer'">
+                        <font size="-2">{{ formatUnits(prepare.to.tokens, prepare.token.decimals) }}</font>
                       </b-link>
-                      <b-link :href="explorer + '/address/' + settings.prepare.to.address" target="_blank" v-b-popover.hover="'ETH. View in explorer'"><font size="-2">{{ settings.prepare.to.balance && formatETH(settings.prepare.to.balance) || null }}</font></b-link>
-                      <b-badge button variant="muted" v-b-popover.hover="'#transactions'">{{ settings.prepare.to.transactionCount }}</b-badge>
-                      <b-badge button v-if="settings.prepare.to.ensName" variant="muted" v-b-popover.hover="'ENS name'">{{ settings.prepare.to.ensName }}</b-badge>
+                      <b-link :href="explorer + '/address/' + prepare.to.address" target="_blank" v-b-popover.hover="'ETH. View in explorer'"><font size="-2">{{ prepare.to.balance && formatETH(prepare.to.balance) || null }}</font></b-link>
+                      <b-badge button variant="muted" v-b-popover.hover="'#transactions'">{{ prepare.to.transactionCount }}</b-badge>
+                      <b-badge button v-if="prepare.to.ensName" variant="muted" v-b-popover.hover="'ENS name'">{{ prepare.to.ensName }}</b-badge>
                     </template>
-                    <b-form-select size="sm" :disabled="!settings.prepare.action" id="prepare-to" v-model="settings.prepare.to.address" :options="addressesOptions" @change="saveSettings(); prepareSimulate();" v-b-popover.hover.bottom="'Select Address'"></b-form-select>
+                    <b-form-select size="sm" :disabled="!prepare.action" id="prepare-to" v-model="prepare.to.address" :options="addressesOptions" @change="saveSettings(); prepareSimulate();" v-b-popover.hover.bottom="'Select Address'"></b-form-select>
                   </b-form-group>
-                  <b-form-group v-if="settings.prepare.action == 'ethtransfer'" label="Amount:" label-for="prepare-amount" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-form-group v-if="prepare.action == 'ethtransfer'" label="Amount:" label-for="prepare-amount" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <div class="d-flex flex-wrap m-0 p-0">
                       <div class="mt-0 pr-1">
-                        <b-form-input type="text" size="sm" id="prepare-amount" v-model.trim="settings.prepare.amount" @change="saveSettings(); prepareSimulate();"></b-form-input>
+                        <b-form-input type="text" size="sm" id="prepare-amount" v-model.trim="prepare.amount" @change="saveSettings(); prepareSimulate();"></b-form-input>
                       </div>
                       <div class="mt-0 pr-1">
-                        <b-form-select size="sm" :disabled="!settings.prepare.action" v-model="settings.prepare.amountUnit" :options="unitOptions" @change="saveSettings(); prepareSimulate();"></b-form-select>
+                        <b-form-select size="sm" :disabled="!prepare.action" v-model="prepare.amountUnit" :options="unitOptions" @change="saveSettings(); prepareSimulate();"></b-form-select>
                       </div>
                     </div>
                   </b-form-group>
-                  <b-form-group v-if="settings.prepare.action == 'erc20transfer'" label="Tokens:" label-for="prepare-tokens" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-form-group v-if="prepare.action == 'erc20transfer'" label="Tokens:" label-for="prepare-tokens" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <div class="d-flex flex-wrap m-0 p-0">
                       <div class="mt-0 pr-1">
-                        <b-form-input type="text" size="sm" id="prepare-tokens" v-model.trim="settings.prepare.tokens" @change="saveSettings(); prepareSimulate();"></b-form-input>
+                        <b-form-input type="text" size="sm" id="prepare-tokens" v-model.trim="prepare.tokens" @change="saveSettings(); prepareSimulate();"></b-form-input>
                       </div>
                       <div class="mt-0 pr-1">
-                        <b-badge button v-if="settings.prepare.token.symbol" variant="muted" v-b-popover.hover="'symbol'">{{ settings.prepare.token.symbol }}</b-badge>
-                        <b-badge button v-if="settings.prepare.token.decimals" variant="muted" v-b-popover.hover="'decimals'">{{ settings.prepare.token.decimals }}</b-badge>
-                        <!-- <b-form-select size="sm" :disabled="!settings.prepare.action" v-model="settings.prepare.amountUnit" :options="unitOptions" @change="saveSettings(); prepareSimulate();"></b-form-select> -->
+                        <b-badge button v-if="prepare.token.symbol" variant="muted" v-b-popover.hover="'symbol'">{{ prepare.token.symbol }}</b-badge>
+                        <b-badge button v-if="prepare.token.decimals" variant="muted" v-b-popover.hover="'decimals'">{{ prepare.token.decimals }}</b-badge>
+                        <!-- <b-form-select size="sm" :disabled="!prepare.action" v-model="prepare.amountUnit" :options="unitOptions" @change="saveSettings(); prepareSimulate();"></b-form-select> -->
                       </div>
                     </div>
                   </b-form-group>
                 </b-form-group>
                 <b-form-group label-cols-lg="2" label="Network Parameters" label-size="md" label-class="font-weight-bold pt-0" class="mb-0 mt-2">
-                  <b-form-group label="" label-for="prepare-simulate" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!settings.prepare.error" :invalid-feedback="settings.prepare.error" class="mx-0 my-1 p-0">
+                  <b-form-group label="" label-for="prepare-simulate" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!prepare.error" :invalid-feedback="prepare.error" class="mx-0 my-1 p-0">
                     <b-button size="sm" id="prepare-simulate" @click="prepareSimulate()" variant="primary">Refresh</b-button>
                   </b-form-group>
                   <b-form-group label="Chain:" label-for="prepare-chain" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <b-form-select size="sm" disabled id="prepare-chain" v-model="settings.prepare.chainId" :options="chainsOptions" @change="saveSettings();" style="max-width: 200px;"></b-form-select>
+                    <b-form-select size="sm" disabled id="prepare-chain" v-model="prepare.chainId" :options="chainsOptions" @change="saveSettings();" style="max-width: 200px;"></b-form-select>
                   </b-form-group>
                   <b-form-group label="Nonce:" label-for="prepare-nonce" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <b-form-input type="text" size="sm" readonly id="prepare-nonce" v-model.trim="settings.prepare.nonce" style="max-width: 150px;"></b-form-input>
+                    <b-form-input type="text" size="sm" readonly id="prepare-nonce" v-model.trim="prepare.nonce" style="max-width: 150px;"></b-form-input>
                   </b-form-group>
                   <b-form-group label="Estimated Gas:" label-for="prepare-estimatedgas" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <b-form-input type="text" size="sm" readonly id="prepare-estimatedgas" v-model.trim="settings.prepare.estimatedGas" style="max-width: 150px;"></b-form-input>
+                    <b-form-input type="text" size="sm" readonly id="prepare-estimatedgas" v-model.trim="prepare.estimatedGas" style="max-width: 150px;"></b-form-input>
                   </b-form-group>
                   <b-form-group label="Gas Price:" label-for="prepare-gasprice" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <div class="d-flex flex-wrap m-0 p-0">
                       <div class="mt-0 pr-1">
-                        <b-form-input type="text" size="sm" readonly id="prepare-gasprice" :value="formatUnits(settings.prepare.gasPrice, settings.prepare.gasPriceUnit)"></b-form-input>
+                        <b-form-input type="text" size="sm" readonly id="prepare-gasprice" :value="formatUnits(prepare.gasPrice, prepare.gasPriceUnit)"></b-form-input>
                       </div>
                       <div class="mt-0 pr-1">
-                        <b-form-select size="sm" v-model="settings.prepare.gasPriceUnit" :options="unitOptions" @change="saveSettings(); prepareSimulate();" style="max-width: 300px;"></b-form-select>
+                        <b-form-select size="sm" v-model="prepare.gasPriceUnit" :options="unitOptions" @change="saveSettings(); prepareSimulate();" style="max-width: 300px;"></b-form-select>
                       </div>
                     </div>
                   </b-form-group>
                   <b-form-group label="Last Base Fee:" label-for="prepare-lastbasefeepergas" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <div class="d-flex flex-wrap m-0 p-0">
                       <div class="mt-0 pr-1">
-                        <b-form-input type="text" size="sm" readonly id="prepare-lastbasefeepergas" :value="formatUnits(settings.prepare.lastBaseFeePerGas, settings.prepare.lastBaseFeePerGasUnit)"></b-form-input>
+                        <b-form-input type="text" size="sm" readonly id="prepare-lastbasefeepergas" :value="formatUnits(prepare.lastBaseFeePerGas, prepare.lastBaseFeePerGasUnit)"></b-form-input>
                       </div>
                       <div class="mt-0 pr-1">
-                        <b-form-select size="sm" v-model="settings.prepare.lastBaseFeePerGasUnit" :options="unitOptions" @change="saveSettings(); prepareSimulate();" style="max-width: 300px;"></b-form-select>
+                        <b-form-select size="sm" v-model="prepare.lastBaseFeePerGasUnit" :options="unitOptions" @change="saveSettings(); prepareSimulate();" style="max-width: 300px;"></b-form-select>
                       </div>
                     </div>
                   </b-form-group>
                   <b-form-group label="Max Base Fee:" label-for="prepare-maxfeepergas" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <div class="d-flex flex-wrap m-0 p-0">
                       <div class="mt-0 pr-1">
-                        <b-form-input type="text" size="sm" readonly id="prepare-maxfeepergas" :value="formatUnits(settings.prepare.maxFeePerGas, settings.prepare.maxFeePerGasUnit)"></b-form-input>
+                        <b-form-input type="text" size="sm" readonly id="prepare-maxfeepergas" :value="formatUnits(prepare.maxFeePerGas, prepare.maxFeePerGasUnit)"></b-form-input>
                       </div>
                       <div class="mt-0 pr-1">
-                        <b-form-select size="sm" v-model="settings.prepare.maxFeePerGasUnit" :options="unitOptions" @change="saveSettings(); prepareSimulate();" style="max-width: 300px;"></b-form-select>
+                        <b-form-select size="sm" v-model="prepare.maxFeePerGasUnit" :options="unitOptions" @change="saveSettings(); prepareSimulate();" style="max-width: 300px;"></b-form-select>
                       </div>
                     </div>
                   </b-form-group>
                   <b-form-group label="Priority Fee:" label-for="prepare-maxpriorityfeepergas" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <div class="d-flex flex-wrap m-0 p-0">
                       <div class="mt-0 pr-1">
-                        <b-form-input type="text" size="sm" readonly id="prepare-maxpriorityfeepergas" :value="formatUnits(settings.prepare.maxPriorityFeePerGas, settings.prepare.maxPriorityFeePerGasUnit)"></b-form-input>
+                        <b-form-input type="text" size="sm" readonly id="prepare-maxpriorityfeepergas" :value="formatUnits(prepare.maxPriorityFeePerGas, prepare.maxPriorityFeePerGasUnit)"></b-form-input>
                       </div>
                       <div class="mt-0 pr-1">
-                        <b-form-select size="sm" v-model="settings.prepare.maxPriorityFeePerGasUnit" :options="unitOptions" @change="saveSettings(); prepareSimulate();" style="max-width: 300px;"></b-form-select>
+                        <b-form-select size="sm" v-model="prepare.maxPriorityFeePerGasUnit" :options="unitOptions" @change="saveSettings(); prepareSimulate();" style="max-width: 300px;"></b-form-select>
                       </div>
                     </div>
                   </b-form-group>
@@ -279,44 +279,44 @@
 
               <!-- :SUBMIT -->
               <b-card sub-title="Submit Transaction" bg-variant="light" class="p-0 m-1" style="max-width: 900px;">
-                <b-form-group label="Signed Transaction:" label-for="submit-signedtx" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!settings.submit.error" :invalid-feedback="settings.submit.error" class="mx-0 my-2 p-0">
-                  <b-form-textarea size="sm" id="submit-signedtx" v-model.trim="settings.submit.signedTx" rows="5" @change="saveSettings(); submitCompare();" placeholder="Paste signed transaction here" style="max-width: 800px;"></b-form-textarea>
+                <b-form-group label="Signed Transaction:" label-for="submit-signedtx" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!submit.error" :invalid-feedback="submit.error" class="mx-0 my-2 p-0">
+                  <b-form-textarea size="sm" id="submit-signedtx" v-model.trim="submit.signedTx" rows="5" @change="saveSettings(); submitCompare();" placeholder="Paste signed transaction here" style="max-width: 800px;"></b-form-textarea>
                 </b-form-group>
-                <b-form-group label="From:" label-for="submit-from" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="settings.prepare.from == settings.submit.from" invalid-feedback="different" class="mx-0 my-1 p-0">
-                  <b-form-input type="text" size="sm" readonly id="submit-from" :value="settings.submit.from"></b-form-input>
+                <b-form-group label="From:" label-for="submit-from" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="prepare.from == submit.from" invalid-feedback="different" class="mx-0 my-1 p-0">
+                  <b-form-input type="text" size="sm" readonly id="submit-from" :value="submit.from"></b-form-input>
                 </b-form-group>
-                <b-form-group label="To:" label-for="submit-to" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="settings.prepare.to == settings.submit.to" invalid-feedback="different" class="mx-0 my-1 p-0">
-                  <b-form-input type="text" size="sm" readonly id="submit-to" :value="settings.submit.to"></b-form-input>
+                <b-form-group label="To:" label-for="submit-to" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="prepare.to == submit.to" invalid-feedback="different" class="mx-0 my-1 p-0">
+                  <b-form-input type="text" size="sm" readonly id="submit-to" :value="submit.to"></b-form-input>
                 </b-form-group>
-                <b-form-group label="Amount:" label-for="submit-amount" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="settings.prepare.amount == formatUnits(settings.submit.amount, settings.prepare.amountUnit)" invalid-feedback="different" class="mx-0 my-1 p-0">
-                  <b-form-input type="text" size="sm" readonly id="submit-amount" :value="formatUnits(settings.submit.amount, settings.prepare.amountUnit)" style="max-width: 150px;"></b-form-input>
+                <b-form-group label="Amount:" label-for="submit-amount" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="prepare.amount == formatUnits(submit.amount, prepare.amountUnit)" invalid-feedback="different" class="mx-0 my-1 p-0">
+                  <b-form-input type="text" size="sm" readonly id="submit-amount" :value="formatUnits(submit.amount, prepare.amountUnit)" style="max-width: 150px;"></b-form-input>
                 </b-form-group>
                 <!-- TODO: Check for differences below -->
                 <b-form-group label="Data:" label-for="submit-data" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                  <b-form-input type="text" size="sm" readonly id="submit-data" :value="settings.submit.data"></b-form-input>
+                  <b-form-input type="text" size="sm" readonly id="submit-data" :value="submit.data"></b-form-input>
                 </b-form-group>
-                <b-form-group label="Chain:" label-for="submit-chainid" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="settings.submit.chainId == settings.prepare.chainId" invalid-feedback="different" class="mx-0 my-1 p-0">
-                  <b-form-select size="sm" disabled id="submit-chainid" v-model="settings.submit.chainId" :options="chainsOptions" style="max-width: 200px;"></b-form-select>
+                <b-form-group label="Chain:" label-for="submit-chainid" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="submit.chainId == prepare.chainId" invalid-feedback="different" class="mx-0 my-1 p-0">
+                  <b-form-select size="sm" disabled id="submit-chainid" v-model="submit.chainId" :options="chainsOptions" style="max-width: 200px;"></b-form-select>
                 </b-form-group>
-                <b-form-group label="Nonce:" label-for="submit-nonce" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="settings.submit.nonce == settings.prepare.nonce" invalid-feedback="different" class="mx-0 my-1 p-0">
-                  <b-form-input type="text" size="sm" readonly id="submit-nonce" :value="settings.submit.nonce" style="max-width: 150px;"></b-form-input>
+                <b-form-group label="Nonce:" label-for="submit-nonce" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="submit.nonce == prepare.nonce" invalid-feedback="different" class="mx-0 my-1 p-0">
+                  <b-form-input type="text" size="sm" readonly id="submit-nonce" :value="submit.nonce" style="max-width: 150px;"></b-form-input>
                 </b-form-group>
-                <b-form-group label="Gas Limit:" label-for="submit-gaslimit" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="settings.submit.gasLimit >= settings.prepare.estimatedGas" invalid-feedback="Gas Limit < Estimated Gas" class="mx-0 my-1 p-0">
-                  <b-form-input type="text" size="sm" readonly id="submit-gaslimit" :value="settings.submit.gasLimit" style="max-width: 150px;"></b-form-input>
+                <b-form-group label="Gas Limit:" label-for="submit-gaslimit" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="submit.gasLimit >= prepare.estimatedGas" invalid-feedback="Gas Limit < Estimated Gas" class="mx-0 my-1 p-0">
+                  <b-form-input type="text" size="sm" readonly id="submit-gaslimit" :value="submit.gasLimit" style="max-width: 150px;"></b-form-input>
                 </b-form-group>
                 <b-form-group label="Type:" label-for="submit-type" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                  <b-form-select size="sm" disabled id="submit-type" v-model="settings.submit.type" :options="transactionTypeOptions" style="max-width: 150px;"></b-form-select>
+                  <b-form-select size="sm" disabled id="submit-type" v-model="submit.type" :options="transactionTypeOptions" style="max-width: 150px;"></b-form-select>
                 </b-form-group>
-                <b-form-group v-if="!settings.submit.type" label="Gas Price:" label-for="submit-gasprice" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                  <b-form-input type="text" size="sm" readonly id="submit-gasprice" :value="formatUnits(settings.submit.gasPrice, settings.prepare.gasPriceUnit)" style="max-width: 150px;"></b-form-input>
+                <b-form-group v-if="!submit.type" label="Gas Price:" label-for="submit-gasprice" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-form-input type="text" size="sm" readonly id="submit-gasprice" :value="formatUnits(submit.gasPrice, prepare.gasPriceUnit)" style="max-width: 150px;"></b-form-input>
                 </b-form-group>
-                <b-form-group v-if="settings.submit.type == 2" label="Max Base Fee:" label-for="submit-maxbasefee" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                  <b-form-input type="text" size="sm" readonly id="submit-maxbasefee" :value="formatUnits(settings.submit.maxFeePerGas, settings.prepare.maxFeePerGasUnit)" style="max-width: 150px;"></b-form-input>
+                <b-form-group v-if="submit.type == 2" label="Max Base Fee:" label-for="submit-maxbasefee" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-form-input type="text" size="sm" readonly id="submit-maxbasefee" :value="formatUnits(submit.maxFeePerGas, prepare.maxFeePerGasUnit)" style="max-width: 150px;"></b-form-input>
                 </b-form-group>
-                <b-form-group v-if="settings.submit.type == 2" label="Priority Fee:" label-for="submit-priorityfee" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                  <b-form-input type="text" size="sm" readonly id="submit-priorityfee" :value="formatUnits(settings.submit.maxPriorityFeePerGas, settings.prepare.maxPriorityFeePerGasUnit)" style="max-width: 150px;"></b-form-input>
+                <b-form-group v-if="submit.type == 2" label="Priority Fee:" label-for="submit-priorityfee" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-form-input type="text" size="sm" readonly id="submit-priorityfee" :value="formatUnits(submit.maxPriorityFeePerGas, prepare.maxPriorityFeePerGasUnit)" style="max-width: 150px;"></b-form-input>
                 </b-form-group>
-                <b-form-group label="" label-for="submit-simulate" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!settings.prepare.error" :invalid-feedback="settings.prepare.error" class="mx-0 my-1 p-0">
+                <b-form-group label="" label-for="submit-simulate" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!prepare.error" :invalid-feedback="prepare.error" class="mx-0 my-1 p-0">
                   <b-button size="sm" id="submit-simulate" @click="submitSimulate()" variant="primary">Check</b-button>
                   <b-button size="sm" @click="submitSend()" variant="warning">Send</b-button>
                 </b-form-group>
@@ -401,6 +401,67 @@
             chains: [],
           },
 
+          prepare: {
+            action: null,
+            token: {
+              address: null,
+              name: null,
+              symbol: null,
+              decimals: null,
+              totalSupply: null,
+            },
+            from: {
+              address: null,
+              ensName: null,
+              transactionCount: null,
+              balance: null,
+              tokens: null,
+            },
+            to: {
+              address: null,
+              ensName: null,
+              transactionCount: null,
+              balance: null,
+              tokens: null,
+            },
+            amount: null,
+            amountUnit: "ether",
+            tokens: null,
+            // TODO: ERC-721 tokenId: null,
+            // data: null,
+            // signature: null,
+            chainId: null,
+            nonce: null,
+            estimatedGas: null,
+            gasPrice: null,
+            lastBaseFeePerGas: null,
+            maxFeePerGas: null,
+            maxPriorityFeePerGas: null,
+            gasPriceUnit: "gwei",
+            lastBaseFeePerGasUnit: "gwei",
+            maxFeePerGasUnit: "gwei",
+            maxPriorityFeePerGasUnit: "gwei",
+            error: null,
+          },
+
+          submit: {
+            signedTx: null,
+            decodedSignedTx: null,
+            error: null,
+            token: null,
+            from: null,
+            to: null,
+            amount: null,
+            data: null,
+            chainId: null,
+            nonce: null,
+            gasLimit: null,
+            type: null,
+            gasPrice: null,
+            maxFeePerGas: null,
+            maxPriorityFeePerGas: null,
+          },
+
           settings: {
             tabIndex: 0,
 
@@ -411,66 +472,6 @@
               sortOption: 'addressasc',
             },
 
-            prepare: {
-              action: null,
-              token: {
-                address: null,
-                name: null,
-                symbol: null,
-                decimals: null,
-                totalSupply: null,
-              },
-              from: {
-                address: null,
-                ensName: null,
-                transactionCount: null,
-                balance: null,
-                tokens: null,
-              },
-              to: {
-                address: null,
-                ensName: null,
-                transactionCount: null,
-                balance: null,
-                tokens: null,
-              },
-              amount: null,
-              amountUnit: "ether",
-              tokens: null,
-              // TODO: ERC-721 tokenId: null,
-              // data: null,
-              // signature: null,
-              chainId: null,
-              nonce: null,
-              estimatedGas: null,
-              gasPrice: null,
-              lastBaseFeePerGas: null,
-              maxFeePerGas: null,
-              maxPriorityFeePerGas: null,
-              gasPriceUnit: "gwei",
-              lastBaseFeePerGasUnit: "gwei",
-              maxFeePerGasUnit: "gwei",
-              maxPriorityFeePerGasUnit: "gwei",
-              error: null,
-            },
-
-            submit: {
-              signedTx: null,
-              decodedSignedTx: null,
-              error: null,
-              token: null,
-              from: null,
-              to: null,
-              amount: null,
-              data: null,
-              chainId: null,
-              nonce: null,
-              gasLimit: null,
-              type: null,
-              gasPrice: null,
-              maxFeePerGas: null,
-              maxPriorityFeePerGas: null,
-            },
             version: 0,
           },
 
@@ -491,7 +492,7 @@
             { value: null, text: '(Select)' },
             { value: 'ethtransfer', text: 'Transfer Ethers' },
             { value: 'erc20transfer', text: 'Transfer ERC-20 Tokens' },
-            { value: 'erc721safetransferfrom', text: 'Transfer ERC-721 Tokens', disabled: true },
+            { value: 'erc721transfer', text: 'Transfer ERC-721 Token', disabled: true },
             // { value: 'sweepwallet', text: 'Sweep ETH To New Wallet', disabled: true }, // TODO: Type 1 with amount = balance - gasLimit * gasPrice
             // { value: 'deploycontract', text: 'Deploy Contract', disabled: true }, // TODO: `to` null; data with code
             // { value: 'writemessage', text: 'Write Message', disabled: true }, // TODO: `to` to own account, or destination; data with message
@@ -827,158 +828,159 @@
           },
 
           async prepareSimulate() {
-            console.log(moment().format("HH:mm:ss") + " prepareSimulate: " + JSON.stringify(this.settings.prepare, bigNumberReplacer, 2));
+            console.log(moment().format("HH:mm:ss") + " prepareSimulate: " + JSON.stringify(this.prepare, bigNumberReplacer, 2));
             const provider = new ethers.providers.Web3Provider(window.ethereum);
-            this.settings.prepare.chainId = this.chainId;
-            const tokenInfo = this.settings.prepare.token.address && this.addresses[this.settings.prepare.token.address] || {};
+            this.prepare.chainId = this.chainId;
+            const tokenInfo = this.prepare.token.address && this.addresses[this.prepare.token.address] || {};
             console.log("tokenInfo: " + JSON.stringify(tokenInfo, null, 2));
-            // console.log("2: " + JSON.stringify(this.addresses[this.settings.prepare.token.address].chains));
-            if (this.settings.prepare.token.address && tokenInfo.chains.includes(this.chainId.toString())) {
-              this.settings.prepare.token.name = tokenInfo.name;
-              this.settings.prepare.token.symbol = tokenInfo.symbol;
-              this.settings.prepare.token.decimals = tokenInfo.decimals;
+            // console.log("2: " + JSON.stringify(this.addresses[this.prepare.token.address].chains));
+            if (this.prepare.token.address && tokenInfo.chains.includes(this.chainId.toString())) {
+              this.prepare.token.name = tokenInfo.name;
+              this.prepare.token.symbol = tokenInfo.symbol;
+              this.prepare.token.decimals = tokenInfo.decimals;
               const tokenType = tokenInfo.type;
               if (tokenType == "erc20") {
-                const contract = new ethers.Contract(this.settings.prepare.token.address, ERC20ABI, provider);
+                const contract = new ethers.Contract(this.prepare.token.address, ERC20ABI, provider);
                 try {
-                  this.settings.prepare.token.totalSupply = ethers.BigNumber.from(await contract.totalSupply()).toString();
+                  this.prepare.token.totalSupply = ethers.BigNumber.from(await contract.totalSupply()).toString();
                 } catch (e) {
                   console.log("prepareSimulate - erc20.totalSupply ERROR: " + e.message);
-                  this.settings.prepare.token.totalSupply = null;
+                  this.prepare.token.totalSupply = null;
                 }
-                if (this.settings.prepare.from.address) {
+                if (this.prepare.from.address) {
                   try {
-                    this.settings.prepare.from.tokens = ethers.BigNumber.from(await contract.balanceOf(this.settings.prepare.from.address)).toString();
+                    this.prepare.from.tokens = ethers.BigNumber.from(await contract.balanceOf(this.prepare.from.address)).toString();
                   } catch (e) {
                     console.log("prepareSimulate - erc20.balanceOf(from) ERROR: " + e.message);
-                    this.settings.prepare.from.tokens = null;
+                    this.prepare.from.tokens = null;
                   }
                 }
-                if (this.settings.prepare.to.address) {
+                if (this.prepare.to.address) {
                   try {
-                    this.settings.prepare.to.tokens = ethers.BigNumber.from(await contract.balanceOf(this.settings.prepare.to.address)).toString();
+                    this.prepare.to.tokens = ethers.BigNumber.from(await contract.balanceOf(this.prepare.to.address)).toString();
                   } catch (e) {
                     console.log("prepareSimulate - erc20.balanceOf(to) ERROR: " + e.message);
-                    this.settings.prepare.to.tokens = null;
+                    this.prepare.to.tokens = null;
                   }
                 }
               } else if (tokenType == "erc721") {
-                this.settings.prepare.token.totalSupply = null;
+                this.prepare.token.totalSupply = null;
                 // TODO: need to get ERC-721 tokenIds
               }
             } else {
-              this.settings.prepare.token.name = null;
-              this.settings.prepare.token.symbol = null;
-              this.settings.prepare.token.decimals = null;
-              this.settings.prepare.token.totalSupply = null;
-              this.settings.prepare.from.tokens = null;
-              this.settings.prepare.to.tokens = null;
+              this.prepare.token.name = null;
+              this.prepare.token.symbol = null;
+              this.prepare.token.decimals = null;
+              this.prepare.token.totalSupply = null;
+              this.prepare.from.tokens = null;
+              this.prepare.to.tokens = null;
             }
-            if (this.settings.prepare.from.address) {
-              this.settings.prepare.from.ensName = this.addresses[this.settings.prepare.from.address].ensName;
+            if (this.prepare.from.address) {
+              this.prepare.from.ensName = this.addresses[this.prepare.from.address].ensName;
               try {
-                this.settings.prepare.from.transactionCount = await provider.getTransactionCount(this.settings.prepare.from.address);
-                this.settings.prepare.nonce = this.settings.prepare.from.transactionCount;
+                this.prepare.from.transactionCount = await provider.getTransactionCount(this.prepare.from.address);
+                this.prepare.nonce = this.prepare.from.transactionCount;
               } catch (e) {
-                this.settings.prepare.from.transactionCount = null;
-                this.settings.prepare.nonce = null; // TODO: ?
+                this.prepare.from.transactionCount = null;
+                this.prepare.nonce = null; // TODO: ?
               }
               try {
-                this.settings.prepare.from.balance = await provider.getBalance(this.settings.prepare.from.address);
+                this.prepare.from.balance = await provider.getBalance(this.prepare.from.address);
               } catch (e) {
               }
             }
-            if (this.settings.prepare.to.address) {
-              this.settings.prepare.to.ensName = this.addresses[this.settings.prepare.to.address].ensName;
+            if (this.prepare.to.address) {
+              this.prepare.to.ensName = this.addresses[this.prepare.to.address].ensName;
               try {
-                this.settings.prepare.to.transactionCount = await provider.getTransactionCount(this.settings.prepare.to.address);
+                this.prepare.to.transactionCount = await provider.getTransactionCount(this.prepare.to.address);
               } catch (e) {
-                this.settings.prepare.to.transactionCount = null;
+                this.prepare.to.transactionCount = null;
               }
               try {
-                this.settings.prepare.to.balance = await provider.getBalance(this.settings.prepare.to.address);
+                this.prepare.to.balance = await provider.getBalance(this.prepare.to.address);
               } catch (e) {
               }
             }
 
-            if (this.settings.prepare.from.address && this.settings.prepare.to.address && this.settings.prepare.amount) {
-              const signer = new ethers.VoidSigner(this.settings.prepare.from.address, provider);
+            if (this.prepare.from.address && this.prepare.to.address && this.prepare.amount) {
+              const signer = new ethers.VoidSigner(this.prepare.from.address, provider);
               const tx = {
-                from: this.settings.prepare.from.address,
-                to: this.settings.prepare.to.address,
+                from: this.prepare.from.address,
+                to: this.prepare.to.address,
                 // gasLimit: 50000,
                 // gasPrice: 1000000,
                 // type: 2,
                 // maxFeePerGas: 1234000,
                 // maxPriorityFeePerGas: 1234000,
-                value: ethers.utils.parseUnits(this.settings.prepare.amount, this.settings.prepare.amountUnit).toString(),
+                value: ethers.utils.parseUnits(this.prepare.amount, this.prepare.amountUnit).toString(),
                 data: null,
-                // nonce: this.settings.prepare.nonce,
+                // nonce: this.prepare.nonce,
                 // chainId: this.chainId,
               };
               console.log(moment().format("HH:mm:ss") + " prepareSimulate - tx: " + JSON.stringify(tx, bigNumberReplacer, 2));
               try {
-                this.settings.prepare.estimatedGas = (await signer.estimateGas(tx)).toString();
-                console.log(moment().format("HH:mm:ss") + " prepareSimulate - estimatedGas: " + this.settings.prepare.estimatedGas.toString());
-                this.settings.prepare.error = null;
+                this.prepare.estimatedGas = (await signer.estimateGas(tx)).toString();
+                console.log(moment().format("HH:mm:ss") + " prepareSimulate - estimatedGas: " + this.prepare.estimatedGas.toString());
+                this.prepare.error = null;
               } catch (e) {
                 console.log(moment().format("HH:mm:ss") + " prepareSimulate ERROR: " + e.message);
-                this.settings.prepare.error = getError(e);
-                this.settings.prepare.estimatedGas = null;
+                this.prepare.error = getError(e);
+                this.prepare.estimatedGas = null;
               }
               const feeData = await provider.getFeeData();
-              // this.settings.prepare.lastBaseFeePerGas = ethers.utils.formatUnits(feeData.lastBaseFeePerGas.toString(), this.settings.prepare.lastBaseFeePerGasUnit);
-              // this.settings.prepare.maxFeePerGas = ethers.utils.formatUnits(feeData.maxFeePerGas.toString(), this.settings.prepare.maxFeePerGasUnit);
-              // this.settings.prepare.maxPriorityFeePerGas = ethers.utils.formatUnits(feeData.maxPriorityFeePerGas.toString(), this.settings.prepare.maxPriorityFeePerGasUnit);
-              // this.settings.prepare.gasPrice = ethers.utils.formatUnits(feeData.gasPrice.toString(), this.settings.prepare.gasPriceUnit);
-              this.settings.prepare.lastBaseFeePerGas = feeData.lastBaseFeePerGas.toString();
-              this.settings.prepare.maxFeePerGas = feeData.maxFeePerGas.toString();
-              this.settings.prepare.maxPriorityFeePerGas = feeData.maxPriorityFeePerGas.toString();
-              this.settings.prepare.gasPrice = feeData.gasPrice.toString();
+              // this.prepare.lastBaseFeePerGas = ethers.utils.formatUnits(feeData.lastBaseFeePerGas.toString(), this.prepare.lastBaseFeePerGasUnit);
+              // this.prepare.maxFeePerGas = ethers.utils.formatUnits(feeData.maxFeePerGas.toString(), this.prepare.maxFeePerGasUnit);
+              // this.prepare.maxPriorityFeePerGas = ethers.utils.formatUnits(feeData.maxPriorityFeePerGas.toString(), this.prepare.maxPriorityFeePerGasUnit);
+              // this.prepare.gasPrice = ethers.utils.formatUnits(feeData.gasPrice.toString(), this.prepare.gasPriceUnit);
+              this.prepare.lastBaseFeePerGas = feeData.lastBaseFeePerGas.toString();
+              this.prepare.maxFeePerGas = feeData.maxFeePerGas.toString();
+              this.prepare.maxPriorityFeePerGas = feeData.maxPriorityFeePerGas.toString();
+              this.prepare.gasPrice = feeData.gasPrice.toString();
             }
-            console.log(moment().format("HH:mm:ss") + " prepareSimulate - AFTER: " + JSON.stringify(this.settings.prepare, bigNumberReplacer, 2));
-            this.saveSettings();
+            console.log(moment().format("HH:mm:ss") + " prepareSimulate - AFTER: " + JSON.stringify(this.prepare, bigNumberReplacer, 2));
+            // this.saveSettings();
+            localStorage.topSecretsOnlinePrepare = JSON.stringify(this.prepare);
           },
 
           submitCompare() {
-            console.log(moment().format("HH:mm:ss") + " submitCompare - this.settings.submit: " + JSON.stringify(this.settings.submit, null, 2));
-            if (this.settings.submit.signedTx) {
+            console.log(moment().format("HH:mm:ss") + " submitCompare - this.submit: " + JSON.stringify(this.submit, null, 2));
+            if (this.submit.signedTx) {
               try {
-                this.settings.submit.decodedSignedTx = ethers.utils.parseTransaction(this.settings.submit.signedTx);
-                console.log("decoded: " + JSON.stringify(this.settings.submit.decodedSignedTx, null, 2));
-                console.log("this.settings.prepare.from: " + this.settings.prepare.from);
-                console.log("this.settings.submit.decodedSignedTx.from: " + this.settings.submit.decodedSignedTx.from);
-                this.settings.submit.error = null;
-                this.settings.submit.from = this.settings.submit.decodedSignedTx.from;
-                this.settings.submit.to = this.settings.submit.decodedSignedTx.to;
-                this.settings.submit.amount = this.settings.submit.decodedSignedTx.value.toString();
-                this.settings.submit.data = this.settings.submit.decodedSignedTx.data == "0x" ? null : this.settings.submit.decodedSignedTx.data;
-                this.settings.submit.chainId = parseInt(this.settings.submit.decodedSignedTx.chainId || 0);
-                this.settings.submit.nonce = parseInt(this.settings.submit.decodedSignedTx.nonce);
-                this.settings.submit.gasLimit = parseInt(this.settings.submit.decodedSignedTx.gasLimit);
-                this.settings.submit.type = this.settings.submit.decodedSignedTx.type && parseInt(this.settings.submit.decodedSignedTx.type) || null;
-                this.settings.submit.gasPrice = !this.settings.submit.decodedSignedTx.type ? this.settings.submit.decodedSignedTx.gasPrice.toString() : null;
-                this.settings.submit.maxFeePerGas = this.settings.submit.decodedSignedTx.type == 2 ? this.settings.submit.decodedSignedTx.maxFeePerGas.toString() : null;
-                this.settings.submit.maxPriorityFeePerGas = this.settings.submit.decodedSignedTx.type == 2 ? this.settings.submit.decodedSignedTx.maxPriorityFeePerGas.toString() : null;
-                console.log(moment().format("HH:mm:ss") + " submitCompare - this.settings.submit AFTER: " + JSON.stringify(this.settings.submit, null, 2));
+                this.submit.decodedSignedTx = ethers.utils.parseTransaction(this.submit.signedTx);
+                console.log("decoded: " + JSON.stringify(this.submit.decodedSignedTx, null, 2));
+                console.log("this.prepare.from: " + this.prepare.from);
+                console.log("this.submit.decodedSignedTx.from: " + this.submit.decodedSignedTx.from);
+                this.submit.error = null;
+                this.submit.from = this.submit.decodedSignedTx.from;
+                this.submit.to = this.submit.decodedSignedTx.to;
+                this.submit.amount = this.submit.decodedSignedTx.value.toString();
+                this.submit.data = this.submit.decodedSignedTx.data == "0x" ? null : this.submit.decodedSignedTx.data;
+                this.submit.chainId = parseInt(this.submit.decodedSignedTx.chainId || 0);
+                this.submit.nonce = parseInt(this.submit.decodedSignedTx.nonce);
+                this.submit.gasLimit = parseInt(this.submit.decodedSignedTx.gasLimit);
+                this.submit.type = this.submit.decodedSignedTx.type && parseInt(this.submit.decodedSignedTx.type) || null;
+                this.submit.gasPrice = !this.submit.decodedSignedTx.type ? this.submit.decodedSignedTx.gasPrice.toString() : null;
+                this.submit.maxFeePerGas = this.submit.decodedSignedTx.type == 2 ? this.submit.decodedSignedTx.maxFeePerGas.toString() : null;
+                this.submit.maxPriorityFeePerGas = this.submit.decodedSignedTx.type == 2 ? this.submit.decodedSignedTx.maxPriorityFeePerGas.toString() : null;
+                console.log(moment().format("HH:mm:ss") + " submitCompare - this.submit AFTER: " + JSON.stringify(this.submit, null, 2));
               } catch (e) {
                 console.log(moment().format("HH:mm:ss") + " submitCompare ERROR: " + e.message);
-                this.settings.submit.error = e.message;
+                this.submit.error = e.message;
               }
             } else {
-              this.settings.submit.error = null;
+              this.submit.error = null;
             }
             this.saveSettings();
           },
 
           async submitSimulate() {
-            console.log(moment().format("HH:mm:ss") + " submitSimulate - this.settings.submit: " + JSON.stringify(this.settings.submit, bigNumberReplacer, 2));
+            console.log(moment().format("HH:mm:ss") + " submitSimulate - this.submit: " + JSON.stringify(this.submit, bigNumberReplacer, 2));
             const provider = new ethers.providers.Web3Provider(window.ethereum);
-            if (this.settings.submit.decodedSignedTx) {
-              const signer = new ethers.VoidSigner(this.settings.submit.decodedSignedTx.from, provider);
+            if (this.submit.decodedSignedTx) {
+              const signer = new ethers.VoidSigner(this.submit.decodedSignedTx.from, provider);
               console.table(signer);
-              console.log(moment().format("HH:mm:ss") + " submitSimulate - this.settings.submit.decodedSignedTx: " + JSON.stringify(this.settings.submit.decodedSignedTx, bigNumberReplacer, 2));
-              const tx = this.settings.submit.decodedSignedTx;
+              console.log(moment().format("HH:mm:ss") + " submitSimulate - this.submit.decodedSignedTx: " + JSON.stringify(this.submit.decodedSignedTx, bigNumberReplacer, 2));
+              const tx = this.submit.decodedSignedTx;
               delete tx.hash;
               delete tx.v;
               delete tx.r;
@@ -987,36 +989,36 @@
               try {
                 const estimatedGas = (await signer.estimateGas(tx)).toString();
                 console.log(moment().format("HH:mm:ss") + " submitSimulate - estimatedGas: " + estimatedGas.toString());
-                // this.settings.prepare.error = null;
+                // this.prepare.error = null;
               } catch (e) {
                 console.log(moment().format("HH:mm:ss") + " submitSimulate ERROR: " + e.message);
-                // this.settings.prepare.error = e.message;
-                // this.settings.prepare.estimatedGas = null;
+                // this.prepare.error = e.message;
+                // this.prepare.estimatedGas = null;
               }
             }
           },
 
           async submitSend() {
-            console.log(moment().format("HH:mm:ss") + " submitSend - this.settings.submit: " + JSON.stringify(this.settings.submit, bigNumberReplacer, 2));
+            console.log(moment().format("HH:mm:ss") + " submitSend - this.submit: " + JSON.stringify(this.submit, bigNumberReplacer, 2));
             const provider = new ethers.providers.Web3Provider(window.ethereum);
-            if (this.settings.submit.signedTx) {
-              // const signer = new ethers.VoidSigner(this.settings.submit.decodedSignedTx.from, provider);
+            if (this.submit.signedTx) {
+              // const signer = new ethers.VoidSigner(this.submit.decodedSignedTx.from, provider);
               // console.table(signer);
-              // console.log(moment().format("HH:mm:ss") + " submitSend - this.settings.submit.decodedSignedTx: " + JSON.stringify(this.settings.submit.decodedSignedTx, null, 2));
-              // const tx = this.settings.submit.decodedSignedTx;
+              // console.log(moment().format("HH:mm:ss") + " submitSend - this.submit.decodedSignedTx: " + JSON.stringify(this.submit.decodedSignedTx, null, 2));
+              // const tx = this.submit.decodedSignedTx;
               // delete tx.hash;
               // delete tx.v;
               // delete tx.r;
               // delete tx.s;
               // console.log(moment().format("HH:mm:ss") + " submitSend - tx: " + JSON.stringify(tx, null, 2));
               try {
-                const txResult = await provider.sendTransaction(this.settings.submit.signedTx);
+                const txResult = await provider.sendTransaction(this.submit.signedTx);
                 console.log(moment().format("HH:mm:ss") + " submitSend - txResult: " + JSON.stringify(txResult, bigNumberReplacer, 2));
-                // this.settings.prepare.error = null;
+                // this.prepare.error = null;
               } catch (e) {
                 console.log(moment().format("HH:mm:ss") + " submitSend ERROR: " + e.message);
-                // this.settings.prepare.error = e.message;
-                // this.settings.prepare.estimatedGas = null;
+                // this.prepare.error = e.message;
+                // this.prepare.estimatedGas = null;
               }
             }
           },
@@ -1189,6 +1191,9 @@
               }
               if ('topSecretsOnlineAddresses' in localStorage) {
                 this.addresses = JSON.parse(localStorage.topSecretsOnlineAddresses);
+              }
+              if ('topSecretsOnlinePrepare' in localStorage) {
+                this.prepare = JSON.parse(localStorage.topSecretsOnlinePrepare);
               }
             }
           }
