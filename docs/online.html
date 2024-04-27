@@ -1028,7 +1028,14 @@
           async processNewBlock(blockNumber) {
             const provider = new ethers.providers.Web3Provider(window.ethereum);
             this.feeData = await provider.getFeeData();
-            console.log(moment().format("HH:mm:ss") + " processNewBlock[" + this.chainId + "] #" + this.commify0(blockNumber) + ", latest #" + this.commify0(this.blockNumber) + " @ " + moment.unix(this.timestamp).format("YYYY-MM-DD HH:mm:ss") + " " + moment.unix(this.timestamp).fromNow() + " " + JSON.stringify(this.feeData, bigNumberReplacer, 2));
+            console.log(moment().format("HH:mm:ss") + " processNewBlock[" + this.chainId + "] #" + this.commify0(blockNumber) +
+              ", latest #" + this.commify0(this.blockNumber) +
+              " @ " + moment.unix(this.timestamp).format("YYYY-MM-DD HH:mm:ss") +
+              " " + moment.unix(this.timestamp).fromNow() +
+              "\n\tgasPrice: " + ethers.utils.formatUnits(this.feeData.gasPrice, "gwei") + " gwei " +
+              "\n\tlast to max Base + priority feePerGas: " + ethers.utils.formatUnits(this.feeData.lastBaseFeePerGas, "gwei") +
+              " to " + ethers.utils.formatUnits(this.feeData.maxFeePerGas, "gwei") + 
+              " + " + ethers.utils.formatUnits(this.feeData.maxPriorityFeePerGas, "gwei") + " gwei ");
           },
           async halt() {
             this.sync.halt = true;
