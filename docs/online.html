@@ -830,11 +830,14 @@
             console.log(moment().format("HH:mm:ss") + " prepareSimulate: " + JSON.stringify(this.settings.prepare, bigNumberReplacer, 2));
             const provider = new ethers.providers.Web3Provider(window.ethereum);
             this.settings.prepare.chainId = this.chainId;
-            if (this.settings.prepare.token.address) {
-              this.settings.prepare.token.name = this.addresses[this.settings.prepare.token.address].name;
-              this.settings.prepare.token.symbol = this.addresses[this.settings.prepare.token.address].symbol;
-              this.settings.prepare.token.decimals = this.addresses[this.settings.prepare.token.address].decimals;
-              const tokenType = this.addresses[this.settings.prepare.token.address].type;
+            const tokenInfo = this.settings.prepare.token.address && this.addresses[this.settings.prepare.token.address] || {};
+            // console.log("1: " + JSON.stringify(this.addresses[this.settings.prepare.token.address]));
+            // console.log("2: " + JSON.stringify(this.addresses[this.settings.prepare.token.address].chains));
+            if (this.settings.prepare.token.address && tokenInfo.chains.includes(this.chainId)) {
+              this.settings.prepare.token.name = tokenInfo.name;
+              this.settings.prepare.token.symbol = tokenInfo.symbol;
+              this.settings.prepare.token.decimals = tokenInfo.decimals;
+              const tokenType = tokenInfo.type;
               if (tokenType == "erc20") {
                 const contract = new ethers.Contract(this.settings.prepare.token.address, ERC20ABI, provider);
                 try {
@@ -1024,12 +1027,8 @@
           },
           async processNewBlock(blockNumber) {
             const provider = new ethers.providers.Web3Provider(window.ethereum);
-            const feeData = await provider.getFeeData();
-            this.feeData.lastBaseFeePerGas = feeData.lastBaseFeePerGas.toString();
-            this.feeData.maxFeePerGas = feeData.maxFeePerGas.toString();
-            this.feeData.maxPriorityFeePerGas = feeData.maxPriorityFeePerGas.toString();
-            this.feeData.gasPrice = feeData.gasPrice.toString();
-            console.log(moment().format("HH:mm:ss") + " processNewBlock[" + this.chainId + "] #" + this.commify0(blockNumber) + ", latest #" + this.commify0(this.blockNumber) + " @ " + moment.unix(this.timestamp).format("YYYY-MM-DD HH:mm:ss") + " " + moment.unix(this.timestamp).fromNow() + " " + JSON.stringify(this.feeData));
+            this.feeData = await provider.getFeeData();
+            console.log(moment().format("HH:mm:ss") + " processNewBlock[" + this.chainId + "] #" + this.commify0(blockNumber) + ", latest #" + this.commify0(this.blockNumber) + " @ " + moment.unix(this.timestamp).format("YYYY-MM-DD HH:mm:ss") + " " + moment.unix(this.timestamp).fromNow() + " " + JSON.stringify(this.feeData, bigNumberReplacer, 2));
           },
           async halt() {
             this.sync.halt = true;
