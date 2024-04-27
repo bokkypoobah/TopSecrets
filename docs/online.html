@@ -233,13 +233,13 @@
           <!-- :ETH -->
           <b-card v-if="settings.tabIndex == 1" class="m-0 p-0 border-0" body-class="m-1 p-0">
             <b-card-group deck class="m-0 p-0">
-              <!-- :SIMULATEETHTX -->
+              <!-- :PREPARE -->
               <b-card sub-title="Prepare Transaction" bg-variant="light" class="p-0 m-1" style="max-width: 900px;">
                 <b-form-group label-cols-lg="2" label="Input" label-size="md" label-class="font-weight-bold pt-0" class="mb-0 mt-3">
-                  <b-form-group label="Action:" label-for="simulateethtx-action" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <b-form-select size="sm" id="simulateethtx-action" v-model="settings.prepare.action" :options="actionOptions" @change="saveSettings(); prepareSimulate();" style="max-width: 300px;"></b-form-select>
+                  <b-form-group label="Action:" label-for="prepare-action" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <b-form-select size="sm" id="prepare-action" v-model="settings.prepare.action" :options="actionOptions" @change="saveSettings(); prepareSimulate();" style="max-width: 300px;"></b-form-select>
                   </b-form-group>
-                  <b-form-group v-if="settings.prepare.action && settings.prepare.action.substring(0, 3) == 'erc'" label="Token:" label-for="simulateethtx-token" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-form-group v-if="settings.prepare.action && settings.prepare.action.substring(0, 3) == 'erc'" label="Token:" label-for="prepare-token" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <template v-if="settings.prepare.token.address" slot="description">
                       <b-link v-if="settings.prepare.token.totalSupply && settings.prepare.token.decimals" :href="explorer + '/token/' + settings.prepare.token.address" target="_blank" v-b-popover.hover="'Total Supply. View in explorer'">
                         <font size="-2">{{ formatUnits(settings.prepare.token.totalSupply, settings.prepare.token.decimals) }}</font>
@@ -247,9 +247,9 @@
                       <b-badge button v-if="settings.prepare.token.symbol" variant="muted" v-b-popover.hover="'symbol'">{{ settings.prepare.token.symbol }}</b-badge>
                       <b-badge button v-if="settings.prepare.token.decimals" variant="muted" v-b-popover.hover="'decimals'">{{ settings.prepare.token.decimals }}</b-badge>
                     </template>
-                    <b-form-select size="sm" :disabled="!settings.prepare.action" id="simulateethtx-token" v-model="settings.prepare.token.address" :options="tokensOptions" @change="saveSettings(); prepareSimulate();" v-b-popover.hover.bottom="'Select Token'"></b-form-select>
+                    <b-form-select size="sm" :disabled="!settings.prepare.action" id="prepare-token" v-model="settings.prepare.token.address" :options="tokensOptions" @change="saveSettings(); prepareSimulate();" v-b-popover.hover.bottom="'Select Token'"></b-form-select>
                   </b-form-group>
-                  <b-form-group label="From:" label-for="simulateethtx-from" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-form-group label="From:" label-for="prepare-from" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <template v-if="settings.prepare.action && settings.prepare.from.address" slot="description">
                       <b-link v-if="settings.prepare.action.substring(0, 3) == 'erc' && settings.prepare.from.tokens && settings.prepare.token.decimals" :href="explorer + '/token/' + settings.prepare.token.address + '?a=' + settings.prepare.from.address" target="_blank" v-b-popover.hover="settings.prepare.token.symbol + '. View in explorer'">
                         <font size="-2">{{ formatUnits(settings.prepare.from.tokens, settings.prepare.token.decimals) }}</font>
@@ -258,9 +258,9 @@
                       <b-badge button variant="muted" v-b-popover.hover="'#transactions'">{{ settings.prepare.from.transactionCount }}</b-badge>
                       <b-badge button v-if="settings.prepare.from.ensName" variant="muted" v-b-popover.hover="'ENS name'">{{ settings.prepare.from.ensName }}</b-badge>
                     </template>
-                    <b-form-select size="sm" :disabled="!settings.prepare.action" id="simulateethtx-from" v-model="settings.prepare.from.address" :options="walletsOptions" @change="saveSettings(); prepareSimulate();" v-b-popover.hover.bottom="'Select Wallet'"></b-form-select>
+                    <b-form-select size="sm" :disabled="!settings.prepare.action" id="prepare-from" v-model="settings.prepare.from.address" :options="walletsOptions" @change="saveSettings(); prepareSimulate();" v-b-popover.hover.bottom="'Select Wallet'"></b-form-select>
                   </b-form-group>
-                  <b-form-group label="To:" label-for="simulateethtx-to" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-form-group label="To:" label-for="prepare-to" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <template v-if="settings.prepare.action && settings.prepare.to.address" slot="description">
                       <b-link v-if="settings.prepare.action.substring(0, 3) == 'erc' && settings.prepare.to.tokens && settings.prepare.token.decimals" :href="explorer + '/token/' + settings.prepare.token.address + '?a=' + settings.prepare.to.address" target="_blank" v-b-popover.hover="settings.prepare.token.symbol + '. View in explorer'">
                         <font size="-2">{{ formatUnits(settings.prepare.to.tokens, settings.prepare.token.decimals) }}</font>
@@ -269,12 +269,12 @@
                       <b-badge button variant="muted" v-b-popover.hover="'#transactions'">{{ settings.prepare.to.transactionCount }}</b-badge>
                       <b-badge button v-if="settings.prepare.to.ensName" variant="muted" v-b-popover.hover="'ENS name'">{{ settings.prepare.to.ensName }}</b-badge>
                     </template>
-                    <b-form-select size="sm" :disabled="!settings.prepare.action" id="simulateethtx-to" v-model="settings.prepare.to.address" :options="addressesOptions" @change="saveSettings(); prepareSimulate();" v-b-popover.hover.bottom="'Select Address'"></b-form-select>
+                    <b-form-select size="sm" :disabled="!settings.prepare.action" id="prepare-to" v-model="settings.prepare.to.address" :options="addressesOptions" @change="saveSettings(); prepareSimulate();" v-b-popover.hover.bottom="'Select Address'"></b-form-select>
                   </b-form-group>
-                  <b-form-group label="Amount:" label-for="simulateethtx-amount" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-form-group label="Amount:" label-for="prepare-amount" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <div class="d-flex flex-wrap m-0 p-0">
                       <div class="mt-0 pr-1">
-                        <b-form-input type="text" size="sm" :disabled="!settings.prepare.action" id="simulateethtx-amount" v-model.trim="settings.prepare.amount" @change="saveSettings(); prepareSimulate();"></b-form-input>
+                        <b-form-input type="text" size="sm" :disabled="!settings.prepare.action" id="prepare-amount" v-model.trim="settings.prepare.amount" @change="saveSettings(); prepareSimulate();"></b-form-input>
                       </div>
                       <div class="mt-0 pr-1">
                         <b-form-select size="sm" :disabled="!settings.prepare.action" v-model="settings.prepare.amountUnit" :options="unitOptions" @change="saveSettings(); prepareSimulate();"></b-form-select>
@@ -283,52 +283,52 @@
                   </b-form-group>
                 </b-form-group>
                 <b-form-group label-cols-lg="2" label="Network Parameters" label-size="md" label-class="font-weight-bold pt-0" class="mb-0 mt-2">
-                  <b-form-group label="" label-for="simulateethtx-simulate" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!settings.prepare.error" :invalid-feedback="settings.prepare.error" class="mx-0 my-1 p-0">
-                    <b-button size="sm" id="simulateethtx-simulate" @click="prepareSimulate()" variant="primary">Refresh</b-button>
+                  <b-form-group label="" label-for="prepare-simulate" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!settings.prepare.error" :invalid-feedback="settings.prepare.error" class="mx-0 my-1 p-0">
+                    <b-button size="sm" id="prepare-simulate" @click="prepareSimulate()" variant="primary">Refresh</b-button>
                   </b-form-group>
-                  <b-form-group label="Chain:" label-for="simulateethtx-chain" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <b-form-select size="sm" disabled id="simulateethtx-chain" v-model="settings.prepare.chainId" :options="chainsOptions" @change="saveSettings();" style="max-width: 200px;"></b-form-select>
+                  <b-form-group label="Chain:" label-for="prepare-chain" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <b-form-select size="sm" disabled id="prepare-chain" v-model="settings.prepare.chainId" :options="chainsOptions" @change="saveSettings();" style="max-width: 200px;"></b-form-select>
                   </b-form-group>
-                  <b-form-group label="Nonce:" label-for="simulateethtx-nonce" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <b-form-input type="text" size="sm" readonly id="simulateethtx-nonce" v-model.trim="settings.prepare.nonce" style="max-width: 150px;"></b-form-input>
+                  <b-form-group label="Nonce:" label-for="prepare-nonce" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <b-form-input type="text" size="sm" readonly id="prepare-nonce" v-model.trim="settings.prepare.nonce" style="max-width: 150px;"></b-form-input>
                   </b-form-group>
-                  <b-form-group label="Estimated Gas:" label-for="simulateethtx-estimatedgas" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                    <b-form-input type="text" size="sm" readonly id="simulateethtx-estimatedgas" v-model.trim="settings.prepare.estimatedGas" style="max-width: 150px;"></b-form-input>
+                  <b-form-group label="Estimated Gas:" label-for="prepare-estimatedgas" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                    <b-form-input type="text" size="sm" readonly id="prepare-estimatedgas" v-model.trim="settings.prepare.estimatedGas" style="max-width: 150px;"></b-form-input>
                   </b-form-group>
-                  <b-form-group label="Gas Price:" label-for="simulateethtx-gasprice" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-form-group label="Gas Price:" label-for="prepare-gasprice" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <div class="d-flex flex-wrap m-0 p-0">
                       <div class="mt-0 pr-1">
-                        <b-form-input type="text" size="sm" readonly id="simulateethtx-gasprice" :value="formatUnits(settings.prepare.gasPrice, settings.prepare.gasPriceUnit)"></b-form-input>
+                        <b-form-input type="text" size="sm" readonly id="prepare-gasprice" :value="formatUnits(settings.prepare.gasPrice, settings.prepare.gasPriceUnit)"></b-form-input>
                       </div>
                       <div class="mt-0 pr-1">
                         <b-form-select size="sm" v-model="settings.prepare.gasPriceUnit" :options="unitOptions" @change="saveSettings(); prepareSimulate();" style="max-width: 300px;"></b-form-select>
                       </div>
                     </div>
                   </b-form-group>
-                  <b-form-group label="Last Base Fee:" label-for="simulateethtx-lastbasefeepergas" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-form-group label="Last Base Fee:" label-for="prepare-lastbasefeepergas" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <div class="d-flex flex-wrap m-0 p-0">
                       <div class="mt-0 pr-1">
-                        <b-form-input type="text" size="sm" readonly id="simulateethtx-lastbasefeepergas" :value="formatUnits(settings.prepare.lastBaseFeePerGas, settings.prepare.lastBaseFeePerGasUnit)"></b-form-input>
+                        <b-form-input type="text" size="sm" readonly id="prepare-lastbasefeepergas" :value="formatUnits(settings.prepare.lastBaseFeePerGas, settings.prepare.lastBaseFeePerGasUnit)"></b-form-input>
                       </div>
                       <div class="mt-0 pr-1">
                         <b-form-select size="sm" v-model="settings.prepare.lastBaseFeePerGasUnit" :options="unitOptions" @change="saveSettings(); prepareSimulate();" style="max-width: 300px;"></b-form-select>
                       </div>
                     </div>
                   </b-form-group>
-                  <b-form-group label="Max Base Fee:" label-for="simulateethtx-maxfeepergas" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-form-group label="Max Base Fee:" label-for="prepare-maxfeepergas" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <div class="d-flex flex-wrap m-0 p-0">
                       <div class="mt-0 pr-1">
-                        <b-form-input type="text" size="sm" readonly id="simulateethtx-maxfeepergas" :value="formatUnits(settings.prepare.maxFeePerGas, settings.prepare.maxFeePerGasUnit)"></b-form-input>
+                        <b-form-input type="text" size="sm" readonly id="prepare-maxfeepergas" :value="formatUnits(settings.prepare.maxFeePerGas, settings.prepare.maxFeePerGasUnit)"></b-form-input>
                       </div>
                       <div class="mt-0 pr-1">
                         <b-form-select size="sm" v-model="settings.prepare.maxFeePerGasUnit" :options="unitOptions" @change="saveSettings(); prepareSimulate();" style="max-width: 300px;"></b-form-select>
                       </div>
                     </div>
                   </b-form-group>
-                  <b-form-group label="Priority Fee:" label-for="simulateethtx-maxpriorityfeepergas" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-form-group label="Priority Fee:" label-for="prepare-maxpriorityfeepergas" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <div class="d-flex flex-wrap m-0 p-0">
                       <div class="mt-0 pr-1">
-                        <b-form-input type="text" size="sm" readonly id="simulateethtx-maxpriorityfeepergas" :value="formatUnits(settings.prepare.maxPriorityFeePerGas, settings.prepare.maxPriorityFeePerGasUnit)"></b-form-input>
+                        <b-form-input type="text" size="sm" readonly id="prepare-maxpriorityfeepergas" :value="formatUnits(settings.prepare.maxPriorityFeePerGas, settings.prepare.maxPriorityFeePerGasUnit)"></b-form-input>
                       </div>
                       <div class="mt-0 pr-1">
                         <b-form-select size="sm" v-model="settings.prepare.maxPriorityFeePerGasUnit" :options="unitOptions" @change="saveSettings(); prepareSimulate();" style="max-width: 300px;"></b-form-select>
@@ -338,47 +338,47 @@
                 </b-form-group>
               </b-card>
 
-              <!-- :COMPAREETHTX -->
+              <!-- :SUBMIT -->
               <b-card sub-title="Submit Transaction" bg-variant="light" class="p-0 m-1" style="max-width: 900px;">
-                <b-form-group label="Signed Transaction:" label-for="compareethtx-signedtx" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!settings.submit.error" :invalid-feedback="settings.submit.error" class="mx-0 my-2 p-0">
-                  <b-form-textarea size="sm" id="compareethtx-signedtx" v-model.trim="settings.submit.signedTx" rows="5" @change="saveSettings(); submitCompare();" placeholder="Paste signed transaction here" style="max-width: 800px;"></b-form-textarea>
+                <b-form-group label="Signed Transaction:" label-for="submit-signedtx" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!settings.submit.error" :invalid-feedback="settings.submit.error" class="mx-0 my-2 p-0">
+                  <b-form-textarea size="sm" id="submit-signedtx" v-model.trim="settings.submit.signedTx" rows="5" @change="saveSettings(); submitCompare();" placeholder="Paste signed transaction here" style="max-width: 800px;"></b-form-textarea>
                 </b-form-group>
-                <b-form-group label="From:" label-for="compareethtx-from" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="settings.prepare.from == settings.submit.from" invalid-feedback="different" class="mx-0 my-1 p-0">
-                  <b-form-input type="text" size="sm" readonly id="compareethtx-from" :value="settings.submit.from"></b-form-input>
+                <b-form-group label="From:" label-for="submit-from" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="settings.prepare.from == settings.submit.from" invalid-feedback="different" class="mx-0 my-1 p-0">
+                  <b-form-input type="text" size="sm" readonly id="submit-from" :value="settings.submit.from"></b-form-input>
                 </b-form-group>
-                <b-form-group label="To:" label-for="compareethtx-to" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="settings.prepare.to == settings.submit.to" invalid-feedback="different" class="mx-0 my-1 p-0">
-                  <b-form-input type="text" size="sm" readonly id="compareethtx-to" :value="settings.submit.to"></b-form-input>
+                <b-form-group label="To:" label-for="submit-to" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="settings.prepare.to == settings.submit.to" invalid-feedback="different" class="mx-0 my-1 p-0">
+                  <b-form-input type="text" size="sm" readonly id="submit-to" :value="settings.submit.to"></b-form-input>
                 </b-form-group>
-                <b-form-group label="Amount:" label-for="compareethtx-amount" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="settings.prepare.amount == formatUnits(settings.submit.amount, settings.prepare.amountUnit)" invalid-feedback="different" class="mx-0 my-1 p-0">
-                  <b-form-input type="text" size="sm" readonly id="compareethtx-amount" :value="formatUnits(settings.submit.amount, settings.prepare.amountUnit)" style="max-width: 150px;"></b-form-input>
+                <b-form-group label="Amount:" label-for="submit-amount" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="settings.prepare.amount == formatUnits(settings.submit.amount, settings.prepare.amountUnit)" invalid-feedback="different" class="mx-0 my-1 p-0">
+                  <b-form-input type="text" size="sm" readonly id="submit-amount" :value="formatUnits(settings.submit.amount, settings.prepare.amountUnit)" style="max-width: 150px;"></b-form-input>
                 </b-form-group>
                 <!-- TODO: Check for differences below -->
-                <b-form-group label="Data:" label-for="compareethtx-data" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                  <b-form-input type="text" size="sm" readonly id="compareethtx-data" :value="settings.submit.data"></b-form-input>
+                <b-form-group label="Data:" label-for="submit-data" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-form-input type="text" size="sm" readonly id="submit-data" :value="settings.submit.data"></b-form-input>
                 </b-form-group>
-                <b-form-group label="Chain:" label-for="compareethtx-chainid" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="settings.submit.chainId == settings.prepare.chainId" invalid-feedback="different" class="mx-0 my-1 p-0">
-                  <b-form-select size="sm" disabled id="compareethtx-chainid" v-model="settings.submit.chainId" :options="chainsOptions" style="max-width: 200px;"></b-form-select>
+                <b-form-group label="Chain:" label-for="submit-chainid" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="settings.submit.chainId == settings.prepare.chainId" invalid-feedback="different" class="mx-0 my-1 p-0">
+                  <b-form-select size="sm" disabled id="submit-chainid" v-model="settings.submit.chainId" :options="chainsOptions" style="max-width: 200px;"></b-form-select>
                 </b-form-group>
-                <b-form-group label="Nonce:" label-for="compareethtx-nonce" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="settings.submit.nonce == settings.prepare.nonce" invalid-feedback="different" class="mx-0 my-1 p-0">
-                  <b-form-input type="text" size="sm" readonly id="compareethtx-nonce" :value="settings.submit.nonce" style="max-width: 150px;"></b-form-input>
+                <b-form-group label="Nonce:" label-for="submit-nonce" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="settings.submit.nonce == settings.prepare.nonce" invalid-feedback="different" class="mx-0 my-1 p-0">
+                  <b-form-input type="text" size="sm" readonly id="submit-nonce" :value="settings.submit.nonce" style="max-width: 150px;"></b-form-input>
                 </b-form-group>
-                <b-form-group label="Gas Limit:" label-for="compareethtx-gaslimit" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="settings.submit.gasLimit >= settings.prepare.estimatedGas" invalid-feedback="Gas Limit < Estimated Gas" class="mx-0 my-1 p-0">
-                  <b-form-input type="text" size="sm" readonly id="compareethtx-gaslimit" :value="settings.submit.gasLimit" style="max-width: 150px;"></b-form-input>
+                <b-form-group label="Gas Limit:" label-for="submit-gaslimit" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="settings.submit.gasLimit >= settings.prepare.estimatedGas" invalid-feedback="Gas Limit < Estimated Gas" class="mx-0 my-1 p-0">
+                  <b-form-input type="text" size="sm" readonly id="submit-gaslimit" :value="settings.submit.gasLimit" style="max-width: 150px;"></b-form-input>
                 </b-form-group>
-                <b-form-group label="Type:" label-for="compareethtx-type" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                  <b-form-select size="sm" disabled id="compareethtx-type" v-model="settings.submit.type" :options="transactionTypeOptions" style="max-width: 150px;"></b-form-select>
+                <b-form-group label="Type:" label-for="submit-type" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-form-select size="sm" disabled id="submit-type" v-model="settings.submit.type" :options="transactionTypeOptions" style="max-width: 150px;"></b-form-select>
                 </b-form-group>
-                <b-form-group v-if="!settings.submit.type" label="Gas Price:" label-for="compareethtx-gasprice" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                  <b-form-input type="text" size="sm" readonly id="compareethtx-gasprice" :value="formatUnits(settings.submit.gasPrice, settings.prepare.gasPriceUnit)" style="max-width: 150px;"></b-form-input>
+                <b-form-group v-if="!settings.submit.type" label="Gas Price:" label-for="submit-gasprice" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-form-input type="text" size="sm" readonly id="submit-gasprice" :value="formatUnits(settings.submit.gasPrice, settings.prepare.gasPriceUnit)" style="max-width: 150px;"></b-form-input>
                 </b-form-group>
-                <b-form-group v-if="settings.submit.type == 2" label="Max Base Fee:" label-for="compareethtx-maxbasefee" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                  <b-form-input type="text" size="sm" readonly id="compareethtx-maxbasefee" :value="formatUnits(settings.submit.maxFeePerGas, settings.prepare.maxFeePerGasUnit)" style="max-width: 150px;"></b-form-input>
+                <b-form-group v-if="settings.submit.type == 2" label="Max Base Fee:" label-for="submit-maxbasefee" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-form-input type="text" size="sm" readonly id="submit-maxbasefee" :value="formatUnits(settings.submit.maxFeePerGas, settings.prepare.maxFeePerGasUnit)" style="max-width: 150px;"></b-form-input>
                 </b-form-group>
-                <b-form-group v-if="settings.submit.type == 2" label="Priority Fee:" label-for="compareethtx-priorityfee" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-                  <b-form-input type="text" size="sm" readonly id="compareethtx-priorityfee" :value="formatUnits(settings.submit.maxPriorityFeePerGas, settings.prepare.maxPriorityFeePerGasUnit)" style="max-width: 150px;"></b-form-input>
+                <b-form-group v-if="settings.submit.type == 2" label="Priority Fee:" label-for="submit-priorityfee" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-form-input type="text" size="sm" readonly id="submit-priorityfee" :value="formatUnits(settings.submit.maxPriorityFeePerGas, settings.prepare.maxPriorityFeePerGasUnit)" style="max-width: 150px;"></b-form-input>
                 </b-form-group>
-                <b-form-group label="" label-for="compareethtx-simulate" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!settings.prepare.error" :invalid-feedback="settings.prepare.error" class="mx-0 my-1 p-0">
-                  <b-button size="sm" id="compareethtx-simulate" @click="submitSimulate()" variant="primary">Check</b-button>
+                <b-form-group label="" label-for="submit-simulate" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!settings.prepare.error" :invalid-feedback="settings.prepare.error" class="mx-0 my-1 p-0">
+                  <b-button size="sm" id="submit-simulate" @click="submitSimulate()" variant="primary">Check</b-button>
                   <b-button size="sm" @click="submitSend()" variant="warning">Send</b-button>
                 </b-form-group>
               </b-card>
