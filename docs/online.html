@@ -831,9 +831,9 @@
             const provider = new ethers.providers.Web3Provider(window.ethereum);
             this.settings.prepare.chainId = this.chainId;
             const tokenInfo = this.settings.prepare.token.address && this.addresses[this.settings.prepare.token.address] || {};
-            // console.log("1: " + JSON.stringify(this.addresses[this.settings.prepare.token.address]));
+            console.log("tokenInfo: " + JSON.stringify(tokenInfo, null, 2));
             // console.log("2: " + JSON.stringify(this.addresses[this.settings.prepare.token.address].chains));
-            if (this.settings.prepare.token.address && tokenInfo.chains.includes(this.chainId)) {
+            if (this.settings.prepare.token.address && tokenInfo.chains.includes(this.chainId.toString())) {
               this.settings.prepare.token.name = tokenInfo.name;
               this.settings.prepare.token.symbol = tokenInfo.symbol;
               this.settings.prepare.token.decimals = tokenInfo.decimals;
