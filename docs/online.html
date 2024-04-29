@@ -272,6 +272,9 @@
                     </div>
                   </b-form-group>
                   <b-form-group label="Max Base Fee:" label-for="prepare-maxfeepergas" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!prepare.maxFeePerGasError" :invalid-feedback="prepare.maxFeePerGasError" class="mx-0 my-1 p-0">
+                    <template slot="description">
+                      <code>lastBaseFeePerGas</code>: <code>{{ formatUnits(feeData.lastBaseFeePerGas, prepare.gasUnit) }}</code>; <code>maxFeePerGas</code>: <code>{{ formatUnits(feeData.maxFeePerGas, prepare.gasUnit) }}</code>
+                    </template>
                     <template v-if="prepare.maxFeePerGasError" slot="invalid-feedback">
                       WARNING: TODO {{ prepare.maxFeePerGasError }}
                       <!-- <b-link size="sm" @click="prepare.gasLimit = prepare.estimatedGas; prepareSimulate()" variant="link">Set to {{ prepare.estimatedGas }}</b-link> -->
@@ -286,6 +289,9 @@
                     </div>
                   </b-form-group>
                   <b-form-group label="Priority Fee:" label-for="prepare-maxpriorityfeepergas" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!prepare.maxPriorityFeePerGasError" :invalid-feedback="prepare.maxPriorityFeePerGasError" class="mx-0 my-1 p-0">
+                    <template slot="description">
+                      <code>maxPriorityFeePerGas</code>: <code>{{ formatUnits(feeData.maxPriorityFeePerGas, prepare.gasUnit) }}</code>
+                    </template>
                     <template v-if="prepare.maxPriorityFeePerGasError" slot="invalid-feedback">
                       WARNING: TODO {{ prepare.maxPriorityFeePerGasError }}
                       <!-- <b-link size="sm" @click="prepare.gasLimit = prepare.estimatedGas; prepareSimulate()" variant="link">Set to {{ prepare.estimatedGas }}</b-link> -->
@@ -1193,7 +1199,7 @@
               }
               window.ethereum.on('accountsChanged', handleAccountsChanged);
               async function handleNewBlock(blockNumber) {
-                console.log(moment().format("HH:mm:ss") + " connectToWeb3 - handleNewBlock - blockNumber: " + blockNumber);
+                // console.log(moment().format("HH:mm:ss") + " connectToWeb3 - handleNewBlock - blockNumber: " + blockNumber);
                 if (!t.blockNumber || blockNumber > t.blockNumber) {
                   const block = await provider.getBlock("latest");
                   t.blockNumber = block.number;
