@@ -235,14 +235,22 @@
 
                   <b-form-group label="Nonce:" label-for="prepare-nonce" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!prepare.nonceError" :invalid-feedback="prepare.nonceError" class="mx-0 my-1 p-0">
                     <template v-if="prepare.nonceError" slot="invalid-feedback">
-                      WARNING: <b-link size="sm" v-if="prepare.nonceError" @click="prepare.nonce = prepare.from.transactionCount; prepareSimulate()" variant="link">Set to {{ prepare.from.transactionCount }}</b-link>
+                      WARNING: <b-link size="sm" @click="prepare.nonce = prepare.from.transactionCount; prepareSimulate()" variant="link">Set to {{ prepare.from.transactionCount }}</b-link>
                     </template>
-                    <b-form-input type="text" size="sm" id="prepare-nonce" v-model.trim="prepare.nonce" @change="prepareSimulate();" style="max-width: 150px;"></b-form-input>
+                    <b-form-input type="number" size="sm" id="prepare-nonce" v-model.trim="prepare.nonce" @change="prepareSimulate();" style="max-width: 150px;"></b-form-input>
+                  </b-form-group>
+
+                  <b-form-group label="Gas Limit:" label-for="prepare-gaslimit" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!prepare.gasLimitError" :invalid-feedback="prepare.gasLimitError" class="mx-0 my-1 p-0">
+                    <template v-if="prepare.gasLimitError" slot="invalid-feedback">
+                      WARNING: <b-link size="sm" @click="prepare.gasLimit = prepare.estimatedGas; prepareSimulate()" variant="link">Set to {{ prepare.estimatedGas }}</b-link>
+                    </template>
+                    <b-form-input type="number" size="sm" id="prepare-gaslimit" v-model.trim="prepare.gasLimit" @change="prepareSimulate();" style="max-width: 150px;"></b-form-input>
                   </b-form-group>
 
                   <b-form-group label="Estimated Gas:" label-for="prepare-estimatedgas" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <b-form-input type="text" size="sm" readonly id="prepare-estimatedgas" v-model.trim="prepare.estimatedGas" style="max-width: 150px;"></b-form-input>
                   </b-form-group>
+
                   <b-form-group label="Gas Price:" label-for="prepare-gasprice" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <div class="d-flex flex-wrap m-0 p-0">
                       <div class="mt-0 pr-1">
@@ -445,6 +453,7 @@
             nonceError: null,
             estimatedGas: null, // TODO: Delete
             gasLimit: null,
+            gasLimitError: null,
             transactionType: 2,
             gasPrice: null,
             lastBaseFeePerGas: null, // TODO: Delete
@@ -954,6 +963,11 @@
               this.prepare.maxFeePerGas = feeData.maxFeePerGas.toString();
               this.prepare.maxPriorityFeePerGas = feeData.maxPriorityFeePerGas.toString();
               this.prepare.gasPrice = feeData.gasPrice.toString();
+            }
+            if (this.prepare.estimatedGas) {
+              this.prepare.gasLimitError = (this.prepare.gasLimit == null || this.prepare.gasLimit < this.prepare.estimatedGas) && ("Warning - GasLimit < estimatedGas: " + this.prepare.estimatedGas) || null;
+            } else {
+              this.prepare.gasLimitError = null;
             }
             console.log(moment().format("HH:mm:ss") + " prepareSimulate - AFTER: " + JSON.stringify(this.prepare, bigNumberReplacer, 2));
             // this.saveSettings();
