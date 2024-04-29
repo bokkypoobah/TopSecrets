@@ -247,11 +247,11 @@
                     <b-form-input type="number" size="sm" id="prepare-gaslimit" v-model.trim="prepare.gasLimit" @change="prepareSimulate();" style="max-width: 150px;"></b-form-input>
                   </b-form-group>
 
-                  <b-form-group label="Estimated Gas:" label-for="prepare-estimatedgas" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-form-group v-if="false" label="Estimated Gas:" label-for="prepare-estimatedgas" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <b-form-input type="text" size="sm" readonly id="prepare-estimatedgas" v-model.trim="prepare.estimatedGas" style="max-width: 150px;"></b-form-input>
                   </b-form-group>
 
-                  <b-form-group label="Gas Price:" label-for="prepare-gasprice" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-form-group v-if="false" label="Gas Price:" label-for="prepare-gasprice" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <div class="d-flex flex-wrap m-0 p-0">
                       <div class="mt-0 pr-1">
                         <b-form-input type="text" size="sm" readonly id="prepare-gasprice" :value="formatUnits(prepare.gasPrice, prepare.gasPriceUnit)"></b-form-input>
@@ -261,7 +261,7 @@
                       </div>
                     </div>
                   </b-form-group>
-                  <b-form-group label="Last Base Fee:" label-for="prepare-lastbasefeepergas" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-form-group v-if="false" label="Last Base Fee:" label-for="prepare-lastbasefeepergas" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <div class="d-flex flex-wrap m-0 p-0">
                       <div class="mt-0 pr-1">
                         <b-form-input type="text" size="sm" readonly id="prepare-lastbasefeepergas" :value="formatUnits(prepare.lastBaseFeePerGas, prepare.lastBaseFeePerGasUnit)"></b-form-input>
@@ -271,23 +271,31 @@
                       </div>
                     </div>
                   </b-form-group>
-                  <b-form-group label="Max Base Fee:" label-for="prepare-maxfeepergas" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-form-group label="Max Base Fee:" label-for="prepare-maxfeepergas" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!prepare.maxFeePerGasError" :invalid-feedback="prepare.maxFeePerGasError" class="mx-0 my-1 p-0">
+                    <template v-if="prepare.maxFeePerGasError" slot="invalid-feedback">
+                      WARNING: TODO {{ prepare.maxFeePerGasError }}
+                      <!-- <b-link size="sm" @click="prepare.gasLimit = prepare.estimatedGas; prepareSimulate()" variant="link">Set to {{ prepare.estimatedGas }}</b-link> -->
+                    </template>
                     <div class="d-flex flex-wrap m-0 p-0">
                       <div class="mt-0 pr-1">
-                        <b-form-input type="text" size="sm" readonly id="prepare-maxfeepergas" :value="formatUnits(prepare.maxFeePerGas, prepare.maxFeePerGasUnit)"></b-form-input>
+                        <b-form-input type="text" size="sm" id="prepare-maxfeepergas" :value="formatUnits(prepare.maxFeePerGas, prepare.maxFeePerGasUnit)"></b-form-input>
                       </div>
                       <div class="mt-0 pr-1">
-                        <b-form-select size="sm" v-model="prepare.maxFeePerGasUnit" :options="unitOptions" @change="prepareSimulate();" style="max-width: 300px;"></b-form-select>
+                        <b-form-select size="sm" v-model="prepare.gasUnit" :options="unitOptions" @change="prepareSimulate();" style="max-width: 300px;"></b-form-select>
                       </div>
                     </div>
                   </b-form-group>
-                  <b-form-group label="Priority Fee:" label-for="prepare-maxpriorityfeepergas" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-form-group label="Priority Fee:" label-for="prepare-maxpriorityfeepergas" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!prepare.maxPriorityFeePerGasError" :invalid-feedback="prepare.maxPriorityFeePerGasError" class="mx-0 my-1 p-0">
+                    <template v-if="prepare.maxPriorityFeePerGasError" slot="invalid-feedback">
+                      WARNING: TODO {{ prepare.maxPriorityFeePerGasError }}
+                      <!-- <b-link size="sm" @click="prepare.gasLimit = prepare.estimatedGas; prepareSimulate()" variant="link">Set to {{ prepare.estimatedGas }}</b-link> -->
+                    </template>
                     <div class="d-flex flex-wrap m-0 p-0">
                       <div class="mt-0 pr-1">
-                        <b-form-input type="text" size="sm" readonly id="prepare-maxpriorityfeepergas" :value="formatUnits(prepare.maxPriorityFeePerGas, prepare.maxPriorityFeePerGasUnit)"></b-form-input>
+                        <b-form-input type="text" size="sm" id="prepare-maxpriorityfeepergas" :value="formatUnits(prepare.maxPriorityFeePerGas, prepare.maxPriorityFeePerGasUnit)"></b-form-input>
                       </div>
                       <div class="mt-0 pr-1">
-                        <b-form-select size="sm" v-model="prepare.maxPriorityFeePerGasUnit" :options="unitOptions" @change="prepareSimulate();" style="max-width: 300px;"></b-form-select>
+                        <b-form-select size="sm" disabled v-model="prepare.gasUnit" :options="unitOptions" @change="prepareSimulate();" style="max-width: 300px;"></b-form-select>
                       </div>
                     </div>
                   </b-form-group>
@@ -451,14 +459,16 @@
             chainIdError: null,
             nonce: null,
             nonceError: null,
-            estimatedGas: null, // TODO: Delete
+            estimatedGas: null,
             gasLimit: null,
             gasLimitError: null,
             transactionType: 2,
-            gasPrice: null,
+            gasPrice: null, // TODO: Delete
             lastBaseFeePerGas: null, // TODO: Delete
             maxFeePerGas: null,
+            maxFeePerGasError: null,
             maxPriorityFeePerGas: null,
+            maxPriorityFeePerGasError: null,
             gasUnit: "gwei",
             gasPriceUnit: "gwei", // TODO: Delete
             lastBaseFeePerGasUnit: "gwei", // TODO: Delete
@@ -853,6 +863,10 @@
 
           async prepareSimulate() {
             console.log(moment().format("HH:mm:ss") + " prepareSimulate: " + JSON.stringify(this.prepare, bigNumberReplacer, 2));
+
+            this.prepare.maxFeePerGasError = "Hah";
+            this.prepare.maxPriorityFeePerGasError = "Ho";
+
             const provider = new ethers.providers.Web3Provider(window.ethereum);
             this.prepare.chainIdError = this.prepare.chainId != this.chainId && ("Warning - Web3 connected chain: " + this.chainsOptions.filter(e => e.value == this.chainId)[0].text) || null;
             const tokenInfo = this.prepare.token.address && this.addresses[this.prepare.token.address] || {};
