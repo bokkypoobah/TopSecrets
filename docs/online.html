@@ -281,7 +281,7 @@
                     </template>
                     <div class="d-flex flex-wrap m-0 p-0">
                       <div class="mt-0 pr-1">
-                        <b-form-input type="text" size="sm" id="prepare-maxfeepergas" :value="formatUnits(prepare.maxFeePerGas, prepare.maxFeePerGasUnit)"></b-form-input>
+                        <b-form-input type="text" size="sm" id="prepare-maxfeepergas" v-model.trim="prepare.maxFeePerGas" @change="prepareSimulate();"></b-form-input>
                       </div>
                       <div class="mt-0 pr-1">
                         <b-form-select size="sm" v-model="prepare.gasUnit" :options="unitOptions" @change="prepareSimulate();" style="max-width: 300px;"></b-form-select>
@@ -298,7 +298,7 @@
                     </template>
                     <div class="d-flex flex-wrap m-0 p-0">
                       <div class="mt-0 pr-1">
-                        <b-form-input type="text" size="sm" id="prepare-maxpriorityfeepergas" :value="formatUnits(prepare.maxPriorityFeePerGas, prepare.maxPriorityFeePerGasUnit)"></b-form-input>
+                        <b-form-input type="text" size="sm" id="prepare-maxpriorityfeepergas" v-model.trim="prepare.maxPriorityFeePerGas" @change="prepareSimulate();"></b-form-input>
                       </div>
                       <div class="mt-0 pr-1">
                         <b-form-select size="sm" disabled v-model="prepare.gasUnit" :options="unitOptions" @change="prepareSimulate();" style="max-width: 300px;"></b-form-select>
@@ -870,9 +870,6 @@
           async prepareSimulate() {
             console.log(moment().format("HH:mm:ss") + " prepareSimulate: " + JSON.stringify(this.prepare, bigNumberReplacer, 2));
 
-            this.prepare.maxFeePerGasError = "Hah";
-            this.prepare.maxPriorityFeePerGasError = "Ho";
-
             const provider = new ethers.providers.Web3Provider(window.ethereum);
             this.prepare.chainIdError = this.prepare.chainId != this.chainId && ("Warning - Web3 connected chain: " + this.chainsOptions.filter(e => e.value == this.chainId)[0].text) || null;
             const tokenInfo = this.prepare.token.address && this.addresses[this.prepare.token.address] || {};
@@ -951,26 +948,26 @@
 
             if (this.prepare.from.address && this.prepare.to.address && this.prepare.amount) {
               const signer = new ethers.VoidSigner(this.prepare.from.address, provider);
-              let tx = null;
+              this.prepare.tx = null;
               if (this.prepare.token.address) {
                 console.log(moment().format("HH:mm:ss") + " prepareSimulate - TOKEN");
-                if (tokenInfo.type == "erc20") {
+                if (tokenInfo.chains.includes(this.chainId.toString()) && tokenInfo.type == "erc20") {
                   const contract = new ethers.Contract(this.prepare.token.address, ERC20ABI, provider);
                   console.table(contract);
                   const data = await contract.populateTransaction.transfer(this.prepare.to.address, ethers.utils.parseUnits(this.prepare.tokens, this.prepare.amountUnit).toString());
                   console.log("data: " + JSON.stringify(data, bigNumberReplacer, 2));
-                  tx = {
+                  this.prepare.tx = {
                     from: this.prepare.from.address,
                     to: data.to,
                     // gasLimit: 50000,
                     // gasPrice: 1000000,
-                    // type: 2,
+                    type: 2,
                     // maxFeePerGas: 1234000,
                     // maxPriorityFeePerGas: 1234000,
                     value: 0,
                     data: data.data,
-                    // nonce: this.prepare.nonce,
-                    // chainId: this.prepare.chainId,
+                    nonce: this.prepare.nonce,
+                    chainId: this.prepare.chainId,
                   };
                 } else {
                   console.log(moment().format("HH:mm:ss") + " prepareSimulate - TOKEN ERROR: NOT SUPPORTED");
@@ -978,24 +975,24 @@
 
               } else {
                 console.log(moment().format("HH:mm:ss") + " prepareSimulate - REGULAR ETH TX");
-                tx = {
+                this.prepare.tx = {
                   from: this.prepare.from.address,
                   to: this.prepare.to.address,
                   // gasLimit: 50000,
                   // gasPrice: 1000000,
-                  // type: 2,
+                  type: 2,
                   // maxFeePerGas: 1234000,
                   // maxPriorityFeePerGas: 1234000,
                   value: ethers.utils.parseUnits(this.prepare.amount, this.prepare.amountUnit).toString(),
                   data: null,
-                  // nonce: this.prepare.nonce,
-                  // chainId: this.prepare.chainId,
+                  nonce: this.prepare.nonce,
+                  chainId: this.prepare.chainId,
                 };
               }
-              console.log(moment().format("HH:mm:ss") + " prepareSimulate - tx: " + JSON.stringify(tx, bigNumberReplacer, 2));
-              if (tx) {
+              console.log(moment().format("HH:mm:ss") + " prepareSimulate - this.prepare.tx: " + JSON.stringify(this.prepare.tx, bigNumberReplacer, 2));
+              if (this.prepare.tx) {
                 try {
-                  this.prepare.estimatedGas = (await signer.estimateGas(tx)).toString();
+                  this.prepare.estimatedGas = (await signer.estimateGas(this.prepare.tx)).toString();
                   console.log(moment().format("HH:mm:ss") + " prepareSimulate - estimatedGas: " + this.prepare.estimatedGas.toString());
                   this.prepare.error = null;
                 } catch (e) {
@@ -1003,15 +1000,15 @@
                   this.prepare.error = getError(e);
                   this.prepare.estimatedGas = null;
                 }
-                const feeData = await provider.getFeeData();
+                // const feeData = await provider.getFeeData();
                 // this.prepare.lastBaseFeePerGas = ethers.utils.formatUnits(feeData.lastBaseFeePerGas.toString(), this.prepare.lastBaseFeePerGasUnit);
                 // this.prepare.maxFeePerGas = ethers.utils.formatUnits(feeData.maxFeePerGas.toString(), this.prepare.maxFeePerGasUnit);
                 // this.prepare.maxPriorityFeePerGas = ethers.utils.formatUnits(feeData.maxPriorityFeePerGas.toString(), this.prepare.maxPriorityFeePerGasUnit);
                 // this.prepare.gasPrice = ethers.utils.formatUnits(feeData.gasPrice.toString(), this.prepare.gasPriceUnit);
-                this.prepare.lastBaseFeePerGas = feeData.lastBaseFeePerGas.toString();
-                this.prepare.maxFeePerGas = feeData.maxFeePerGas.toString();
-                this.prepare.maxPriorityFeePerGas = feeData.maxPriorityFeePerGas.toString();
-                this.prepare.gasPrice = feeData.gasPrice.toString();
+                // this.prepare.lastBaseFeePerGas = feeData.lastBaseFeePerGas.toString();
+                // this.prepare.maxFeePerGas = feeData.maxFeePerGas.toString();
+                // this.prepare.maxPriorityFeePerGas = feeData.maxPriorityFeePerGas.toString();
+                // this.prepare.gasPrice = feeData.gasPrice.toString();
               } else {
                 this.prepare.estimatedGas = null;
               }
@@ -1021,6 +1018,19 @@
             } else {
               this.prepare.gasLimitError = null;
             }
+
+            if (this.prepare.maxFeePerGas) {
+              this.prepare.maxFeePerGasError = "Hah 1 + '" + this.prepare.maxFeePerGas + "'";
+            } else {
+              this.prepare.maxFeePerGasError = "Hah 2 + '" + this.prepare.maxFeePerGas + "'";
+            }
+
+            if (this.prepare.maxPriorityFeePerGas) {
+              this.prepare.maxPriorityFeePerGasError = "Hoh 1 + '" + this.prepare.maxPriorityFeePerGas + "'";
+            } else {
+              this.prepare.maxPriorityFeePerGasError = "Hoh 2 + '" + this.prepare.maxPriorityFeePerGas + "'";
+            }
+
             console.log(moment().format("HH:mm:ss") + " prepareSimulate - AFTER: " + JSON.stringify(this.prepare, bigNumberReplacer, 2));
             // this.saveSettings();
             localStorage.topSecretsOnlinePrepare = JSON.stringify(this.prepare);
