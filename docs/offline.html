@@ -292,6 +292,27 @@
             <!-- :SIGNETHTX -->
             <b-card sub-title="Sign Transaction" bg-variant="light" class="p-0 m-1" style="max-width: 900px;">
               <b-form-group label-cols-lg="2" label="Input" label-size="md" label-class="font-weight-bold pt-0" class="mb-0 mt-3">
+
+                <b-form-group label="Load .JSON:" label-for="signethtx-loadjson" label-size="sm" label-cols-sm="3" label-align-sm="right" :description="'Select .json file from your local computer to restore'" class="mx-0 my-1 p-0">
+                  <b-form-file size="sm" id="signethtx-loadjson" v-model="loadTxFile" @change="loadJSON($event.target.name, $event.target.files)" accept=".json" class="w-75"></b-form-file>
+                </b-form-group>
+
+                <b-form-group v-if="loadTx && loadTx.from" label="" label-for="signethtx-pre" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <pre>
+                    <font size="-2">
+{{ loadTx }}
+                    </font>
+                  </pre>
+                </b-form-group>
+
+                <!-- <b-form-group label="" label-for="restore-from-backup" label-size="sm" label-cols-sm="2" label-align-sm="right" :description="'Restore from backup file. Data has to be re-synced'" class="mx-0 my-1 p-0">
+                  <b-button size="sm" id="restore-from-backup" :disabled="!restoreIntermediateData.blocks || !restoreIntermediateData.txs" @click="restoreFromIntermediateBackup()" variant="primary">Restore</b-button>
+                </b-form-group> -->
+
+                <!-- <b-form-group label="" label-for="signethtx-upload" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+                  <b-button size="sm" id="signethtx-upload" @click="signEthTx.upload()" variant="primary">Upload .JSON</b-button>
+                </b-form-group> -->
+
                 <b-form-group label="Action:" label-for="signethtx-action" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                   <b-form-select size="sm" id="signethtx-action" v-model="settings.signEthTx.action" :options="actionOptions" @change="saveSettings();" style="max-width: 300px;"></b-form-select>
                 </b-form-group>
@@ -530,6 +551,9 @@
           },
 
           chains: {},
+
+          loadTxFile: null,
+          loadTx: {},
 
           connected: false,
           chainId: null,
@@ -866,6 +890,18 @@
 
         // --- METHODS ---
         methods: {
+
+          async loadJSON(fileName, fileList) {
+            console.log(moment().format("HH:mm:ss") + " loadJSON");
+            const reader = new FileReader();
+            this.loadTx = {};
+            const t = this;
+            reader.onload = function (event) {
+              const data = event.target.result;
+              t.loadTx = JSON.parse(data);
+            };
+            await reader.readAsText(fileList[0]);
+          },
 
           updateURL(where) {
             console.log(moment().format("HH:mm:ss") + " TODO updateURL: " + where);

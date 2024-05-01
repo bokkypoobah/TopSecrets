@@ -966,6 +966,7 @@
                     data: data.data,
                     nonce: this.prepare.nonce,
                     chainId: this.prepare.chainId,
+                    accessList: [],
                   };
                 }
               } else {
@@ -977,6 +978,7 @@
                   data: null,
                   nonce: this.prepare.nonce,
                   chainId: this.prepare.chainId,
+                  accessList: [],
                 };
               }
               if (this.prepare.tx) {
