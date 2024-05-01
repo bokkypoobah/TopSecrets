@@ -222,6 +222,7 @@
                   </b-form-group>
                 </b-form-group>
                 <b-form-group label-cols-lg="2" label="Network Parameters" label-size="md" label-class="font-weight-bold pt-0" class="mb-0 mt-2">
+
                   <b-form-group label="" label-for="prepare-simulate" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!prepare.error" :invalid-feedback="prepare.error" class="mx-0 my-1 p-0">
                     <b-button size="sm" id="prepare-simulate" @click="prepareSimulate()" variant="primary">Refresh</b-button>
                   </b-form-group>
@@ -304,6 +305,9 @@
                         <b-form-select size="sm" disabled v-model="prepare.gasUnit" :options="unitOptions" @change="prepareSimulate();" style="max-width: 300px;"></b-form-select>
                       </div>
                     </div>
+                  </b-form-group>
+                  <b-form-group label="" label-for="prepare-download" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!prepare.error" :invalid-feedback="prepare.error" class="mx-0 my-1 p-0">
+                    <b-button size="sm" id="prepare-download" @click="prepareDownload()" variant="primary">Download .JSON</b-button>
                   </b-form-group>
                 </b-form-group>
               </b-card>
@@ -988,7 +992,7 @@
                 this.prepare.estimatedGas = null;
               }
             }
-            if (this.prepare.gasLimit) {
+            if (this.prepare.gasLimit && this.prepare.tx) {
               if (this.prepare.gasLimit < this.prepare.estimatedGas) {
                 this.prepare.gasLimitError = "Warning - GasLimit < estimatedGas: " + this.prepare.estimatedGas;
               } else {
@@ -1000,14 +1004,14 @@
               this.prepare.gasLimitError = null;
             }
 
-            if (this.prepare.maxFeePerGas) {
+            if (this.prepare.maxFeePerGas && this.prepare.tx) {
               this.prepare.tx.maxFeePerGas = ethers.utils.parseUnits(this.prepare.maxFeePerGas.toString(), this.prepare.gasUnit);
               this.prepare.maxFeePerGasError = null;
             } else {
               this.prepare.maxFeePerGasError = null;
             }
 
-            if (this.prepare.maxPriorityFeePerGas) {
+            if (this.prepare.maxPriorityFeePerGas && this.prepare.tx) {
               this.prepare.tx.maxPriorityFeePerGas = ethers.utils.parseUnits(this.prepare.maxPriorityFeePerGas.toString(), this.prepare.gasUnit);
               this.prepare.maxPriorityFeePerGasError = null;
             } else {
@@ -1017,6 +1021,17 @@
             console.log(moment().format("HH:mm:ss") + " prepareSimulate - AFTER: " + JSON.stringify(this.prepare, bigNumberReplacer, 2));
             // this.saveSettings();
             localStorage.topSecretsOnlinePrepare = JSON.stringify(this.prepare);
+          },
+
+          prepareDownload() {
+            console.log(moment().format("HH:mm:ss") + " prepareDownload - this.prepare: " + JSON.stringify(this.prepare, bigNumberReplacer, 2));
+            let jsonContent = "data:text/json;charset=utf-8," + JSON.stringify(this.prepare.tx, bigNumberReplacer, 2);
+            var encodedUri = encodeURI(jsonContent);
+            var link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "topsecrets_online_-" + moment().format("YYYY-MM-DD-HH-mm-ss") + ".json");
+            document.body.appendChild(link); // Required for FF
+            link.click(); // This will download the data with the specified file name
           },
 
           submitCompare() {
