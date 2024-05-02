@@ -22,6 +22,7 @@
     <script src="globals.js"></script>
     <script src="chains.js"></script>
     <script src="deploymentData.js"></script>
+    <script src="datatxmap.js"></script>
 
     <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
@@ -1031,7 +1032,7 @@
             var encodedUri = encodeURI(jsonContent);
             var link = document.createElement("a");
             link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "topsecrets_online_-" + moment().format("YYYY-MM-DD-HH-mm-ss") + ".json");
+            link.setAttribute("download", "topsecrets_online_" + moment().format("YYYY-MM-DD-HH-mm-ss") + ".json");
             document.body.appendChild(link); // Required for FF
             link.click(); // This will download the data with the specified file name
           },

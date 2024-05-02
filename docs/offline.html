@@ -22,6 +22,7 @@
     <script src="globals.js"></script>
     <script src="chains.js"></script>
     <script src="deploymentData.js"></script>
+    <script src="datatxmap.js"></script>
 
     <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
@@ -572,6 +573,7 @@
               to: null,
               amount: null,
               amountUnit: "ether",
+              tokens: null,
               data: null,
               chainId: null,
               nonce: null,
@@ -897,8 +899,30 @@
             this.loadTx = {};
             const t = this;
             reader.onload = function (event) {
-              const data = event.target.result;
-              t.loadTx = JSON.parse(data);
+              const unsignedTx = JSON.parse(event.target.result);
+              console.log(moment().format("HH:mm:ss") + " loadJSON - unsignedTx: " + JSON.stringify(unsignedTx, bigNumberReplacer, 2));
+
+              // console.log("unsignedTx.data.length: " + unsignedTx.data.length);
+              if (unsignedTx.data == "0x") {
+                unsignedTx.data = null;
+              }
+              // 0xa9059cbb0000000000000000000000005d446d064757cc92efe92548f2d7b7a3eab303620000000000000000000000000000000000000000000000000de0b6b3a7640000
+              //           1         2         3         4         5         6         7         8         9        10        11        12        13
+              // 012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567
+
+              const txData = txToData(unsignedTx);
+              // ERC-20 transfer
+              if (unsignedTx.data && unsignedTx.data.length == 138 && unsignedTx.data.substring(0, 10) == "0xa9059cbb") {
+                const to = ethers.utils.getAddress(unsignedTx.data.substring(34, 74));
+                // console.log("to: " + to);
+                const tokens = ethers.BigNumber.from("0x" + unsignedTx.data.substring(75, 138));
+                // console.log("tokens: " + tokens);
+              // ETH tx
+              } else if (unsignedTx.data == null) {
+              } else {
+                alert("Unknown transaction");
+              }
+              t.loadTx = unsignedTx.data;
             };
             await reader.readAsText(fileList[0]);
           },
