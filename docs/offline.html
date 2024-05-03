@@ -332,7 +332,7 @@
                       <b-form-input type="text" size="sm" id="signethtx-amount" v-model.trim="settings.signEthTx.amount" @change="saveSettings();"></b-form-input>
                     </div>
                     <div class="mt-0 pr-1">
-                      <b-form-select size="sm" v-model="settings.signEthTx.amountUnit" :options="unitOptions" @change="saveSettings();"></b-form-select>
+                      <b-form-select size="sm" v-model="settings.amountUnit" :options="unitOptions" @change="saveSettings();"></b-form-select>
                     </div>
                   </div>
                 </b-form-group>
@@ -356,7 +356,7 @@
                       <b-form-input type="text" size="sm" id="signethtx-gasprice" v-model.trim="settings.signEthTx.gasPrice" @change="saveSettings();"></b-form-input>
                     </div>
                     <div class="mt-0 pr-1">
-                      <b-form-select size="sm" v-model="settings.signEthTx.gasPriceUnit" :options="unitOptions" @change="saveSettings();" style="max-width: 300px;"></b-form-select>
+                      <b-form-select size="sm" v-model="settings.gasUnit" :options="unitOptions" @change="saveSettings();" style="max-width: 300px;"></b-form-select>
                     </div>
                   </div>
                 </b-form-group>
@@ -366,7 +366,7 @@
                       <b-form-input type="text" size="sm" id="signethtx-maxfeepergas" v-model.trim="settings.signEthTx.maxFeePerGas" @change="saveSettings();"></b-form-input>
                     </div>
                     <div class="mt-0 pr-1">
-                      <b-form-select size="sm" v-model="settings.signEthTx.maxFeePerGasUnit" :options="unitOptions" @change="saveSettings();" style="max-width: 300px;"></b-form-select>
+                      <b-form-select size="sm" v-model="settings.gasUnit" :options="unitOptions" @change="saveSettings();" style="max-width: 300px;"></b-form-select>
                     </div>
                   </div>
                 </b-form-group>
@@ -376,7 +376,7 @@
                       <b-form-input type="text" size="sm" id="signethtx-maxpriorityfeepergas" v-model.trim="settings.signEthTx.maxPriorityFeePerGas" @change="saveSettings();"></b-form-input>
                     </div>
                     <div class="mt-0 pr-1">
-                      <b-form-select size="sm" v-model="settings.signEthTx.maxPriorityFeePerGasUnit" :options="unitOptions" @change="saveSettings();" style="max-width: 300px;"></b-form-select>
+                      <b-form-select size="sm" v-model="settings.gasUnit" :options="unitOptions" @change="saveSettings();" style="max-width: 300px;"></b-form-select>
                     </div>
                   </div>
                 </b-form-group>
@@ -393,7 +393,7 @@
                   </div>
                 </b-form-group>
                 <b-form-group label="Signed Transaction:" label-for="signethtx-signedtx" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!settings.signEthTx.error" :invalid-feedback="settings.signEthTx.error" class="mx-0 my-2 p-0">
-                  <b-form-textarea size="sm" readonly id="signethtx-signedtx" :value="settings.signEthTx.signedTx" rows="5" placeholder="Enter password and click [Sign] above" style="max-width: 800px;"></b-form-textarea>
+                  <b-form-textarea size="sm" readonly id="signethtx-signedtx" :value="settings.signedTx" rows="5" placeholder="Enter password and click [Sign] above" style="max-width: 800px;"></b-form-textarea>
                 </b-form-group>
               </b-form-group>
             </b-card>
@@ -566,14 +566,19 @@
           settings: {
             tabIndex: 0,
 
+            amountUnit: "ether",
+            gasUnit: "gwei",
+            signedTx: null,
+            decodedSignedTx: null,
+
             signEthTx: {
               action: null,
               token: null,
               from: null,
               to: null,
               amount: null,
-              amountUnit: "ether",
               tokens: null,
+              tokenId: null,
               data: null,
               chainId: null,
               nonce: null,
@@ -582,11 +587,6 @@
               gasPrice: null,
               maxFeePerGas: null,
               maxPriorityFeePerGas: null,
-              maxFeePerGasUnit: "gwei",
-              maxPriorityFeePerGasUnit: "gwei",
-              gasPriceUnit: "gwei",
-              signedTx: null,
-              decodedSignedTx: null,
               error: null,
             },
 
@@ -1200,7 +1200,7 @@
               const tx = {
                 // from: this.settings.signEthTx.from,
                 to: this.settings.signEthTx.to,
-                value: ethers.BigNumber.from(ethers.utils.parseUnits(this.settings.signEthTx.amount, this.settings.signEthTx.amountUnit).toString()),
+                value: ethers.BigNumber.from(ethers.utils.parseUnits(this.settings.signEthTx.amount, this.settings.amountUnit).toString()),
                 data: null,
                 chainId: parseInt(this.settings.signEthTx.chainId),
                 nonce: ethers.BigNumber.from(this.settings.signEthTx.nonce),
@@ -1210,19 +1210,19 @@
                 tx.gasPrice = ethers.BigNumber.from(ethers.utils.parseUnits(this.settings.signEthTx.gasPrice, this.settings.signEthTx.gasPriceUnit).toString());
               } else if (this.settings.signEthTx.transactionType == 2) {
                 tx.type = parseInt(this.settings.signEthTx.transactionType);
-                tx.maxFeePerGas = ethers.utils.parseUnits(this.settings.signEthTx.maxFeePerGas, this.settings.signEthTx.maxFeePerGasUnit).toString();
-                tx.maxPriorityFeePerGas = ethers.utils.parseUnits(this.settings.signEthTx.maxPriorityFeePerGas, this.settings.signEthTx.maxPriorityFeePerGasUnit).toString();
+                tx.maxFeePerGas = ethers.utils.parseUnits(this.settings.signEthTx.maxFeePerGas, this.settings.gasUnit).toString();
+                tx.maxPriorityFeePerGas = ethers.utils.parseUnits(this.settings.signEthTx.maxPriorityFeePerGas, this.settings.gasUnit).toString();
               }
               console.log("tx: " + JSON.stringify(tx, null, 2));
-              this.settings.signEthTx.signedTx = await wallet.signTransaction(tx);
+              this.settings.signedTx = await wallet.signTransaction(tx);
               console.log("signedTx: " + this.settings.signEthTx.signedTx);
-              this.settings.signEthTx.decodedSignedTx = ethers.utils.parseTransaction(this.settings.signEthTx.signedTx);
-              console.log("decoded: " + JSON.stringify(this.settings.signEthTx.decodedSignedTx, bigNumberReplacer, 2));
+              this.settings.decodedSignedTx = ethers.utils.parseTransaction(this.settings.signedTx);
+              console.log("decoded: " + JSON.stringify(this.settings.decodedSignedTx, bigNumberReplacer, 2));
             } catch (e) {
               console.log(moment().format("HH:mm:ss") + " signEthTx - signTransaction ERROR: " + e.message);
               this.settings.signEthTx.error = e.message;
-              this.settings.signEthTx.signedTx = null;
-              this.settings.signEthTx.decodedSignedTx = null;
+              this.settings.signedTx = null;
+              this.settings.decodedSignedTx = null;
             }
             this.saveSettings();
           },
