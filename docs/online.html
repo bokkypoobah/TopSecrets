@@ -212,7 +212,7 @@
                   <b-form-group v-if="prepare.action == 'erc20transfer'" label="Tokens:" label-for="prepare-tokens" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
                     <div class="d-flex flex-wrap m-0 p-0">
                       <div class="mt-0 pr-1">
-                        <b-form-input type="text" size="sm" id="prepare-tokens" v-model.trim="prepare.tokens" @change="prepareSimulate();"></b-form-input>
+                        <b-form-input type="number" size="sm" id="prepare-tokens" v-model.trim="prepare.tokens" @change="prepareSimulate();" min="0" step="0.001"></b-form-input>
                       </div>
                       <div class="mt-0 pr-1">
                         <!-- <b-badge button v-if="prepare.token.symbol" variant="muted" v-b-popover.hover="'symbol'">{{ prepare.token.symbol }}</b-badge>
@@ -228,23 +228,28 @@
                     <b-button size="sm" id="prepare-simulate" @click="prepareSimulate()" variant="primary">Refresh</b-button>
                   </b-form-group>
 
-                  <b-form-group label="Chain:" label-for="prepare-chain" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!prepare.chainIdError" :invalid-feedback="prepare.chainIdError" class="mx-0 my-1 p-0">
-                    <template v-if="prepare.chainIdError" slot="invalid-feedback">
-                      WARNING: <b-link size="sm" v-if="prepare.chainIdError" @click="prepare.chainId = chainId; prepareSimulate()" variant="link">Set to {{ chainsOptions.filter(e => e.value == chainId).length > 0 && chainsOptions.filter(e => e.value == chainId)[0].text }}</b-link>
+                  <b-form-group label="Chain:" label-for="prepare-chain" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!('chainId' in errors)" class="mx-0 my-1 p-0">
+                    <template v-if="errors.chainId" slot="invalid-feedback">
+                      Please set to your currently connected network
+
+                      <!-- WARNING: <b-link size="sm" v-if="prepare.chainIdError" @click="prepare.chainId = chainId; prepareSimulate()" variant="link">Set to {{ chainsOptions.filter(e => e.value == chainId).length > 0 && chainsOptions.filter(e => e.value == chainId)[0].text }}</b-link> -->
+
                     </template>
                     <b-form-select size="sm" id="prepare-chain" v-model="prepare.chainId" :options="chainsOptionsWithSelect" @change="prepareSimulate();" style="max-width: 200px;"></b-form-select>
                   </b-form-group>
 
-                  <b-form-group label="Nonce:" label-for="prepare-nonce" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!prepare.nonceError" :invalid-feedback="prepare.nonceError" class="mx-0 my-1 p-0">
-                    <template v-if="prepare.nonceError" slot="invalid-feedback">
-                      WARNING: <b-link size="sm" @click="prepare.nonce = prepare.from.transactionCount; prepareSimulate()" variant="link">Set to {{ prepare.from.transactionCount }}</b-link>
+                  <b-form-group label="Nonce:" label-for="prepare-nonce" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!('nonce' in errors)"  class="mx-0 my-1 p-0">
+                    <template v-if="errors.nonce" slot="invalid-feedback">
+                      {{ errors.nonce }}
+                      <!-- WARNING: <b-link size="sm" @click="prepare.nonce = prepare.from.transactionCount; prepareSimulate()" variant="link">Set to {{ prepare.from.transactionCount }}</b-link> -->
                     </template>
-                    <b-form-input type="number" size="sm" id="prepare-nonce" v-model.trim="prepare.nonce" @change="prepareSimulate();" min="0" style="max-width: 150px;"></b-form-input>
+                    <b-form-input type="number" size="sm" id="prepare-nonce" v-model.trim="prepare.nonce" @change="prepareSimulate();" min="0" step="1" style="max-width: 150px;"></b-form-input>
                   </b-form-group>
 
-                  <b-form-group label="Gas Limit:" label-for="prepare-gaslimit" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!prepare.gasLimitError" :invalid-feedback="prepare.gasLimitError" class="mx-0 my-1 p-0">
-                    <template v-if="prepare.gasLimitError" slot="invalid-feedback">
-                      WARNING: <b-link size="sm" @click="prepare.gasLimit = prepare.estimatedGas; prepareSimulate()" variant="link">Set to {{ prepare.estimatedGas }}</b-link>
+                  <b-form-group label="Gas Limit:" label-for="prepare-gaslimit" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!('gasLimit' in errors)" class="mx-0 my-1 p-0">
+                    <template v-if="errors.gasLimit" slot="invalid-feedback">
+                      {{ errors.gasLimit }}
+                      <!-- WARNING: <b-link size="sm" @click="prepare.gasLimit = prepare.estimatedGas; prepareSimulate()" variant="link">Set to {{ prepare.estimatedGas }}</b-link> -->
                     </template>
                     <b-form-input type="number" size="sm" id="prepare-gaslimit" v-model.trim="prepare.gasLimit" @change="prepareSimulate();" min="21000" style="max-width: 150px;"></b-form-input>
                   </b-form-group>
@@ -308,7 +313,7 @@
                     </div>
                   </b-form-group>
                   <b-form-group label="" label-for="prepare-download" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!prepare.error" :invalid-feedback="prepare.error" class="mx-0 my-1 p-0">
-                    <b-button size="sm" id="prepare-download" @click="prepareDownload()" variant="primary">Download .JSON</b-button>
+                    <b-button size="sm" :disabled="Object.keys(errors).length > 0" id="prepare-download" @click="prepareDownload()" variant="primary">Download .JSON</b-button>
                   </b-form-group>
                 </b-form-group>
               </b-card>
@@ -508,7 +513,7 @@
             // maxPriorityFeePerGasError: null,
           },
           tx: {},
-          error: null,
+          errors: {},
 
           submit: {
             signedTx: null,
@@ -900,7 +905,9 @@
             console.log(moment().format("HH:mm:ss") + " prepareSimulate TODO: " + JSON.stringify(this.prepare, bigNumberReplacer, 2));
 
             const provider = new ethers.providers.Web3Provider(window.ethereum);
-            const { tx, errors } = await dataToTx(this.prepare, this.settings.amountUnit, provider);
+            const { tx, errors } = await dataToTx(this.prepare, this.settings.amountUnit, this.settings.gasUnit, provider);
+            this.tx = tx;
+            this.errors = errors;
 
             console.log(moment().format("HH:mm:ss") + " prepareSimulate - tx: " + JSON.stringify({ tx, errors }, bigNumberReplacer, 2));
             // console.log(moment().format("HH:mm:ss") + " prepareSimulate - errors: " + JSON.stringify(errors, 2));

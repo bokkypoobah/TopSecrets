@@ -1,4 +1,4 @@
-async function dataToTx(data, amountUnit, provider) {
+async function dataToTx(data, amountUnit, gasUnit, provider) {
   console.log(moment().format("HH:mm:ss") + " dataToTx: " + JSON.stringify(data, bigNumberReplacer, 2));
   let tx = null;
   const errors = {};
@@ -75,22 +75,22 @@ async function dataToTx(data, amountUnit, provider) {
     if (data.tokens) {
       try {
         tokens = ethers.utils.parseUnits(data.tokens, decimals);
+        const tokenData = await contract.populateTransaction.transfer(data.to, tokens.toString());
+        tx = {
+          from: data.from,
+          to: data.token,
+          value: 0,
+          data: tokenData && tokenData.data || null,
+          chainId: data.chainId,
+          nonce: data.nonce,
+          accessList: [],
+        };
       } catch (e) {
         errors.tokens = "Invalid";
       }
     } else {
       errors.complete = false;
     }
-    const tokenData = await contract.populateTransaction.transfer(data.to, tokens.toString());
-    tx = {
-      from: data.from,
-      to: data.token,
-      value: 0,
-      data: tokenData && tokenData.data || null,
-      chainId: data.chainId,
-      nonce: data.nonce,
-      accessList: [],
-    };
   } else {
     errors.complete = false;
   }
@@ -108,6 +108,17 @@ async function dataToTx(data, amountUnit, provider) {
       } catch (e) {
         errors.gasLimit = "Error estimateGas()";
       }
+    } else {
+      errors.complete = false;
+    }
+
+    if (data.maxFeePerGas) {
+      tx.maxFeePerGas = ethers.utils.parseUnits(data.maxFeePerGas, gasUnit);
+    } else {
+      errors.complete = false;
+    }
+    if (data.maxPriorityFeePerGas) {
+      tx.maxPriorityFeePerGas = ethers.utils.parseUnits(data.maxPriorityFeePerGas, gasUnit);
     } else {
       errors.complete = false;
     }
