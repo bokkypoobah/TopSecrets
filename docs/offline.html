@@ -19,6 +19,7 @@
     <script src="js/bootstrap-vue-icons.min.js"></script>
     <script src="js/ethers-5.7.umd.min.js" type="application/javascript"></script>
     <script src="js/moment.min.js"></script>
+    <script src="js/html5-qrcode.min.js"></script>
     <script src="globals.js"></script>
     <script src="chains.js"></script>
     <script src="deploymentData.js"></script>
@@ -286,6 +287,17 @@
                 <b-badge pill variant="transparent" class="px-0">{{ addressTypeOptions.filter(e => e.value == data.item.type)[0].text }}</b-badge>
               </template>
             </b-table>
+          </b-card>
+
+          <b-card sub-title="QRCode" class="m-0 p-0 border-0" body-class="m-1 p-0">
+            <div id="reader" style="max-width: 600px;"></div>
+            <!-- <div class="d-flex flex-wrap m-0 p-0">
+              <div class="mt-0 pr-1">
+                <div id="reader" width="600px"></div>
+              </div>
+              <div class="mt-0 pr-1">
+              </div>
+            </div> -->
           </b-card>
 
           <!-- :ETH -->
@@ -1345,6 +1357,25 @@
               Vue.set(this.chains, chainId, name);
             }
           }
+
+          function onScanSuccess(decodedText, decodedResult) {
+            // handle the scanned code as you like, for example:
+            console.log(`Code matched = ${decodedText}`, decodedResult);
+          }
+
+          function onScanFailure(error) {
+            // handle scan failure, usually better to ignore and keep scanning.
+            // for example:
+            console.warn(`Code scan error = ${error}`);
+          }
+
+          let html5QrcodeScanner = new Html5QrcodeScanner(
+            "reader",
+            { fps: 10, qrbox: {width: 250, height: 250} },
+            /* verbose= */ false);
+          html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+
+
           // console.log("this.chains: " + JSON.stringify(this.chains, null, 2));
           if ('topSecretsOfflineAddresses' in localStorage) {
             this.addresses = JSON.parse(localStorage.topSecretsOfflineAddresses);
