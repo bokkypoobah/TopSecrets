@@ -19,6 +19,7 @@
     <script src="js/bootstrap-vue-icons.min.js"></script>
     <script src="js/ethers-5.7.umd.min.js" type="application/javascript"></script>
     <script src="js/moment.min.js"></script>
+    <script src="js/qrcode.vue.js"></script>
     <script src="js/html5-qrcode.min.js"></script>
     <script src="globals.js"></script>
     <script src="chains.js"></script>
@@ -1366,7 +1367,7 @@
           function onScanFailure(error) {
             // handle scan failure, usually better to ignore and keep scanning.
             // for example:
-            console.warn(`Code scan error = ${error}`);
+            // console.warn(`Code scan error = ${error}`);
           }
 
           let html5QrcodeScanner = new Html5QrcodeScanner(
