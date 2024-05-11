@@ -230,25 +230,37 @@
               <b-form-select size="sm" :disabled="['walletfrommnemonic', 'walletfromprivatekey', 'walletfromkeystore'].includes(address.type)" id="address-type" v-model="address.type" :options="addressTypeOptions" style="max-width: 300px;"></b-form-select>
             </b-form-group>
             <b-form-group label="Address:" label-for="address-address" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!address.addressError" :invalid-feedback="address.addressError" class="mx-0 my-1 p-0">
-
               <div class="d-flex flex-wrap m-0 p-0">
                 <div class="mt-0 pr-1" style="min-width: 400px;">
                   <b-form-input type="text" size="sm" :readonly="address.mode != 'add'" id="address-address" v-model.trim="address.address" @change="newAddressRecompute();"></b-form-input>
                 </div>
                 <div class="mt-0 pr-1">
-                  <b-button size="sm" @click="showQRCode('Address', address.address)" variant="transparent" v-b-popover.hover.bottom="'QRCode'">
-                    <b-img width="20" src="images/QR_icon.svg"></b-img>
+                  <b-button size="sm" @click="showQRCode('Address', address.address)" variant="transparent" v-b-popover.hover.bottom="'View Address QR Code'">
+                    <b-img width="20" src="images/QR_icon.svg" class="m-0 mb-1 p-0"></b-img>
                     </b-img>
                   </b-button>
                 </div>
               </div>
-
             </b-form-group>
             <b-form-group v-if="address.mode == 'vieworupdate' && !address.privateKey && ['walletfrommnemonic', 'walletfromprivatekey', 'walletfromkeystore'].includes(address.type)" label="Private Key" label-for="address-privatekeypassword" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!address.passwordError" :invalid-feedback="address.passwordError" class="mx-0 my-1 p-0">
               <b-form-input type="password" size="sm" id="address-privatekeypassword" v-model.trim="address.password" @change="addressPrivateKeyPasswordUpdate();" placeholder="Enter password" debounce="600" style="max-width: 300px;"></b-form-input>
             </b-form-group>
             <b-form-group v-if="address.mode == 'vieworupdate' && address.privateKey && ['walletfrommnemonic', 'walletfromprivatekey', 'walletfromkeystore'].includes(address.type)" label="Private Key" label-for="address-privatekey" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-              <b-form-input type="text" size="sm" readonly id="address-privatekey" v-model.trim="address.privateKey" style="max-width: 600px;"></b-form-input>
+
+
+              <div class="d-flex m-0 p-0">
+                <div class="flex-grow-1 mt-0 pr-1">
+                  <b-form-input type="text" size="sm" readonly id="address-privatekey" v-model.trim="address.privateKey"></b-form-input>
+                </div>
+                <div class="mt-0 pr-1">
+                  <b-button size="sm" @click="showQRCode('Keystore', JSON.stringify(address.keystore, null, 2))" variant="transparent" v-b-popover.hover.bottom="'View Keystore QR Code'">
+                    <b-img width="20" src="images/QR_icon.svg" class="m-0 mb-1 p-0"></b-img>
+                    </b-img>
+                  </b-button>
+                </div>
+              </div>
+
+
             </b-form-group>
             <b-form-group label="Name:" label-for="address-name" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-form-input type="text" size="sm" id="address-name" v-model.trim="address.name" placeholder="Optional" style="max-width: 300px;"></b-form-input>
@@ -265,7 +277,7 @@
           <!-- :MODALQRCODE -->
           <b-modal id="modal-qrcode" hide-footer size="lg" body-bg-variant="light">
             <template #modal-title>
-              {{ qrCode && qrCode.type || '' }} QRCode
+              {{ qrCode && qrCode.type || '' }} QR Code
             </template>
             <qrcode-vue v-if="qrCode && qrCode.data" :value="qrCode.data" size="400" class="text-center"></qrcode-vue>
             <pre>
