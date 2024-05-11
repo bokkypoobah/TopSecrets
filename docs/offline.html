@@ -222,7 +222,7 @@
           </b-modal>
 
           <!-- :MODALADDRESS -->
-          <b-modal id="modal-address" hide-footer size="lg">
+          <b-modal id="modal-address" hide-footer size="lg" body-bg-variant="light">
             <template #modal-title>
               {{ address.mode == 'add' ? 'New' : ''}} Address
             </template>
@@ -230,7 +230,19 @@
               <b-form-select size="sm" :disabled="['walletfrommnemonic', 'walletfromprivatekey', 'walletfromkeystore'].includes(address.type)" id="address-type" v-model="address.type" :options="addressTypeOptions" style="max-width: 300px;"></b-form-select>
             </b-form-group>
             <b-form-group label="Address:" label-for="address-address" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!address.addressError" :invalid-feedback="address.addressError" class="mx-0 my-1 p-0">
-              <b-form-input type="text" size="sm" :readonly="address.mode != 'add'" id="address-address" v-model.trim="address.address" @change="newAddressRecompute();" style="max-width: 400px;"></b-form-input>
+
+              <div class="d-flex flex-wrap m-0 p-0">
+                <div class="mt-0 pr-1" style="min-width: 400px;">
+                  <b-form-input type="text" size="sm" :readonly="address.mode != 'add'" id="address-address" v-model.trim="address.address" @change="newAddressRecompute();"></b-form-input>
+                </div>
+                <div class="mt-0 pr-1">
+                  <b-button size="sm" @click="showQRCode('Address', address.address)" variant="transparent" v-b-popover.hover.bottom="'QRCode'">
+                    <b-img width="20" src="images/QR_icon.svg"></b-img>
+                    </b-img>
+                  </b-button>
+                </div>
+              </div>
+
             </b-form-group>
             <b-form-group v-if="address.mode == 'vieworupdate' && !address.privateKey && ['walletfrommnemonic', 'walletfromprivatekey', 'walletfromkeystore'].includes(address.type)" label="Private Key" label-for="address-privatekeypassword" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!address.passwordError" :invalid-feedback="address.passwordError" class="mx-0 my-1 p-0">
               <b-form-input type="password" size="sm" id="address-privatekeypassword" v-model.trim="address.password" @change="addressPrivateKeyPasswordUpdate();" placeholder="Enter password" debounce="600" style="max-width: 300px;"></b-form-input>
@@ -248,6 +260,42 @@
               <b-button size="sm" :disabled="!address.address" id="address-update" @click="addressUpdate()" variant="primary">Update</b-button>
               <b-button size="sm" :disabled="!address.address" @click="addressDelete()" variant="warning">Delete</b-button>
             </b-form-group>
+          </b-modal>
+
+          <!-- :MODALQRCODE -->
+          <b-modal id="modal-qrcode" hide-footer size="lg" body-bg-variant="light">
+            <template #modal-title>
+              {{ qrCode && qrCode.type || '' }} QRCode
+            </template>
+            <qrcode-vue v-if="qrCode && qrCode.data" :value="qrCode.data" size="400" class="text-center"></qrcode-vue>
+            <pre>
+              <font size="-2">
+{{ qrCode && qrCode.data || '' }}
+              </font>
+            </pre>
+
+            <!-- <b-form-group label="Type:" label-for="address-type" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-form-select size="sm" :disabled="['walletfrommnemonic', 'walletfromprivatekey', 'walletfromkeystore'].includes(address.type)" id="address-type" v-model="address.type" :options="addressTypeOptions" style="max-width: 300px;"></b-form-select>
+            </b-form-group> -->
+            <!-- <b-form-group label="Address:" label-for="address-address" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!address.addressError" :invalid-feedback="address.addressError" class="mx-0 my-1 p-0">
+              <b-form-input type="text" size="sm" :readonly="address.mode != 'add'" id="address-address" v-model.trim="address.address" @change="newAddressRecompute();" style="max-width: 400px;"></b-form-input>
+            </b-form-group> -->
+            <!-- <b-form-group v-if="address.mode == 'vieworupdate' && !address.privateKey && ['walletfrommnemonic', 'walletfromprivatekey', 'walletfromkeystore'].includes(address.type)" label="Private Key" label-for="address-privatekeypassword" label-size="sm" label-cols-sm="3" label-align-sm="right" :state="!address.passwordError" :invalid-feedback="address.passwordError" class="mx-0 my-1 p-0">
+              <b-form-input type="password" size="sm" id="address-privatekeypassword" v-model.trim="address.password" @change="addressPrivateKeyPasswordUpdate();" placeholder="Enter password" debounce="600" style="max-width: 300px;"></b-form-input>
+            </b-form-group> -->
+            <!-- <b-form-group v-if="address.mode == 'vieworupdate' && address.privateKey && ['walletfrommnemonic', 'walletfromprivatekey', 'walletfromkeystore'].includes(address.type)" label="Private Key" label-for="address-privatekey" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-form-input type="text" size="sm" readonly id="address-privatekey" v-model.trim="address.privateKey" style="max-width: 600px;"></b-form-input>
+            </b-form-group> -->
+            <!-- <b-form-group label="Name:" label-for="address-name" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-form-input type="text" size="sm" id="address-name" v-model.trim="address.name" placeholder="Optional" style="max-width: 300px;"></b-form-input>
+            </b-form-group> -->
+            <!-- <b-form-group v-if="address.mode == 'add'" label="" label-for="address-add" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-button size="sm" :disabled="!address.address" id="address-add" @click="addressAdd()" variant="primary">Add</b-button>
+            </b-form-group> -->
+            <!-- <b-form-group v-if="address.mode == 'vieworupdate'" label="" label-for="address-update" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
+              <b-button size="sm" :disabled="!address.address" id="address-update" @click="addressUpdate()" variant="primary">Update</b-button>
+              <b-button size="sm" :disabled="!address.address" @click="addressDelete()" variant="warning">Delete</b-button>
+            </b-form-group> -->
           </b-modal>
 
           <!-- :ADDRESSES -->
@@ -499,6 +547,11 @@
         el: '#app',
         // --- DATA ---
         data: {
+
+          qrCode: {
+            type: null,
+            data: null,
+          },
 
           signEthTxPassword: null,
 
@@ -964,6 +1017,12 @@
             this.$bvModal.show('modal-address');
           },
 
+          showQRCode(type, data) {
+            console.log(moment().format("HH:mm:ss") + " showQRCode - type: " + type + ", data: '" + data + "'");
+            this.qrCode.type = type;
+            this.qrCode.data = data;
+            this.$bvModal.show('modal-qrcode');
+          },
           showNewWalletFromMnemonic() {
             console.log(moment().format("HH:mm:ss") + " showNewWalletFromMnemonic");
             this.$bvModal.show('modal-newwalletfrommnemonic');
