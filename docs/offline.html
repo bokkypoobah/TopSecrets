@@ -235,7 +235,7 @@
                   <b-form-input type="text" size="sm" :readonly="address.mode != 'add'" id="address-address" v-model.trim="address.address" @change="newAddressRecompute();"></b-form-input>
                 </div>
                 <div class="mt-0 pr-1">
-                  <b-button size="sm" @click="showQRCode('Address', address.address)" variant="transparent" v-b-popover.hover.bottom="'View Address QR Code'">
+                  <b-button size="sm" @click="showViewQRCode('Address', address.address)" variant="transparent" v-b-popover.hover.bottom="'View Address QR Code'">
                     <b-img width="20" src="images/QR_icon.svg" class="m-0 mb-1 p-0"></b-img>
                     </b-img>
                   </b-button>
@@ -246,21 +246,17 @@
               <b-form-input type="password" size="sm" id="address-privatekeypassword" v-model.trim="address.password" @change="addressPrivateKeyPasswordUpdate();" placeholder="Enter password" debounce="600" style="max-width: 300px;"></b-form-input>
             </b-form-group>
             <b-form-group v-if="address.mode == 'vieworupdate' && address.privateKey && ['walletfrommnemonic', 'walletfromprivatekey', 'walletfromkeystore'].includes(address.type)" label="Private Key" label-for="address-privatekey" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
-
-
               <div class="d-flex m-0 p-0">
                 <div class="flex-grow-1 mt-0 pr-1">
                   <b-form-input type="text" size="sm" readonly id="address-privatekey" v-model.trim="address.privateKey"></b-form-input>
                 </div>
                 <div class="mt-0 pr-1">
-                  <b-button size="sm" @click="showQRCode('Keystore', JSON.stringify(address.keystore, null, 2))" variant="transparent" v-b-popover.hover.bottom="'View Keystore QR Code'">
+                  <b-button size="sm" @click="showViewQRCode('Keystore', JSON.stringify(address.keystore, null, 2))" variant="transparent" v-b-popover.hover.bottom="'View Keystore QR Code'">
                     <b-img width="20" src="images/QR_icon.svg" class="m-0 mb-1 p-0"></b-img>
                     </b-img>
                   </b-button>
                 </div>
               </div>
-
-
             </b-form-group>
             <b-form-group label="Name:" label-for="address-name" label-size="sm" label-cols-sm="3" label-align-sm="right" class="mx-0 my-1 p-0">
               <b-form-input type="text" size="sm" id="address-name" v-model.trim="address.name" placeholder="Optional" style="max-width: 300px;"></b-form-input>
@@ -274,12 +270,12 @@
             </b-form-group>
           </b-modal>
 
-          <!-- :MODALQRCODE -->
-          <b-modal id="modal-qrcode" hide-footer size="lg" body-bg-variant="light">
+          <!-- :MODALVIEWQRCODE -->
+          <b-modal id="modal-viewqrcode" hide-footer size="lg" body-bg-variant="light">
             <template #modal-title>
-              {{ qrCode && qrCode.type || '' }} QR Code
+              View {{ qrCode && qrCode.type || '' }} QR Code
             </template>
-            <qrcode-vue v-if="qrCode && qrCode.data" :value="qrCode.data" size="400" class="text-center"></qrcode-vue>
+            <qrcode-vue v-if="qrCode && qrCode.data" :value="qrCode.data" size="600" class="text-center"></qrcode-vue>
             <pre>
               <font size="-2">
 {{ qrCode && qrCode.data || '' }}
@@ -310,6 +306,15 @@
             </b-form-group> -->
           </b-modal>
 
+          <!-- :MODALSCANQRCODE -->
+          <b-modal id="modal-scanqrcode" @shown="onModalScanQRCodeOpened" hide-footer size="xl" body-bg-variant="light">
+            <template #modal-title>
+              Scan {{ qrCode && qrCode.type || '' }} QR Code
+            </template>
+            <!-- <div id="reader" style="max-width: 600px;"></div> -->
+            <div id="reader" style="min-height:1000px; min-width: 1000px;"></div>
+          </b-modal>
+
           <!-- :ADDRESSES -->
           <b-card v-if="settings.tabIndex == 0" class="m-0 p-0 border-0" body-class="m-1 p-0">
             <div class="d-flex flex-wrap m-0 p-0">
@@ -325,6 +330,11 @@
                   <b-dropdown-item @click="showNewWalletFromKeystore">New Wallet From Keystore</b-dropdown-item>
                   <b-dropdown-item @click="showAddressNew">New Address</b-dropdown-item>
                 </b-dropdown>
+              </div>
+              <div class="mt-0 p2-1">
+                <b-button size="sm" @click="showScanQRCode('Address')" variant="transparent" v-b-popover.hover.bottom="'Scan QR Code'">
+                  <b-icon-upc-scan shift-v="+1" font-scale="1.0" variant="primary"></b-icon-upc-scan>
+                </b-button>
               </div>
               <div class="mt-0 flex-grow-1">
               </div>
@@ -350,10 +360,8 @@
             </b-table>
           </b-card>
 
-          <b-card sub-title="QRCode" class="m-0 p-0 border-0" body-class="m-1 p-0">
-            <qrcode-vue value="BokkyPooBah wuz here!"></qrcode-vue>
-
-            <div id="reader" style="max-width: 600px;"></div>
+          <!-- <b-card sub-title="QRCode" class="m-0 p-0 border-0" body-class="m-1 p-0"> -->
+            <!-- <div id="reader" style="max-width: 600px;"></div> -->
             <!-- <div class="d-flex flex-wrap m-0 p-0">
               <div class="mt-0 pr-1">
                 <div id="reader" width="600px"></div>
@@ -361,7 +369,7 @@
               <div class="mt-0 pr-1">
               </div>
             </div> -->
-          </b-card>
+          <!-- </b-card> -->
 
           <!-- :ETH -->
           <b-card v-if="settings.tabIndex == 1" class="m-0 p-0 border-0" body-class="m-1 p-0">
@@ -1029,11 +1037,42 @@
             this.$bvModal.show('modal-address');
           },
 
-          showQRCode(type, data) {
-            console.log(moment().format("HH:mm:ss") + " showQRCode - type: " + type + ", data: '" + data + "'");
+          showViewQRCode(type, data) {
+            console.log(moment().format("HH:mm:ss") + " showViewQRCode - type: " + type + ", data: '" + data + "'");
             this.qrCode.type = type;
             this.qrCode.data = data;
-            this.$bvModal.show('modal-qrcode');
+            this.$bvModal.show('modal-viewqrcode');
+          },
+          showScanQRCode(type) {
+            console.log(moment().format("HH:mm:ss") + " showViewQRCode - type: " + type);
+            this.$bvModal.show('modal-scanqrcode');
+          },
+          onModalScanQRCodeOpened() {
+            console.log(moment().format("HH:mm:ss") + " onModalScanQRCodeOpened");
+            function onScanSuccess(decodedText, decodedResult) {
+              // handle the scanned code as you like, for example:
+              console.log(`Code matched = ${decodedText}`, decodedResult);
+            }
+            function onScanFailure(error) {
+              // handle scan failure, usually better to ignore and keep scanning.
+              // for example:
+              console.warn(`Code scan error = ${error}`);
+            }
+            let qrboxFunction = function(viewfinderWidth, viewfinderHeight) {
+                let minEdgePercentage = 1; // 70%
+                let minEdgeSize = Math.min(viewfinderWidth, viewfinderHeight);
+                let qrboxSize = Math.floor(minEdgeSize * minEdgePercentage);
+                return {
+                    width: qrboxSize,
+                    height: qrboxSize
+                };
+            }
+            let html5QrcodeScanner = new Html5QrcodeScanner(
+              "reader",
+              { fps: 10, qrbox: qrboxFunction },
+              // { fps: 10, qrbox: { width: 1000, height: 1000 } },
+              /* verbose= */ true);
+            html5QrcodeScanner.render(onScanSuccess, onScanFailure);
           },
           showNewWalletFromMnemonic() {
             console.log(moment().format("HH:mm:ss") + " showNewWalletFromMnemonic");
@@ -1433,22 +1472,22 @@
             }
           }
 
-          function onScanSuccess(decodedText, decodedResult) {
-            // handle the scanned code as you like, for example:
-            console.log(`Code matched = ${decodedText}`, decodedResult);
-          }
-
-          function onScanFailure(error) {
-            // handle scan failure, usually better to ignore and keep scanning.
-            // for example:
-            // console.warn(`Code scan error = ${error}`);
-          }
-
-          let html5QrcodeScanner = new Html5QrcodeScanner(
-            "reader",
-            { fps: 10, qrbox: {width: 250, height: 250} },
-            /* verbose= */ false);
-          html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+          // function onScanSuccess(decodedText, decodedResult) {
+          //   // handle the scanned code as you like, for example:
+          //   console.log(`Code matched = ${decodedText}`, decodedResult);
+          // }
+          //
+          // function onScanFailure(error) {
+          //   // handle scan failure, usually better to ignore and keep scanning.
+          //   // for example:
+          //   // console.warn(`Code scan error = ${error}`);
+          // }
+          //
+          // let html5QrcodeScanner = new Html5QrcodeScanner(
+          //   "reader",
+          //   { fps: 10, qrbox: {width: 250, height: 250} },
+          //   /* verbose= */ false);
+          // html5QrcodeScanner.render(onScanSuccess, onScanFailure);
 
 
           // console.log("this.chains: " + JSON.stringify(this.chains, null, 2));
