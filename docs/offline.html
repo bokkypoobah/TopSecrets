@@ -236,7 +236,7 @@
                 </div>
                 <div class="mt-0 pr-1">
                   <b-button size="sm" @click="showViewQRCode('Address', address.address)" variant="transparent" v-b-popover.hover.bottom="'View Address QR Code'">
-                    <b-img width="20" src="images/QR_icon.svg" class="m-0 mb-1 p-0"></b-img>
+                    <b-img width="16" src="images/qr-code.svg" class="m-0 mb-1 p-0"></b-img>
                     </b-img>
                   </b-button>
                 </div>
@@ -252,7 +252,7 @@
                 </div>
                 <div class="mt-0 pr-1">
                   <b-button size="sm" @click="showViewQRCode('Keystore', JSON.stringify(address.keystore, null, 2))" variant="transparent" v-b-popover.hover.bottom="'View Keystore QR Code'">
-                    <b-img width="20" src="images/QR_icon.svg" class="m-0 mb-1 p-0"></b-img>
+                    <b-img width="16" src="images/qr-code.svg" class="m-0 mb-1 p-0"></b-img>
                     </b-img>
                   </b-button>
                 </div>
@@ -332,8 +332,16 @@
                 </b-dropdown>
               </div>
               <div class="mt-0 p2-1">
-                <b-button size="sm" @click="showScanQRCode('Address')" variant="transparent" v-b-popover.hover.bottom="'Scan QR Code'">
-                  <b-icon-upc-scan shift-v="+1" font-scale="1.0" variant="primary"></b-icon-upc-scan>
+                <b-button size="sm" @click="showScanQRCode('Address')" variant="link" v-b-popover.hover.bottom="'Scan QR Code'">
+                  <!-- <b-icon-upc-scan shift-v="+1" font-scale="1.0" variant="primary"></b-icon-upc-scan> -->
+
+                  <b-img width="18" src="images/qr-code-scan.svg" class="m-0 mb-1 p-0"></b-img>
+                  </b-img>
+
+                  <!-- <svg class="bi" width="32" height="32" fill="currentColor">
+                    <use xlink:href="images/qr-code-scan.svg"/>
+                  </svg> -->
+
                 </b-button>
               </div>
               <div class="mt-0 flex-grow-1">
