@@ -1,6 +1,6 @@
 # Top Secrets
 
-**Work in Progress** - [Online:TopSecrets](https://bokkypoobah.github.io/TopSecrets/online.html), [Offline:TopSecrets](https://bokkypoobah.github.io/TopSecrets/offline.html) and [WalletTool:TopSecrets](https://bokkypoobah.github.io/TopSecrets/wallettool.html).
+**Work in Progress**
 
 <p align="center">
   <img height="150" src="https://raw.githubusercontent.com/bokkypoobah/TopSecrets/main/images/topsecrets.svg" />
